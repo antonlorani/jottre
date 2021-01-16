@@ -9,21 +9,28 @@
 /* Begin PBXBuildFile section */
 		A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EB25B3260200C65157 /* AppDelegate.swift */; };
 		A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */; };
-		A6E3B7F025B3260200C65157 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EF25B3260200C65157 /* ViewController.swift */; };
-		A6E3B7F325B3260200C65157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F125B3260200C65157 /* Main.storyboard */; };
 		A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F425B3260300C65157 /* Assets.xcassets */; };
 		A6E3B7F825B3260300C65157 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */; };
+		A6E3B82125B32AB400C65157 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82025B32AB400C65157 /* Logger.swift */; };
+		A6E3B82425B32ABE00C65157 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82325B32ABE00C65157 /* String.swift */; };
+		A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82725B32AD300C65157 /* NavigationButton.swift */; };
+		A6E3B82C25B32AEB00C65157 /* InitialNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82B25B32AEB00C65157 /* InitialNavigationViewController.swift */; };
+		A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82E25B32B0700C65157 /* InitialViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A6E3B7E825B3260200C65157 /* Jottre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jottre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E3B7EB25B3260200C65157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A6E3B7EF25B3260200C65157 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A6E3B7F225B3260200C65157 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A6E3B7F425B3260300C65157 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6E3B7F725B3260300C65157 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6E3B7F925B3260300C65157 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6E3B80025B3261800C65157 /* Jottre.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Jottre.entitlements; sourceTree = "<group>"; };
+		A6E3B82025B32AB400C65157 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		A6E3B82325B32ABE00C65157 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		A6E3B82725B32AD300C65157 /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
+		A6E3B82B25B32AEB00C65157 /* InitialNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialNavigationViewController.swift; sourceTree = "<group>"; };
+		A6E3B82E25B32B0700C65157 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +63,43 @@
 		A6E3B7EA25B3260200C65157 /* Jottre */ = {
 			isa = PBXGroup;
 			children = (
+				A6E3B81325B3297200C65157 /* Extensions */,
+				A6E3B80F25B3295200C65157 /* Views */,
+				A6E3B80725B3287C00C65157 /* Controllers */,
+				A6E3B80025B3261800C65157 /* Jottre.entitlements */,
 				A6E3B7EB25B3260200C65157 /* AppDelegate.swift */,
 				A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */,
-				A6E3B7EF25B3260200C65157 /* ViewController.swift */,
-				A6E3B7F125B3260200C65157 /* Main.storyboard */,
 				A6E3B7F425B3260300C65157 /* Assets.xcassets */,
 				A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */,
 				A6E3B7F925B3260300C65157 /* Info.plist */,
 			);
 			path = Jottre;
+			sourceTree = "<group>";
+		};
+		A6E3B80725B3287C00C65157 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B82B25B32AEB00C65157 /* InitialNavigationViewController.swift */,
+				A6E3B82E25B32B0700C65157 /* InitialViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A6E3B80F25B3295200C65157 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B82725B32AD300C65157 /* NavigationButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6E3B81325B3297200C65157 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B82025B32AB400C65157 /* Logger.swift */,
+				A6E3B82325B32ABE00C65157 /* String.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +161,6 @@
 			files = (
 				A6E3B7F825B3260300C65157 /* LaunchScreen.storyboard in Resources */,
 				A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */,
-				A6E3B7F325B3260200C65157 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,23 +171,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6E3B7F025B3260200C65157 /* ViewController.swift in Sources */,
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
+				A6E3B82C25B32AEB00C65157 /* InitialNavigationViewController.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
+				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
+				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,
+				A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */,
+				A6E3B82125B32AB400C65157 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A6E3B7F125B3260200C65157 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6E3B7F225B3260200C65157 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -286,6 +316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
@@ -295,6 +326,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.Jottre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -305,6 +337,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
@@ -314,6 +347,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.Jottre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
