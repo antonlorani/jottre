@@ -32,9 +32,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.rootViewController = initialNavigationController
         window?.makeKeyAndVisible()
+                
+        presentDocument(urlContext: connectionOptions.urlContexts)
+        
+    }
+    
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        presentDocument(urlContext: URLContexts)
+    }
+    
+    
+    func presentDocument(urlContext: Set<UIOpenURLContext>) {
+                      
+        guard let urlContext = urlContext.first else { return }
+        
+        let url = urlContext.url
+        
+        let node = Node(url: url)
+        node.pull { (success) in
+                            
+            if !success { return }
+                
+            DispatchQueue.main.async {
+                let drawController = DrawViewController(node: node)
+                self.window?.rootViewController?.children[0].navigationController?.pushViewController(drawController, animated: true)
+            }
+                
+        }
         
     }
 
+    
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
