@@ -6,11 +6,11 @@
 //
 
 import UIKit
+import os.log
 
 protocol NodeCollectorObserver {
     func nodeCollectorDidChange()
 }
-
 
 class NodeCollector {
     
@@ -81,9 +81,10 @@ class NodeCollector {
         let nodePath = NodeCollector.path.appendingPathComponent(name).appendingPathExtension("jot")
         
         let node = Node(url: nodePath)
-        node.push { (success) in
-            completion?(success, success ? node : nil)
-        }
+            node.collector = self
+            node.push { (success) in
+                completion?(success, success ? node : nil)
+            }
         
     }
     
@@ -95,8 +96,8 @@ class NodeCollector {
     
     
     /// Sends a message to each observer, that there happened changes inside this object.
-    fileprivate func didUpdate() {
-        
+    func didUpdate() {
+
         if !observersEnabled { return }
         
         DispatchQueue.main.async {

@@ -9,12 +9,18 @@ import Foundation
 import PencilKit
 import os.log
 
+
+/// A custom helper class that generates the thumbnails for a given Node
+var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: 200, height: 300))
+
+
 /// The content of this struct will be serialized to a binary file
 struct NodeCodable: Codable {
     
     var drawing: PKDrawing = PKDrawing()
     
 }
+
 
 /// This class will manage the processes of a NodeCodable
 /// This includes: encoding, decoding and basic file system related methods
@@ -83,7 +89,28 @@ class Node: NSObject {
     /// Updates meta-data such as the thumbnail of the Node
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func updateMeta(completion: ((Bool) -> Void)? = nil) {
-        completion?(true)
+        
+        thumbnailGenerator.execute(for: self) { [self] (success, image) in
+            self.thumbnail = image
+            
+            if let collector = self.collector {
+                collector.didUpdate()
+            }
+            
+            completion?(success)
+            
+        }
+        
+    }
+    
+    
+    /// Moves drawing to Node. Calls update to generate thumbnail
+    /// - Parameter drawing: Given PKDrawing
+    func setDrawing(drawing: PKDrawing) {
+        
+        nodeCodable?.drawing = drawing
+        updateMeta()
+        
     }
  
     

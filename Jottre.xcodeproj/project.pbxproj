@@ -23,6 +23,7 @@
 		A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84025B334AF00C65157 /* InitialExtensions.swift */; };
 		A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84A25B347C100C65157 /* DrawViewController.swift */; };
 		A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84D25B3495800C65157 /* DrawExtensions.swift */; };
+		A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		A6E3B84025B334AF00C65157 /* InitialExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialExtensions.swift; sourceTree = "<group>"; };
 		A6E3B84A25B347C100C65157 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
 		A6E3B84D25B3495800C65157 /* DrawExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawExtensions.swift; sourceTree = "<group>"; };
+		A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		A6E3B7EA25B3260200C65157 /* Jottre */ = {
 			isa = PBXGroup;
 			children = (
+				A6E3B85025B34ABA00C65157 /* Helpers */,
 				A6E3B83225B32BAF00C65157 /* Models */,
 				A6E3B81325B3297200C65157 /* Extensions */,
 				A6E3B80F25B3295200C65157 /* Views */,
@@ -145,6 +148,14 @@
 				A6E3B84D25B3495800C65157 /* DrawExtensions.swift */,
 			);
 			path = DrawScene;
+			sourceTree = "<group>";
+		};
+		A6E3B85025B34ABA00C65157 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +229,7 @@
 			files = (
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
+				A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */,
 				A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */,
 				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,

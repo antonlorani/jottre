@@ -79,7 +79,7 @@ class DrawViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         if hasModifiedDrawing {
-            node.nodeCodable?.drawing = canvasView.drawing
+            node.setDrawing(drawing: canvasView.drawing)
         }
                 
     }

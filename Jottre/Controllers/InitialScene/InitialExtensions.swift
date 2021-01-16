@@ -14,9 +14,7 @@ import os.log
 extension InitialViewController: NodeCollectorObserver {
     
     func nodeCollectorDidChange() {
-        Logger.main.info("Updating collectionView")
         self.collectionView.reloadData()
-        print(self.nodeCollector.nodes)
     }
     
 }
