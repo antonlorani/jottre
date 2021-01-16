@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class InitialNavigationViewController: UINavigationController {
+class NavigationViewController: UINavigationController {
     
     // MARK: - Main
     
