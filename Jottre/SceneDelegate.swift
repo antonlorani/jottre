@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import os.log
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -48,6 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let urlContext = urlContext.first else { return }
         
         let url = urlContext.url
+        _ = url.startAccessingSecurityScopedResource()
         
         let node = Node(url: url)
         node.pull { (success) in

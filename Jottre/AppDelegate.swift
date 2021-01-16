@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import os.log
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,6 +31,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let opensInPlace = options[.openInPlace] != nil
+        opensInPlace ? url.startAccessingSecurityScopedResource() : nil
+        let fileExists = FileManager.default.fileExists(atPath: url.path)
+        Logger.main.info("File exists: \(fileExists)")
+        opensInPlace ? url.stopAccessingSecurityScopedResource() : nil
+        return true
+     }
 
 }
 
