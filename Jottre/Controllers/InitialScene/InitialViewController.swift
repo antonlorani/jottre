@@ -12,7 +12,9 @@ import os.log
 class InitialViewController: UIViewController {
     
     // MARK: - Properties
-            
+    
+    var nodeCollector: NodeCollector = NodeCollector()
+    
     var hasDocuments: Bool = false {
         didSet {
             infoTextView.alpha = hasDocuments ? 0 : 1
@@ -35,6 +37,21 @@ class InitialViewController: UIViewController {
             textView.isScrollEnabled = false
         return textView
     }()
+    
+    var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 40, height: 291)
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            layout.minimumLineSpacing = 20
+            layout.minimumInteritemSpacing = 20
+            
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+            collectionView.backgroundColor = .systemBackground
+            collectionView.register(NodeCell.self, forCellWithReuseIdentifier: "nodeCell")
+            
+        return collectionView
+    }()
 
     
     
@@ -44,6 +61,7 @@ class InitialViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        setupDelegates()
         
     }
     
@@ -65,6 +83,17 @@ class InitialViewController: UIViewController {
         infoTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
 
     }
+    
+    
+    private func setupDelegates() {
+        
+        nodeCollector.addObserver(self)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+    }
+    
     
     @objc func createNode() {
         Logger.main.debug("Open request to create node")
