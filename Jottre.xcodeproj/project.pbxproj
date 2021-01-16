@@ -26,6 +26,7 @@
 		A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */; };
 		A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85D25B3673C00C65157 /* UIDevice.swift */; };
 		A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86425B372A800C65157 /* ExportActions.swift */; };
+		A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86725B374A200C65157 /* MenuActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
 		A6E3B85D25B3673C00C65157 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Jottre/Helpers/UIDevice.swift; sourceTree = SOURCE_ROOT; };
 		A6E3B86425B372A800C65157 /* ExportActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportActions.swift; sourceTree = "<group>"; };
+		A6E3B86725B374A200C65157 /* MenuActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,8 +142,9 @@
 		A6E3B83F25B3349900C65157 /* InitialScene */ = {
 			isa = PBXGroup;
 			children = (
-				A6E3B84025B334AF00C65157 /* InitialExtensions.swift */,
 				A6E3B82E25B32B0700C65157 /* InitialViewController.swift */,
+				A6E3B84025B334AF00C65157 /* InitialExtensions.swift */,
+				A6E3B86725B374A200C65157 /* MenuActions.swift */,
 			);
 			path = InitialScene;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				A6E3B83725B32BC500C65157 /* NodeCollector.swift in Sources */,
 				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,
 				A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */,
+				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
 				A6E3B82125B32AB400C65157 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

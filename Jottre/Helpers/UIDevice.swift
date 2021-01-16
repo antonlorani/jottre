@@ -14,7 +14,7 @@ extension UIDevice {
         #if targetEnvironment(macCatalyst)
             return true
         #else
-            return UIDevice.current.userInterfaceIdiom != .phone
+            return !(UIDevice.current.userInterfaceIdiom == .pad)
         #endif
         
     }

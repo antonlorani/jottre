@@ -173,21 +173,57 @@ class Node: NSObject {
     ///   - name: New name of the Node
     ///   - completion: Returns a boolean that indicates success or failure
     func rename(to name: String, completion: ((Bool) -> Void)? = nil) {
+        
+        guard let originPath = url, let destinationPath = url?.deletingLastPathComponent().appendingPathComponent(name).appendingPathExtension("jot") else {
+            completion?(false)
+            return
+        }
+        
+        do {
+            try FileManager.default.moveItem(at: originPath, to: destinationPath)
+        } catch {
+            Logger.main.error("\(error.localizedDescription)")
+            completion?(false)
+        }
+        
+        self.name = name
+        
         completion?(true)
+        
     }
     
     
     /// Clones the Node's content. Name will be updated automatically with suffix 'copy'
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func duplicate(completion: ((Bool) -> Void)? = nil) {
-        completion?(true)
+        completion?(false)
     }
     
     
     /// Deletes the Node from the filesystem
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func delete(completion: ((Bool) -> Void)? = nil) {
+        
+        guard let url = url else {
+            completion?(false)
+            return
+        }
+        
+        guard let collector = collector, let index = collector.nodes.firstIndex(of: self) else {
+            completion?(false)
+            return
+        }
+        
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            Logger.main.error("Could not delete Node at \(url). Reason: \(error.localizedDescription)")
+            completion?(false)
+        }
+
+        collector.nodes.remove(at: index)
         completion?(true)
+
     }
     
 }

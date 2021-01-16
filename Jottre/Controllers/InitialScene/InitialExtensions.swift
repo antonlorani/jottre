@@ -70,5 +70,20 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
                 
     }
     
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+                
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (actions) -> UIMenu? in
+            
+            let actions = [
+                self.createEditAction(indexPath: indexPath),
+                self.createRenameAction(indexPath: indexPath),
+                self.createDeleteAction(indexPath: indexPath)
+            ]
+            
+            return UIMenu(title: "", children: actions)
+        }
+        
+    }
+    
 }
 
