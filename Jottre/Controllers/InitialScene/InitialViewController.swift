@@ -125,11 +125,15 @@ class InitialViewController: UIViewController {
                 self.nodeCollector.disableObservers()
                 self.nodeCollector.nodes.append(node)
                 
-                self.collectionView.performBatchUpdates {
-                    let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
-                    self.collectionView.insertItems(at: [indexPath])
-                } completion: { (success) in
-                    self.nodeCollector.enableObservers()
+                DispatchQueue.main.async {
+                    
+                    self.collectionView.performBatchUpdates {
+                        let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
+                        self.collectionView.insertItems(at: [indexPath])
+                    } completion: { (success) in
+                        self.nodeCollector.enableObservers()
+                    }
+                    
                 }
                                 
             }

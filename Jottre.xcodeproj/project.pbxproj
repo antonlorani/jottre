@@ -97,8 +97,8 @@
 		A6E3B80725B3287C00C65157 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A6E3B84925B347AE00C65157 /* DrawScene */,
 				A6E3B82B25B32AEB00C65157 /* NavigationViewController.swift */,
+				A6E3B84925B347AE00C65157 /* DrawScene */,
 				A6E3B83F25B3349900C65157 /* InitialScene */,
 			);
 			path = Controllers;

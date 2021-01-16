@@ -51,7 +51,17 @@ class NodeCollector {
     /// Loads the nodes from default path
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func pull(completion: ((Bool) -> Void)? = nil) {
-        completion?(false)
+        let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path.path)
+        
+        files.forEach { (name) in
+            
+            let url = NodeCollector.path.appendingPathComponent(name)
+            
+            self.pullNode(url: url)
+            
+        }
+        
+        completion?(true)
     }
     
     
@@ -61,14 +71,26 @@ class NodeCollector {
     ///   - url: Should point to a .jot file on the users file-system
     ///   - completion: Returns a boolean that indicates success or failure
     func pullNode(url: URL, completion: ((Bool) -> Void)? = nil) {
-        completion?(false)
+        
+        let node = Node(url: url)
+            node.collector = self
+            node.pull { (success) in
+                if success {
+                    self.nodes.append(node)
+                }
+                completion?(success)
+            }
+        
     }
     
     
     /// Force pulls all the Nodes to the file-system
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func push(completion: ((Bool) -> Void)? = nil) {
-        completion?(false)
+        
+        nodes.forEach({ $0.push() })
+        completion?(true)
+        
     }
     
     
