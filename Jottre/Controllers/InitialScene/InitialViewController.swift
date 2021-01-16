@@ -74,7 +74,9 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = "My notes"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: "Add note", target: self, action: #selector(createNode)))
+        if UIDevice.isNotLimited {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: "Add note", target: self, action: #selector(createNode)))
+        }
         
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
