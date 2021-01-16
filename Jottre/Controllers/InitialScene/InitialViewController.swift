@@ -55,7 +55,7 @@ class InitialViewController: UIViewController {
 
     
     
-    // MARK: - Init
+    // MARK: - Override methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +63,13 @@ class InitialViewController: UIViewController {
         setupViews()
         setupDelegates()
         
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        nodeCollector.traitCollection = traitCollection
+    
     }
     
     
@@ -74,7 +81,7 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = "My notes"
         
-        if UIDevice.isNotLimited {
+        if !UIDevice.isLimited() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: "Add note", target: self, action: #selector(createNode)))
         }
         
@@ -94,6 +101,8 @@ class InitialViewController: UIViewController {
     
     
     private func setupDelegates() {
+        
+        nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
         

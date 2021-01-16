@@ -127,7 +127,7 @@ class DrawViewController: UIViewController {
         canvasView.drawing = node.nodeCodable!.drawing
         canvasView.contentInset = UIEdgeInsets(top: -75, left: 0, bottom: 0, right: 0)
         
-        if UIDevice.isNotLimited {
+        if !UIDevice.isLimited() {
             toolPicker = PKToolPicker()
             toolPicker.setVisible(true, forFirstResponder: canvasView)
             toolPicker.addObserver(canvasView)

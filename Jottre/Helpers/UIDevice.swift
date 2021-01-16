@@ -9,8 +9,14 @@ import UIKit
 
 extension UIDevice {
     
-    static let isNotLimited = UIDevice.current.userInterfaceIdiom != .mac && UIDevice.current.userInterfaceIdiom != .phone
+    static func isLimited() -> Bool {
+        
+        #if targetEnvironment(macCatalyst)
+            return true
+        #else
+            return UIDevice.current.userInterfaceIdiom != .phone
+        #endif
+        
+    }
     
-    static let isLimited = UIDevice.current.userInterfaceIdiom == .mac || UIDevice.current.userInterfaceIdiom == .phone
-
 }

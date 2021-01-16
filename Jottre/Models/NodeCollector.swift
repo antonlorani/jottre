@@ -35,6 +35,12 @@ class NodeCollector {
         }
     }
     
+    var traitCollection: UITraitCollection = UITraitCollection() {
+        didSet {
+            update()
+        }
+    }
+    
     
     
     // MARK: - Init
