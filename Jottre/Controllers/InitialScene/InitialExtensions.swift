@@ -20,6 +20,7 @@ extension InitialViewController: NodeCollectorObserver {
 }
 
 
+
 // MARK: - UICollectionView
 
 extension InitialViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -50,6 +51,18 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let cell = collectionView.cellForItem(at: indexPath) else {
             return
         }
+        
+        UIView.animateKeyframes(withDuration: 0.4, delay: 0, animations: {
+            
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.2) {
+                cell.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+                cell.transform = .identity
+            }
+            
+        }, completion: nil)
         
         Logger.main.debug("Request for showing Node in detail")
         
