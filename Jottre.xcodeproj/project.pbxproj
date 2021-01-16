@@ -24,6 +24,7 @@
 		A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84A25B347C100C65157 /* DrawViewController.swift */; };
 		A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84D25B3495800C65157 /* DrawExtensions.swift */; };
 		A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */; };
+		A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85D25B3673C00C65157 /* UIDevice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		A6E3B84A25B347C100C65157 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
 		A6E3B84D25B3495800C65157 /* DrawExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawExtensions.swift; sourceTree = "<group>"; };
 		A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
+		A6E3B85D25B3673C00C65157 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Jottre/Helpers/UIDevice.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 				A6E3B82025B32AB400C65157 /* Logger.swift */,
 				A6E3B82325B32ABE00C65157 /* String.swift */,
 				A6E3B83C25B3340300C65157 /* UIView.swift */,
+				A6E3B85D25B3673C00C65157 /* UIDevice.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
+				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
@@ -388,7 +392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.Jottre;
+				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.jottre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -409,7 +413,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.Jottre;
+				PRODUCT_BUNDLE_IDENTIFIER = com.antonlorani.jottre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
