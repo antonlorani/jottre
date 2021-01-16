@@ -66,8 +66,10 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
             
         }, completion: nil)
         
-        Logger.main.debug("Request for showing Node in detail")
-        
+                
+        let drawController = DrawViewController(node: nodeCollector.nodes[indexPath.row])
+        navigationController?.pushViewController(drawController, animated: true)
+                
     }
     
 }

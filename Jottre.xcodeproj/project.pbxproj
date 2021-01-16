@@ -21,6 +21,8 @@
 		A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B83925B333EC00C65157 /* NodeCell.swift */; };
 		A6E3B83D25B3340300C65157 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B83C25B3340300C65157 /* UIView.swift */; };
 		A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84025B334AF00C65157 /* InitialExtensions.swift */; };
+		A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84A25B347C100C65157 /* DrawViewController.swift */; };
+		A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84D25B3495800C65157 /* DrawExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 		A6E3B83925B333EC00C65157 /* NodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCell.swift; sourceTree = "<group>"; };
 		A6E3B83C25B3340300C65157 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A6E3B84025B334AF00C65157 /* InitialExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialExtensions.swift; sourceTree = "<group>"; };
+		A6E3B84A25B347C100C65157 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		A6E3B84D25B3495800C65157 /* DrawExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 		A6E3B80725B3287C00C65157 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A6E3B84925B347AE00C65157 /* DrawScene */,
 				A6E3B82B25B32AEB00C65157 /* NavigationViewController.swift */,
 				A6E3B83F25B3349900C65157 /* InitialScene */,
 			);
@@ -131,6 +136,15 @@
 				A6E3B82E25B32B0700C65157 /* InitialViewController.swift */,
 			);
 			path = InitialScene;
+			sourceTree = "<group>";
+		};
+		A6E3B84925B347AE00C65157 /* DrawScene */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B84A25B347C100C65157 /* DrawViewController.swift */,
+				A6E3B84D25B3495800C65157 /* DrawExtensions.swift */,
+			);
+			path = DrawScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,7 +219,9 @@
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
 				A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */,
+				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,
+				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
