@@ -76,6 +76,12 @@ class InitialViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: "Add note", target: self, action: #selector(createNode)))
         
+        view.addSubview(collectionView)
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
         view.addSubview(infoTextView)
         infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -96,7 +102,44 @@ class InitialViewController: UIViewController {
     
     
     @objc func createNode() {
-        Logger.main.debug("Open request to create node")
+        
+        let alertController = UIAlertController(title: "New note", message: "Enter a name for your new note", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "My note"
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
+            
+            guard let textFields = alertController.textFields, var name = textFields[0].text else {
+                return
+            }
+            name = name == "" ? "My note" : name
+            
+            self.nodeCollector.createNode(name: name) { (success, node) in
+
+                guard let node = node else {
+                    return
+                }
+                
+                self.nodeCollector.disableObservers()
+                self.nodeCollector.nodes.append(node)
+                
+                self.collectionView.performBatchUpdates {
+                    let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
+                    self.collectionView.insertItems(at: [indexPath])
+                } completion: { (success) in
+                    self.nodeCollector.enableObservers()
+                }
+                                
+            }
+            
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+        
     }
     
 }

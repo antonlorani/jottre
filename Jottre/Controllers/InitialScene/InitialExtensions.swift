@@ -14,7 +14,9 @@ import os.log
 extension InitialViewController: NodeCollectorObserver {
     
     func nodeCollectorDidChange() {
-        collectionView.reloadData()
+        Logger.main.info("Updating collectionView")
+        self.collectionView.reloadData()
+        print(self.nodeCollector.nodes)
     }
     
 }
@@ -40,7 +42,6 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: indexPath) as? NodeCell else {
             fatalError("Cell is not of type NodeCell.")
         }
-        
         cell.node = nodeCollector.nodes[indexPath.row]
         
         return cell
@@ -48,6 +49,7 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         guard let cell = collectionView.cellForItem(at: indexPath) else {
             return
         }
@@ -55,7 +57,7 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         UIView.animateKeyframes(withDuration: 0.4, delay: 0, animations: {
             
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.2) {
-                cell.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+                cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
             }
             
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {

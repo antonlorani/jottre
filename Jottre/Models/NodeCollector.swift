@@ -72,6 +72,21 @@ class NodeCollector {
     }
     
     
+    /// Creates a new Node for given name
+    /// - Parameter name: This will be the name and filename (without suffix .jot) of the Node
+    /// - Parameter completion: Returns a boolean that indicates success or failure and the hopefully created node
+    func createNode(name: String, completion: ((_ success: Bool, _ node: Node?) -> Void)? = nil) {
+        
+        let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.path)
+        let nodePath = NodeCollector.path.appendingPathComponent(name).appendingPathExtension("jot")
+        
+        let node = Node(url: nodePath)
+        node.push { (success) in
+            completion?(success, success ? node : nil)
+        }
+        
+    }
+    
     
     /// Updates the meta-data for each Node in this object
     func update() {
@@ -109,6 +124,30 @@ class NodeCollector {
     /// Adds a new observer to this class ;)
     func addObserver(_ observer: NodeCollectorObserver) {
         observers.append(observer)
+    }
+    
+    
+    
+    // MARK: - Static methods
+    
+    /// Generates a name and will modify it if this name already exists in a given directory
+    /// - Parameter baseName: The target name
+    /// - Parameter path: The path where this file is stored
+    /// - Returns: The validated name (If name already exists this method adds the suffix ' copy' to the baseName)
+    static func computeCopyName(baseName: String, path: URL) -> String {
+        var newName: String = baseName
+        var currentPath: URL = path.appendingPathComponent(newName).appendingPathExtension("jot")
+        
+        while true {
+            if FileManager.default.fileExists(atPath: currentPath.path) {
+                newName = "\(newName) (copy)"
+                currentPath = currentPath.deletingLastPathComponent().appendingPathComponent(newName).appendingPathExtension("jot")
+                continue
+            }
+            break
+        }
+        
+        return newName
     }
     
 }
