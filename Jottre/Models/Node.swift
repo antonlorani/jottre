@@ -159,6 +159,8 @@ class Node: NSObject {
         nodeCodable?.drawing = drawing
         updateMeta()
         
+        push()
+        
     }
  
     

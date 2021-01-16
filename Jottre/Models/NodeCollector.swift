@@ -54,11 +54,8 @@ class NodeCollector {
         let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path.path)
         
         files.forEach { (name) in
-            
             let url = NodeCollector.path.appendingPathComponent(name)
-            
             self.pullNode(url: url)
-            
         }
         
         completion?(true)
