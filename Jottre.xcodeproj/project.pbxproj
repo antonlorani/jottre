@@ -25,6 +25,7 @@
 		A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B84D25B3495800C65157 /* DrawExtensions.swift */; };
 		A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */; };
 		A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85D25B3673C00C65157 /* UIDevice.swift */; };
+		A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86425B372A800C65157 /* ExportActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		A6E3B84D25B3495800C65157 /* DrawExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawExtensions.swift; sourceTree = "<group>"; };
 		A6E3B85125B34ACB00C65157 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
 		A6E3B85D25B3673C00C65157 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Jottre/Helpers/UIDevice.swift; sourceTree = SOURCE_ROOT; };
+		A6E3B86425B372A800C65157 /* ExportActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportActions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 			children = (
 				A6E3B84A25B347C100C65157 /* DrawViewController.swift */,
 				A6E3B84D25B3495800C65157 /* DrawExtensions.swift */,
+				A6E3B86425B372A800C65157 /* ExportActions.swift */,
 			);
 			path = DrawScene;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */,
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
 				A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */,

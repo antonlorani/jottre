@@ -81,7 +81,9 @@ class DrawViewController: UIViewController {
         if hasModifiedDrawing {
             node.setDrawing(drawing: canvasView.drawing)
         }
-                
+        
+        view.window?.windowScene?.screenshotService?.delegate = nil
+        
     }
     
     
@@ -115,6 +117,12 @@ class DrawViewController: UIViewController {
         canvasView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         updateContentSizeForDrawing()
+        
+        guard let parent = parent, let window = parent.view.window, let windowScene = window.windowScene, let screenshotService = windowScene.screenshotService else {
+            Logger.main.debug("Could not find screenShotService")
+            return
+        }
+        screenshotService.delegate = self
         
     }
     
@@ -154,7 +162,21 @@ class DrawViewController: UIViewController {
     
     
     @objc func exportDrawing() {
-        Logger.main.debug("Request for file export")
+        
+        let alertController = UIAlertController(title: "Export note", message: "", preferredStyle: .actionSheet)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.barButtonItem = navigationItem.rightBarButtonItem
+        }
+        
+        alertController.addAction(createExportToPDFAction())
+        alertController.addAction(createExportToJPGAction())
+        alertController.addAction(createExportToPNGAction())
+        alertController.addAction(createShareAction())
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                
+        present(alertController, animated: true, completion: nil)
+        
     }
     
 }
