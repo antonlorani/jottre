@@ -20,6 +20,8 @@ class ThumbnailGenerator {
     
     // MARK: - Init
     
+    /// Initializer of the ThumbnailGenerator class
+    /// - Parameter size: Target-size (width, height) of thumbnail
     init(size: CGSize) {
         self.size = size
     }
@@ -34,7 +36,7 @@ class ThumbnailGenerator {
     ///   - completion: A boolean that indicates success or failure and the resulting image (nil on failure)
     func execute(for node: Node, _ completion: @escaping (_ success: Bool, _ image: UIImage?) -> Void) {
         
-        guard let drawing = node.nodeCodable?.drawing else {
+        guard let drawing = node.nodeCodable?.drawing, let width = node.nodeCodable?.width else {
             Logger.main.error("Cannot create thumbnail")
             completion(false, nil)
             return
@@ -42,9 +44,9 @@ class ThumbnailGenerator {
         
         let aspectRatio = size.width / size.height
         
-        let thumbnailRect = CGRect(x: 0, y: 0, width: 1200, height: 1200 / aspectRatio)
+        let thumbnailRect = CGRect(x: 0, y: 0, width: width, height: width / aspectRatio)
         
-        let thumbnailScale = UIScreen.main.scale * size.width / 1200
+        let thumbnailScale = UIScreen.main.scale * size.width / width
         
         let traitCollection = UITraitCollection.current
         

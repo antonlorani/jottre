@@ -19,6 +19,8 @@ struct NodeCodable: Codable {
     
     var drawing: PKDrawing = PKDrawing()
     
+    var width: CGFloat = 1200
+    
 }
 
 

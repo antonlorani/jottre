@@ -65,7 +65,7 @@ class DrawViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let canvasScale = canvasView.bounds.width / 1200
+        let canvasScale = canvasView.bounds.width / node.nodeCodable!.width
         canvasView.minimumZoomScale = canvasScale
         canvasView.zoomScale = canvasScale
         
@@ -146,7 +146,7 @@ class DrawViewController: UIViewController {
         } else {
             contentHeight = canvasView.bounds.height
         }
-        canvasView.contentSize = CGSize(width: 1200 * canvasView.zoomScale, height: contentHeight)
+        canvasView.contentSize = CGSize(width: node.nodeCodable!.width * canvasView.zoomScale, height: contentHeight)
         
     }
     
