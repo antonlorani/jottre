@@ -13,6 +13,7 @@ class NodeCell: UICollectionViewCell {
     
     var node: Node? {
         didSet {
+            print(node?.name)
             titleLabel.text = node?.name
             
             guard let thumbnail = node?.thumbnail else {

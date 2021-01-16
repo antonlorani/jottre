@@ -48,9 +48,18 @@ class Node: NSObject {
     init(url: URL) {
         super.init()
         
-        self.nodeCodable = NodeCodable()
-        self.url = url
+        setupValues(url: url, nodeCodable: NodeCodable())
         
+    }
+    
+    
+    /// Helper method for the initializer
+    /// - Parameters:
+    ///   - url: url passed via initializer
+    ///   - nodeCodable: A valid NodeCodable object
+    private func setupValues(url: URL, nodeCodable: NodeCodable) {
+        self.url = url
+        self.nodeCodable = nodeCodable
     }
     
     
