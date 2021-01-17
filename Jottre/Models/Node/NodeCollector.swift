@@ -166,7 +166,7 @@ class NodeCollector {
         
         while true {
             if FileManager.default.fileExists(atPath: currentPath.path) {
-                newName = "\(newName) (copy)"
+                newName = "\(newName) " + NSLocalizedString("(copy)", comment: "")
                 currentPath = currentPath.deletingLastPathComponent().appendingPathComponent(newName).appendingPathExtension("jot")
                 continue
             }

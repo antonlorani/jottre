@@ -163,7 +163,7 @@ class DrawViewController: UIViewController {
     
     @objc func exportDrawing() {
         
-        let alertController = UIAlertController(title: "Export note", message: "", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: NSLocalizedString("Export note", comment: ""), message: "", preferredStyle: .actionSheet)
 
         if let popoverController = alertController.popoverPresentationController {
             popoverController.barButtonItem = navigationItem.rightBarButtonItem
@@ -173,7 +173,7 @@ class DrawViewController: UIViewController {
         alertController.addAction(createExportToJPGAction())
         alertController.addAction(createExportToPNGAction())
         alertController.addAction(createShareAction())
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
                 
         present(alertController, animated: true, completion: nil)
         

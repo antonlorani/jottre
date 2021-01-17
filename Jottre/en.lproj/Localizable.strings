@@ -1,0 +1,63 @@
+/*
+  Localizable.strings
+  Jottre
+
+  Created by Anton Lorani on 17.01.21.
+ 
+  German
+ 
+*/
+
+/// - Alert
+
+"Cancel" = "Cancel";
+
+
+/// - Files
+
+"My note" = "My note";
+
+"(copy)" = "(copy)";
+
+
+
+/// - Actions
+
+"Export note" = "Export note";
+
+"Add note" = "Add note";
+
+
+"Share" = "Share";
+
+"Create" = "Create";
+
+"Delete" = "Delete";
+
+"Rename" = "Rename";
+
+"Edit" = "Edit";
+
+
+
+/// - Create alert
+
+"New note" = "New note";
+
+"Enter a name for the new note" = "Enter a name for the new note";
+
+
+
+/// - Rename alert
+
+"Rename note" = "Rename note";
+
+"Enter a name for the selected note" = "Enter a name for the selected note";
+
+
+
+/// - Info View
+
+"No documents available yet. Click 'Add note' to create a new file." = "No documents available yet. Click 'Add note' to create a new file.";
+
+"Documents created with the 'Jottre for iPad' App can be viewed here." = "Documents created with the 'Jottre for iPad' App can be viewed here.";

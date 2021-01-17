@@ -45,7 +45,7 @@ class Node: NSObject {
     
     var collector: NodeCollector?
     
-    private var serializationQueue = DispatchQueue(label: "SerializationQueue", qos: .background)
+    private var serializationQueue = DispatchQueue(label: "NodeSerializationQueue", qos: .background)
     
     
     

@@ -33,7 +33,7 @@ class NavigationViewController: UINavigationController {
     
     func setupViews() {
         
-        navigationItem.title = "My notes"
+        navigationItem.title = "Jottre"
         navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         

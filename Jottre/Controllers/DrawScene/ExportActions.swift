@@ -73,7 +73,7 @@ extension DrawViewController {
     }
     
     func createShareAction() -> UIAlertAction {
-        return UIAlertAction(title: "Share", style: .default, handler: { (action) in
+        return UIAlertAction(title: NSLocalizedString("Share", comment: ""), style: .default, handler: { (action) in
             
             self.node.push()
             
