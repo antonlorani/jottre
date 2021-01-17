@@ -32,7 +32,7 @@ class InitialViewController: UIViewController {
             textView.isSelectable = false
             textView.font = UIFont.systemFont(ofSize: 25, weight: .regular)
             textView.textColor = UIColor.secondaryLabel
-            textView.text = "No documents available yet. Click 'Add' to create a new file."
+            textView.text = UIDevice.isLimited() ? NSLocalizedString("Documents created with the 'Jottre for iPad' App can be viewed here.", comment: "") : NSLocalizedString("No documents available yet. Click 'Add note' to create a new file.", comment: "")
             textView.textAlignment = .center
             textView.isScrollEnabled = false
         return textView
@@ -79,11 +79,13 @@ class InitialViewController: UIViewController {
     private func setupViews() {
         
         view.backgroundColor = .white
-        navigationItem.title = "My notes"
+        navigationItem.title = "Jottre"
         
         if !UIDevice.isLimited() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: "Add note", target: self, action: #selector(createNode)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
         }
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: SettingsButton(target: self, action: #selector(presentSettings)))
         
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -114,18 +116,29 @@ class InitialViewController: UIViewController {
     
     @objc func createNode() {
         
-        let alertController = UIAlertController(title: "New note", message: "Enter a name for your new note", preferredStyle: .alert)
+        let localizedAlertTitle = NSLocalizedString("New note", comment: "")
+        
+        let localizedAlertMessage = NSLocalizedString("Enter a name for the new note", comment: "")
+        
+        let localizedNoteName = NSLocalizedString("My note", comment: "")
+        
+        let localizedPrimaryActionTitle = NSLocalizedString("Create", comment: "")
+        
+        let localizedSecondaryActionTitle = NSLocalizedString("Cancel", comment: "")
+        
+        
+        let alertController = UIAlertController(title: localizedAlertTitle, message: localizedAlertMessage, preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = "My note"
+            textField.placeholder = localizedNoteName
         }
         
-        alertController.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: localizedPrimaryActionTitle, style: .default, handler: { (action) in
             
             guard let textFields = alertController.textFields, var name = textFields[0].text else {
                 return
             }
-            name = name == "" ? "My note" : name
+            name = name == "" ? localizedNoteName : name
             
             self.nodeCollector.createNode(name: name) { (success, node) in
 
@@ -151,10 +164,23 @@ class InitialViewController: UIViewController {
             
         }))
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: localizedSecondaryActionTitle, style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
         
+    }
+    
+    
+    @objc func presentSettings() {
+        
+        let settingsController = SettingsViewController()
+        
+        let settingsNavigationController = SettingsNavigationViewController(rootViewController: settingsController)
+        
+        settingsNavigationController.modalPresentationStyle = .formSheet
+                
+        present(settingsNavigationController, animated: true, completion: nil)
+                        
     }
     
 }
