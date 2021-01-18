@@ -53,13 +53,6 @@ class SettingsCell: UICollectionViewCell {
 
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        
-        layer.shadowColor = UIColor.label.cgColor
-        backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
-    
-    }
-    
     
     
     // MARK: - Methods
