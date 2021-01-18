@@ -8,13 +8,7 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
-    
-    // MARK: - Properties
-    
-    var settings: Settings = Settings()
-    
-    
-    
+
     // MARK: - Subviews
     
     var collectionView: UICollectionView = {
@@ -29,6 +23,7 @@ class SettingsViewController: UIViewController {
             collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: "settingsCell")
             collectionView.register(AppearanceSettingsCell.self, forCellWithReuseIdentifier: "appearanceSettingsCell")
             collectionView.register(CloudSettingsCell.self, forCellWithReuseIdentifier: "cloudSettingsCell")
+            collectionView.register(IconSettingsCell.self, forCellWithReuseIdentifier: "iconSettingsCell")
         return collectionView
     }()
     
@@ -37,7 +32,7 @@ class SettingsViewController: UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             label.textAlignment = .center
-            label.text = "Version A71f Build 1"
+            label.text = "Pre-release v0.5-beta-1"
             label.textColor = .secondaryLabel
         return label
     }()

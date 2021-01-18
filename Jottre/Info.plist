@@ -107,5 +107,21 @@
 			</dict>
 		</dict>
 	</array>
+    
+    
+    <key>NSUbiquitousContainers</key>
+    <dict>
+        <key>iCloud.com.antonlorani.jottre</key>
+        <dict>
+            <key>NSUbiquitousContainerIsDocumentScopePublic</key>
+            <true/>
+            <key>NSUbiquitousContainerName</key>
+            <string>Jottre</string>
+            <key>NSUbiquitousContainerSupportedFolderLevels</key>
+            <string>Any</string>
+        </dict>
+    </dict>
+    
+    
 </dict>
 </plist>

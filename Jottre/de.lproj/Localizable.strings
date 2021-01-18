@@ -20,6 +20,14 @@
 "(copy)" = "(Kopie)";
 
 
+/// - Appearance
+
+"Dark" = "Dunkel";
+
+"Light" = "Hell";
+
+"System" = "Automatisch";
+
 
 /// - Actions
 

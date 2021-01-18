@@ -21,6 +21,15 @@
 
 
 
+/// - Appearance
+
+"Dark" = "Dark";
+
+"Light" = "Light";
+
+"System" = "System";
+
+
 /// - Actions
 
 "Export note" = "Export note";

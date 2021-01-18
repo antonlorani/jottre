@@ -23,12 +23,11 @@ class SettingsNavigationViewController: UINavigationController {
     // MARK: - Methods
     
     func setupViews() {
-        
+                
         navigationItem.title = "Settings"
         navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         
     }
-    
     
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */; };
 		A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */; };
 		A6BB130C25B46057008C5D8A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130B25B46057008C5D8A /* Settings.swift */; };
 		A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130F25B46BA2008C5D8A /* SettingsNavigationViewController.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsCell.swift; sourceTree = "<group>"; };
 		A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A6BB130B25B46057008C5D8A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A6BB130F25B46BA2008C5D8A /* SettingsNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				A6BB131225B46E2D008C5D8A /* SettingsCell.swift */,
 				A6BB131A25B472F9008C5D8A /* AppearanceSettingsCell.swift */,
 				A6BB134E25B4B2D0008C5D8A /* CloudSettingsCell.swift */,
+				A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */,
 			);
 			path = SettingsCell;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
+				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
 				A6BB131B25B472F9008C5D8A /* AppearanceSettingsCell.swift in Sources */,
 				A6E3B83725B32BC500C65157 /* NodeCollector.swift in Sources */,
 				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,

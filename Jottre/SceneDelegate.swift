@@ -8,11 +8,13 @@
 import UIKit
 import os.log
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+/// - Make the Settings of this App globally available
+let settings: Settings = Settings()
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
 
     var window: UIWindow?
     
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -23,17 +25,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         windowScene.titlebar?.toolbar?.isVisible = false
         windowScene.titlebar?.titleVisibility = .hidden
         #endif
+
+        settings.addObserver(self)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
-                
-        let initialController = InitialViewController()
         
+        let initialController = InitialViewController()
         let initialNavigationController = NavigationViewController(rootViewController: initialController)
         
         window?.rootViewController = initialNavigationController
         window?.makeKeyAndVisible()
-                
+        
         presentDocument(urlContext: connectionOptions.urlContexts)
         
     }
@@ -96,5 +99,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 
+    
+    // MARK: - Observer methods
+    
+    func settingsDidChange(_ settings: Settings) {
+        
+        guard let window = window else {
+            return
+        }
+        
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            if settings.settingsCodable.preferedAppearance == 0 {
+                window.overrideUserInterfaceStyle = .dark
+            } else if settings.settingsCodable.preferedAppearance == 1 {
+                window.overrideUserInterfaceStyle = .light
+            } else if settings.settingsCodable.preferedAppearance == 2 {
+                window.overrideUserInterfaceStyle = .unspecified
+            }
+        }, completion: nil)
+        
+    }
+    
 }
 

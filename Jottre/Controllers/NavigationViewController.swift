@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class NavigationViewController: UINavigationController {
     
     // MARK: - Main
@@ -32,7 +31,7 @@ class NavigationViewController: UINavigationController {
     // MARK: - Methods
     
     func setupViews() {
-        
+                        
         navigationItem.title = "Jottre"
         navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white

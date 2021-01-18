@@ -8,6 +8,14 @@
 import Foundation
 import UIKit
 
+extension SettingsViewController: CloudSettingsCellDelegate {
+    
+    func didMoveSwitch(cell: CloudSettingsCell, to state: Bool) {
+        settings.set(usesCloud: state)
+    }
+    
+}
+
 extension SettingsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -37,6 +45,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cloudSettingsCell", for: indexPath) as? CloudSettingsCell else {
                 fatalError("Cell is not of type CloudSettingsCell")
             }
+            cell.delegate = self
             cell.title = "Synchronize with iCloud"
             cell.usesCloud = false
             return cell
@@ -53,6 +62,36 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
         return UICollectionViewCell()
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath)
+        
+        if indexPath.row == 0 {
+     
+            guard let cell = cell as? AppearanceSettingsCell else {
+                return
+            }
+            
+            if settings.settingsCodable.preferedAppearance == 0 {
+                cell.colorLabel.text = NSLocalizedString("Light", comment: "Light appearance")
+                settings.set(preferedAppearance: 1)
+            } else if settings.settingsCodable.preferedAppearance == 1 {
+                cell.colorLabel.text = NSLocalizedString("System", comment: "System appearance")
+                settings.set(preferedAppearance: 2)
+            } else if settings.settingsCodable.preferedAppearance == 2 {
+                cell.colorLabel.text = NSLocalizedString("Dark", comment: "Dark appearance")
+                settings.set(preferedAppearance: 0)
+            }
+            
+        } else if indexPath.row == 2 {
+
+            guard let url = URL(string: "https://github.com/AntonAmes/jottre") else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
+        }
     }
     
 }

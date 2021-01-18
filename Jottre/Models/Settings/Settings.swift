@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import UIKit
 import os.log
 
 struct SettingsCodable: Codable {
     
     var usesCloud: Bool = false
     
-    var language: Int = 0
-    
-    var preferedAppearance: Int = 0
+    var preferedAppearance: Int = 0 /// - 0=dark, 1=light, 2=system
     
 }
 
+
+protocol SettingsObserver {
+    func settingsDidChange(_ settings: Settings)
+}
 
 class Settings: NSObject {
     
@@ -25,10 +28,8 @@ class Settings: NSObject {
     
     var settingsCodable: SettingsCodable!
     
-    var url: URL? {
-        return URL(string: "")
-    }
-    
+    var observers: [SettingsObserver] = []
+        
     private var serializationQueue = DispatchQueue(label: "SettingsSerializationQueue", qos: .background)
     
     
@@ -50,25 +51,20 @@ class Settings: NSObject {
         
         serializationQueue.async {
             
-            guard let url = self.url else {
-                return
-            }
-            
-            guard FileManager.default.fileExists(atPath: url.path) else {
-                Logger.main.debug("File \(url.path) does not exist")
-                completion?(false)
+            if UserDefaults.standard.data(forKey: "settings") == nil {
+                self.createSettings()
                 return
             }
             
             do {
                 let decoder = PropertyListDecoder()
-                let data = try Data(contentsOf: url)
+                let data = UserDefaults.standard.data(forKey: "settings")!
                 self.settingsCodable = try decoder.decode(SettingsCodable.self, from: data)
             } catch {
-                Logger.main.error("Could not read node from file: \(url.path)")
                 completion?(false)
             }
-                                    
+            
+            self.didUpdate()
             completion?(true)
             
         }
@@ -82,7 +78,7 @@ class Settings: NSObject {
         
         serializationQueue.async {
             
-            guard let settingsCodable = self.settingsCodable, let url = self.url else {
+            guard let settingsCodable = self.settingsCodable else {
                 completion?(false)
                 return
             }
@@ -90,7 +86,7 @@ class Settings: NSObject {
             do {
                 let encoder = PropertyListEncoder()
                 let data = try encoder.encode(settingsCodable)
-                try data.write(to: url)
+                UserDefaults.standard.set(data, forKey: "settings")
             } catch {
                 Logger.main.error("Could not write NodeCodable to file: \(error.localizedDescription)")
                 completion?(false)
@@ -100,6 +96,52 @@ class Settings: NSObject {
             
         }
         
+    }
+    
+    
+    /// Generates a .settings file
+    /// - Parameter completion: Returns a boolean that indicates success or failure
+    func createSettings(completion: ((Bool) -> Void)? = nil) {
+        Logger.main.info("Creating settings file")
+        
+        settingsCodable = SettingsCodable(usesCloud: UIDevice.isLimited(), preferedAppearance: 2)
+        push { (success) in
+            completion?(success)
+        }
+        
+    }
+    
+    
+    
+    // MARK: - Set methods
+    
+    func set(preferedAppearance: Int) {
+        self.settingsCodable.preferedAppearance = preferedAppearance
+        push()
+        didUpdate()
+    }
+    
+    
+    func set(usesCloud: Bool) {
+        self.settingsCodable.usesCloud = usesCloud
+        push()
+        didUpdate()
+    }
+    
+    
+    
+    // MARK: - Observer methods
+    
+    /// Sends a message to each observer, that there happened changes inside this object.
+    func didUpdate() {
+        DispatchQueue.main.async {
+            self.observers.forEach({ $0.settingsDidChange(self) })
+        }
+    }
+    
+    
+    func addObserver(_ observer: SettingsObserver) {
+        observers.append(observer)
     }
     
 }
