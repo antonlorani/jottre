@@ -17,6 +17,13 @@ class SettingsCell: UICollectionViewCell {
         }
     }
     
+    var image: UIImage = UIImage() {
+        didSet {
+            imageView.image = image
+        }
+    }
+    
+    
     
     // MARK: - Subviews
     
@@ -26,6 +33,13 @@ class SettingsCell: UICollectionViewCell {
             label.text = "Label"
             label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         return label
+    }()
+    
+    var imageView: UIImageView = {
+        let imageView = UIImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.tintColor = UIColor.gray
+        return imageView
     }()
     
     
@@ -63,6 +77,12 @@ class SettingsCell: UICollectionViewCell {
         titleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         titleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
         
+        addSubview(imageView)
+        imageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        imageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+
     }
     
 }

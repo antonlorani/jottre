@@ -8,7 +8,6 @@
 import UIKit
 import os.log
 
-
 class InitialViewController: UIViewController {
     
     // MARK: - Properties

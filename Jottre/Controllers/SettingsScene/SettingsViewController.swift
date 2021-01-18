@@ -37,7 +37,7 @@ class SettingsViewController: UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             label.textAlignment = .center
-            label.text = "Version 0.9 Build 1"
+            label.text = "Version A71f Build 1"
             label.textColor = .secondaryLabel
         return label
     }()

@@ -25,7 +25,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.row == 0 {
-
+            
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "appearanceSettingsCell", for: indexPath) as? AppearanceSettingsCell else {
                 fatalError("Cell is not of type AppearanceSettingsCell")
             }
@@ -46,7 +46,8 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "settingsCell", for: indexPath) as? SettingsCell else {
                 fatalError("Cell is not of type SettingsCell")
             }
-            cell.title = "Donate"
+            cell.title = "Github repository"
+            cell.image = UIImage(systemName: "arrow.up.right.square.fill")!
             return cell
             
         }
