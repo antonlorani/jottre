@@ -24,9 +24,8 @@ class NodeCollector {
         return observersEnabledValue
     }
     
-    
-    static var path: URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    static func path() -> URL {
+        return settings.getPath()
     }
     
     var nodes: [Node] = [] {
@@ -57,10 +56,11 @@ class NodeCollector {
     /// Loads the nodes from default path
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func pull(completion: ((Bool) -> Void)? = nil) {
-        let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path.path)
-        
+        nodes = []
+        let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path().path)
+                
         files.forEach { (name) in
-            let url = NodeCollector.path.appendingPathComponent(name)
+            let url = NodeCollector.path().appendingPathComponent(name)
             self.pullNode(url: url)
         }
         
@@ -102,8 +102,8 @@ class NodeCollector {
     /// - Parameter completion: Returns a boolean that indicates success or failure and the hopefully created node
     func createNode(name: String, completion: ((_ success: Bool, _ node: Node?) -> Void)? = nil) {
         
-        let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.path)
-        let nodePath = NodeCollector.path.appendingPathComponent(name).appendingPathExtension("jot")
+        let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.path())
+        let nodePath = NodeCollector.path().appendingPathComponent(name).appendingPathExtension("jot")
         
         let node = Node(url: nodePath)
             node.collector = self

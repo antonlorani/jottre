@@ -17,9 +17,9 @@ class AppearanceSettingsCell: SettingsCell {
 
         var title = NSLocalizedString("Light", comment: "Light appearance")
         
-        if settings.settingsCodable.preferedAppearance == 0 {
+        if settings.codable.preferedAppearance == 0 {
             title = darkAppearance
-        } else if settings.settingsCodable.preferedAppearance == 2 {
+        } else if settings.codable.preferedAppearance == 2 {
             title = systemAppearance
         }
         

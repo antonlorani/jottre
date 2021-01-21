@@ -26,11 +26,9 @@ class Settings: NSObject {
     
     // MARK: - Properties
     
-    var settingsCodable: SettingsCodable!
+    var codable: SettingsCodable!
     
     var observers: [SettingsObserver] = []
-        
-    private var serializationQueue = DispatchQueue(label: "SettingsSerializationQueue", qos: .background)
     
     
     
@@ -38,7 +36,7 @@ class Settings: NSObject {
     
     override init() {
         super.init()
-        pull()
+        _ = pull()
     }
     
     
@@ -47,54 +45,45 @@ class Settings: NSObject {
         
     /// Loading Settings from file
     /// - Parameter completion: Returns a boolean that indicates success or failure
-    func pull(completion: ((Bool) -> Void)? = nil) {
+    func pull() -> Bool {
         
-        serializationQueue.async {
-            
-            if UserDefaults.standard.data(forKey: "settings") == nil {
-                self.createSettings()
-                return
-            }
-            
-            do {
-                let decoder = PropertyListDecoder()
-                let data = UserDefaults.standard.data(forKey: "settings")!
-                self.settingsCodable = try decoder.decode(SettingsCodable.self, from: data)
-            } catch {
-                completion?(false)
-            }
-            
-            self.didUpdate()
-            completion?(true)
-            
+        if UserDefaults.standard.data(forKey: "settings") == nil {
+            createSettings()
+            return true
         }
+            
+        do {
+            let decoder = PropertyListDecoder()
+            let data = UserDefaults.standard.data(forKey: "settings")!
+            self.codable = try decoder.decode(SettingsCodable.self, from: data)
+        } catch {
+            return false
+        }
+            
+        didUpdate()
+        return true
         
     }
     
     
     /// Writing Settings to file
     /// - Parameter completion: Returns a boolean that indicates success or failure
-    func push(completion: ((Bool) -> Void)? = nil) {
-        
-        serializationQueue.async {
-            
-            guard let settingsCodable = self.settingsCodable else {
-                completion?(false)
-                return
-            }
-            
-            do {
-                let encoder = PropertyListEncoder()
-                let data = try encoder.encode(settingsCodable)
-                UserDefaults.standard.set(data, forKey: "settings")
-            } catch {
-                Logger.main.error("Could not write NodeCodable to file: \(error.localizedDescription)")
-                completion?(false)
-            }
-            
-            completion?(true)
-            
+    func push() -> Bool {
+                    
+        guard let codable = self.codable else {
+            return false
         }
+            
+        do {
+            let encoder = PropertyListEncoder()
+            let data = try encoder.encode(codable)
+            UserDefaults.standard.set(data, forKey: "settings")
+        } catch {
+            Logger.main.error("Could not write NodeCodable to file: \(error.localizedDescription)")
+            return false
+        }
+            
+        return true
         
     }
     
@@ -104,10 +93,8 @@ class Settings: NSObject {
     func createSettings(completion: ((Bool) -> Void)? = nil) {
         Logger.main.info("Creating settings file")
         
-        settingsCodable = SettingsCodable(usesCloud: UIDevice.isLimited(), preferedAppearance: 2)
-        push { (success) in
-            completion?(success)
-        }
+        codable = SettingsCodable(usesCloud: UIDevice.isLimited(), preferedAppearance: 2)
+        _ = push()
         
     }
     
@@ -116,16 +103,48 @@ class Settings: NSObject {
     // MARK: - Set methods
     
     func set(preferedAppearance: Int) {
-        self.settingsCodable.preferedAppearance = preferedAppearance
-        push()
+        self.codable.preferedAppearance = preferedAppearance
+        _ = push()
         didUpdate()
     }
     
     
     func set(usesCloud: Bool) {
-        self.settingsCodable.usesCloud = usesCloud
-        push()
+        self.codable.usesCloud = usesCloud
+        _ = push()
         didUpdate()
+    }
+    
+    
+    
+    // MARK: - Get methods
+    
+    func getPath() -> URL {
+
+        if codable == nil {
+            _ = pull()
+        }
+
+        if codable.usesCloud {
+            let url = FileManager.default.url(forUbiquityContainerIdentifier: nil)!.appendingPathComponent("Documents")
+            
+            var isDirectory = ObjCBool(true)
+            
+            if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+                
+                do {
+                    try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false)
+                } catch {
+                    Logger.main.error("Could not create directory at \(url.path)")
+                }
+                
+            }
+            
+            return url
+        } else {
+            return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        }
+
     }
     
     

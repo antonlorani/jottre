@@ -9,6 +9,8 @@ import UIKit
 
 extension UIDevice {
     
+    /// Checks if device can be to edit Jots
+    /// - Returns: A boolish value that indicates potential limitations (Such as device is not an iPad)
     static func isLimited() -> Bool {
         
         #if targetEnvironment(macCatalyst)

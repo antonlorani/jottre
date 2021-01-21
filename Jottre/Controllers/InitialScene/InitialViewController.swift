@@ -12,6 +12,8 @@ class InitialViewController: UIViewController {
     
     // MARK: - Properties
     
+    var initialLoad: Bool = true
+    
     var nodeCollector: NodeCollector = NodeCollector()
     
     var hasDocuments: Bool = false {
@@ -109,6 +111,8 @@ class InitialViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        settings.addObserver(self)
         
     }
     

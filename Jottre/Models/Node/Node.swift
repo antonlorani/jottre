@@ -11,7 +11,7 @@ import os.log
 
 
 /// A custom helper class that generates the thumbnails for a given Node
-var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: 200, height: 300))
+var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
 
 
 /// The content of this struct will be serialized to a binary file
@@ -41,7 +41,7 @@ class Node: NSObject {
     
     var thumbnail: UIImage?
     
-    var nodeCodable: NodeCodable?
+    var codable: NodeCodable?
     
     var collector: NodeCollector?
     
@@ -67,7 +67,7 @@ class Node: NSObject {
     ///   - nodeCodable: A valid NodeCodable object
     private func setupValues(url: URL, nodeCodable: NodeCodable) {
         self.url = url
-        self.nodeCodable = nodeCodable
+        self.codable = nodeCodable
     }
     
     
@@ -80,7 +80,7 @@ class Node: NSObject {
         
         serializationQueue.async {
             
-            guard let url = self.url else {
+            guard let url = self.url, url.isJot() else {
                 return
             }
             
@@ -93,7 +93,7 @@ class Node: NSObject {
             do {
                 let decoder = PropertyListDecoder()
                 let data = try Data(contentsOf: url)
-                self.nodeCodable = try decoder.decode(NodeCodable.self, from: data)
+                self.codable = try decoder.decode(NodeCodable.self, from: data)
             } catch {
                 Logger.main.error("Could not read node from file: \(url.path)")
                 completion?(false)
@@ -114,7 +114,7 @@ class Node: NSObject {
         
         serializationQueue.async {
             
-            guard let nodeCodable = self.nodeCodable, let url = self.url else {
+            guard let nodeCodable = self.codable, let url = self.url else {
                 completion?(false)
                 return
             }
@@ -156,7 +156,7 @@ class Node: NSObject {
     /// - Parameter drawing: Given PKDrawing
     func setDrawing(drawing: PKDrawing) {
         
-        nodeCodable?.drawing = drawing
+        codable?.drawing = drawing
         updateMeta()
         
         push()

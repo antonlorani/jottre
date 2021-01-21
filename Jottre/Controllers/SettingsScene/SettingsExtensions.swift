@@ -47,7 +47,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             }
             cell.delegate = self
             cell.title = "Synchronize with iCloud"
-            cell.usesCloud = false
+            cell.usesCloud = settings.codable.usesCloud
             return cell
             
         } else if indexPath.row == 2 {
@@ -75,13 +75,13 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
                 return
             }
             
-            if settings.settingsCodable.preferedAppearance == 0 {
+            if settings.codable.preferedAppearance == 0 {
                 cell.colorLabel.text = NSLocalizedString("Light", comment: "Light appearance")
                 settings.set(preferedAppearance: 1)
-            } else if settings.settingsCodable.preferedAppearance == 1 {
+            } else if settings.codable.preferedAppearance == 1 {
                 cell.colorLabel.text = NSLocalizedString("System", comment: "System appearance")
                 settings.set(preferedAppearance: 2)
-            } else if settings.settingsCodable.preferedAppearance == 2 {
+            } else if settings.codable.preferedAppearance == 2 {
                 cell.colorLabel.text = NSLocalizedString("Dark", comment: "Dark appearance")
                 settings.set(preferedAppearance: 0)
             }

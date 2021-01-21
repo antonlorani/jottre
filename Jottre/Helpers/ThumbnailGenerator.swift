@@ -14,8 +14,8 @@ class ThumbnailGenerator {
     
     private let thumbnailQueue = DispatchQueue(label: "ThumbnailQueue", qos: .background)
     
-    var size: CGSize!
-        
+    var size: CGSize
+    
     
     
     // MARK: - Init
@@ -36,7 +36,7 @@ class ThumbnailGenerator {
     ///   - completion: A boolean that indicates success or failure and the resulting image (nil on failure)
     func execute(for node: Node, _ completion: @escaping (_ success: Bool, _ image: UIImage?) -> Void) {
         
-        guard let drawing = node.nodeCodable?.drawing, let width = node.nodeCodable?.width else {
+        guard let drawing = node.codable?.drawing, let width = node.codable?.width else {
             Logger.main.error("Cannot create thumbnail")
             completion(false, nil)
             return

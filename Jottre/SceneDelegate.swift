@@ -103,17 +103,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
     // MARK: - Observer methods
     
     func settingsDidChange(_ settings: Settings) {
-        
+
         guard let window = window else {
             return
         }
         
         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            if settings.settingsCodable.preferedAppearance == 0 {
+            if settings.codable.preferedAppearance == 0 {
                 window.overrideUserInterfaceStyle = .dark
-            } else if settings.settingsCodable.preferedAppearance == 1 {
+            } else if settings.codable.preferedAppearance == 1 {
                 window.overrideUserInterfaceStyle = .light
-            } else if settings.settingsCodable.preferedAppearance == 2 {
+            } else if settings.codable.preferedAppearance == 2 {
                 window.overrideUserInterfaceStyle = .unspecified
             }
         }, completion: nil)

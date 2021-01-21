@@ -25,6 +25,10 @@ class DrawViewController: UIViewController {
     
     // MARK: - Subviews
     
+    var loadingView: LoadingView = {
+        return LoadingView(frame: .zero)
+    }()
+    
     var canvasView: PKCanvasView = {
         let canvasView = PKCanvasView()
             canvasView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +69,7 @@ class DrawViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let canvasScale = canvasView.bounds.width / node.nodeCodable!.width
+        let canvasScale = canvasView.bounds.width / node.codable!.width
         canvasView.minimumZoomScale = canvasScale
         canvasView.zoomScale = canvasScale
         
@@ -116,6 +120,12 @@ class DrawViewController: UIViewController {
         canvasView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         canvasView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        view.addSubview(loadingView)
+        loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loadingView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        loadingView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
         updateContentSizeForDrawing()
         
         guard let parent = parent, let window = parent.view.window, let windowScene = window.windowScene, let screenshotService = windowScene.screenshotService else {
@@ -132,8 +142,8 @@ class DrawViewController: UIViewController {
         guard node != nil else { return }
         
         canvasView.delegate = self
-        canvasView.drawing = node.nodeCodable!.drawing
-        canvasView.contentInset = UIEdgeInsets(top: -75, left: 0, bottom: 0, right: 0)
+        canvasView.drawing = node.codable!.drawing
+        canvasView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if !UIDevice.isLimited() {
             toolPicker = PKToolPicker()
@@ -156,7 +166,7 @@ class DrawViewController: UIViewController {
         } else {
             contentHeight = canvasView.bounds.height
         }
-        canvasView.contentSize = CGSize(width: node.nodeCodable!.width * canvasView.zoomScale, height: contentHeight)
+        canvasView.contentSize = CGSize(width: node.codable!.width * canvasView.zoomScale, height: contentHeight)
         
     }
     

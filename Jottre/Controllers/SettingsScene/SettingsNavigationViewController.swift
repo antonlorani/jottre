@@ -20,6 +20,7 @@ class SettingsNavigationViewController: UINavigationController {
     }
     
     
+    
     // MARK: - Methods
     
     func setupViews() {

@@ -39,7 +39,7 @@ class NodeCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.contentMode = .scaleAspectFill
+            imageView.contentMode = .scaleAspectFit
             imageView.roundCorners(corners: [.topLeft, .topRight], radius: 15)
         return imageView
     }()

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */; };
+		A687ABD125B6B4EF00273460 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A687ABD025B6B4EF00273460 /* ViewController.swift */; };
 		A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */; };
 		A6BB130C25B46057008C5D8A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130B25B46057008C5D8A /* Settings.swift */; };
 		A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130F25B46BA2008C5D8A /* SettingsNavigationViewController.swift */; };
@@ -17,6 +18,9 @@
 		A6BB134825B4A469008C5D8A /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB134725B4A469008C5D8A /* SettingsButton.swift */; };
 		A6BB134C25B4AEFC008C5D8A /* SettingsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB134B25B4AEFC008C5D8A /* SettingsExtensions.swift */; };
 		A6BB134F25B4B2D0008C5D8A /* CloudSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB134E25B4B2D0008C5D8A /* CloudSettingsCell.swift */; };
+		A6C0D70325B9DB9D00336230 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70225B9DB9D00336230 /* URL.swift */; };
+		A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70625B9F21400336230 /* PKDrawing.swift */; };
+		A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70A25B9F42400336230 /* LoadingView.swift */; };
 		A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EB25B3260200C65157 /* AppDelegate.swift */; };
 		A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */; };
 		A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F425B3260300C65157 /* Assets.xcassets */; };
@@ -41,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsCell.swift; sourceTree = "<group>"; };
+		A687ABD025B6B4EF00273460 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A6BB130B25B46057008C5D8A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A6BB130F25B46BA2008C5D8A /* SettingsNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +57,9 @@
 		A6BB134725B4A469008C5D8A /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		A6BB134B25B4AEFC008C5D8A /* SettingsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsExtensions.swift; sourceTree = "<group>"; };
 		A6BB134E25B4B2D0008C5D8A /* CloudSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSettingsCell.swift; sourceTree = "<group>"; };
+		A6C0D70225B9DB9D00336230 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		A6C0D70625B9F21400336230 /* PKDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKDrawing.swift; sourceTree = "<group>"; };
+		A6C0D70A25B9F42400336230 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		A6E3B7E825B3260200C65157 /* Jottre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jottre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E3B7EB25B3260200C65157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +165,7 @@
 				A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */,
 				A6E3B7F925B3260300C65157 /* Info.plist */,
 				A6BB134325B49FDF008C5D8A /* Localizable.strings */,
+				A687ABD025B6B4EF00273460 /* ViewController.swift */,
 			);
 			path = Jottre;
 			sourceTree = "<group>";
@@ -179,6 +188,7 @@
 				A6E3B83925B333EC00C65157 /* NodeCell.swift */,
 				A6E3B82725B32AD300C65157 /* NavigationButton.swift */,
 				A6BB134725B4A469008C5D8A /* SettingsButton.swift */,
+				A6C0D70A25B9F42400336230 /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -190,6 +200,8 @@
 				A6E3B82325B32ABE00C65157 /* String.swift */,
 				A6E3B83C25B3340300C65157 /* UIView.swift */,
 				A6E3B85D25B3673C00C65157 /* UIDevice.swift */,
+				A6C0D70225B9DB9D00336230 /* URL.swift */,
+				A6C0D70625B9F21400336230 /* PKDrawing.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -311,8 +323,10 @@
 				A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */,
 				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,
+				A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */,
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
+				A6C0D70325B9DB9D00336230 /* URL.swift in Sources */,
 				A6BB131325B46E2D008C5D8A /* SettingsCell.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
@@ -320,6 +334,7 @@
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
 				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
 				A6BB131B25B472F9008C5D8A /* AppearanceSettingsCell.swift in Sources */,
+				A687ABD125B6B4EF00273460 /* ViewController.swift in Sources */,
 				A6E3B83725B32BC500C65157 /* NodeCollector.swift in Sources */,
 				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,
 				A6BB130C25B46057008C5D8A /* Settings.swift in Sources */,
@@ -328,6 +343,7 @@
 				A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */,
 				A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
+				A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */,
 				A6E3B82125B32AB400C65157 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,6 +497,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -502,6 +519,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

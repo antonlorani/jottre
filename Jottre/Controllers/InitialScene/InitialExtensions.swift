@@ -21,6 +21,22 @@ extension InitialViewController: NodeCollectorObserver {
 
 
 
+// MARK: - Settings
+
+extension InitialViewController: SettingsObserver {
+    
+    func settingsDidChange(_ settings: Settings) {
+        if initialLoad {
+            initialLoad = false
+            return
+        }
+        nodeCollector.pull()
+    }
+    
+}
+
+
+
 // MARK: - UICollectionView
 
 extension InitialViewController: UICollectionViewDataSource, UICollectionViewDelegate {
