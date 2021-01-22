@@ -48,7 +48,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             cell.delegate = self
             cell.title = NSLocalizedString("Synchronize with iCloud", comment: "")
             cell.usesCloud = UIDevice.isLimited() ? true : settings.codable.usesCloud
-            cell.switchView.isEnabled = !UIDevice.isLimited()
+            cell.switchView.isEnabled = !UIDevice.isLimited() || !Downloader.isCloudEnabled
             return cell
             
         } else if indexPath.row == 2 {

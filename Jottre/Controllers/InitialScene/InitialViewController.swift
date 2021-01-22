@@ -39,6 +39,7 @@ class InitialViewController: UIViewController {
             textView.text = UIDevice.isLimited() ? NSLocalizedString("Documents created with the 'Jottre for iPad' App can be viewed here.", comment: "") : NSLocalizedString("No documents available yet. Click 'Add note' to create a new file.", comment: "")
             textView.textAlignment = .center
             textView.isScrollEnabled = false
+            textView.backgroundColor = .clear
             textView.alpha = 0
         return textView
     }()
