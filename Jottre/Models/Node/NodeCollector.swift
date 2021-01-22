@@ -7,6 +7,7 @@
 
 import UIKit
 import os.log
+import Foundation
 
 protocol NodeCollectorObserver {
     func nodeCollectorDidChange()
@@ -58,7 +59,7 @@ class NodeCollector {
     func pull(completion: ((Bool) -> Void)? = nil) {
         nodes = []
         let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path().path)
-                
+        
         files.forEach { (name) in
             let url = NodeCollector.path().appendingPathComponent(name)
             self.pullNode(url: url)

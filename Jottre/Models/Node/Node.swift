@@ -80,28 +80,48 @@ class Node: NSObject {
         
         serializationQueue.async {
             
-            guard let url = self.url, url.isJot() else {
-                return
-            }
-            
-            guard FileManager.default.fileExists(atPath: url.path) else {
-                Logger.main.debug("File \(url.path) does not exist")
+            guard var url = self.url else {
                 completion?(false)
                 return
             }
             
-            do {
-                let decoder = PropertyListDecoder()
-                let data = try Data(contentsOf: url)
-                self.codable = try decoder.decode(NodeCodable.self, from: data)
-            } catch {
-                Logger.main.error("Could not read node from file: \(url.path)")
+            if !url.isCloudAndJot() && !url.isJot() {
                 completion?(false)
+                return
             }
-            
-            self.updateMeta()
                         
-            completion?(true)
+            let downloader = Downloader(url: url)
+            
+            downloader.execute { (success) in
+                
+                if !success {
+                    Logger.main.error("Could not download node from file: \(url.path)")
+                    completion?(false)
+                }
+                
+                url = url.cloudToJot()
+                self.url = url
+                
+                guard FileManager.default.fileExists(atPath: url.path) else {
+                    Logger.main.debug("File \(url.path) does not exist")
+                    completion?(false)
+                    return
+                }
+                
+                do {
+                    let decoder = PropertyListDecoder()
+                    let data = try Data(contentsOf: url)
+                    self.codable = try decoder.decode(NodeCodable.self, from: data)
+                } catch {
+                    Logger.main.error("Could not read node from file: \(url.path)")
+                    completion?(false)
+                }
+                
+                self.updateMeta()
+                            
+                completion?(true)
+                
+            }
             
         }
         
