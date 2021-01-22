@@ -44,6 +44,11 @@ class InitialViewController: UIViewController {
         return textView
     }()
     
+    var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        return refreshControl
+    }()
+    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
             layout.itemSize = CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 40, height: 291)
@@ -53,7 +58,7 @@ class InitialViewController: UIViewController {
             
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.translatesAutoresizingMaskIntoConstraints = false
-            collectionView.backgroundColor = .systemBackground
+            collectionView.backgroundColor = .clear
             collectionView.register(NodeCell.self, forCellWithReuseIdentifier: "nodeCell")
             collectionView.alpha = 0
             
@@ -85,8 +90,9 @@ class InitialViewController: UIViewController {
     
     private func setupViews() {
         
-        view.backgroundColor = .white
         navigationItem.title = "Jottre"
+        
+        view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
@@ -104,6 +110,8 @@ class InitialViewController: UIViewController {
         collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        // collectionView.refreshControl = refreshControl
+        
         view.addSubview(infoTextView)
         infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -115,11 +123,13 @@ class InitialViewController: UIViewController {
     
     private func setupDelegates() {
         
+        refreshControl.addTarget(self, action: #selector(reloadCollectionView), for: .valueChanged)
+        
         nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.collectionView.delegate = self
             self.collectionView.dataSource = self
         }
@@ -129,18 +139,23 @@ class InitialViewController: UIViewController {
     }
     
     
+    @objc func reloadCollectionView() {
+        refreshControl.beginRefreshing()
+        nodeCollector.pull { (success) in
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    
     @objc func createNode() {
         
         let localizedAlertTitle = NSLocalizedString("New note", comment: "")
-        
         let localizedAlertMessage = NSLocalizedString("Enter a name for the new note", comment: "")
         
         let localizedNoteName = NSLocalizedString("My note", comment: "")
         
         let localizedPrimaryActionTitle = NSLocalizedString("Create", comment: "")
-        
         let localizedSecondaryActionTitle = NSLocalizedString("Cancel", comment: "")
-        
         
         let alertController = UIAlertController(title: localizedAlertTitle, message: localizedAlertMessage, preferredStyle: .alert)
         
@@ -189,16 +204,16 @@ class InitialViewController: UIViewController {
     func presentInfoAlert() {
         
         let alertTitle = NSLocalizedString("iCloud disabled", comment: "")
-        
-        let alertMessage = NSLocalizedString("While iCloud is disabled, you can only open files that are locally on this device.", comment: "What happens if iCloud is disabled?")
-        
+        let alertMessage = NSLocalizedString("While iCloud is disabled, you can only open files that are locally on this device.", comment: "")
+
         let alertActionTitle = NSLocalizedString("How to enable iCloud", comment: "")
-        
+        let alertActionURL = NSLocalizedString("https://support.apple.com/en-us/HT208681", comment: "URL for iCloud setup")
+
         let alertCancelActionTitle = NSLocalizedString("Cancel", comment: "")
         
         let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: alertActionTitle, style: .default, handler: { (action) in
-            UIApplication.shared.open(URL(string: NSLocalizedString("https://support.apple.com/en-us/HT208681", comment: "URL for iCloud setup"))!, options: [:], completionHandler: nil)
+            UIApplication.shared.open(URL(string: alertActionURL)!, options: [:], completionHandler: nil)
         }))
 
         alertController.addAction(UIAlertAction(title: alertCancelActionTitle, style: .cancel, handler: nil))

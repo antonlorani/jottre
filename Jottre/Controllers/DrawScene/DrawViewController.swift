@@ -108,12 +108,12 @@ class DrawViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = node.name
         
+        view.backgroundColor = .systemBackground
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(exportDrawing))
         
         traitCollectionDidChange(traitCollection)
-        
-        view.backgroundColor = .systemBackground
-        
+                
         view.addSubview(canvasView)
         canvasView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         canvasView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true

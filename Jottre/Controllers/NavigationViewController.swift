@@ -27,7 +27,6 @@ class NavigationViewController: UINavigationController {
                         
         navigationItem.title = "Jottre"
         navigationBar.prefersLargeTitles = true
-        view.backgroundColor = .white
         
     }
     

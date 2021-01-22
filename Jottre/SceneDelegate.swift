@@ -108,7 +108,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
             return
         }
         
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: {
             if settings.codable.preferedAppearance == 0 {
                 window.overrideUserInterfaceStyle = .dark
             } else if settings.codable.preferedAppearance == 1 {

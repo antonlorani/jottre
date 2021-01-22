@@ -27,7 +27,6 @@ class SettingsNavigationViewController: UINavigationController {
                 
         navigationItem.title = "Settings"
         navigationBar.prefersLargeTitles = true
-        view.backgroundColor = .white
         
     }
     

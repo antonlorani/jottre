@@ -19,7 +19,7 @@ class SettingsViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.translatesAutoresizingMaskIntoConstraints = false
-            collectionView.backgroundColor = .systemBackground
+            collectionView.backgroundColor = .clear
             collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: "settingsCell")
             collectionView.register(AppearanceSettingsCell.self, forCellWithReuseIdentifier: "appearanceSettingsCell")
             collectionView.register(CloudSettingsCell.self, forCellWithReuseIdentifier: "cloudSettingsCell")
@@ -58,6 +58,8 @@ class SettingsViewController: UIViewController {
         navigationItem.title = NSLocalizedString("Settings", comment: "")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.handleDone))
+        
+        view.backgroundColor = .systemBackground
         
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
