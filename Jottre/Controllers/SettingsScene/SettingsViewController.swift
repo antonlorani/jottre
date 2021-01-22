@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController {
     
     func setupViews() {
         
-        navigationItem.title = "Settings"
+        navigationItem.title = NSLocalizedString("Settings", comment: "")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.handleDone))
         

@@ -14,6 +14,10 @@ class Downloader {
     
     var url: URL?
     
+    static var isCloudEnabled: Bool {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil) != nil
+    }
+    
     
     
     // MARK: - Init

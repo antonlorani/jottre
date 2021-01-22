@@ -69,3 +69,23 @@
 "No documents available yet. Click 'Add note' to create a new file." = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
 
 "Documents created with the 'Jottre for iPad' App can be viewed here." = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
+
+
+/// - Info Alert iCloud
+
+"iCloud disabled" = "iCloud inaktiv";
+
+"While iCloud is disabled, you can only open files that are locally on this device." = "Während iCloud deaktiviert ist, können nur Dateien geöffnet werden, die sich lokal auf diesem Gerät befinden.";
+
+"How to enable iCloud" = "Wie aktiviere ich iCloud";
+
+"https://support.apple.com/en-us/HT208681" = "https://support.apple.com/de-de/HT208681";
+
+
+/// - Settings
+
+"Settings" = "Einstellungen";
+
+"Interface appearance" = "Erscheinungsbild";
+
+"Synchronize with iCloud" = "Mit iCloud synchronisieren";

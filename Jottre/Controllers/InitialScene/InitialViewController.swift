@@ -18,7 +18,10 @@ class InitialViewController: UIViewController {
     
     var hasDocuments: Bool = false {
         didSet {
-            infoTextView.alpha = hasDocuments ? 0 : 1
+            UIView.animate(withDuration: 0.5) {
+                self.infoTextView.alpha = self.hasDocuments ? 0 : 1
+                self.collectionView.alpha = self.hasDocuments ? 1 : 0
+            }
         }
     }
     
@@ -36,6 +39,7 @@ class InitialViewController: UIViewController {
             textView.text = UIDevice.isLimited() ? NSLocalizedString("Documents created with the 'Jottre for iPad' App can be viewed here.", comment: "") : NSLocalizedString("No documents available yet. Click 'Add note' to create a new file.", comment: "")
             textView.textAlignment = .center
             textView.isScrollEnabled = false
+            textView.alpha = 0
         return textView
     }()
     
@@ -50,6 +54,7 @@ class InitialViewController: UIViewController {
             collectionView.translatesAutoresizingMaskIntoConstraints = false
             collectionView.backgroundColor = .systemBackground
             collectionView.register(NodeCell.self, forCellWithReuseIdentifier: "nodeCell")
+            collectionView.alpha = 0
             
         return collectionView
     }()
@@ -84,6 +89,10 @@ class InitialViewController: UIViewController {
         
         if !UIDevice.isLimited() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
+        } else {
+            if !Downloader.isCloudEnabled {
+                presentInfoAlert()
+            }
         }
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: SettingsButton(target: self, action: #selector(presentSettings)))
@@ -99,7 +108,7 @@ class InitialViewController: UIViewController {
         infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         infoTextView.widthAnchor.constraint(equalToConstant: 300).isActive = true
         infoTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
-
+        
     }
     
     
@@ -109,8 +118,10 @@ class InitialViewController: UIViewController {
         
         nodeCollector.addObserver(self)
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.collectionView.delegate = self
+            self.collectionView.dataSource = self
+        }
         
         settings.addObserver(self)
         
@@ -168,6 +179,28 @@ class InitialViewController: UIViewController {
         }))
         
         alertController.addAction(UIAlertAction(title: localizedSecondaryActionTitle, style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func presentInfoAlert() {
+        
+        let alertTitle = NSLocalizedString("iCloud disabled", comment: "")
+        
+        let alertMessage = NSLocalizedString("While iCloud is disabled, you can only open files that are locally on this device.", comment: "What happens if iCloud is disabled?")
+        
+        let alertActionTitle = NSLocalizedString("How to enable iCloud", comment: "")
+        
+        let alertCancelActionTitle = NSLocalizedString("Cancel", comment: "")
+        
+        let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: alertActionTitle, style: .default, handler: { (action) in
+            UIApplication.shared.open(URL(string: NSLocalizedString("https://support.apple.com/en-us/HT208681", comment: "URL for iCloud setup"))!, options: [:], completionHandler: nil)
+        }))
+
+        alertController.addAction(UIAlertAction(title: alertCancelActionTitle, style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
         

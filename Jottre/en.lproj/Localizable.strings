@@ -70,3 +70,23 @@
 "No documents available yet. Click 'Add note' to create a new file." = "No documents available yet. Click 'Add note' to create a new file.";
 
 "Documents created with the 'Jottre for iPad' App can be viewed here." = "Documents created with the 'Jottre for iPad' App can be viewed here.";
+
+
+/// - Info Alert iCloud
+
+"iCloud disabled" = "iCloud disabled";
+
+"While iCloud is disabled, you can only open files that are locally on this device." = "While iCloud is disabled, you can only open files that are locally on this device.";
+
+"How to enable iCloud" = "How to enable iCloud";
+
+"https://support.apple.com/en-us/HT208681" = "https://support.apple.com/en-us/HT208681";
+
+
+/// - Settings
+
+"Settings" = "Settings";
+
+"Interface appearance" = "Interface appearance";
+
+"Synchronize with iCloud" = "Synchronize with iCloud";

@@ -37,7 +37,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "appearanceSettingsCell", for: indexPath) as? AppearanceSettingsCell else {
                 fatalError("Cell is not of type AppearanceSettingsCell")
             }
-            cell.title = "Interface appearance"
+            cell.title = NSLocalizedString("Interface appearance", comment: "")
             return cell
             
         } else if indexPath.row == 1 {
@@ -46,8 +46,9 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
                 fatalError("Cell is not of type CloudSettingsCell")
             }
             cell.delegate = self
-            cell.title = "Synchronize with iCloud"
-            cell.usesCloud = settings.codable.usesCloud
+            cell.title = NSLocalizedString("Synchronize with iCloud", comment: "")
+            cell.usesCloud = UIDevice.isLimited() ? true : settings.codable.usesCloud
+            cell.switchView.isEnabled = !UIDevice.isLimited()
             return cell
             
         } else if indexPath.row == 2 {
