@@ -16,14 +16,7 @@ class NavigationViewController: UINavigationController {
         super.viewDidLoad()
         
         setupViews()
-        updateNavigationBarBackground()
         
-    }
-    
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateNavigationBarBackground()
     }
     
     
@@ -36,17 +29,6 @@ class NavigationViewController: UINavigationController {
         navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         
-    }
-    
-    
-    func updateNavigationBarBackground() {
-
-        UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
-        UIColor.secondarySystemBackground.withAlphaComponent(0.95).set()
-        UIBezierPath(rect: CGRect(x: 0, y: 0, width: 1, height: 1)).fill()
-        navigationBar.setBackgroundImage(UIGraphicsGetImageFromCurrentImageContext(), for: .default)
-        UIGraphicsEndImageContext()
-
     }
     
 }
