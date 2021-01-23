@@ -39,6 +39,10 @@ class Node: NSObject {
         }
     }
     
+    var status: URLUbiquitousItemDownloadingStatus? {
+        return getStatus()
+    }
+    
     var thumbnail: UIImage?
     
     var codable: NodeCodable?
@@ -244,6 +248,27 @@ class Node: NSObject {
         collector.nodes.remove(at: index)
         completion?(true)
 
+    }
+    
+    private func getStatus() -> URLUbiquitousItemDownloadingStatus? {
+        
+        guard let url = self.url else {
+            return nil
+        }
+        
+        do {
+            let attributes = try url.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
+        
+            guard let status: URLUbiquitousItemDownloadingStatus = attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus else {
+                return nil
+            }
+            
+            return status
+        } catch {
+            Logger.main.error("Could not retrieve resourceValues for url: \(url). Reason: \(error.localizedDescription)")
+            return nil
+        }
+        
     }
     
 }
