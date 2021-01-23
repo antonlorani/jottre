@@ -78,13 +78,13 @@ class Node: NSObject {
     
     // MARK: - Methods
     
-    /// Loading Node from file
+    /// Prepares pull of the node from file.
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func pull(completion: ((Bool) -> Void)? = nil) {
         
         serializationQueue.async {
             
-            guard var url = self.url else {
+            guard let url = self.url else {
                 completion?(false)
                 return
             }
@@ -93,7 +93,19 @@ class Node: NSObject {
                 completion?(false)
                 return
             }
-                        
+            
+            guard let status = self.status else {
+                completion?(false)
+                return
+            }
+            
+            if status == .current {
+                self.pullHandler(url: url) { (success) in
+                    completion?(success)
+                }
+                return
+            }
+            
             let downloader = Downloader(url: url)
             
             downloader.execute { (success) in
@@ -101,33 +113,44 @@ class Node: NSObject {
                 if !success {
                     Logger.main.error("Could not download node from file: \(url.path)")
                     completion?(false)
-                }
-                
-                url = url.cloudToJot()
-                self.url = url
-                
-                guard FileManager.default.fileExists(atPath: url.path) else {
-                    Logger.main.debug("File \(url.path) does not exist")
-                    completion?(false)
                     return
                 }
                 
-                do {
-                    let decoder = PropertyListDecoder()
-                    let data = try Data(contentsOf: url)
-                    self.codable = try decoder.decode(NodeCodable.self, from: data)
-                } catch {
-                    Logger.main.error("Could not read node from file: \(url.path)")
-                    completion?(false)
-                }
+                self.url = url.cloudToJot()
                 
-                self.updateMeta()
-                            
-                completion?(true)
+                self.pullHandler(url: self.url!) { (success) in
+                    completion?(success)
+                }
                 
             }
             
         }
+        
+    }
+    
+    
+    /// Loads the Node from file
+    /// - Parameter url: URL to load the file from.
+    func pullHandler(url: URL, completion: ((Bool) -> Void)? = nil) {
+        
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            Logger.main.debug("File \(url.path) does not exist")
+            completion?(false)
+            return
+        }
+        
+        do {
+            let decoder = PropertyListDecoder()
+            let data = try Data(contentsOf: url)
+            self.codable = try decoder.decode(NodeCodable.self, from: data)
+        } catch {
+            Logger.main.error("Could not read node from file: \(url.path)")
+            completion?(false)
+        }
+        
+        self.updateMeta()
+        
+        completion?(true)
         
     }
     
@@ -250,6 +273,9 @@ class Node: NSObject {
 
     }
     
+    
+    /// Method that returns the status of the current file-url (current, download or not downloaded)
+    /// - Returns: URLUbiquitousItemDownloadingStatus. This value will indiciate the status of the file in the file-system
     private func getStatus() -> URLUbiquitousItemDownloadingStatus? {
         
         guard let url = self.url else {
