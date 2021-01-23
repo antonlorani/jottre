@@ -19,7 +19,10 @@ class NodeCell: UICollectionViewCell {
             guard let thumbnail = node?.thumbnail else {
                 return
             }
-            imageView.image = thumbnail
+            
+            UIView.animate(withDuration: 0.3) {
+                self.imageView.image = thumbnail
+            }
             
         }
     }
