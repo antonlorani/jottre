@@ -30,6 +30,8 @@ class Downloader {
     
     // MARK: - Methods
     
+    /// Starts force downloads file from iCloud Drive (If file exists)
+    /// - Parameter completion: Returns true if download is completed
     func execute(completion: ((Bool) -> Void)? = nil) {
         
         guard let url = self.url else {
@@ -37,48 +39,67 @@ class Downloader {
             return
         }
         
-        Logger.main.debug("Starting download for: \(url)")
-        
         do {
             try FileManager.default.startDownloadingUbiquitousItem(at: url)
             handleProgress { (success) in
                 completion?(success)
             }
         } catch {
-            Logger.main.debug("Download failed")
             completion?(false)
         }
         
     }
     
     
-    func handleProgress(completion: ((Bool) -> Void)? = nil) {
+    // TODO: - Add timeout
+    /// Looks at the current progress of a downloading file (Initialized via startDownloadingUbiquitousItem)
+    /// - Parameter completion: Returns true if download is completed. False if download failed
+    private func handleProgress(completion: ((Bool) -> Void)? = nil) {
+        
         guard let url = self.url else {
             completion?(false)
             return
         }
 
         DispatchQueue.main.async {
+            
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timer) in
 
-                do {
-                    
-                    let attributes = try url.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
-                    
-                    guard let status: URLUbiquitousItemDownloadingStatus = attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus else {
-                        return
-                    }
-
-                    if status == URLUbiquitousItemDownloadingStatus.current {
-                        timer.invalidate()
-                        completion?(true)
-                    }
-                    
-                } catch {
+                guard let status = Downloader.getStatus(url: url) else {
                     completion?(false)
+                    return
+                }
+                
+                if status == URLUbiquitousItemDownloadingStatus.current {
+                    timer.invalidate()
+                    completion?(true)
                 }
                 
             })
+            
+        }
+        
+    }
+    
+    
+    /// Method that returns the status of the current file-url (current, download or not downloaded)
+    /// - Returns: URLUbiquitousItemDownloadingStatus. This value will indiciate the status of the file in the file-system
+    static func getStatus(url: URL?) -> URLUbiquitousItemDownloadingStatus? {
+        
+        guard let url = url else {
+            return nil
+        }
+        
+        do {
+            let attributes = try url.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
+        
+            guard let status: URLUbiquitousItemDownloadingStatus = attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus else {
+                return nil
+            }
+            
+            return status
+        } catch {
+            return nil
         }
         
     }

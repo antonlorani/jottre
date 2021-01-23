@@ -40,7 +40,7 @@ class Node: NSObject {
     }
     
     var status: URLUbiquitousItemDownloadingStatus? {
-        return getStatus()
+        return Downloader.getStatus(url: self.url)
     }
     
     var thumbnail: UIImage?
@@ -271,30 +271,6 @@ class Node: NSObject {
         collector.nodes.remove(at: index)
         completion?(true)
 
-    }
-    
-    
-    /// Method that returns the status of the current file-url (current, download or not downloaded)
-    /// - Returns: URLUbiquitousItemDownloadingStatus. This value will indiciate the status of the file in the file-system
-    private func getStatus() -> URLUbiquitousItemDownloadingStatus? {
-        
-        guard let url = self.url else {
-            return nil
-        }
-        
-        do {
-            let attributes = try url.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
-        
-            guard let status: URLUbiquitousItemDownloadingStatus = attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus else {
-                return nil
-            }
-            
-            return status
-        } catch {
-            Logger.main.error("Could not retrieve resourceValues for url: \(url). Reason: \(error.localizedDescription)")
-            return nil
-        }
-        
     }
     
 }
