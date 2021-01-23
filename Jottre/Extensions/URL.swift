@@ -23,6 +23,8 @@ extension URL {
     }
     
     
+    /// Converts the ugly iCloud file-path to a valid .jot path
+    /// - Returns: Actual file-path for a readable node
     func cloudToJot() -> URL {
         if !isCloud() { return self }
         

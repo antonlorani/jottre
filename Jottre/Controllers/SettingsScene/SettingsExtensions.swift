@@ -22,13 +22,16 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         return CGSize(width: collectionView.frame.width - 40, height: 60)
     }
     
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -89,10 +92,13 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             
         } else if indexPath.row == 2 {
 
-            guard let url = URL(string: "https://github.com/AntonAmes/jottre") else { return }
+            guard let url = URL(string: "https://github.com/AntonAmes/jottre") else {
+                return
+            }
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
 
         }
+        
     }
     
 }

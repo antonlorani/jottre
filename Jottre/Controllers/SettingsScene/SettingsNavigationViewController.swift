@@ -24,7 +24,9 @@ class SettingsNavigationViewController: UINavigationController {
     // MARK: - Methods
     
     func setupViews() {
-                
+               
+        modalPresentationStyle = .formSheet
+        
         navigationItem.title = "Settings"
         navigationBar.prefersLargeTitles = true
         

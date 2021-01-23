@@ -26,7 +26,7 @@ class DrawViewController: UIViewController {
     // MARK: - Subviews
     
     var loadingView: LoadingView = {
-        return LoadingView(frame: .zero)
+        return LoadingView()
     }()
     
     var canvasView: PKCanvasView = {
@@ -38,7 +38,9 @@ class DrawViewController: UIViewController {
         return canvasView
     }()
     
-    var toolPicker: PKToolPicker!
+    var toolPicker: PKToolPicker = {
+        return PKToolPicker()
+    }()
     
     
     
@@ -104,16 +106,15 @@ class DrawViewController: UIViewController {
     // MARK: - Methods
     
     func setupViews() {
-        
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = node.name
+
+        traitCollectionDidChange(traitCollection)
         
         view.backgroundColor = .systemBackground
         
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = node.name
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(exportDrawing))
-        
-        traitCollectionDidChange(traitCollection)
-                
+                        
         view.addSubview(canvasView)
         canvasView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         canvasView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -129,7 +130,6 @@ class DrawViewController: UIViewController {
         updateContentSizeForDrawing()
         
         guard let parent = parent, let window = parent.view.window, let windowScene = window.windowScene, let screenshotService = windowScene.screenshotService else {
-            Logger.main.debug("Could not find screenShotService")
             return
         }
         screenshotService.delegate = self
@@ -139,17 +139,15 @@ class DrawViewController: UIViewController {
     
     private func setupDelegates() {
         
-        guard node != nil else { return }
+        guard node != nil, node.codable != nil else { return }
         
         canvasView.delegate = self
         canvasView.drawing = node.codable!.drawing
         canvasView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if !UIDevice.isLimited() {
-            toolPicker = PKToolPicker()
             toolPicker.setVisible(true, forFirstResponder: canvasView)
             toolPicker.addObserver(canvasView)
-
             canvasView.becomeFirstResponder()
         }
         
@@ -173,7 +171,10 @@ class DrawViewController: UIViewController {
     
     @objc func exportDrawing() {
         
-        let alertController = UIAlertController(title: NSLocalizedString("Export note", comment: ""), message: "", preferredStyle: .actionSheet)
+        let alertTitle = NSLocalizedString("Export note", comment: "")
+        let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
+        
+        let alertController = UIAlertController(title: alertTitle, message: "", preferredStyle: .actionSheet)
 
         if let popoverController = alertController.popoverPresentationController {
             popoverController.barButtonItem = navigationItem.rightBarButtonItem
@@ -183,7 +184,7 @@ class DrawViewController: UIViewController {
         alertController.addAction(createExportToJPGAction())
         alertController.addAction(createExportToPNGAction())
         alertController.addAction(createShareAction())
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
                 
         present(alertController, animated: true, completion: nil)
         

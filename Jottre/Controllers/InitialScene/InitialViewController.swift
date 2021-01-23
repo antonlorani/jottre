@@ -44,11 +44,6 @@ class InitialViewController: UIViewController {
         return textView
     }()
     
-    var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        return refreshControl
-    }()
-    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
             layout.itemSize = CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 40, height: 291)
@@ -95,11 +90,11 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
+        
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
-        } else {
-            if !Downloader.isCloudEnabled {
-                presentInfoAlert()
-            }
+        
+        } else if !Downloader.isCloudEnabled {
+            presentInfoAlert()
         }
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: SettingsButton(target: self, action: #selector(presentSettings)))
@@ -109,9 +104,7 @@ class InitialViewController: UIViewController {
         collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        // collectionView.refreshControl = refreshControl
-        
+                
         view.addSubview(infoTextView)
         infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -122,9 +115,7 @@ class InitialViewController: UIViewController {
     
     
     private func setupDelegates() {
-        
-        refreshControl.addTarget(self, action: #selector(reloadCollectionView), for: .valueChanged)
-        
+                
         nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
@@ -139,36 +130,28 @@ class InitialViewController: UIViewController {
     }
     
     
-    @objc func reloadCollectionView() {
-        refreshControl.beginRefreshing()
-        nodeCollector.pull { (success) in
-            self.refreshControl.endRefreshing()
-        }
-    }
-    
-    
     @objc func createNode() {
         
-        let localizedAlertTitle = NSLocalizedString("New note", comment: "")
-        let localizedAlertMessage = NSLocalizedString("Enter a name for the new note", comment: "")
+        let alertTitle = NSLocalizedString("New note", comment: "")
+        let alertMessage = NSLocalizedString("Enter a name for the new note", comment: "")
         
-        let localizedNoteName = NSLocalizedString("My note", comment: "")
+        let noteName = NSLocalizedString("My note", comment: "")
         
-        let localizedPrimaryActionTitle = NSLocalizedString("Create", comment: "")
-        let localizedSecondaryActionTitle = NSLocalizedString("Cancel", comment: "")
+        let alertPrimaryActionTitle = NSLocalizedString("Create", comment: "")
+        let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
         
-        let alertController = UIAlertController(title: localizedAlertTitle, message: localizedAlertMessage, preferredStyle: .alert)
+        let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = localizedNoteName
+            textField.placeholder = noteName
         }
         
-        alertController.addAction(UIAlertAction(title: localizedPrimaryActionTitle, style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: alertPrimaryActionTitle, style: .default, handler: { (action) in
             
             guard let textFields = alertController.textFields, var name = textFields[0].text else {
                 return
             }
-            name = name == "" ? localizedNoteName : name
+            name = name == "" ? noteName : name
             
             self.nodeCollector.createNode(name: name) { (success, node) in
 
@@ -194,7 +177,7 @@ class InitialViewController: UIViewController {
             
         }))
         
-        alertController.addAction(UIAlertAction(title: localizedSecondaryActionTitle, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
         
@@ -206,17 +189,19 @@ class InitialViewController: UIViewController {
         let alertTitle = NSLocalizedString("iCloud disabled", comment: "")
         let alertMessage = NSLocalizedString("While iCloud is disabled, you can only open files that are locally on this device.", comment: "")
 
-        let alertActionTitle = NSLocalizedString("How to enable iCloud", comment: "")
-        let alertActionURL = NSLocalizedString("https://support.apple.com/en-us/HT208681", comment: "URL for iCloud setup")
+        let alertPrimaryActionTitle = NSLocalizedString("How to enable iCloud", comment: "")
+        let supportURL = NSLocalizedString("https://support.apple.com/en-us/HT208681", comment: "URL for iCloud setup")
 
-        let alertCancelActionTitle = NSLocalizedString("Cancel", comment: "")
+        let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
+        
         
         let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: alertActionTitle, style: .default, handler: { (action) in
-            UIApplication.shared.open(URL(string: alertActionURL)!, options: [:], completionHandler: nil)
+        
+        alertController.addAction(UIAlertAction(title: alertPrimaryActionTitle, style: .default, handler: { (action) in
+            UIApplication.shared.open(URL(string: supportURL)!, options: [:], completionHandler: nil)
         }))
-
-        alertController.addAction(UIAlertAction(title: alertCancelActionTitle, style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
         
@@ -228,9 +213,7 @@ class InitialViewController: UIViewController {
         let settingsController = SettingsViewController()
         
         let settingsNavigationController = SettingsNavigationViewController(rootViewController: settingsController)
-        
-        settingsNavigationController.modalPresentationStyle = .formSheet
-                
+                        
         present(settingsNavigationController, animated: true, completion: nil)
                         
     }

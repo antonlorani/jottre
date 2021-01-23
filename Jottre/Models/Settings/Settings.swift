@@ -13,7 +13,7 @@ struct SettingsCodable: Codable {
     
     var usesCloud: Bool = false
     
-    var preferedAppearance: Int = 0 /// - 0=dark, 1=light, 2=system
+    var preferedAppearance: Int = 0 /// 0=dark, 1=light, 2=auto
     
 }
 
@@ -21,6 +21,7 @@ struct SettingsCodable: Codable {
 protocol SettingsObserver {
     func settingsDidChange(_ settings: Settings)
 }
+
 
 class Settings: NSObject {
     
@@ -102,6 +103,8 @@ class Settings: NSObject {
     
     // MARK: - Set methods
     
+    /// Sets the appearance
+    /// - Parameter preferedAppearance: 0 = dark, light = 1, auto = 2
     func set(preferedAppearance: Int) {
         self.codable.preferedAppearance = preferedAppearance
         _ = push()
@@ -109,6 +112,8 @@ class Settings: NSObject {
     }
     
     
+    /// Sets a boolish value that indicates wether the files were loaded/stored localy or via iCloud Driver
+    /// - Parameter usesCloud: -
     func set(usesCloud: Bool) {
         self.codable.usesCloud = usesCloud
         _ = push()
@@ -119,6 +124,8 @@ class Settings: NSObject {
     
     // MARK: - Get methods
     
+    /// Returns the "root" path of this application. (Depending of user-prefered storage (local vs iCloud))
+    /// - Returns: Main directory-path. This is the directory where the files were primarly stored.
     func getPath() -> URL {
 
         if codable == nil {
