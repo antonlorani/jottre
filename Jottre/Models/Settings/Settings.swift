@@ -133,7 +133,9 @@ class Settings: NSObject {
         }
 
         if codable.usesCloud {
-            let url = FileManager.default.url(forUbiquityContainerIdentifier: nil)!.appendingPathComponent("Documents")
+            guard let url = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") else {
+                return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            }
             
             var isDirectory = ObjCBool(true)
             

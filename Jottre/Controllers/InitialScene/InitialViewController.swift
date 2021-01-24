@@ -37,6 +37,7 @@ class InitialViewController: UIViewController {
             textView.font = UIFont.systemFont(ofSize: 25, weight: .regular)
             textView.textColor = UIColor.secondaryLabel
             textView.text = UIDevice.isLimited() ? NSLocalizedString("Documents created with the 'Jottre for iPad' App can be viewed here.", comment: "") : NSLocalizedString("No documents available yet. Click 'Add note' to create a new file.", comment: "")
+            textView.text = Downloader.isCloudEnabled ? textView.text : UIDevice.isLimited() ? NSLocalizedString("Enable iCloud to view files created with 'Jottre for iPad'", comment: "") : NSLocalizedString("Enable iCloud to unlock the full potential of Jottre", comment: "")
             textView.textAlignment = .center
             textView.isScrollEnabled = false
             textView.backgroundColor = .clear
@@ -93,7 +94,9 @@ class InitialViewController: UIViewController {
         
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
         
-        } else if !Downloader.isCloudEnabled {
+        }
+        
+        if !Downloader.isCloudEnabled {
             presentInfoAlert()
         }
         
