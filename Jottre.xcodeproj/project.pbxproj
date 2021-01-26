@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */; };
-		A687ABD125B6B4EF00273460 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A687ABD025B6B4EF00273460 /* ViewController.swift */; };
 		A6A8803E25BAB41E0080DD9D /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8803D25BAB41E0080DD9D /* Downloader.swift */; };
 		A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */; };
 		A6BB130C25B46057008C5D8A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130B25B46057008C5D8A /* Settings.swift */; };
@@ -46,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsCell.swift; sourceTree = "<group>"; };
-		A687ABD025B6B4EF00273460 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A6A8803D25BAB41E0080DD9D /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A6BB130B25B46057008C5D8A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 				A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */,
 				A6E3B7F925B3260300C65157 /* Info.plist */,
 				A6BB134325B49FDF008C5D8A /* Localizable.strings */,
-				A687ABD025B6B4EF00273460 /* ViewController.swift */,
 			);
 			path = Jottre;
 			sourceTree = "<group>";
@@ -337,7 +334,6 @@
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
 				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
 				A6BB131B25B472F9008C5D8A /* AppearanceSettingsCell.swift in Sources */,
-				A687ABD125B6B4EF00273460 /* ViewController.swift in Sources */,
 				A6E3B83725B32BC500C65157 /* NodeCollector.swift in Sources */,
 				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,
 				A6BB130C25B46057008C5D8A /* Settings.swift in Sources */,
