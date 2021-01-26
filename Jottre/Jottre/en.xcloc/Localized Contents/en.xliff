@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Jottre/en.lproj/InfoPlist.strings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="12.3" build-num="12C33"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>Jottre</source>
+        <target>Jottre</target>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="Jottre document" xml:space="preserve">
+        <source>Jottre document</source>
+        <target>Jottre document</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription" xml:space="preserve">
+        <source>Jottre wants to store the image in your photo-library</source>
+        <target>Jottre wants to store the image in your photo-library</target>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Jottre/en.lproj/Localizable.strings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="12.3" build-num="12C33"/>
+    </header>
+    <body>
+      <trans-unit id="(copy)" xml:space="preserve">
+        <source>(copy)</source>
+        <target>(copy)</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Add note" xml:space="preserve">
+        <source>Add note</source>
+        <target>Add note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Create" xml:space="preserve">
+        <source>Create</source>
+        <target>Create</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Delete" xml:space="preserve">
+        <source>Delete</source>
+        <target>Delete</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Documents created with the 'Jottre for iPad' App can be viewed here." xml:space="preserve">
+        <source>Documents created with the 'Jottre for iPad' App can be viewed here.</source>
+        <target>Documents created with the 'Jottre for iPad' App can be viewed here.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Enter a name for the new note" xml:space="preserve">
+        <source>Enter a name for the new note</source>
+        <target>Enter a name for the new note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Enter a name for the selected note" xml:space="preserve">
+        <source>Enter a name for the selected note</source>
+        <target>Enter a name for the selected note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Export note" xml:space="preserve">
+        <source>Export note</source>
+        <target>Export note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="My note" xml:space="preserve">
+        <source>My note</source>
+        <target>My note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="New note" xml:space="preserve">
+        <source>New note</source>
+        <target>New note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="No documents available yet. Click 'Add note' to create a new file." xml:space="preserve">
+        <source>No documents available yet. Click 'Add note' to create a new file.</source>
+        <target>No documents available yet. Click 'Add note' to create a new file.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Rename" xml:space="preserve">
+        <source>Rename</source>
+        <target>Rename</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Rename note" xml:space="preserve">
+        <source>Rename note</source>
+        <target>Rename note</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Share" xml:space="preserve">
+        <source>Share</source>
+        <target>Share</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

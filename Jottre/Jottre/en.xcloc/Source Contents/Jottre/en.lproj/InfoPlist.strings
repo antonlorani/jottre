@@ -1,0 +1,5 @@
+/* Bundle name */
+"CFBundleName" = "Jottre";
+"Jottre document" = "Jottre document";
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Jottre wants to store the image in your photo-library";
