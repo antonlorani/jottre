@@ -50,6 +50,7 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 
 ## Up next
 
+- Support for Widgets
 - PDF Viewer
 - PDF AnkAnnotations (Drawing on PDF via PDFKit)
 
