@@ -18,7 +18,7 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 
 ## Features
 
-- Drawing with the powerful PencilKit (iPadOS only)
+- Builds on the powerful PencilKit framework (iPadOS only)
 - iCloud documents synchronization
 - Support for dark and light mode
 - Minimalistic design
