@@ -1,0 +1,1 @@
+Jottre does not store your data on non-apple servers, period.
