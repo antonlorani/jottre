@@ -6,6 +6,7 @@
 </p>
 
 
+**Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319) and [Mac App Store](https://apps.apple.com/us/app/jottre/id1550272319)**
 
 # Jottre
 
@@ -30,9 +31,7 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
   <img src="images/cloud.jpg" style="width: calc(100% - 20px);" height=auto>
 </p>
 
-<p align="center" >
-  <img src="images/minimalistic.jpg" width=400 height=auto>
-</p>
+
 
 <p align="center" >
   <img src="images/mode.jpg" style="width: calc(100% - 20px);" height=auto>
@@ -53,7 +52,10 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 
 - PDF Viewer
 - PDF AnkAnnotations (Drawing on PDF via PDFKit)
-- Possible drawing on Mac / iPhone
+
+  
+
+
 
 
 

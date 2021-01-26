@@ -502,7 +502,7 @@
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
-				DEVELOPMENT_TEAM = Y78RPE9KK3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Jottre/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -524,7 +524,7 @@
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
-				DEVELOPMENT_TEAM = Y78RPE9KK3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Jottre/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
