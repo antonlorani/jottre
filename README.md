@@ -6,7 +6,7 @@
 </p>
 
 
-**Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319) ~~and [Mac App Store](https://apps.apple.com/us/app/jottre/id1550272319)**~~
+**Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319)**
 
 # Jottre
 
