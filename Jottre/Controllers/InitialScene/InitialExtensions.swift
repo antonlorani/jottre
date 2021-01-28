@@ -30,7 +30,7 @@ extension InitialViewController: SettingsObserver {
             initialLoad = false
             return
         }
-        nodeCollector.pull()
+        nodeCollector.update()
     }
     
 }
