@@ -43,6 +43,8 @@ class Node: NSObject {
         return Downloader.getStatus(url: self.url)
     }
     
+    var dataHash: Int?
+    
     var thumbnail: UIImage?
     
     var codable: NodeCodable?
@@ -78,7 +80,7 @@ class Node: NSObject {
     
     // MARK: - Methods
     
-    /// Prepares pull of the node from file.
+    /// Prepares pull of the node from drive.
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func pull(completion: ((Bool) -> Void)? = nil) {
         
@@ -107,7 +109,6 @@ class Node: NSObject {
             }
             
             let downloader = Downloader(url: url)
-            
             downloader.execute { (success) in
                 
                 if !success {
@@ -139,18 +140,51 @@ class Node: NSObject {
             return
         }
         
-        do {
-            let decoder = PropertyListDecoder()
-            let data = try Data(contentsOf: url)
-            self.codable = try decoder.decode(NodeCodable.self, from: data)
-        } catch {
-            Logger.main.error("Could not read node from file: \(url.path)")
-            completion?(false)
+        pullData(url: url) { (success, data) in
+            
+            guard let data = data, success != false else {
+                completion?(false)
+                return
+            }
+            
+            do {
+                let decoder = PropertyListDecoder()
+                self.dataHash = data.hashValue
+                self.codable = try decoder.decode(NodeCodable.self, from: data)
+            } catch {
+                Logger.main.error("Could not read data as Node.codable")
+                completion?(false)
+                return
+            }
+            
+            self.updateMeta()
+            
+            completion?(true)
+            
         }
         
-        self.updateMeta()
+    }
+    
+    
+    /// Pulls the file-data from given url
+    /// - Parameters:
+    ///   - url: URL for the file
+    ///   - completion: Returns boolean that indicates success or failure. Data is nil if fetch failed.
+    func pullData(url: URL, completion: ((Bool, Data?) -> Void)? = nil) {
         
-        completion?(true)
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            Logger.main.debug("File \(url.path) does not exist")
+            completion?(false, nil)
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            completion?(true, data)
+        } catch {
+            Logger.main.error("Could not read node from file: \(url.path)")
+            completion?(false, nil)
+        }
         
     }
     

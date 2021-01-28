@@ -91,9 +91,7 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
-        
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
-        
         }
         
         if !Downloader.isCloudEnabled {
@@ -122,6 +120,7 @@ class InitialViewController: UIViewController {
         nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
+        nodeCollector.startBackgroundFetch()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.collectionView.delegate = self

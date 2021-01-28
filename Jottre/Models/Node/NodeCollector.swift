@@ -19,7 +19,13 @@ class NodeCollector {
     
     private var observers: [NodeCollectorObserver] = []
     
-    var observersEnabledValue: Bool = true
+    private var observersEnabledValue: Bool = true
+    
+    private var backgroundFetchIsActiveValue: Bool = false
+    
+    var backgroundFetchIsActive: Bool {
+        return backgroundFetchIsActiveValue
+    }
     
     var observersEnabled: Bool {
         return observersEnabledValue
@@ -48,6 +54,7 @@ class NodeCollector {
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
         pull()
+        initializeBackgroundFetch(interval: 5)
     }
     
     
@@ -155,9 +162,84 @@ class NodeCollector {
     
     
     
+    // MARK: - BackgroundFetch methods
+    
+    /// Activates Background fetches
+    func startBackgroundFetch() {
+        backgroundFetchIsActiveValue = true
+    }
+    
+    
+    /// Pauses the Background fetches (Process will be still running in the background)
+    func pauseBackgroundFetch() {
+        backgroundFetchIsActiveValue = false
+    }
+    
+    
+    /// Continuously fetches the newest version of the Node inside the NodeCollector
+    /// - Parameter interval: Duration between each pull call
+    private func initializeBackgroundFetch(interval: Int) {
+        
+        var isInitial: Bool = true
+        
+        DispatchQueue.main.async {
+            
+            Timer.scheduledTimer(withTimeInterval: TimeInterval(interval), repeats: true) { (timer) in
+                
+                if !self.backgroundFetchIsActive || isInitial {
+                    isInitial = false
+                    return
+                }
+                Logger.main.debug("Try fetching nodes...")
+
+                for node in self.nodes {
+                    
+                    guard let nodeURL = node.url else {
+                        continue
+                    }
+                    
+                    if !FileManager.default.fileExists(atPath: nodeURL.path) {
+                        guard let index = self.nodes.firstIndex(of: node) else {
+                            continue
+                        }
+                        Logger.main.debug("Node has been removed from files")
+                        self.nodes.remove(at: index)
+                        continue
+                    }
+                    
+                    if Downloader.getStatus(url: nodeURL) == URLUbiquitousItemDownloadingStatus.current {
+                        continue
+                    }
+
+                    Logger.main.debug("Downloading newest version of node: \(nodeURL)")
+                    
+                    var finished: Bool = false
+                    let downloader = Downloader(url: nodeURL)
+                    downloader.execute { (success) in
+                        finished = true
+                        if success {
+                            node.pull()
+                            self.didUpdate()
+                        }
+                    }
+                    
+                    while !finished {} // Wait until process is finished. Then fetch the next node.
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    
     // MARK: - Static methods
+    // FIXME: - This method is currently running on the main-thread. This needs to be changed.
     
     /// Generates a name and will modify it if this name already exists in a given directory
+    /// - Complexity: O(n) where n is the number of files inside the root-folder
     /// - Parameter baseName: The target name
     /// - Parameter path: The path where this file is stored
     /// - Returns: The validated name (If name already exists this method adds the suffix ' copy' to the baseName)
