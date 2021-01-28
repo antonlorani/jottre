@@ -21,13 +21,13 @@ extension DrawViewController: PKCanvasViewDelegate {
 extension DrawViewController: UIScreenshotServiceDelegate {
     
     func startLoading() {
-        self.canvasView.isUserInteractionEnabled = false
-        self.loadingView.isAnimating = true
+        canvasView.isUserInteractionEnabled = false
+        loadingView.isAnimating = true
     }
     
     func stopLoading() {
-        self.canvasView.isUserInteractionEnabled = true
-        self.loadingView.isAnimating = false
+        canvasView.isUserInteractionEnabled = true
+        loadingView.isAnimating = false
     }
     
     func drawingToPDF(_ completion: @escaping (_ PDFData: Data?, _ indexOfCurrentPage: Int, _ rectInCurrentPage: CGRect) -> Void) {
