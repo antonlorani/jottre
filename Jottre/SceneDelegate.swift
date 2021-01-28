@@ -103,12 +103,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
     // MARK: - Observer methods
     
     func settingsDidChange(_ settings: Settings) {
-
+        
         guard let window = window else {
             return
         }
         
-        UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: {
+        
+        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
             if settings.codable.preferedAppearance == 0 {
                 window.overrideUserInterfaceStyle = .dark
             } else if settings.codable.preferedAppearance == 1 {
