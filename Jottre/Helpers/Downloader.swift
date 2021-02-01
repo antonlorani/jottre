@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 class Downloader {
     
@@ -33,7 +33,7 @@ class Downloader {
     /// Starts force downloads file from iCloud Drive (If file exists)
     /// - Parameter completion: Returns true if download is completed
     func execute(completion: ((Bool) -> Void)? = nil) {
-        
+
         guard let url = self.url else {
             completion?(false)
             return
@@ -42,7 +42,9 @@ class Downloader {
         do {
             try FileManager.default.startDownloadingUbiquitousItem(at: url)
             handleProgress { (success) in
-                completion?(success)
+                if success {
+                    completion?(true)
+                }
             }
         } catch {
             completion?(false)
