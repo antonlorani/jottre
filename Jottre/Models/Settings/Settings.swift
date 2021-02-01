@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-import os.log
+import OSLog
 
 struct SettingsCodable: Codable {
     
@@ -124,6 +124,21 @@ class Settings: NSObject {
     
     // MARK: - Get methods
     
+    /// Returns a preferedUserInterfaceStyle object (Depending on the settings.codable.preferedAppearance property)
+    /// - Returns: Prefered appearance as UIUserInterfaceStyle object
+    func preferedUserInterfaceStyle() -> UIUserInterfaceStyle {
+        if settings.codable.preferedAppearance == 0 {
+            return UIUserInterfaceStyle.dark
+        } else if settings.codable.preferedAppearance == 1 {
+            return UIUserInterfaceStyle.light
+        } else if settings.codable.preferedAppearance == 2 {
+            return UIUserInterfaceStyle.unspecified
+        } else {
+            return UIUserInterfaceStyle.unspecified
+        }
+    }
+    
+    
     /// Returns the "root" path of this application. (Depending of user-prefered storage (local vs iCloud))
     /// - Returns: Main directory-path. This is the directory where the files were primarly stored.
     func getPath() -> URL {
@@ -131,29 +146,48 @@ class Settings: NSObject {
         if codable == nil {
             _ = pull()
         }
-
+        
         if codable.usesCloud {
-            guard let url = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") else {
-                return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            guard let url = Settings.getCloudPath() else {
+                return Settings.getLocalPath()
             }
-            
-            var isDirectory = ObjCBool(true)
-            
-            if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-                
-                do {
-                    try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false)
-                } catch {
-                    Logger.main.error("Could not create directory at \(url.path)")
-                }
-                
-            }
-            
             return url
         } else {
-            return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            return Settings.getLocalPath()
         }
 
+    }
+    
+    
+    /// Returns the root iCloud path for the Jottre Container
+    /// - Returns: Local iCloud path
+    static func getCloudPath() -> URL? {
+        guard let url = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") else {
+            return nil
+        }
+        
+        var isDirectory = ObjCBool(true)
+        
+        if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+            
+            do {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false)
+                return url
+            } catch {
+                Logger.main.error("Could not create directory at \(url.path)")
+                return nil
+            }
+            
+        }
+        
+        return url
+    }
+    
+    
+    /// Returns the root local path for the Jottre Container
+    /// - Returns: Local path
+    static func getLocalPath() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
     

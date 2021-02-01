@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os.log
+import OSLog
 
 /// - Make the Settings of this App globally available
 let settings: Settings = Settings()
@@ -108,15 +108,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
             return
         }
         
-        
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            if settings.codable.preferedAppearance == 0 {
-                window.overrideUserInterfaceStyle = .dark
-            } else if settings.codable.preferedAppearance == 1 {
-                window.overrideUserInterfaceStyle = .light
-            } else if settings.codable.preferedAppearance == 2 {
-                window.overrideUserInterfaceStyle = .unspecified
-            }
+            window.overrideUserInterfaceStyle = settings.preferedUserInterfaceStyle()
         }, completion: nil)
         
     }

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os.log
+import OSLog
 
 class ThumbnailGenerator {
     
@@ -47,8 +47,8 @@ class ThumbnailGenerator {
         let thumbnailRect = CGRect(x: 0, y: 0, width: width, height: width / aspectRatio)
         
         let thumbnailScale = UIScreen.main.scale * size.width / width
-        
-        let traitCollection = UITraitCollection.current
+                
+        let traitCollection = UITraitCollection(userInterfaceStyle: settings.preferedUserInterfaceStyle())
         
         thumbnailQueue.async {
             traitCollection.performAsCurrent {
