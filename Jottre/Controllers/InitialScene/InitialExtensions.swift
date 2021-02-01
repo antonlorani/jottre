@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os.log
+import OSLog
 
 
 // MARK: - NodeCollector
@@ -31,6 +31,8 @@ extension InitialViewController: SettingsObserver {
             return
         }
         nodeCollector.update()
+        nodeCollector.push()
+        
     }
     
 }

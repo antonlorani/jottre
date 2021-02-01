@@ -7,7 +7,7 @@
 
 import UIKit
 import PencilKit
-import os.log
+import OSLog
 
 class DrawViewController: UIViewController {
     
