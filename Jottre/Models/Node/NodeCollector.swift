@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os.log
+import OSLog
 import Foundation
 
 protocol NodeCollectorObserver {
@@ -31,7 +31,11 @@ class NodeCollector {
         return observersEnabledValue
     }
     
-    static func path() -> URL {
+    static func writePath() -> URL {
+        return Settings.getLocalPath()
+    }
+    
+    static func readPath() -> URL {
         return settings.getPath()
     }
     
@@ -54,7 +58,7 @@ class NodeCollector {
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
         pull()
-        initializeBackgroundFetch(interval: 5)
+        initializeBackgroundFetch(interval: 3)
     }
     
     
@@ -65,10 +69,9 @@ class NodeCollector {
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func pull(completion: ((Bool) -> Void)? = nil) {
         nodes = []
-        let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.path().path)
-        
+        let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.readPath().path)
         files.forEach { (name) in
-            let url = NodeCollector.path().appendingPathComponent(name)
+            let url = NodeCollector.readPath().appendingPathComponent(name)
             self.pullNode(url: url)
         }
         
@@ -82,7 +85,7 @@ class NodeCollector {
     ///   - url: Should point to a .jot file on the users file-system
     ///   - completion: Returns a boolean that indicates success or failure
     func pullNode(url: URL, completion: ((Bool) -> Void)? = nil) {
-        
+
         let node = Node(url: url)
             node.collector = self
             node.pull { (success) in
@@ -110,8 +113,8 @@ class NodeCollector {
     /// - Parameter completion: Returns a boolean that indicates success or failure and the hopefully created node
     func createNode(name: String, completion: ((_ success: Bool, _ node: Node?) -> Void)? = nil) {
         
-        let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.path())
-        let nodePath = NodeCollector.path().appendingPathComponent(name).appendingPathExtension("jot")
+        let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.writePath())
+        let nodePath = NodeCollector.writePath().appendingPathComponent(name).appendingPathExtension("jot")
         
         let node = Node(url: nodePath)
             node.collector = self
@@ -190,43 +193,54 @@ class NodeCollector {
                     isInitial = false
                     return
                 }
-                Logger.main.debug("Try fetching nodes...")
-
-                for node in self.nodes {
+                                
+                let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.readPath().path)
+                let fileURLs: [URL] = files.map({ NodeCollector.readPath().appendingPathComponent($0) })
+                fileURLs.forEach { (url) in
                     
-                    guard let nodeURL = node.url else {
-                        continue
-                    }
-                    
-                    if !FileManager.default.fileExists(atPath: nodeURL.path) {
-                        guard let index = self.nodes.firstIndex(of: node) else {
-                            continue
-                        }
-                        Logger.main.debug("Node has been removed from files")
-                        self.nodes.remove(at: index)
-                        continue
-                    }
-                    
-                    if Downloader.getStatus(url: nodeURL) == URLUbiquitousItemDownloadingStatus.current {
-                        continue
-                    }
-
-                    Logger.main.debug("Downloading newest version of node: \(nodeURL)")
-                    
-                    var finished: Bool = false
-                    let downloader = Downloader(url: nodeURL)
-                    downloader.execute { (success) in
-                        finished = true
+                    let tmpNode = Node(url: url)
+                    tmpNode.pull { (success) in
                         if success {
-                            node.pull()
-                            self.didUpdate()
+                                                        
+                            if let targetNode = self.nodes.filter({ $0.url == tmpNode.url! }).first {
+                                
+                                if Downloader.getStatus(url: targetNode.url!) == URLUbiquitousItemDownloadingStatus.current {
+                                    targetNode.pullHandler(url: targetNode.url!) { (pullSuccess) in
+                                        self.didUpdate()
+                                    }
+                                    return
+                                }
+                                                                
+                                var finished: Bool = false
+                                
+                                let downloader = Downloader(url: targetNode.url!)
+                                downloader.execute { (downloadSuccess) in
+                                    finished = true
+                                    if downloadSuccess {
+                                        targetNode.pullHandler(url: targetNode.url!) { (pullSuccess) in
+                                            self.didUpdate()
+                                        }
+                                    }
+                                }
+                                
+                                while !finished {}
+                                
+                            } else {
+                                self.nodes.append(tmpNode)
+                            }
+                            
                         }
                     }
-                    
-                    while !finished {} // Wait until process is finished. Then fetch the next node.
                     
                 }
                 
+                for node in self.nodes {
+                    if !fileURLs.contains(node.url!) {
+                        guard let index = self.nodes.firstIndex(of: node) else { continue }
+                        self.nodes.remove(at: index)
+                    }
+                }
+
             }
             
         }
