@@ -7,21 +7,11 @@
 
 import Foundation
 import PencilKit
-import os.log
+import OSLog
 
 
 /// A custom helper class that generates the thumbnails for a given Node
 var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
-
-
-/// The content of this struct will be serialized to a binary file
-struct NodeCodable: Codable {
-    
-    var drawing: PKDrawing = PKDrawing()
-    
-    var width: CGFloat = 1200
-    
-}
 
 
 /// This class will manage the processes of a NodeCodable
@@ -31,7 +21,7 @@ class Node: NSObject {
     // MARK: - Properties
     
     var name: String?
-    
+        
     var url: URL? {
         didSet {
             guard let url = url else { return }
@@ -47,7 +37,7 @@ class Node: NSObject {
     
     var thumbnail: UIImage?
     
-    var codable: NodeCodable?
+    var codable: NodeCodableV2?
     
     var collector: NodeCollector?
     
@@ -61,9 +51,7 @@ class Node: NSObject {
     /// - Parameter url: Should point to a .jot file on the users file-system
     init(url: URL) {
         super.init()
-        
-        setupValues(url: url, nodeCodable: NodeCodable())
-        
+        setupValues(url: url, nodeCodable: NodeCodableV2())
     }
     
     
@@ -71,7 +59,7 @@ class Node: NSObject {
     /// - Parameters:
     ///   - url: url passed via initializer
     ///   - nodeCodable: A valid NodeCodable object
-    private func setupValues(url: URL, nodeCodable: NodeCodable) {
+    private func setupValues(url: URL, nodeCodable: NodeCodableV2) {
         self.url = url
         self.codable = nodeCodable
     }
@@ -96,6 +84,13 @@ class Node: NSObject {
                 return
             }
             
+            if !settings.codable.usesCloud {
+                self.pullHandler(url: url) { (success) in
+                    completion?(success)
+                }
+                return
+            }
+            
             guard let status = self.status else {
                 completion?(false)
                 return
@@ -107,22 +102,22 @@ class Node: NSObject {
                 }
                 return
             }
-            
+
             let downloader = Downloader(url: url)
             downloader.execute { (success) in
-                
+
                 if !success {
                     Logger.main.error("Could not download node from file: \(url.path)")
                     completion?(false)
                     return
                 }
-                
+
                 self.url = url.cloudToJot()
-                
+
                 self.pullHandler(url: self.url!) { (success) in
                     completion?(success)
                 }
-                
+
             }
             
         }
@@ -140,22 +135,19 @@ class Node: NSObject {
             return
         }
         
-        pullData(url: url) { (success, data) in
+        Node.pullData(url: url) { (success, data) in
             
             guard let data = data, success != false else {
                 completion?(false)
                 return
             }
             
-            do {
-                let decoder = PropertyListDecoder()
-                self.dataHash = data.hashValue
-                self.codable = try decoder.decode(NodeCodable.self, from: data)
-            } catch {
-                Logger.main.error("Could not read data as Node.codable")
-                completion?(false)
+            guard let codable = self.decode(from: data) else {
                 return
             }
+            
+            self.codable = codable
+            self.dataHash = data.hashValue
             
             self.updateMeta()
             
@@ -170,7 +162,7 @@ class Node: NSObject {
     /// - Parameters:
     ///   - url: URL for the file
     ///   - completion: Returns boolean that indicates success or failure. Data is nil if fetch failed.
-    func pullData(url: URL, completion: ((Bool, Data?) -> Void)? = nil) {
+    static func pullData(url: URL, completion: ((Bool, Data?) -> Void)? = nil) {
         
         guard FileManager.default.fileExists(atPath: url.path) else {
             Logger.main.debug("File \(url.path) does not exist")
@@ -209,8 +201,37 @@ class Node: NSObject {
                 completion?(false)
             }
             
-            completion?(true)
+            guard var cloudURL = Settings.getCloudPath() else {
+                completion?(true)
+                return
+            }
+            var localURL = Settings.getLocalPath()
             
+            /// - Checks if this file is relevant to our iCloud | Local Storage discussion
+            if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
+                completion?(true)
+                return
+            }
+            
+            cloudURL = cloudURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
+            localURL = localURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
+                        
+            let sourceURL = settings.codable.usesCloud ? localURL : cloudURL
+            let destinationURL = settings.codable.usesCloud ? cloudURL : localURL
+            
+            /// - If the destinationURL already exists, there is no need to run the setUbiquitous method
+            if FileManager.default.fileExists(atPath: destinationURL.path) {
+                completion?(true)
+                return
+            }
+            
+            do {
+                try FileManager.default.setUbiquitous(settings.codable.usesCloud, itemAt: sourceURL, destinationURL: destinationURL)
+            } catch {
+                Logger.main.error("\(error.localizedDescription)")
+            }
+            
+            completion?(true)
         }
         
     }
@@ -221,9 +242,9 @@ class Node: NSObject {
     func updateMeta(completion: ((Bool) -> Void)? = nil) {
         
         thumbnailGenerator.execute(for: self) { [self] (success, image) in
-            self.thumbnail = image
+            thumbnail = image
             
-            if let collector = self.collector {
+            if let collector = collector {
                 collector.didUpdate()
             }
             
@@ -238,8 +259,9 @@ class Node: NSObject {
     func setDrawing(drawing: PKDrawing) {
         
         codable?.drawing = drawing
-        updateMeta()
+        codable?.lastModified = NSDate().timeIntervalSince1970
         
+        updateMeta()
         push()
         
     }
@@ -255,19 +277,22 @@ class Node: NSObject {
     ///   - completion: Returns a boolean that indicates success or failure
     func rename(to name: String, completion: ((Bool) -> Void)? = nil) {
         
-        guard let originPath = url, let destinationPath = url?.deletingLastPathComponent().appendingPathComponent(name).appendingPathExtension("jot") else {
+        guard let originURL = url, let destinationURL = url?.deletingLastPathComponent().appendingPathComponent(name).appendingPathExtension("jot") else {
             completion?(false)
             return
         }
         
         do {
-            try FileManager.default.moveItem(at: originPath, to: destinationPath)
+            try FileManager.default.moveItem(at: originURL, to: destinationURL)
         } catch {
             Logger.main.error("\(error.localizedDescription)")
             completion?(false)
         }
         
+        self.url = destinationURL
         self.name = name
+        
+        self.collector?.didUpdate()
         
         completion?(true)
         
@@ -277,7 +302,27 @@ class Node: NSObject {
     /// Clones the Node's content. Name will be updated automatically with suffix 'copy'
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func duplicate(completion: ((Bool) -> Void)? = nil) {
-        completion?(false)
+        
+        guard let name = self.name, let url = self.url, let collector = self.collector else {
+            completion?(false)
+            return
+        }
+        
+        let croppedURL = url.deletingPathExtension().deletingLastPathComponent()
+        
+        let updatedName = NodeCollector.computeCopyName(baseName: name, path: croppedURL)
+        
+        let node = Node(url: croppedURL.appendingPathComponent(updatedName).appendingPathExtension("jot"))
+        node.setDrawing(drawing: self.codable!.drawing)
+        node.pull { (success) in
+            if success {
+                collector.nodes.append(node)
+                completion?(true)
+                return
+            }
+            completion?(false)
+        }
+        
     }
     
     
