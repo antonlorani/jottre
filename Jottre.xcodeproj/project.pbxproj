@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A650EE6825C5819500830112 /* NodeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6725C5819500830112 /* NodeCodable.swift */; };
+		A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */; };
 		A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */; };
 		A6A8803E25BAB41E0080DD9D /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8803D25BAB41E0080DD9D /* Downloader.swift */; };
 		A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A650EE6725C5819500830112 /* NodeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCodable.swift; sourceTree = "<group>"; };
+		A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeDecoderExtension.swift; sourceTree = "<group>"; };
 		A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsCell.swift; sourceTree = "<group>"; };
 		A6A8803D25BAB41E0080DD9D /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				A6E3B83325B32BBC00C65157 /* Node.swift */,
+				A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */,
+				A650EE6725C5819500830112 /* NodeCodable.swift */,
 				A6E3B83625B32BC500C65157 /* NodeCollector.swift */,
 			);
 			path = Node;
@@ -327,6 +333,7 @@
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
 				A6C0D70325B9DB9D00336230 /* URL.swift in Sources */,
+				A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */,
 				A6BB131325B46E2D008C5D8A /* SettingsCell.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
@@ -342,6 +349,7 @@
 				A6A8803E25BAB41E0080DD9D /* Downloader.swift in Sources */,
 				A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */,
 				A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */,
+				A650EE6825C5819500830112 /* NodeCodable.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
 				A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */,
 				A6E3B82125B32AB400C65157 /* Logger.swift in Sources */,
@@ -500,6 +508,7 @@
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,6 +531,7 @@
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
