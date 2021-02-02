@@ -77,7 +77,7 @@ class InitialViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         
         nodeCollector.traitCollection = traitCollection
-    
+        
     }
     
     
@@ -155,8 +155,8 @@ class InitialViewController: UIViewController {
             }
             name = name == "" ? noteName : name
             
-            self.nodeCollector.createNode(name: name) { (success, node) in
-
+            self.nodeCollector.createNode(name: name) { (node) in
+                
                 guard let node = node else {
                     return
                 }
@@ -174,7 +174,7 @@ class InitialViewController: UIViewController {
                     }
                     
                 }
-                                
+                
             }
             
         }))

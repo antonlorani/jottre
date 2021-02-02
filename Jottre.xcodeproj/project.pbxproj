@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6350E5425C9CEFB0059E96E /* NodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6350E5325C9CEFB0059E96E /* NodeExtensions.swift */; };
 		A650EE6825C5819500830112 /* NodeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6725C5819500830112 /* NodeCodable.swift */; };
 		A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */; };
 		A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A6350E5325C9CEFB0059E96E /* NodeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeExtensions.swift; sourceTree = "<group>"; };
 		A650EE6725C5819500830112 /* NodeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCodable.swift; sourceTree = "<group>"; };
 		A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeDecoderExtension.swift; sourceTree = "<group>"; };
 		A65F231C25B5C1B000A0E870 /* IconSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsCell.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				A6E3B83325B32BBC00C65157 /* Node.swift */,
+				A6350E5325C9CEFB0059E96E /* NodeExtensions.swift */,
 				A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */,
 				A650EE6725C5819500830112 /* NodeCodable.swift */,
 				A6E3B83625B32BC500C65157 /* NodeCollector.swift */,
@@ -329,6 +332,7 @@
 				A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */,
 				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,
+				A6350E5425C9CEFB0059E96E /* NodeExtensions.swift in Sources */,
 				A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */,
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,

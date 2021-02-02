@@ -12,7 +12,7 @@ class ThumbnailGenerator {
     
     // MARK: - Properties
     
-    private let thumbnailQueue = DispatchQueue(label: "ThumbnailQueue", qos: .background)
+    private let thumbnailQueue = DispatchQueue(label: "ThumbnailQueue", qos: .default)
     
     var size: CGSize
     
@@ -35,27 +35,30 @@ class ThumbnailGenerator {
     ///   - node: Object of class Node. Requires that nodeCodable.drawing is not nil
     ///   - completion: A boolean that indicates success or failure and the resulting image (nil on failure)
     func execute(for node: Node, _ completion: @escaping (_ success: Bool, _ image: UIImage?) -> Void) {
+
+//        thumbnailQueue.async {
         
-        guard let drawing = node.codable?.drawing, let width = node.codable?.width else {
-            Logger.main.error("Cannot create thumbnail")
-            completion(false, nil)
-            return
-        }
-        
-        let aspectRatio = size.width / size.height
-        
-        let thumbnailRect = CGRect(x: 0, y: 0, width: width, height: width / aspectRatio)
-        
-        let thumbnailScale = UIScreen.main.scale * size.width / width
-                
-        let traitCollection = UITraitCollection(userInterfaceStyle: settings.preferedUserInterfaceStyle())
-        
-        thumbnailQueue.async {
+            guard let drawing = node.codable?.drawing, let width = node.codable?.width else {
+                Logger.main.error("Cannot create thumbnail")
+                completion(false, nil)
+                return
+            }
+            
+            let aspectRatio = self.size.width / self.size.height
+            
+            let thumbnailRect = CGRect(x: 0, y: 0, width: width, height: width / aspectRatio)
+            
+            let thumbnailScale = UIScreen.main.scale * self.size.width / width
+                    
+            let traitCollection = UITraitCollection(userInterfaceStyle: settings.preferedUserInterfaceStyle())
+            
             traitCollection.performAsCurrent {
                 let image = drawing.image(from: thumbnailRect, scale: thumbnailScale)
                 completion(true, image)
             }
-        }
+            
+//        }
+        
     }
     
 }

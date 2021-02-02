@@ -24,7 +24,7 @@ extension InitialViewController: NodeCollectorObserver {
 // MARK: - Settings
 
 extension InitialViewController: SettingsObserver {
-    
+        
     func settingsDidChange(_ settings: Settings) {
         if initialLoad {
             initialLoad = false
@@ -68,7 +68,7 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         
         let drawController = DrawViewController(node: nodeCollector.nodes[indexPath.row])
         navigationController?.pushViewController(drawController, animated: true)
-                
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

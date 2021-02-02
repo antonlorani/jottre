@@ -58,7 +58,9 @@ class NodeCollector {
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
         pull()
+        
         initializeBackgroundFetch(interval: 1)
+        
     }
     
     
@@ -111,7 +113,7 @@ class NodeCollector {
     /// Creates a new Node for given name
     /// - Parameter name: This will be the name and filename (without suffix .jot) of the Node
     /// - Parameter completion: Returns a boolean that indicates success or failure and the hopefully created node
-    func createNode(name: String, completion: ((_ success: Bool, _ node: Node?) -> Void)? = nil) {
+    func createNode(name: String, completion: @escaping (_ node: Node?) -> Void) {
         
         let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.writePath())
         let nodePath = NodeCollector.writePath().appendingPathComponent(name).appendingPathExtension("jot")
@@ -119,9 +121,9 @@ class NodeCollector {
         let node = Node(url: nodePath)
             node.collector = self
             node.push { (success) in
-                completion?(success, success ? node : nil)
+                completion(success ? node : nil)
             }
-        
+                
     }
     
     
@@ -185,6 +187,8 @@ class NodeCollector {
         
         var isInitial: Bool = true
         
+        var downloadingFilesFromURL: [URL] = []
+        
         DispatchQueue.main.async {
             
             Timer.scheduledTimer(withTimeInterval: TimeInterval(interval), repeats: true) { (timer) in
@@ -193,47 +197,63 @@ class NodeCollector {
                     isInitial = false
                     return
                 }
-                                
+                
                 let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.readPath().path)
                 let fileURLs: [URL] = files.map({ NodeCollector.readPath().appendingPathComponent($0) })
-                fileURLs.forEach { (url) in
+                
+                for url in fileURLs {
+                    
+                    if !url.isJot() {
+                        continue
+                    }
                     
                     let tmpNode = Node(url: url)
                     tmpNode.pull { (success) in
-                        if success {
-                                                        
-                            if let targetNode = self.nodes.filter({ $0.url == tmpNode.url! }).first {
-                                
-                                if Downloader.getStatus(url: targetNode.url!) == URLUbiquitousItemDownloadingStatus.current {
-                                    targetNode.pullHandler(url: targetNode.url!) { (pullSuccess) in
-                                        self.didUpdate()
-                                    }
-                                    return
+                        
+                        if let targetNode = self.nodes.filter({ $0.url == tmpNode.url! }).first {
+
+                            if !Downloader.isCloudEnabled {
+                                return
+                            }
+
+                            /// - Grab the iCloud file status (Only available if file in cloud)
+                            if Downloader.getStatus(url: targetNode.url!) == URLUbiquitousItemDownloadingStatus.current {
+                                targetNode.pullHandler { (success) in
+                                    self.didUpdate()
                                 }
-                                                                
-                                var finished: Bool = false
-                                
-                                let downloader = Downloader(url: targetNode.url!)
-                                downloader.execute { (downloadSuccess) in
-                                    finished = true
-                                    if downloadSuccess {
-                                        targetNode.pullHandler(url: targetNode.url!) { (pullSuccess) in
-                                            self.didUpdate()
-                                        }
-                                    }
-                                }
-                                
-                                while !finished {}
-                                
-                            } else {
-                                self.nodes.append(tmpNode)
+                                return
                             }
                             
+                            /// - Checking if our targetURL has already downloading
+                            if downloadingFilesFromURL.contains(targetNode.url!) { return }
+                            
+                            /// - Downloading file from iCloud
+                            let downloader = Downloader(url: targetNode.url!)
+                            downloadingFilesFromURL.append(targetNode.url!)
+                            downloader.execute { (downloadSuccess) in
+
+                                if downloadSuccess {
+                                    
+                                    let index = downloadingFilesFromURL.firstIndex(of: targetNode.url!)
+                                    downloadingFilesFromURL.remove(at: index!)
+                                    
+                                    targetNode.pullHandler { (success) in
+                                        self.didUpdate()
+                                    }
+                                    
+                                }
+
+                            }
+                            
+                        } else {
+                            self.nodes.append(tmpNode)
                         }
+                            
                     }
                     
                 }
                 
+                /// - Checking if any  inmemory-node has been removed from the directory
                 for node in self.nodes {
                     if !fileURLs.contains(node.url!) {
                         guard let index = self.nodes.firstIndex(of: node) else { continue }
@@ -244,7 +264,7 @@ class NodeCollector {
             }
             
         }
-        
+                    
     }
     
     

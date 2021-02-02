@@ -74,35 +74,35 @@ class Node: NSObject {
     
     /// Prepares pull of the node from drive.
     /// - Parameter completion: Returns a boolean that indicates success or failure
-    func pull(completion: ((Bool) -> Void)? = nil) {
+    func pull(completion: @escaping (_ success: Bool) -> Void) {
         
         serializationQueue.async {
             
             guard let url = self.url else {
-                completion?(false)
+                completion(false)
                 return
             }
-            
+                
             if !url.isCloudAndJot() && !url.isJot() {
-                completion?(false)
+                completion(false)
                 return
             }
-            
+                
             if !settings.codable.usesCloud {
-                self.pullHandler(url: url) { (success) in
-                    completion?(success)
+                self.pullHandler { (success) in
+                    completion(success)
                 }
                 return
             }
-            
+                
             guard let status = self.status else {
-                completion?(false)
+                completion(false)
                 return
             }
-            
+                
             if status == .current {
-                self.pullHandler(url: url) { (success) in
-                    completion?(success)
+                self.pullHandler { (success) in
+                    completion(success)
                 }
                 return
             }
@@ -112,14 +112,14 @@ class Node: NSObject {
 
                 if !success {
                     Logger.main.error("Could not download node from file: \(url.path)")
-                    completion?(false)
+                    completion(false)
                     return
                 }
 
                 self.url = url.cloudToJot()
 
-                self.pullHandler(url: self.url!) { (success) in
-                    completion?(success)
+                self.pullHandler { (success) in
+                    completion(success)
                 }
 
             }
@@ -128,36 +128,39 @@ class Node: NSObject {
         
     }
     
-    
+        
     /// Loads the Node from file
     /// - Parameter url: URL to load the file from.
-    func pullHandler(url: URL, completion: ((Bool) -> Void)? = nil) {
+    func pullHandler(completion: @escaping (_ success: Bool) -> Void) {
         
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            Logger.main.debug("File \(url.path) does not exist")
-            completion?(false)
-            return
-        }
-        
-        Node.pullData(url: url) { (success, data) in
+        serializationQueue.async {
             
-            guard let data = data, success != false else {
-                completion?(false)
+            guard let url = self.url, FileManager.default.fileExists(atPath: url.path) else {
+                completion(false)
                 return
             }
             
-            guard let codable = self.decode(from: data) else {
-                return
+            self.pullData { (data) in
+                guard let data = data else {
+                    completion(false)
+                    return
+                }
+                
+                guard let decodedCodable = self.decode(from: data) else {
+                    completion(false)
+                    return
+                }
+                
+                if !self.isOpened {
+                    self.initialDataHash = data.hashValue
+                }
+                
+                self.codable = decodedCodable
+                self.updateMeta()
+                
+                completion(true)
+                
             }
-            
-            if !self.isOpened {
-                self.initialDataHash = data.hashValue
-            }
-            
-            self.codable = codable
-            self.updateMeta()
-            
-            completion?(true)
             
         }
         
@@ -166,22 +169,23 @@ class Node: NSObject {
     
     /// Pulls the file-data from given url
     /// - Parameters:
-    ///   - url: URL for the file
     ///   - completion: Returns boolean that indicates success or failure. Data is nil if fetch failed.
-    static func pullData(url: URL, completion: ((Bool, Data?) -> Void)? = nil) {
+    func pullData(completion: @escaping (_ data: Data?) -> Void) {
         
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            Logger.main.debug("File \(url.path) does not exist")
-            completion?(false, nil)
+        guard let url = self.url, FileManager.default.fileExists(atPath: url.path) else {
+            completion(nil)
             return
         }
         
-        do {
-            let data = try Data(contentsOf: url)
-            completion?(true, data)
-        } catch {
-            Logger.main.error("Could not read node from file: \(url.path)")
-            completion?(false, nil)
+        serializationQueue.async {
+            
+            do {
+                let data = try Data(contentsOf: url)
+                completion(data)
+            } catch {
+                completion(nil)
+            }
+            
         }
         
     }
@@ -189,19 +193,25 @@ class Node: NSObject {
     
     /// Helper method that serializes the codable object to data
     /// - Returns: If success the codable as data. If failure nil.
-    func prepareData() -> Data? {
+    func prepareData(completion: @escaping (_ data: Data?) -> Void) {
         
         guard let nodeCodable = self.codable else {
-            return nil
+            completion(nil)
+            return
         }
         
-        do {
-            let encoder = PropertyListEncoder()
-            let data = try encoder.encode(nodeCodable)
-            return data
-        } catch {
-            Logger.main.error("Could not encode nodeCodable")
-            return nil
+        serializationQueue.async {
+            
+            do {
+                let encoder = PropertyListEncoder()
+                let data = try encoder.encode(nodeCodable)
+                completion(data)
+                return
+            } catch {
+                completion(nil)
+                return
+            }
+            
         }
         
     }
@@ -209,72 +219,52 @@ class Node: NSObject {
     
     /// Writing Node to file
     /// - Parameter completion: Returns a boolean that indicates success or failure
-    func push(completion: ((Bool) -> Void)? = nil) {
+    func push(completion: @escaping (_ success: Bool) -> Void) {
         
         serializationQueue.async {
             
-            guard let data = self.prepareData(), let url = self.url else {
-                completion?(false)
-                return
-            }
-                        
-            do {
-                try data.write(to: url)
-            } catch {
-                Logger.main.error("Could not write data to file: \(error.localizedDescription)")
-                completion?(false)
-            }
-            
-            self.initialDataHash = data.hashValue
-            
-            guard var cloudURL = Settings.getCloudPath() else {
-                completion?(true)
-                return
-            }
-            var localURL = Settings.getLocalPath()
-            
-            /// - Checks if this file is relevant to our iCloud | Local Storage discussion
-            if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
-                completion?(true)
+            guard let url = self.url else {
+                completion(false)
                 return
             }
             
-            cloudURL = cloudURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
-            localURL = localURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
-                        
-            let sourceURL = settings.codable.usesCloud ? localURL : cloudURL
-            let destinationURL = settings.codable.usesCloud ? cloudURL : localURL
-            
-            /// - If the destinationURL already exists, there is no need to run the setUbiquitous method
-            if FileManager.default.fileExists(atPath: destinationURL.path) {
-                completion?(true)
-                return
+            self.prepareData { (data) in
+                guard let data = data else {
+                    completion(false)
+                    return
+                }
+                
+                do {
+                    try data.write(to: url)
+                    self.initialDataHash = data.hashValue
+                } catch {
+                    Logger.main.error("Could not write data to file: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                self.moveFilesIfNeeded()
+                completion(true)
+                
             }
             
-            do {
-                try FileManager.default.setUbiquitous(settings.codable.usesCloud, itemAt: sourceURL, destinationURL: destinationURL)
-            } catch {
-                Logger.main.error("\(error.localizedDescription)")
-            }
-            
-            completion?(true)
         }
         
     }
     
     
     /// Updates meta-data such as the thumbnail of the Node
-    /// - Parameter completion: Returns a boolean that indicates success or failure
-    func updateMeta(completion: ((Bool) -> Void)? = nil) {
+    /// - Parameter completion: Returns a boolean that indicates success or failure    
+    func updateMeta(completion: @escaping (_ success: Bool) -> Void) {
         
-        thumbnailGenerator.execute(for: self) { [self] (success, image) in
-            thumbnail = image
+        thumbnailGenerator.execute(for: self) { (success, image) in
+            self.thumbnail = image
             
-            if let collector = collector {
+            if let collector = self.collector {
                 collector.didUpdate()
             }
             
-            completion?(success)
+            completion(success)
         }
         
     }
@@ -295,6 +285,43 @@ class Node: NSObject {
     
     
     // MARK: - Filesystem methods
+    
+    /// Moves all files in root directoy to cloud or local path
+    /// - Returns: Success or failure (true, false)
+    func moveFilesIfNeeded() -> Bool {
+
+        guard var cloudURL = Settings.getCloudPath(), let url = self.url else {
+            return true
+        }
+        var localURL = Settings.getLocalPath()
+            
+
+        /// - Checks if this file is relevant to our iCloud | Local Storage discussion
+        if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
+            return true
+        }
+            
+        cloudURL = cloudURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
+        localURL = localURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
+                        
+        let sourceURL = settings.codable.usesCloud ? localURL : cloudURL
+        let destinationURL = settings.codable.usesCloud ? cloudURL : localURL
+        
+
+        /// - If the destinationURL already exists, there is no need to run the setUbiquitous method
+        if FileManager.default.fileExists(atPath: destinationURL.path) {
+            return true
+        }
+            
+        do {
+            try FileManager.default.moveItem(at: sourceURL, to: destinationURL)
+        } catch {
+            Logger.main.error("\(error.localizedDescription)")
+        }
+        
+        return true
+        
+    }
     
     
     /// Checks wether there the node-file has changed after we read into memory
