@@ -243,7 +243,7 @@ class Node: NSObject {
                     return
                 }
                 
-                self.moveFilesIfNeeded()
+                _ = self.moveFilesIfNeeded()
                 completion(true)
                 
             }
