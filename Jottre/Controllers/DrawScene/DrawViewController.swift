@@ -221,24 +221,26 @@ class DrawViewController: UIViewController {
             }
 
             Logger.main.warning("Files in conflict")
-
-            let alertTitle = NSLocalizedString("File conflict found", comment: "")
-            let alertMessage = String(format: NSLocalizedString("The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.", comment: "File conflict found (What happened, How to fix)"), self.node.name ?? "?")
-            let alertActionOverwriteTitle = NSLocalizedString("Overwrite", comment: "")
-            let alertActionCloseTitle = NSLocalizedString("Close without saving", comment: "")
-            let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
-
-            let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: alertActionOverwriteTitle, style: .destructive, handler: { (action) in
-                self.writeDrawing()
-            }))
-            alertController.addAction(UIAlertAction(title: alertActionCloseTitle, style: .destructive, handler: { (action) in
-                self.navigationController?.popViewController(animated: true)
-            }))
-            alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
-
+            
             DispatchQueue.main.async {
+
+                let alertTitle = NSLocalizedString("File conflict found", comment: "")
+                let alertMessage = String(format: NSLocalizedString("The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.", comment: "File conflict found (What happened, How to fix)"), self.node.name ?? "?")
+                let alertActionOverwriteTitle = NSLocalizedString("Overwrite", comment: "")
+                let alertActionCloseTitle = NSLocalizedString("Close without saving", comment: "")
+                let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
+
+                let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: alertActionOverwriteTitle, style: .destructive, handler: { (action) in
+                    self.writeDrawing()
+                }))
+                alertController.addAction(UIAlertAction(title: alertActionCloseTitle, style: .destructive, handler: { (action) in
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
+
                 self.present(alertController, animated: true, completion: nil)
+                
             }
 
         }
@@ -246,6 +248,7 @@ class DrawViewController: UIViewController {
     }
     
     func writeDrawing() {
+        Logger.main.info("Storing document")
         DispatchQueue.main.async {
             self.node.setDrawing(drawing: self.canvasView.drawing)
             self.navigationController?.popViewController(animated: true)

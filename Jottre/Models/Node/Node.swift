@@ -312,6 +312,7 @@ class Node: NSObject {
         
         let tmpNode = Node(url: tmpURL)
         tmpNode.pull { (success) in
+
             if !success {
                 completion?(false)
                 return
@@ -319,9 +320,10 @@ class Node: NSObject {
             
             if tmpNode.initialDataHash != self.initialDataHash {
                 completion?(true)
+            } else {
+                completion?(false)
             }
             
-            completion?(false)
         }
         
     }
