@@ -21,6 +21,8 @@ class Node: NSObject {
     // MARK: - Properties
     
     var name: String?
+    
+    var isOpened: Bool = false
         
     var url: URL? {
         didSet {
@@ -33,7 +35,9 @@ class Node: NSObject {
         return Downloader.getStatus(url: self.url)
     }
     
-    var dataHash: Int?
+    var initialDataHash: Int?
+    
+    var currentDataHash: Int?
     
     var thumbnail: UIImage?
     
@@ -146,9 +150,11 @@ class Node: NSObject {
                 return
             }
             
-            self.codable = codable
-            self.dataHash = data.hashValue
+            if !self.isOpened {
+                self.initialDataHash = data.hashValue
+            }
             
+            self.codable = codable
             self.updateMeta()
             
             completion?(true)
@@ -181,25 +187,45 @@ class Node: NSObject {
     }
     
     
+    /// Helper method that serializes the codable object to data
+    /// - Returns: If success the codable as data. If failure nil.
+    func prepareData() -> Data? {
+        
+        guard let nodeCodable = self.codable else {
+            return nil
+        }
+        
+        do {
+            let encoder = PropertyListEncoder()
+            let data = try encoder.encode(nodeCodable)
+            return data
+        } catch {
+            Logger.main.error("Could not encode nodeCodable")
+            return nil
+        }
+        
+    }
+    
+    
     /// Writing Node to file
     /// - Parameter completion: Returns a boolean that indicates success or failure
     func push(completion: ((Bool) -> Void)? = nil) {
         
         serializationQueue.async {
             
-            guard let nodeCodable = self.codable, let url = self.url else {
+            guard let data = self.prepareData(), let url = self.url else {
                 completion?(false)
                 return
             }
-            
+                        
             do {
-                let encoder = PropertyListEncoder()
-                let data = try encoder.encode(nodeCodable)
                 try data.write(to: url)
             } catch {
-                Logger.main.error("Could not write NodeCodable to file: \(error.localizedDescription)")
+                Logger.main.error("Could not write data to file: \(error.localizedDescription)")
                 completion?(false)
             }
+            
+            self.initialDataHash = data.hashValue
             
             guard var cloudURL = Settings.getCloudPath() else {
                 completion?(true)
@@ -265,10 +291,41 @@ class Node: NSObject {
         push()
         
     }
- 
+    
     
     
     // MARK: - Filesystem methods
+    
+    
+    /// Checks wether there the node-file has changed after we read into memory
+    /// - Parameter completion: Boolean value that indicates an inConflict or a notInConflict
+    func inConflict(completion: ((Bool) -> Void)? = nil) {
+        
+        guard let url = self.url else {
+            completion?(false)
+            return
+        }
+        
+        let cloudURL = url.deletingPathExtension().deletingLastPathComponent().appendingPathComponent(".\(self.name!)").appendingPathExtension("jot").appendingPathExtension("icloud")
+
+        let tmpURL = FileManager.default.fileExists(atPath: cloudURL.path) ? cloudURL : url
+        
+        let tmpNode = Node(url: tmpURL)
+        tmpNode.pull { (success) in
+            if !success {
+                completion?(false)
+                return
+            }
+            
+            if tmpNode.initialDataHash != self.initialDataHash {
+                completion?(true)
+            }
+            
+            completion?(false)
+        }
+        
+    }
+    
     
     /// Renames the Nodes name
     /// IMPORTANT: - name = name.jot; name.jot = name

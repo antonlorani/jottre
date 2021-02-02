@@ -58,7 +58,7 @@ class NodeCollector {
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
         pull()
-        initializeBackgroundFetch(interval: 3)
+        initializeBackgroundFetch(interval: 1)
     }
     
     

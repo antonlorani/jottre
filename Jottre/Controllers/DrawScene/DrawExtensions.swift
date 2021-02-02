@@ -11,8 +11,14 @@ import PencilKit
 extension DrawViewController: PKCanvasViewDelegate {
     
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        hasModifiedDrawing = true
         updateContentSizeForDrawing()
+
+        if modifiedCount == 1 {
+            hasModifiedDrawing = true
+        } else {
+            modifiedCount += 1
+        }
+    
     }
     
 }

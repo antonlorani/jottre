@@ -89,6 +89,19 @@
 "https://support.apple.com/en-us/HT208681" = "https://support.apple.com/en-us/HT208681";
 
 
+
+/// - File-Conflict alert
+
+"File conflict found" = "File conflict found";
+
+"The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem." = "The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.";
+
+"Overwrite" = "Overwrite";
+
+"Close without saving" = "Close without saving";
+
+
+
 /// - Settings
 
 "Settings" = "Settings";

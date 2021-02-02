@@ -77,6 +77,7 @@
 "Enable iCloud to unlock the full potential of Jottre" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen";
 
 
+
 /// - Info Alert iCloud
 
 "iCloud disabled" = "iCloud inaktiv";
@@ -86,6 +87,19 @@
 "How to enable iCloud" = "Wie aktiviere ich iCloud";
 
 "https://support.apple.com/en-us/HT208681" = "https://support.apple.com/de-de/HT208681";
+
+
+
+/// - File-Conflict alert
+
+"File conflict found" = "Dateikonflikt gefunden";
+
+"The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem." = "Die Datei konnte nicht gespeichert werden. Es scheint, als hätte sich die Originaldatei (%d.jot) auf dem Datenträger geändert. (Vielleicht wurde sie zur gleichen Zeit auf einem anderen Gerät bearbeitet?). Verwende eine der folgenden Optionen, um das Problem zu beheben.";
+
+"Overwrite" = "Überschreiben";
+
+"Close without saving" = "Schließen ohne Speichern";
+
 
 
 /// - Settings

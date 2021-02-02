@@ -7,11 +7,13 @@
 
 import UIKit
 
-class NavigationButton: UIButton {
+class NavigationButton: UILabel {
     
     // MARK: - Properties
     
     var title: String = "Button"
+    
+    private var tapGesture: UITapGestureRecognizer!
     
     
     
@@ -19,8 +21,13 @@ class NavigationButton: UIButton {
     
     init(title: String, target: Any, action: Selector) {
         super.init(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 30)))
-        self.addTarget(target, action: action, for: .touchUpInside)
+        
         self.title = title
+        
+        self.tapGesture = UITapGestureRecognizer(target: target, action: action)
+        self.tapGesture.numberOfTouchesRequired = 1
+        self.tapGesture.numberOfTapsRequired = 1
+        
     }
     
     required init?(coder: NSCoder) {
@@ -42,12 +49,17 @@ class NavigationButton: UIButton {
     
     func setupViews() {
         
+        addGestureRecognizer(tapGesture)
+        
         backgroundColor = .systemBlue
         
-        setTitleColor(.white, for: .normal)
-        setTitle(title, for: .normal)
+        isUserInteractionEnabled = true
         
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        textColor = .white
+        text = title
+        textAlignment = .center
+                
+        font = UIFont.boldSystemFont(ofSize: 18)
         
         layer.cornerRadius = 15
         layer.masksToBounds = true

@@ -15,11 +15,16 @@ class DrawViewController: UIViewController {
     
     var node: Node!
     
+    var modifiedCount: Int = 0
+        
     var hasModifiedDrawing: Bool = false {
         didSet {
 
             if hasModifiedDrawing {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawing)))
+                
+                navigationItem.hidesBackButton = true
+                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler)))
+
             }
             
         }
@@ -40,7 +45,7 @@ class DrawViewController: UIViewController {
     var canvasView: PKCanvasView = {
         let canvasView = PKCanvasView()
             canvasView.translatesAutoresizingMaskIntoConstraints = false
-            canvasView.drawingPolicy = .pencilOnly
+            canvasView.drawingPolicy = .default
             canvasView.alwaysBounceVertical = true
             canvasView.maximumZoomScale = 3
         return canvasView
@@ -89,10 +94,20 @@ class DrawViewController: UIViewController {
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        node.isOpened = true
+        
+    }
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         view.window?.windowScene?.screenshotService?.delegate = nil
+        
+        node.isOpened = false
         
     }
     
@@ -143,10 +158,10 @@ class DrawViewController: UIViewController {
     
     private func setupDelegates() {
         
-        guard node != nil, node.codable != nil else { return }
+        guard let nodeCodable = node.codable else { return }
         
         canvasView.delegate = self
-        canvasView.drawing = node.codable!.drawing
+        canvasView.drawing = nodeCodable.drawing
         canvasView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if !UIDevice.isLimited() {
@@ -189,15 +204,52 @@ class DrawViewController: UIViewController {
         alertController.addAction(createExportToPNGAction())
         alertController.addAction(createShareAction())
         alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
-                
+        
         present(alertController, animated: true, completion: nil)
         
     }
     
     
-    @objc func writeDrawing() {
-        node.setDrawing(drawing: canvasView.drawing)
-        self.navigationController?.popViewController(animated: true)
+    @objc func writeDrawingHandler() {
+        
+        node.inConflict { (conflict) in
+            
+            if !conflict {
+                Logger.main.info("Files not in conflict")
+                self.writeDrawing()
+                return
+            }
+
+            Logger.main.warning("Files in conflict")
+
+            let alertTitle = NSLocalizedString("File conflict found", comment: "")
+            let alertMessage = String(format: NSLocalizedString("The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.", comment: "File conflict found (What happened, How to fix)"), self.node.name ?? "?")
+            let alertActionOverwriteTitle = NSLocalizedString("Overwrite", comment: "")
+            let alertActionCloseTitle = NSLocalizedString("Close without saving", comment: "")
+            let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
+
+            let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: alertActionOverwriteTitle, style: .destructive, handler: { (action) in
+                self.writeDrawing()
+            }))
+            alertController.addAction(UIAlertAction(title: alertActionCloseTitle, style: .destructive, handler: { (action) in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
+
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
+
+        }
+        
+    }
+    
+    func writeDrawing() {
+        DispatchQueue.main.async {
+            self.node.setDrawing(drawing: self.canvasView.drawing)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
 }
