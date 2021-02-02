@@ -71,8 +71,14 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, willEndContextMenuInteraction configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+            self.nodeCollector.startBackgroundFetch()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-                
+        nodeCollector.pauseBackgroundFetch()
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (actions) -> UIMenu? in
             
             let actions = [
