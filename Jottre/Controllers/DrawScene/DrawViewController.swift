@@ -15,7 +15,15 @@ class DrawViewController: UIViewController {
     
     var node: Node!
     
-    var hasModifiedDrawing: Bool = false
+    var hasModifiedDrawing: Bool = false {
+        didSet {
+
+            if hasModifiedDrawing {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawing)))
+            }
+            
+        }
+    }
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -83,10 +91,6 @@ class DrawViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        if hasModifiedDrawing {
-            node.setDrawing(drawing: canvasView.drawing)
-        }
         
         view.window?.windowScene?.screenshotService?.delegate = nil
         
@@ -188,6 +192,12 @@ class DrawViewController: UIViewController {
                 
         present(alertController, animated: true, completion: nil)
         
+    }
+    
+    
+    @objc func writeDrawing() {
+        node.setDrawing(drawing: canvasView.drawing)
+        self.navigationController?.popViewController(animated: true)
     }
     
 }
