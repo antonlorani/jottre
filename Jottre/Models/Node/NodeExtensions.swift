@@ -9,6 +9,8 @@ import Foundation
 
 extension Node {
     
+    /// Some helper methods so that we can use the methods below without the completion handler
+    
     func push() { push { (_) in } }
     
     func prepareData() { prepareData { (_) in } }
