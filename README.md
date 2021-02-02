@@ -28,6 +28,10 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 ## Preview
 
 <p align="center" >
+  <img src="images/mini.jpg" style="width: calc(100% - 20px);" height=auto>
+</p>
+
+<p align="center" >
   <img src="images/cloud.jpg" style="width: calc(100% - 20px);" height=auto>
 </p>
 
@@ -43,8 +47,10 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 
 ## Known issues
 
-- [ ] Drawings are not rendered in the correct userInterfaceStyle (when starting the app)
-- [ ] iCloud synchronization is not fast enough (documents are not uploaded directly)
+- [x] Drawings are not rendered in the correct userInterfaceStyle (when starting the app)
+- [x] iCloud synchronization is not fast enough (documents are not uploaded directly)
+- [ ] Animation of CollectionViewCells (Deleting, Inserting...) not implemented
+- [ ] Deleting items takes too much time
 
 
 
