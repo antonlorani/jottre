@@ -259,7 +259,7 @@ class Node: NSObject {
         
         thumbnailGenerator.execute(for: self) { (success, image) in
             self.thumbnail = image
-            
+                        
             if let collector = self.collector {
                 collector.didUpdate()
             }
@@ -421,19 +421,13 @@ class Node: NSObject {
             return
         }
         
-        guard let collector = collector, let index = collector.nodes.firstIndex(of: self) else {
-            completion?(false)
-            return
-        }
-        
         do {
             try FileManager.default.removeItem(at: url)
         } catch {
             Logger.main.error("Could not delete Node at \(url). Reason: \(error.localizedDescription)")
             completion?(false)
         }
-
-        collector.nodes.remove(at: index)
+        
         completion?(true)
 
     }

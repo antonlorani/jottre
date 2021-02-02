@@ -64,22 +64,8 @@ extension InitialViewController {
         let (title, image) = (NSLocalizedString("Delete", comment: ""), UIImage(systemName: "trash"))
         
         let confirmDeleteAction = UIAction(title: "\(title)?", image: image, attributes: .destructive) { (action) in
-            
-            self.nodeCollector.disableObservers()
-            self.nodeCollector.nodes[indexPath.row].delete { (success) in
-                if !success { return }
-                
-                DispatchQueue.main.async {
-                    
-                    self.collectionView.performBatchUpdates {
-                        self.collectionView.deleteItems(at: [indexPath])
-                    } completion: { (_) in
-                        self.nodeCollector.enableObservers()
-                    }
-                    
-                }
-                
-            }
+                        
+            self.nodeCollector.nodes[indexPath.row].delete()
             
         }
         

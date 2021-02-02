@@ -36,7 +36,7 @@ class ThumbnailGenerator {
     ///   - completion: A boolean that indicates success or failure and the resulting image (nil on failure)
     func execute(for node: Node, _ completion: @escaping (_ success: Bool, _ image: UIImage?) -> Void) {
 
-//        thumbnailQueue.async {
+        thumbnailQueue.async {
         
             guard let drawing = node.codable?.drawing, let width = node.codable?.width else {
                 Logger.main.error("Cannot create thumbnail")
@@ -57,7 +57,7 @@ class ThumbnailGenerator {
                 completion(true, image)
             }
             
-//        }
+        }
         
     }
     

@@ -118,11 +118,11 @@ class NodeCollector {
         let name = NodeCollector.computeCopyName(baseName: name, path: NodeCollector.writePath())
         let nodePath = NodeCollector.writePath().appendingPathComponent(name).appendingPathExtension("jot")
         
-        let node = Node(url: nodePath)
-            node.collector = self
-            node.push { (success) in
-                completion(success ? node : nil)
-            }
+        let tmpNode = Node(url: nodePath)
+        tmpNode.collector = self
+        tmpNode.push { (success) in
+            completion(success ? tmpNode : nil)
+        }
                 
     }
     
@@ -203,7 +203,7 @@ class NodeCollector {
                 
                 for url in fileURLs {
                     
-                    if !url.isJot() {
+                    if !url.isJot() && !url.isCloudAndJot() {
                         continue
                     }
                     
@@ -218,12 +218,22 @@ class NodeCollector {
 
                             /// - Grab the iCloud file status (Only available if file in cloud)
                             if Downloader.getStatus(url: targetNode.url!) == URLUbiquitousItemDownloadingStatus.current {
-                                targetNode.pullHandler { (success) in
-                                    self.didUpdate()
+                                targetNode.pullData { (data) in
+                                 
+                                    guard let data = data else {
+                                        return
+                                    }
+                                    
+                                    if data.hashValue != targetNode.initialDataHash {
+                                        targetNode.pullHandler { (success) in
+                                            self.didUpdate()
+                                        }
+                                    }
+                                    
                                 }
                                 return
                             }
-                            
+
                             /// - Checking if our targetURL has already downloading
                             if downloadingFilesFromURL.contains(targetNode.url!) { return }
                             
@@ -246,6 +256,7 @@ class NodeCollector {
                             }
                             
                         } else {
+                            tmpNode.collector = self
                             self.nodes.append(tmpNode)
                         }
                             

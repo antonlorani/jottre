@@ -156,24 +156,24 @@ class InitialViewController: UIViewController {
             name = name == "" ? noteName : name
             
             self.nodeCollector.createNode(name: name) { (node) in
-                
-                guard let node = node else {
-                    return
-                }
-                
-                self.nodeCollector.disableObservers()
-                self.nodeCollector.nodes.append(node)
-                
-                DispatchQueue.main.async {
-                    
-                    self.collectionView.performBatchUpdates {
-                        let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
-                        self.collectionView.insertItems(at: [indexPath])
-                    } completion: { (success) in
-                        self.nodeCollector.enableObservers()
-                    }
-                    
-                }
+//                
+//                guard let node = node else {
+//                    return
+//                }
+//                
+//                self.nodeCollector.disableObservers()
+//                self.nodeCollector.nodes.append(node)
+//                
+//                DispatchQueue.main.async {
+//                    
+//                    self.collectionView.performBatchUpdates {
+//                        let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
+//                        self.collectionView.insertItems(at: [indexPath])
+//                    } completion: { (success) in
+//                        self.nodeCollector.enableObservers()
+//                    }
+//                    
+//                }
                 
             }
             
