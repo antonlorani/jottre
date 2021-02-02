@@ -170,7 +170,7 @@ class NodeCollector {
     // MARK: - BackgroundFetch methods
     
     /// Activates Background fetches
-    func startBackgroundFetch() {
+    func continueBackgroundFetch() {
         backgroundFetchIsActiveValue = true
     }
     

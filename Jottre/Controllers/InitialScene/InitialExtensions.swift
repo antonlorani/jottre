@@ -73,7 +73,7 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, willEndContextMenuInteraction configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
-            self.nodeCollector.startBackgroundFetch()
+            self.nodeCollector.continueBackgroundFetch()
         }
     }
     

@@ -120,7 +120,7 @@ class InitialViewController: UIViewController {
         nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
-        nodeCollector.startBackgroundFetch()
+        nodeCollector.continueBackgroundFetch()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.collectionView.delegate = self
