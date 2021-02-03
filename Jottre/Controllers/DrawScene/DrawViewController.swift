@@ -24,7 +24,12 @@ class DrawViewController: UIViewController {
                 
                 navigationItem.hidesBackButton = true
                 navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler)))
-
+                
+            } else {
+                
+                navigationItem.leftBarButtonItem = nil
+                navigationItem.hidesBackButton = false
+                
             }
             
         }
@@ -248,10 +253,9 @@ class DrawViewController: UIViewController {
     }
     
     func writeDrawing() {
-        Logger.main.info("Storing document")
         DispatchQueue.main.async {
+            self.hasModifiedDrawing = false
             self.node.setDrawing(drawing: self.canvasView.drawing)
-            self.navigationController?.popViewController(animated: true)
         }
     }
     
