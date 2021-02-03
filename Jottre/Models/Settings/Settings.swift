@@ -31,6 +31,8 @@ class Settings: NSObject {
     
     var observers: [SettingsObserver] = []
     
+    public static let tmpDirectory: URL = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
+    
     
     
     // MARK: - Init
