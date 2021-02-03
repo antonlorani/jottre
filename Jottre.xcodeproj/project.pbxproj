@@ -44,6 +44,7 @@
 		A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85D25B3673C00C65157 /* UIDevice.swift */; };
 		A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86425B372A800C65157 /* ExportActions.swift */; };
 		A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86725B374A200C65157 /* MenuActions.swift */; };
+		A6F60F8525CAA2CC002CAAE4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F60F8425CAA2CC002CAAE4 /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +90,7 @@
 		A6E3B85D25B3673C00C65157 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Jottre/Helpers/UIDevice.swift; sourceTree = SOURCE_ROOT; };
 		A6E3B86425B372A800C65157 /* ExportActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportActions.swift; sourceTree = "<group>"; };
 		A6E3B86725B374A200C65157 /* MenuActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActions.swift; sourceTree = "<group>"; };
+		A6F60F8425CAA2CC002CAAE4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 				A6E3B85D25B3673C00C65157 /* UIDevice.swift */,
 				A6C0D70225B9DB9D00336230 /* URL.swift */,
 				A6C0D70625B9F21400336230 /* PKDrawing.swift */,
+				A6F60F8425CAA2CC002CAAE4 /* Data.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
 				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
+				A6F60F8525CAA2CC002CAAE4 /* Data.swift in Sources */,
 				A6BB131B25B472F9008C5D8A /* AppearanceSettingsCell.swift in Sources */,
 				A6E3B83725B32BC500C65157 /* NodeCollector.swift in Sources */,
 				A6E3B82425B32ABE00C65157 /* String.swift in Sources */,
@@ -509,7 +513,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -533,7 +537,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Jottre/Jottre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Y78RPE9KK3;
 				INFOPLIST_FILE = Jottre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
