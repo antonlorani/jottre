@@ -294,7 +294,6 @@ class Node: NSObject {
             return true
         }
         var localURL = Settings.getLocalPath()
-            
 
         /// - Checks if this file is relevant to our iCloud | Local Storage discussion
         if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
