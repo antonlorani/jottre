@@ -110,6 +110,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A61BBA0125D0634400E63CF6 /* BarButtonItems */ = {
+			isa = PBXGroup;
+			children = (
+				A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */,
+				A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */,
+				A6BB134725B4A469008C5D8A /* SettingsButton.swift */,
+				A61BB9F925D0604200E63CF6 /* ShareButton.swift */,
+				A6330A7E25D05F6700068DE5 /* AddButton.swift */,
+			);
+			path = BarButtonItems;
+			sourceTree = "<group>";
+		};
 		A6BB130525B45E52008C5D8A /* SettingsScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,13 +212,9 @@
 		A6E3B80F25B3295200C65157 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A61BBA0125D0634400E63CF6 /* BarButtonItems */,
 				A6BB131525B472D9008C5D8A /* SettingsCell */,
 				A6E3B83925B333EC00C65157 /* NodeCell.swift */,
-				A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */,
-				A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */,
-				A6BB134725B4A469008C5D8A /* SettingsButton.swift */,
-				A61BB9F925D0604200E63CF6 /* ShareButton.swift */,
-				A6330A7E25D05F6700068DE5 /* AddButton.swift */,
 				A6C0D70A25B9F42400336230 /* LoadingView.swift */,
 			);
 			path = Views;

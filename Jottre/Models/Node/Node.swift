@@ -14,6 +14,13 @@ import OSLog
 var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
 
 
+protocol NodeObserver {
+    
+    func didUpdate(node: Node)
+    
+}
+
+
 /// This class will manage the processes of a NodeCodable
 /// This includes: encoding, decoding and basic file system related methods
 class Node: NSObject {
@@ -35,6 +42,12 @@ class Node: NSObject {
         return Downloader.getStatus(url: self.url)
     }
     
+    private var observersEnabledValue: Bool = true
+    
+    var observersEnabled: Bool {
+        return observersEnabledValue
+    }
+    
     var initialDataHash: Int?
     
     var currentDataHash: Int?
@@ -44,6 +57,8 @@ class Node: NSObject {
     var codable: NodeCodableV2?
     
     var collector: NodeCollector?
+    
+    var observers: [NodeObserver] = []
     
     private var serializationQueue = DispatchQueue(label: "NodeSerializationQueue", qos: .background)
     
@@ -156,7 +171,6 @@ class Node: NSObject {
                 }
                 
                 self.codable = decodedCodable
-                self.updateMeta()
                 
                 completion(true)
                 
@@ -258,11 +272,9 @@ class Node: NSObject {
     func updateMeta(completion: @escaping (_ success: Bool) -> Void) {
         
         thumbnailGenerator.execute(for: self) { (success, image) in
+            
             self.thumbnail = image
-                        
-            if let collector = self.collector {
-                collector.didUpdate()
-            }
+            self.didUpdate()
             
             completion(success)
         }
@@ -279,6 +291,18 @@ class Node: NSObject {
         
         updateMeta()
         push()
+        
+    }
+    
+    
+    /// Sends a message to each observer, that there happened changes inside this object.
+    func didUpdate() {
+        
+        if !observersEnabled { return }
+        
+        DispatchQueue.main.async {
+            self.observers.forEach({ $0.didUpdate(node: self) })
+        }
         
     }
     
@@ -376,9 +400,7 @@ class Node: NSObject {
         
         self.url = destinationURL
         self.name = name
-        
-        self.collector?.didUpdate()
-        
+                
         completion?(true)
         
     }
@@ -429,6 +451,27 @@ class Node: NSObject {
         
         completion?(true)
 
+    }
+    
+    
+    
+    // MARK: - Observer methods
+    
+    /// Enable observer calls ;)
+    func enableObservers() {
+        observersEnabledValue = true
+    }
+    
+    
+    /// Suppresses the observer calls ;)
+    func disableObservers() {
+        observersEnabledValue = false
+    }
+    
+    
+    /// Adds a new observer to this class ;)
+    func addObserver(_ observer: NodeObserver) {
+        observers.append(observer)
     }
     
 }

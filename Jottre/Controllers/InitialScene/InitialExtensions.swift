@@ -13,8 +13,17 @@ import OSLog
 
 extension InitialViewController: NodeCollectorObserver {
     
-    func nodeCollectorDidChange() {
-        self.collectionView.reloadData()
+    func didInsertNode(nodeCollector: NodeCollector, at index: Int) {
+        collectionView.reloadData()
+    }
+    
+    func didDeletedNode(nodeCollector: NodeCollector, at index: Int) {
+        
+        collectionView.performBatchUpdates({
+            let indexPath = IndexPath(item: index, section: 0)
+            self.collectionView.deleteItems(at: [indexPath])
+        }, completion: nil)
+        
     }
     
 }
@@ -58,6 +67,8 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: indexPath) as? NodeCell else {
             fatalError("Cell is not of type NodeCell.")
         }
+        
+        nodeCollector.nodes[indexPath.row].addObserver(cell)
         cell.node = nodeCollector.nodes[indexPath.row]
         
         return cell

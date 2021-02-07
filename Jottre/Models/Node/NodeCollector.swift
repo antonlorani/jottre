@@ -10,7 +10,11 @@ import OSLog
 import Foundation
 
 protocol NodeCollectorObserver {
-    func nodeCollectorDidChange()
+        
+    func didInsertNode(nodeCollector: NodeCollector, at index: Int)
+    
+    func didDeletedNode(nodeCollector: NodeCollector, at index: Int)
+    
 }
 
 class NodeCollector {
@@ -18,14 +22,14 @@ class NodeCollector {
     // MARK: - Properties
     
     private var observers: [NodeCollectorObserver] = []
-    
-    private var observersEnabledValue: Bool = true
-    
+        
     private var backgroundFetchIsActiveValue: Bool = false
     
     var backgroundFetchIsActive: Bool {
         return backgroundFetchIsActiveValue
     }
+    
+    private var observersEnabledValue: Bool = true
     
     var observersEnabled: Bool {
         return observersEnabledValue
@@ -39,11 +43,7 @@ class NodeCollector {
         return settings.getPath()
     }
     
-    var nodes: [Node] = [] {
-        didSet {
-            didUpdate()
-        }
-    }
+    var nodes: [Node] = []
     
     var traitCollection: UITraitCollection = UITraitCollection() {
         didSet {
@@ -57,9 +57,10 @@ class NodeCollector {
     
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
-        pull()
         
-        initializeBackgroundFetch(interval: 1)
+        pull { (_) in
+            self.initializeBackgroundFetch(interval: 1)
+        }
         
     }
     
@@ -92,7 +93,7 @@ class NodeCollector {
             node.collector = self
             node.pull { (success) in
                 if success {
-                    self.nodes.append(node)
+                    self.addNode(node)
                 }
                 completion?(success)
             }
@@ -133,19 +134,6 @@ class NodeCollector {
     }
     
     
-    /// Sends a message to each observer, that there happened changes inside this object.
-    func didUpdate() {
-
-        if !observersEnabled { return }
-        
-        DispatchQueue.main.async {
-            self.observers.forEach({ $0.nodeCollectorDidChange() })
-        }
-        
-    }
-    
-    
-    
     // MARK: - Observer methods
     
     /// Enable observer calls ;)
@@ -184,19 +172,14 @@ class NodeCollector {
     /// Continuously fetches the newest version of the Node inside the NodeCollector
     /// - Parameter interval: Duration between each pull call
     private func initializeBackgroundFetch(interval: Int) {
-        
-        var isInitial: Bool = true
-        
+                
         var downloadingFilesFromURL: [URL] = []
         
         DispatchQueue.main.async {
             
             Timer.scheduledTimer(withTimeInterval: TimeInterval(interval), repeats: true) { (timer) in
                 
-                if !self.backgroundFetchIsActive || isInitial {
-                    isInitial = false
-                    return
-                }
+                if !self.backgroundFetchIsActive { return }
                 
                 let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.readPath().path)
                 let fileURLs: [URL] = files.map({ NodeCollector.readPath().appendingPathComponent($0) })
@@ -226,7 +209,7 @@ class NodeCollector {
                                     
                                     if data.hashValue != targetNode.initialDataHash {
                                         targetNode.pullHandler { (success) in
-                                            self.didUpdate()
+                                            self.update()
                                         }
                                     }
                                     
@@ -248,7 +231,7 @@ class NodeCollector {
                                     downloadingFilesFromURL.remove(at: index!)
                                     
                                     targetNode.pullHandler { (success) in
-                                        self.didUpdate()
+                                        self.update()
                                     }
                                     
                                 }
@@ -257,7 +240,7 @@ class NodeCollector {
                             
                         } else {
                             tmpNode.collector = self
-                            self.nodes.append(tmpNode)
+                            self.addNode(tmpNode)
                         }
                             
                     }
@@ -268,7 +251,7 @@ class NodeCollector {
                 for node in self.nodes {
                     if !fileURLs.contains(node.url!) {
                         guard let index = self.nodes.firstIndex(of: node) else { continue }
-                        self.nodes.remove(at: index)
+                        self.removeNode(at: index)
                     }
                 }
 
@@ -276,6 +259,39 @@ class NodeCollector {
             
         }
                     
+    }
+    
+    
+    /// Adds a node to the NodeCollector
+    /// - Parameter node: Node that will be added
+    func addNode(_ node: Node) {
+        
+        DispatchQueue.main.async {
+        
+            self.nodes.append(node)
+            let index = self.nodes.count - 1
+
+            if !self.observersEnabled { return }
+            self.observers.forEach({ $0.didInsertNode(nodeCollector: self, at: index) })
+        
+        }
+        
+    }
+    
+    
+    /// Removes a Node inside a NodeCollector at a certain index
+    /// - Parameter index: Index of node in NodeCollector that will be removed
+    func removeNode(at index: Int) {
+        
+        DispatchQueue.main.async {
+            
+            self.nodes.remove(at: index)
+            
+            if !self.observersEnabled { return }
+            self.observers.forEach({ $0.didDeletedNode(nodeCollector: self, at: index) })
+        
+        }
+    
     }
     
     
