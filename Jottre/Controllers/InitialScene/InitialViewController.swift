@@ -91,7 +91,8 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
+//            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: AddButton(target: self, action: #selector(createNode)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
         }
         
         if !Downloader.isCloudEnabled {

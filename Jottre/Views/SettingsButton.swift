@@ -8,42 +8,14 @@
 import Foundation
 import UIKit
 
-class SettingsButton: UIButton {
-    
-    // MARK: - Init
-    
-    init(target: Any, action: Selector) {
-        super.init(frame: CGRect(origin: .zero, size: CGSize(width: 30, height: 30)))
-        self.addTarget(target, action: action, for: .touchUpInside)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
+class SettingsButton: CustomButtonBarItem {
     
     // MARK: - Override methods
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        setupViews()
-    }
-    
-    
-    
-    // MARK: - Methods
-    
-    func setupViews() {
-        
-        backgroundColor = .systemBlue
-        
+    override func setupViews() {
+        super.setupViews()
+       
         setImage(UIImage(systemName: "gear"), for: .normal)
-        
-        tintColor = UIColor.white
-        
-        layer.cornerRadius = 15
-        layer.masksToBounds = true
         
     }
     

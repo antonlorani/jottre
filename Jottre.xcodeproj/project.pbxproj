@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A61BB9FA25D0604200E63CF6 /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61BB9F925D0604200E63CF6 /* ShareButton.swift */; };
+		A61BB9FE25D0608B00E63CF6 /* CustomButtonBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */; };
+		A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6330A7E25D05F6700068DE5 /* AddButton.swift */; };
 		A6350E5425C9CEFB0059E96E /* NodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6350E5325C9CEFB0059E96E /* NodeExtensions.swift */; };
 		A650EE6825C5819500830112 /* NodeCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6725C5819500830112 /* NodeCodable.swift */; };
 		A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */; };
@@ -30,7 +33,7 @@
 		A6E3B7F825B3260300C65157 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F625B3260300C65157 /* LaunchScreen.storyboard */; };
 		A6E3B82125B32AB400C65157 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82025B32AB400C65157 /* Logger.swift */; };
 		A6E3B82425B32ABE00C65157 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82325B32ABE00C65157 /* String.swift */; };
-		A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82725B32AD300C65157 /* NavigationButton.swift */; };
+		A6E3B82825B32AD300C65157 /* NavigationTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */; };
 		A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82B25B32AEB00C65157 /* NavigationViewController.swift */; };
 		A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B82E25B32B0700C65157 /* InitialViewController.swift */; };
 		A6E3B83425B32BBC00C65157 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B83325B32BBC00C65157 /* Node.swift */; };
@@ -48,6 +51,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A61BB9F925D0604200E63CF6 /* ShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButton.swift; sourceTree = "<group>"; };
+		A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonBarItem.swift; sourceTree = "<group>"; };
+		A6330A7E25D05F6700068DE5 /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
 		A6350E5325C9CEFB0059E96E /* NodeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeExtensions.swift; sourceTree = "<group>"; };
 		A650EE6725C5819500830112 /* NodeCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCodable.swift; sourceTree = "<group>"; };
 		A650EE6A25C585D300830112 /* NodeDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeDecoderExtension.swift; sourceTree = "<group>"; };
@@ -76,7 +82,7 @@
 		A6E3B80025B3261800C65157 /* Jottre.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Jottre.entitlements; sourceTree = "<group>"; };
 		A6E3B82025B32AB400C65157 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A6E3B82325B32ABE00C65157 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		A6E3B82725B32AD300C65157 /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
+		A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTextButton.swift; sourceTree = "<group>"; };
 		A6E3B82B25B32AEB00C65157 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		A6E3B82E25B32B0700C65157 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		A6E3B83325B32BBC00C65157 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -196,8 +202,11 @@
 			children = (
 				A6BB131525B472D9008C5D8A /* SettingsCell */,
 				A6E3B83925B333EC00C65157 /* NodeCell.swift */,
-				A6E3B82725B32AD300C65157 /* NavigationButton.swift */,
+				A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */,
+				A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */,
 				A6BB134725B4A469008C5D8A /* SettingsButton.swift */,
+				A61BB9F925D0604200E63CF6 /* ShareButton.swift */,
+				A6330A7E25D05F6700068DE5 /* AddButton.swift */,
 				A6C0D70A25B9F42400336230 /* LoadingView.swift */,
 			);
 			path = Views;
@@ -329,6 +338,7 @@
 				A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */,
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
+				A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */,
 				A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */,
 				A6BB134825B4A469008C5D8A /* SettingsButton.swift in Sources */,
 				A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */,
@@ -344,6 +354,7 @@
 				A6BB131325B46E2D008C5D8A /* SettingsCell.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
+				A61BB9FE25D0608B00E63CF6 /* CustomButtonBarItem.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
 				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
@@ -356,7 +367,8 @@
 				A6BB134C25B4AEFC008C5D8A /* SettingsExtensions.swift in Sources */,
 				A6A8803E25BAB41E0080DD9D /* Downloader.swift in Sources */,
 				A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */,
-				A6E3B82825B32AD300C65157 /* NavigationButton.swift in Sources */,
+				A6E3B82825B32AD300C65157 /* NavigationTextButton.swift in Sources */,
+				A61BB9FA25D0604200E63CF6 /* ShareButton.swift in Sources */,
 				A650EE6825C5819500830112 /* NodeCodable.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
 				A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */,
