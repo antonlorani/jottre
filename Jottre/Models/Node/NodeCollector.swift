@@ -172,14 +172,19 @@ class NodeCollector {
     /// Continuously fetches the newest version of the Node inside the NodeCollector
     /// - Parameter interval: Duration between each pull call
     private func initializeBackgroundFetch(interval: Int) {
-                
+        
+        var isInitial: Bool = true
+        
         var downloadingFilesFromURL: [URL] = []
         
         DispatchQueue.main.async {
             
             Timer.scheduledTimer(withTimeInterval: TimeInterval(interval), repeats: true) { (timer) in
                 
-                if !self.backgroundFetchIsActive { return }
+                if !self.backgroundFetchIsActive || isInitial {
+                    isInitial = false
+                    return
+                }
                 
                 let files = try! FileManager.default.contentsOfDirectory(atPath: NodeCollector.readPath().path)
                 let fileURLs: [URL] = files.map({ NodeCollector.readPath().appendingPathComponent($0) })
