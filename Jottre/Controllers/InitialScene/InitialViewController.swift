@@ -91,7 +91,6 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
-//            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: AddButton(target: self, action: #selector(createNode)))
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
         }
         
@@ -117,14 +116,14 @@ class InitialViewController: UIViewController {
     
     
     private func setupDelegates() {
-                
+        
         nodeCollector.traitCollection = traitCollection
         
         nodeCollector.addObserver(self)
         nodeCollector.pauseBackgroundFetch()
         
         /// Giving the nodeCollector some time to load all the nodes
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
             self.collectionView.delegate = self
             self.collectionView.dataSource = self
             self.nodeCollector.continueBackgroundFetch()
@@ -158,27 +157,7 @@ class InitialViewController: UIViewController {
             }
             name = name == "" ? noteName : name
             
-            self.nodeCollector.createNode(name: name) { (node) in
-//                
-//                guard let node = node else {
-//                    return
-//                }
-//                
-//                self.nodeCollector.disableObservers()
-//                self.nodeCollector.nodes.append(node)
-//                
-//                DispatchQueue.main.async {
-//                    
-//                    self.collectionView.performBatchUpdates {
-//                        let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
-//                        self.collectionView.insertItems(at: [indexPath])
-//                    } completion: { (success) in
-//                        self.nodeCollector.enableObservers()
-//                    }
-//                    
-//                }
-                
-            }
+            self.nodeCollector.createNode(name: name) { (node) in }
             
         }))
         

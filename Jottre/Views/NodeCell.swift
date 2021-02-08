@@ -15,7 +15,7 @@ class NodeCell: UICollectionViewCell {
         didSet {
             
             titleLabel.text = node?.name
-            
+            setupDelegates()
             guard let thumbnail = node?.thumbnail else {
                 return
             }
@@ -63,7 +63,7 @@ class NodeCell: UICollectionViewCell {
         super.didMoveToSuperview()
         
         setupViews()
-        setupDelegates()
+        //setupDelegates()
 
     }
     

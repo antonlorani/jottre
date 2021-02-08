@@ -202,8 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				A6E3B82B25B32AEB00C65157 /* NavigationViewController.swift */,
-				A6E3B84925B347AE00C65157 /* DrawScene */,
 				A6E3B83F25B3349900C65157 /* InitialScene */,
+				A6E3B84925B347AE00C65157 /* DrawScene */,
 				A6BB130525B45E52008C5D8A /* SettingsScene */,
 			);
 			path = Controllers;

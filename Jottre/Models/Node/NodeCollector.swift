@@ -13,7 +13,7 @@ protocol NodeCollectorObserver {
         
     func didInsertNode(nodeCollector: NodeCollector, at index: Int)
     
-    func didDeletedNode(nodeCollector: NodeCollector, at index: Int)
+    func didDeleteNode(nodeCollector: NodeCollector, at index: Int)
     
 }
 
@@ -132,6 +132,7 @@ class NodeCollector {
     func update() {
         nodes.forEach({ $0.updateMeta() })
     }
+    
     
     
     // MARK: - Observer methods
@@ -293,7 +294,7 @@ class NodeCollector {
             self.nodes.remove(at: index)
             
             if !self.observersEnabled { return }
-            self.observers.forEach({ $0.didDeletedNode(nodeCollector: self, at: index) })
+            self.observers.forEach({ $0.didDeleteNode(nodeCollector: self, at: index) })
         
         }
     

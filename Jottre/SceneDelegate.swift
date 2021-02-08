@@ -28,12 +28,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
 
         settings.addObserver(self)
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.windowScene = windowScene
-        
         let initialController = InitialViewController()
         let initialNavigationController = NavigationViewController(rootViewController: initialController)
         
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.windowScene = windowScene
         window?.rootViewController = initialNavigationController
         window?.makeKeyAndVisible()
         

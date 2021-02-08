@@ -17,7 +17,7 @@ extension InitialViewController: NodeCollectorObserver {
         collectionView.reloadData()
     }
     
-    func didDeletedNode(nodeCollector: NodeCollector, at index: Int) {
+    func didDeleteNode(nodeCollector: NodeCollector, at index: Int) {
         
         collectionView.performBatchUpdates({
             let indexPath = IndexPath(item: index, section: 0)
