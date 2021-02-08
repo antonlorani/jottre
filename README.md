@@ -60,7 +60,7 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 > For this feature the layout has to be modified so that it can be rendered on variable screen-widths (Get rid of UIScreen.main.bounds...)
 
 - Support for Widgets
-> How to render the thumbnails, so that the most of the content is visible inside the viewable Widget area
+> How to render the thumbnails, so that most of the content is visible inside the viewable Widget area
 
 - PDF Viewer
 - PDF AnkAnnotations (Drawing on PDF via PDFKit)
