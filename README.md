@@ -49,8 +49,9 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 
 - [x] Drawings are not rendered in the correct userInterfaceStyle (when starting the app)
 - [x] iCloud synchronization is not fast enough (documents are not uploaded directly)
-- [ ] Animation of CollectionViewCells (Deleting, Inserting...) not implemented
-- [ ] Deleting items takes too much time
+- [x] Animation of CollectionViewCells (Deleting, Inserting...) not implemented
+- [x] Deleting items takes too much time
+- [] If removing items from collectionview, certain thumbnails were not shown correctly
 
 
 
