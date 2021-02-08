@@ -45,6 +45,8 @@ class NodeCollector {
     
     var nodes: [Node] = []
     
+    var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
+    
     var traitCollection: UITraitCollection = UITraitCollection() {
         didSet {
             update()

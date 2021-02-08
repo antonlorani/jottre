@@ -10,10 +10,6 @@ import PencilKit
 import OSLog
 
 
-/// A custom helper class that generates the thumbnails for a given Node
-var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
-
-
 protocol NodeObserver {
     
     func didUpdate(node: Node)
@@ -271,8 +267,12 @@ class Node: NSObject {
     /// - Parameter completion: Returns a boolean that indicates success or failure    
     func updateMeta(completion: @escaping (_ success: Bool) -> Void) {
         
-        thumbnailGenerator.execute(for: self) { (success, image) in
-            
+        guard let collector = self.collector else {
+            completion(false)
+            return
+        }
+        
+        collector.thumbnailGenerator.execute(for: self) { (success, image) in
             self.thumbnail = image
             self.didUpdate()
             
