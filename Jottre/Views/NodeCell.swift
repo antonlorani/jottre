@@ -69,7 +69,6 @@ class NodeCell: UICollectionViewCell {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
-        layer.shadowColor = UIColor.label.cgColor
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
     
     }
@@ -94,7 +93,7 @@ class NodeCell: UICollectionViewCell {
         
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
         
-        layer.shadowColor = UIColor.label.cgColor
+        layer.shadowColor = UIColor.black.cgColor
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
         layer.shadowOpacity = 0.1
         layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -130,7 +129,6 @@ class NodeCell: UICollectionViewCell {
     func setupDelegates() {
         
         guard let node = node else { return }
-        
         node.updateMeta()
         
     }
