@@ -14,7 +14,12 @@ import OSLog
 extension InitialViewController: NodeCollectorObserver {
     
     func didInsertNode(nodeCollector: NodeCollector, at index: Int) {
-        collectionView.reloadData()
+        
+        collectionView.performBatchUpdates({
+            let indexPath = IndexPath(item: index, section: 0)
+            self.collectionView.insertItems(at: [indexPath])
+        }, completion: nil)
+
     }
     
     func didDeleteNode(nodeCollector: NodeCollector, at index: Int) {

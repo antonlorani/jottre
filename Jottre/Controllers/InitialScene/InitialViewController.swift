@@ -117,17 +117,12 @@ class InitialViewController: UIViewController {
     
     private func setupDelegates() {
         
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        
         nodeCollector.traitCollection = traitCollection
-        
+            
         nodeCollector.addObserver(self)
-        nodeCollector.pauseBackgroundFetch()
-        
-        /// Giving the nodeCollector some time to load all the nodes
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
-            self.collectionView.delegate = self
-            self.collectionView.dataSource = self
-            self.nodeCollector.continueBackgroundFetch()
-        }
         
         settings.addObserver(self)
         

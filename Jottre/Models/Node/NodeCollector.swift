@@ -23,7 +23,7 @@ class NodeCollector {
     
     private var observers: [NodeCollectorObserver] = []
         
-    private var backgroundFetchIsActiveValue: Bool = false
+    private var backgroundFetchIsActiveValue: Bool = true
     
     var backgroundFetchIsActive: Bool {
         return backgroundFetchIsActiveValue
@@ -45,13 +45,13 @@ class NodeCollector {
     
     var nodes: [Node] = []
     
-    var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
-    
     var traitCollection: UITraitCollection = UITraitCollection() {
         didSet {
             update()
         }
     }
+    
+    var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
     
     
     
@@ -60,10 +60,8 @@ class NodeCollector {
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
         
-        pull { (_) in
-            self.initializeBackgroundFetch(interval: 1)
-        }
-        
+        self.initializeBackgroundFetch(interval: 1)
+
     }
     
     
@@ -172,20 +170,18 @@ class NodeCollector {
     }
     
     
+    // FIXME: - Can this method be written a bit better?
     /// Continuously fetches the newest version of the Node inside the NodeCollector
     /// - Parameter interval: Duration between each pull call
     private func initializeBackgroundFetch(interval: Int) {
-        
-        var isInitial: Bool = true
-        
+                
         var downloadingFilesFromURL: [URL] = []
         
         DispatchQueue.main.async {
             
             Timer.scheduledTimer(withTimeInterval: TimeInterval(interval), repeats: true) { (timer) in
-                
-                if !self.backgroundFetchIsActive || isInitial {
-                    isInitial = false
+
+                if !self.backgroundFetchIsActive {
                     return
                 }
                 
