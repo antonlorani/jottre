@@ -16,8 +16,11 @@ class InitialViewController: UIViewController {
     
     var nodeCollector: NodeCollector = NodeCollector()
     
+    var hasDocumentsDelayFinished: Bool = false
+    
     var hasDocuments: Bool = false {
         didSet {
+            if !hasDocumentsDelayFinished { return }
             UIView.animate(withDuration: 0.5) {
                 self.infoTextView.alpha = self.hasDocuments ? 0 : 1
                 self.collectionView.alpha = self.hasDocuments ? 1 : 0
@@ -117,12 +120,16 @@ class InitialViewController: UIViewController {
     
     private func setupDelegates() {
         
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         nodeCollector.traitCollection = traitCollection
-            
         nodeCollector.addObserver(self)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+            self.hasDocumentsDelayFinished = true
+            self.hasDocuments = !(!self.hasDocuments) /// A simple solution to reassign the value to call didSet
+        }
         
         settings.addObserver(self)
         
