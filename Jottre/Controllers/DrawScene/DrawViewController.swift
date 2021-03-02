@@ -15,23 +15,13 @@ class DrawViewController: UIViewController {
     
     var node: Node!
     
+    var isUndoEnabled: Bool = false
+    
     var modifiedCount: Int = 0
         
     var hasModifiedDrawing: Bool = false {
         didSet {
-
-            if hasModifiedDrawing {
-                
-                navigationItem.hidesBackButton = true
-                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler)))
-                
-            } else {
-                
-                navigationItem.leftBarButtonItem = nil
-                navigationItem.hidesBackButton = false
-                
-            }
-            
+            reloadNavigationItems()
         }
     }
     
@@ -59,6 +49,10 @@ class DrawViewController: UIViewController {
     var toolPicker: PKToolPicker = {
         return PKToolPicker()
     }()
+    
+    var redoButton: UIBarButtonItem!
+    
+    var undoButton: UIBarButtonItem!
     
     
     
@@ -123,6 +117,8 @@ class DrawViewController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
+        view.backgroundColor = (traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark) ? .black : .white
+
     }
     
     
@@ -133,12 +129,14 @@ class DrawViewController: UIViewController {
 
         traitCollectionDidChange(traitCollection)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = (traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark) ? .black : .white
         
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = node.name
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShareButton(target: self, action: #selector(exportDrawing)))
-                        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(exportDrawing))
+        
+        reloadNavigationItems()
+        
         view.addSubview(canvasView)
         canvasView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         canvasView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -167,11 +165,12 @@ class DrawViewController: UIViewController {
         
         canvasView.delegate = self
         canvasView.drawing = nodeCodable.drawing
-        canvasView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if !UIDevice.isLimited() {
             toolPicker.setVisible(true, forFirstResponder: canvasView)
             toolPicker.addObserver(canvasView)
+            toolPicker.addObserver(self)
+            updateLayout(for: toolPicker)
             canvasView.becomeFirstResponder()
         }
         

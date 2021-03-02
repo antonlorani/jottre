@@ -121,8 +121,6 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
             let spaces: CGFloat = 15 * CGFloat(numberOfColumns)
             width = minWidth + (space - spaces) / CGFloat(numberOfColumns)
         }
-                
-        print(numberOfColumns, space, width)
         
         return CGSize(width: width, height: 291)
     }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A61A616125EEB2B40030684C /* RedoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61A616025EEB2B40030684C /* RedoButton.swift */; };
+		A61A616425EEB34E0030684C /* UndoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61A616325EEB34E0030684C /* UndoButton.swift */; };
+		A61A616725EEB44E0030684C /* SpaceButtonBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61A616625EEB44E0030684C /* SpaceButtonBarItem.swift */; };
 		A61BB9FA25D0604200E63CF6 /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61BB9F925D0604200E63CF6 /* ShareButton.swift */; };
 		A61BB9FE25D0608B00E63CF6 /* CustomButtonBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */; };
 		A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6330A7E25D05F6700068DE5 /* AddButton.swift */; };
@@ -51,6 +54,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A61A616025EEB2B40030684C /* RedoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoButton.swift; sourceTree = "<group>"; };
+		A61A616325EEB34E0030684C /* UndoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButton.swift; sourceTree = "<group>"; };
+		A61A616625EEB44E0030684C /* SpaceButtonBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceButtonBarItem.swift; sourceTree = "<group>"; };
 		A61BB9F925D0604200E63CF6 /* ShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButton.swift; sourceTree = "<group>"; };
 		A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonBarItem.swift; sourceTree = "<group>"; };
 		A6330A7E25D05F6700068DE5 /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
@@ -115,6 +121,9 @@
 			children = (
 				A6E3B82725B32AD300C65157 /* NavigationTextButton.swift */,
 				A61BB9FD25D0608B00E63CF6 /* CustomButtonBarItem.swift */,
+				A61A616025EEB2B40030684C /* RedoButton.swift */,
+				A61A616325EEB34E0030684C /* UndoButton.swift */,
+				A61A616625EEB44E0030684C /* SpaceButtonBarItem.swift */,
 				A6BB134725B4A469008C5D8A /* SettingsButton.swift */,
 				A61BB9F925D0604200E63CF6 /* ShareButton.swift */,
 				A6330A7E25D05F6700068DE5 /* AddButton.swift */,
@@ -344,6 +353,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */,
+				A61A616725EEB44E0030684C /* SpaceButtonBarItem.swift in Sources */,
+				A61A616125EEB2B40030684C /* RedoButton.swift in Sources */,
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
 				A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */,
@@ -363,6 +374,7 @@
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
 				A61BB9FE25D0608B00E63CF6 /* CustomButtonBarItem.swift in Sources */,
+				A61A616425EEB34E0030684C /* UndoButton.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
 				A6E3B83A25B333EC00C65157 /* NodeCell.swift in Sources */,
 				A65F231D25B5C1B000A0E870 /* IconSettingsCell.swift in Sources */,
