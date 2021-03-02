@@ -31,15 +31,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
         let initialController = InitialViewController()
         let initialNavigationController = NavigationViewController(rootViewController: initialController)
         
-        window = UIWindow(frame: UIScreen.main.bounds)
+        window = UIWindow()
         window?.windowScene = windowScene
         window?.rootViewController = initialNavigationController
         window?.makeKeyAndVisible()
         
         presentDocument(urlContext: connectionOptions.urlContexts)
         
+        if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
+            if !configure(window: window, with: userActivity) {
+                Swift.debugPrint("Failed to restore from \(userActivity)")
+            }
+        }
+        
     }
     
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        return scene.userActivity
+    }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         presentDocument(urlContext: URLContexts)
@@ -66,38 +75,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
         }
         
     }
-
     
     
-    func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
-    }
-
-
     
     // MARK: - Observer methods
     
@@ -110,6 +89,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
         }, completion: nil)
         
     }
+    
+    
+    
+    // MARK: - Drag methods
+    
+    func configure(window: UIWindow?, with activity: NSUserActivity) -> Bool {
+        var configured: Bool = false
+        if activity.title == Node.NodeOpenDetailPath {
+            if let nodeURL = activity.userInfo?[Node.NodeOpenDetailActivityType] as? String {
+                
+                let node = Node(url: URL(string: nodeURL)!)
+                    node.pull()
+                
+                let drawViewController = DrawViewController(node: node)
+                
+                if let navigationController = window?.rootViewController as? UINavigationController {
+                    navigationController.pushViewController(drawViewController, animated: true)
+                    configured = true
+                }
+                
+            }
+        }
+        
+        return configured
+    }
+    
     
 }
 

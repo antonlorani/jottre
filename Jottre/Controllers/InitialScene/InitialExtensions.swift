@@ -55,7 +55,7 @@ extension InitialViewController: SettingsObserver {
 
 // MARK: - UICollectionView
 
-extension InitialViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension InitialViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -81,10 +81,8 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let drawController = DrawViewController(node: nodeCollector.nodes[indexPath.row])
         navigationController?.pushViewController(drawController, animated: true)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, willEndContextMenuInteraction configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
@@ -108,5 +106,48 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        // Minimum size = 232
+        let minWidth: CGFloat = 232
+        let numberOfColumns: Int = Int((view.frame.width - 40) / minWidth)
+        let space: CGFloat = (view.frame.width - 40).truncatingRemainder(dividingBy: minWidth)
+        
+        var width: CGFloat = minWidth
+        
+        if numberOfColumns == 1 {
+            width = view.frame.width - 40
+        } else {
+            let spaces: CGFloat = 15 * CGFloat(numberOfColumns)
+            width = minWidth + (space - spaces) / CGFloat(numberOfColumns)
+        }
+                
+        print(numberOfColumns, space, width)
+        
+        return CGSize(width: width, height: 291)
+    }
+    
 }
 
+extension InitialViewController: UICollectionViewDragDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        var dragItems = [UIDragItem]()
+        let selectedNode = nodeCollector.nodes[indexPath.row]
+        if let imageToDrag = selectedNode.thumbnail {
+            
+            let userActivity = selectedNode.openDetailUserActivity
+            
+            let itemProvider = NSItemProvider(object: imageToDrag)
+                itemProvider.registerObject(userActivity, visibility: .all)
+            
+            let dragItem = UIDragItem(itemProvider: itemProvider)
+                dragItem.localObject = selectedNode
+                dragItems.append(dragItem)
+            
+        }
+        
+        return dragItems
+    }
+    
+}
