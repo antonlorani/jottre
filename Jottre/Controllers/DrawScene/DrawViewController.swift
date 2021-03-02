@@ -138,7 +138,6 @@ class DrawViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = node.name
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShareButton(target: self, action: #selector(exportDrawing)))
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(exportDrawing))
                         
         view.addSubview(canvasView)
         canvasView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
