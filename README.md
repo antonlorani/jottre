@@ -24,6 +24,12 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 - Minimalistic design
 
 
+## Update v.12
+
+- Updated the backgroundHandler for file-updates
+- Animated collectionView cells
+- Changed the "share" button
+
 
 ## Preview
 
