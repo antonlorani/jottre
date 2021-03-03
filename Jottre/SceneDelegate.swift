@@ -83,7 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let window = window, let updatedSettings = notification.object as? Settings else { return }
                 
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            window.overrideUserInterfaceStyle = updatedSettings.preferedUserInterfaceStyle()
+            window.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
         }, completion: nil)
         
     }

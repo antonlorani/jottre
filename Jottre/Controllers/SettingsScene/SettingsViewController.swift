@@ -94,12 +94,12 @@ class SettingsViewController: UIViewController {
         
         guard let updatedSettings = notification.object as? Settings else { return }
         
-        navigationController?.navigationBar.overrideUserInterfaceStyle = updatedSettings.preferedUserInterfaceStyle()
-        overrideUserInterfaceStyle = updatedSettings.preferedUserInterfaceStyle()
-        view.backgroundColor = updatedSettings.preferedUserInterfaceBackgroundColor()
+        navigationController?.navigationBar.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
+        overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
+        view.backgroundColor = updatedSettings.preferredUserInterfaceBackgroundColor()
         
         UIView.transition(with: view, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.view.overrideUserInterfaceStyle = updatedSettings.preferedUserInterfaceStyle()
+            self.view.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
         }, completion: nil)
         
     }

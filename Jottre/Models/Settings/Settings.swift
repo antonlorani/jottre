@@ -123,7 +123,7 @@ class Settings: NSObject {
     
     /// Returns a preferedUserInterfaceStyle object (Depending on the settings.codable.preferedAppearance property)
     /// - Returns: Prefered appearance as UIUserInterfaceStyle object
-    func preferedUserInterfaceStyle() -> UIUserInterfaceStyle {
+    func preferredUserInterfaceStyle() -> UIUserInterfaceStyle {
         if self.codable.preferedAppearance == 0 {
             return UIUserInterfaceStyle.dark
         } else if self.codable.preferedAppearance == 1 {
@@ -137,11 +137,11 @@ class Settings: NSObject {
     
     
     /// Returns the correct primaryBackgroundColor for the selected preferredUserInterface
-    /// - Returns: Prefered appearance as UIUserInterfaceStyle object
-    func preferedUserInterfaceBackgroundColor() -> UIColor {
-        if settings.preferedUserInterfaceStyle() == .dark {
+    /// - Returns: Prefered appearance as UIColor object
+    func preferredUserInterfaceBackgroundColor() -> UIColor {
+        if settings.preferredUserInterfaceStyle() == .dark {
             return UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1)
-        } else if settings.preferedUserInterfaceStyle() == .light {
+        } else if settings.preferredUserInterfaceStyle() == .light {
             return UIColor.white
         } else {
             return UIColor.systemBackground
