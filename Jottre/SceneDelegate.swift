@@ -11,7 +11,7 @@ import OSLog
 /// - Make the Settings of this App globally available
 let settings: Settings = Settings()
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
@@ -25,8 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
         windowScene.titlebar?.toolbar?.isVisible = false
         windowScene.titlebar?.titleVisibility = .hidden
         #endif
-
-        settings.addObserver(self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
         
         let initialController = InitialViewController()
         let initialNavigationController = NavigationViewController(rootViewController: initialController)
@@ -39,9 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
         presentDocument(urlContext: connectionOptions.urlContexts)
         
         if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
-            if !configure(window: window, with: userActivity) {
-                Swift.debugPrint("Failed to restore from \(userActivity)")
-            }
+            configure(window: window, with: userActivity)
         }
         
     }
@@ -80,12 +78,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
     
     // MARK: - Observer methods
     
-    func settingsDidChange(_ settings: Settings) {
+    @objc func settingsDidChange(_ notification: Notification) {
         
-        guard let window = window else { return }
-        
+        guard let window = window, let updatedSettings = notification.object as? Settings else { return }
+                
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            window.overrideUserInterfaceStyle = settings.preferedUserInterfaceStyle()
+            window.overrideUserInterfaceStyle = updatedSettings.preferedUserInterfaceStyle()
         }, completion: nil)
         
     }
@@ -94,25 +92,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
     
     // MARK: - Drag methods
     
-    func configure(window: UIWindow?, with activity: NSUserActivity) -> Bool {
-        var configured: Bool = false
+    func configure(window: UIWindow?, with activity: NSUserActivity) {
+
         if activity.title == Node.NodeOpenDetailPath {
-            if let nodeURL = activity.userInfo?[Node.NodeOpenDetailActivityType] as? String {
+
+            if let nodeURL = activity.userInfo?[Node.NodeOpenDetailActivityType] as? URL {
+               
+                let node = Node(url: nodeURL)
+                node.pull { (success) in
+                    if !success { return }
                 
-                let node = Node(url: URL(string: nodeURL)!)
-                    node.pull()
+                    DispatchQueue.main.async {
+                        
+                        let drawViewController = DrawViewController(node: node)
+                        
+                        if let navigationController = window?.rootViewController as? UINavigationController {
+                            navigationController.pushViewController(drawViewController, animated: true)
+                        }
+                        
+                    }
                 
-                let drawViewController = DrawViewController(node: node)
-                
-                if let navigationController = window?.rootViewController as? UINavigationController {
-                    navigationController.pushViewController(drawViewController, animated: true)
-                    configured = true
                 }
                 
             }
+            
         }
         
-        return configured
     }
     
     

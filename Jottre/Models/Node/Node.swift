@@ -61,12 +61,13 @@ class Node: NSObject {
     
     static let NodeOpenDetailPath = "openDetail"
     
-    static let NodeOpenDetailIdKey = "nodeDetail"
+    static let NodeOpenDetailIdKey = "nodeURL"
     
     var openDetailUserActivity: NSUserActivity {
         let userActivity = NSUserActivity(activityType: Node.NodeOpenDetailActivityType)
             userActivity.title = Node.NodeOpenDetailPath
             userActivity.userInfo = [Node.NodeOpenDetailIdKey: url!]
+            userActivity.requiredUserInfoKeys = [Node.NodeOpenDetailIdKey]
         return userActivity
     }
     

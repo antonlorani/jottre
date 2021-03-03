@@ -37,9 +37,9 @@ extension InitialViewController: NodeCollectorObserver {
 
 // MARK: - Settings
 
-extension InitialViewController: SettingsObserver {
+extension InitialViewController {
         
-    func settingsDidChange(_ settings: Settings) {
+    @objc func settingsDidChange(_ notification: Notification) {
         if initialLoad {
             initialLoad = false
             return
@@ -129,13 +129,32 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
 
 extension InitialViewController: UICollectionViewDragDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        var dragItems = [UIDragItem]()
+        let selectedNode = nodeCollector.nodes[indexPath.row]
+        if let imageToDrag = selectedNode.thumbnail {
+            
+            let userActivity = selectedNode.openDetailUserActivity
+
+            let itemProvider = NSItemProvider(object: imageToDrag)
+                itemProvider.registerObject(userActivity, visibility: .all)
+            
+            let dragItem = UIDragItem(itemProvider: itemProvider)
+                dragItem.localObject = selectedNode
+                dragItems.append(dragItem)
+            
+        }
+        
+        return dragItems
+    }
+    
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         var dragItems = [UIDragItem]()
         let selectedNode = nodeCollector.nodes[indexPath.row]
         if let imageToDrag = selectedNode.thumbnail {
             
             let userActivity = selectedNode.openDetailUserActivity
-            
+
             let itemProvider = NSItemProvider(object: imageToDrag)
                 itemProvider.registerObject(userActivity, visibility: .all)
             

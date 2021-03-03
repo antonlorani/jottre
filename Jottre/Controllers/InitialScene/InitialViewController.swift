@@ -138,7 +138,7 @@ class InitialViewController: UIViewController {
             self.hasDocuments = !(!self.hasDocuments) /// A simple solution to reassign the value to call didSet
         }
         
-        settings.addObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
         
     }
     

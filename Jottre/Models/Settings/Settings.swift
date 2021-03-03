@@ -18,20 +18,15 @@ struct SettingsCodable: Codable {
 }
 
 
-protocol SettingsObserver {
-    func settingsDidChange(_ settings: Settings)
-}
-
-
 class Settings: NSObject {
     
     // MARK: - Properties
     
     var codable: SettingsCodable!
-    
-    var observers: [SettingsObserver] = []
-    
+        
     public static let tmpDirectory: URL = NSURL.fileURL(withPath: NSTemporaryDirectory(), isDirectory: true)
+    
+    public static let didUpdateNotificationName = Notification.Name("didUpdateSettings")
     
     
     
@@ -129,11 +124,11 @@ class Settings: NSObject {
     /// Returns a preferedUserInterfaceStyle object (Depending on the settings.codable.preferedAppearance property)
     /// - Returns: Prefered appearance as UIUserInterfaceStyle object
     func preferedUserInterfaceStyle() -> UIUserInterfaceStyle {
-        if settings.codable.preferedAppearance == 0 {
+        if self.codable.preferedAppearance == 0 {
             return UIUserInterfaceStyle.dark
-        } else if settings.codable.preferedAppearance == 1 {
+        } else if self.codable.preferedAppearance == 1 {
             return UIUserInterfaceStyle.light
-        } else if settings.codable.preferedAppearance == 2 {
+        } else if self.codable.preferedAppearance == 2 {
             return UIUserInterfaceStyle.unspecified
         } else {
             return UIUserInterfaceStyle.unspecified
@@ -141,8 +136,23 @@ class Settings: NSObject {
     }
     
     
+    /// Returns the correct primaryBackgroundColor for the selected preferredUserInterface
+    /// - Returns: Prefered appearance as UIUserInterfaceStyle object
+    func preferedUserInterfaceBackgroundColor() -> UIColor {
+        if settings.preferedUserInterfaceStyle() == .dark {
+            return UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1)
+        } else if settings.preferedUserInterfaceStyle() == .light {
+            return UIColor.white
+        } else {
+            return UIColor.systemBackground
+        }
+    }
+    
+    
+    
     /// Returns the "root" path of this application. (Depending of user-prefered storage (local vs iCloud))
     /// - Returns: Main directory-path. This is the directory where the files were primarly stored.
+    /// - Discussion: 
     func getPath() -> URL {
 
         if codable == nil {
@@ -198,14 +208,7 @@ class Settings: NSObject {
     
     /// Sends a message to each observer, that there happened changes inside this object.
     func didUpdate() {
-        DispatchQueue.main.async {
-            self.observers.forEach({ $0.settingsDidChange(self) })
-        }
-    }
-    
-    
-    func addObserver(_ observer: SettingsObserver) {
-        observers.append(observer)
+        NotificationCenter.default.post(name: Settings.didUpdateNotificationName, object: self)
     }
     
 }

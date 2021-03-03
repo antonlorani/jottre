@@ -98,6 +98,12 @@ class DrawViewController: UIViewController {
         
         node.isOpened = true
         
+        guard let parent = parent, let window = parent.view.window, let windowScene = window.windowScene else { return }
+        
+        if let screenshotService = windowScene.screenshotService { screenshotService.delegate = self }
+        
+        windowScene.userActivity = node.openDetailUserActivity
+        
     }
     
     
@@ -105,6 +111,7 @@ class DrawViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         view.window?.windowScene?.screenshotService?.delegate = nil
+        view.window?.windowScene?.userActivity = nil
         
         node.isOpened = false
         
@@ -121,6 +128,10 @@ class DrawViewController: UIViewController {
 
     }
     
+    
+    override func updateUserActivityState(_ activity: NSUserActivity) {
+        userActivity!.addUserInfoEntries(from: [ Node.NodeOpenDetailIdKey: node.url! ])
+    }
     
     
     // MARK: - Methods
@@ -150,11 +161,6 @@ class DrawViewController: UIViewController {
         loadingView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
         updateContentSizeForDrawing()
-        
-        guard let parent = parent, let window = parent.view.window, let windowScene = window.windowScene, let screenshotService = windowScene.screenshotService else {
-            return
-        }
-        screenshotService.delegate = self
         
     }
     
