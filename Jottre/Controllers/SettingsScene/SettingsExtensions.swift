@@ -51,9 +51,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             cell.delegate = self
             cell.title = NSLocalizedString("Synchronize with iCloud", comment: "")
             cell.usesCloud = UIDevice.isLimited() ? true : settings.codable.usesCloud
-            if UIDevice.isLimited() || !Downloader.isCloudEnabled {
-                cell.switchView.isEnabled = false
-            }
+            cell.switchView.isEnabled = !(UIDevice.isLimited() || !Downloader.isCloudEnabled)
             return cell
             
         } else if indexPath.row == 2 {
@@ -77,9 +75,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         
         if indexPath.row == 0 {
      
-            guard let cell = cell as? AppearanceSettingsCell else {
-                return
-            }
+            guard let cell = cell as? AppearanceSettingsCell else { return }
             
             if settings.codable.preferedAppearance == 0 {
                 cell.colorLabel.text = NSLocalizedString("Light", comment: "Light appearance")
@@ -94,9 +90,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
             
         } else if indexPath.row == 2 {
 
-            guard let url = URL(string: "https://github.com/AntonAmes/jottre") else {
-                return
-            }
+            guard let url = URL(string: "https://github.com/AntonAmes/jottre") else { return }
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
 
         }
