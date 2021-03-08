@@ -23,8 +23,13 @@ class DrawViewController: UIViewController {
             if hasModifiedDrawing {
                 
                 navigationItem.hidesBackButton = true
-                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler)))
-
+                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler)))
+                
+            } else {
+                
+                navigationItem.leftBarButtonItem = nil
+                navigationItem.hidesBackButton = false
+                
             }
             
         }
@@ -132,7 +137,7 @@ class DrawViewController: UIViewController {
         
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = node.name
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(exportDrawing))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShareButton(target: self, action: #selector(exportDrawing)))
                         
         view.addSubview(canvasView)
         canvasView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -248,10 +253,9 @@ class DrawViewController: UIViewController {
     }
     
     func writeDrawing() {
-        Logger.main.info("Storing document")
         DispatchQueue.main.async {
+            self.hasModifiedDrawing = false
             self.node.setDrawing(drawing: self.canvasView.drawing)
-            self.navigationController?.popViewController(animated: true)
         }
     }
     

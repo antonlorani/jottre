@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NavigationButton: UILabel {
+class NavigationTextButton: UILabel {
     
     // MARK: - Properties
     

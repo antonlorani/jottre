@@ -32,7 +32,7 @@ class SettingsViewController: UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             label.textAlignment = .center
-            label.text = "Release v1.1"
+            label.text = "Preview v1.2"
             label.textColor = .secondaryLabel
         return label
     }()
@@ -68,7 +68,7 @@ class SettingsViewController: UIViewController {
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         view.addSubview(versionLabel)
-        versionLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        versionLabel.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -10).isActive = true
         versionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         versionLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
         versionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true

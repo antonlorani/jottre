@@ -28,12 +28,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
 
         settings.addObserver(self)
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.windowScene = windowScene
-        
         let initialController = InitialViewController()
         let initialNavigationController = NavigationViewController(rootViewController: initialController)
         
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.windowScene = windowScene
         window?.rootViewController = initialNavigationController
         window?.makeKeyAndVisible()
         
@@ -104,9 +103,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SettingsObserver {
     
     func settingsDidChange(_ settings: Settings) {
         
-        guard let window = window else {
-            return
-        }
+        guard let window = window else { return }
         
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
             window.overrideUserInterfaceStyle = settings.preferedUserInterfaceStyle()

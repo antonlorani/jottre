@@ -1,14 +1,14 @@
 //
-//  SettingsButton.swift
+//  CustomButtonBarItem.swift
 //  Jottre
 //
-//  Created by Anton Lorani on 17.01.21.
+//  Created by Anton Lorani on 07.02.21.
 //
 
 import Foundation
 import UIKit
 
-class SettingsButton: UIButton {
+class CustomButtonBarItem: UIButton {
     
     // MARK: - Init
     
@@ -37,9 +37,7 @@ class SettingsButton: UIButton {
     func setupViews() {
         
         backgroundColor = .systemBlue
-        
-        setImage(UIImage(systemName: "gear"), for: .normal)
-        
+                
         tintColor = UIColor.white
         
         layer.cornerRadius = 15

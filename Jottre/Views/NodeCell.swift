@@ -11,11 +11,11 @@ class NodeCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var node: Node? {
+    var node: Node! {
         didSet {
-
-            titleLabel.text = node?.name
             
+            titleLabel.text = node?.name
+            setupDelegates()
             guard let thumbnail = node?.thumbnail else {
                 return
             }
@@ -63,12 +63,12 @@ class NodeCell: UICollectionViewCell {
         super.didMoveToSuperview()
         
         setupViews()
+        //setupDelegates()
 
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
-        layer.shadowColor = UIColor.label.cgColor
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
     
     }
@@ -88,9 +88,12 @@ class NodeCell: UICollectionViewCell {
     
     func setupViews() {
         
+        transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        alpha = 0
+        
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
         
-        layer.shadowColor = UIColor.label.cgColor
+        layer.shadowColor = UIColor.black.cgColor
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
         layer.shadowOpacity = 0.1
         layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -115,7 +118,34 @@ class NodeCell: UICollectionViewCell {
         titleLabel.rightAnchor.constraint(equalTo: overlay.rightAnchor, constant: -15).isActive = true
         titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
         
+        UIView.animate(withDuration: 0.4) {
+            self.transform = .identity
+            self.alpha = 1
+        }
+        
+    }
+ 
+    
+    func setupDelegates() {
+        
+        guard let node = node else { return }
+        node.updateMeta()
+        
     }
     
 }
 
+
+extension NodeCell: NodeObserver {
+    
+    func didUpdate(node: Node) {
+        
+        guard let thumbnail = node.thumbnail else { return }
+        
+        DispatchQueue.main.async {
+            self.imageView.image = thumbnail
+        }
+        
+    }
+    
+}

@@ -10,8 +10,11 @@ import PencilKit
 import OSLog
 
 
-/// A custom helper class that generates the thumbnails for a given Node
-var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
+protocol NodeObserver {
+    
+    func didUpdate(node: Node)
+    
+}
 
 
 /// This class will manage the processes of a NodeCodable
@@ -35,6 +38,12 @@ class Node: NSObject {
         return Downloader.getStatus(url: self.url)
     }
     
+    private var observersEnabledValue: Bool = true
+    
+    var observersEnabled: Bool {
+        return observersEnabledValue
+    }
+    
     var initialDataHash: Int?
     
     var currentDataHash: Int?
@@ -44,6 +53,8 @@ class Node: NSObject {
     var codable: NodeCodableV2?
     
     var collector: NodeCollector?
+    
+    var observers: [NodeObserver] = []
     
     private var serializationQueue = DispatchQueue(label: "NodeSerializationQueue", qos: .background)
     
@@ -156,7 +167,6 @@ class Node: NSObject {
                 }
                 
                 self.codable = decodedCodable
-                self.updateMeta()
                 
                 completion(true)
                 
@@ -257,12 +267,14 @@ class Node: NSObject {
     /// - Parameter completion: Returns a boolean that indicates success or failure    
     func updateMeta(completion: @escaping (_ success: Bool) -> Void) {
         
-        thumbnailGenerator.execute(for: self) { (success, image) in
+        guard let collector = self.collector else {
+            completion(false)
+            return
+        }
+        
+        collector.thumbnailGenerator.execute(for: self) { (success, image) in
             self.thumbnail = image
-                        
-            if let collector = self.collector {
-                collector.didUpdate()
-            }
+            self.didUpdate()
             
             completion(success)
         }
@@ -283,6 +295,18 @@ class Node: NSObject {
     }
     
     
+    /// Sends a message to each observer, that there happened changes inside this object.
+    func didUpdate() {
+        
+        if !observersEnabled { return }
+        
+        DispatchQueue.main.async {
+            self.observers.forEach({ $0.didUpdate(node: self) })
+        }
+        
+    }
+    
+    
     
     // MARK: - Filesystem methods
     
@@ -294,7 +318,6 @@ class Node: NSObject {
             return true
         }
         var localURL = Settings.getLocalPath()
-            
 
         /// - Checks if this file is relevant to our iCloud | Local Storage discussion
         if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
@@ -377,9 +400,7 @@ class Node: NSObject {
         
         self.url = destinationURL
         self.name = name
-        
-        self.collector?.didUpdate()
-        
+                
         completion?(true)
         
     }
@@ -430,6 +451,27 @@ class Node: NSObject {
         
         completion?(true)
 
+    }
+    
+    
+    
+    // MARK: - Observer methods
+    
+    /// Enable observer calls ;)
+    func enableObservers() {
+        observersEnabledValue = true
+    }
+    
+    
+    /// Suppresses the observer calls ;)
+    func disableObservers() {
+        observersEnabledValue = false
+    }
+    
+    
+    /// Adds a new observer to this class ;)
+    func addObserver(_ observer: NodeObserver) {
+        observers.append(observer)
     }
     
 }

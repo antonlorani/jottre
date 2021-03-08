@@ -17,12 +17,18 @@ extension DrawViewController {
             self.drawingToPDF { (data, _, _) in
                 
                 guard let data = data else {
-                    Logger.main.debug("Could not create PDF from canvas")
+                    self.stopLoading()
+                    return
+                }
+                                
+                let fileURL = Settings.tmpDirectory.appendingPathComponent(self.node.name!).appendingPathExtension("pdf")
+                
+                if !data.writeToReturingBoolean(url: fileURL) {
                     self.stopLoading()
                     return
                 }
                 
-                let activityViewController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
+                let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
                 
                 DispatchQueue.main.async {
                     self.stopLoading()
@@ -46,9 +52,19 @@ extension DrawViewController {
             var bounds = drawing.bounds
                 bounds.size.height = drawing.bounds.maxY + 100
             
-            let image = drawing.image(from: bounds, scale: 1, userInterfaceStyle: .light)
+            guard let data = drawing.image(from: bounds, scale: 1, userInterfaceStyle: .light).jpegData(compressionQuality: 1) else {
+                self.stopLoading()
+                return
+            }
             
-            let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            let fileURL = Settings.tmpDirectory.appendingPathComponent(self.node.name!).appendingPathExtension("png")
+            
+            if !data.writeToReturingBoolean(url: fileURL) {
+                self.stopLoading()
+                return
+            }
+            
+            let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
             
             DispatchQueue.main.async {
                 self.stopLoading()
@@ -70,13 +86,19 @@ extension DrawViewController {
             var bounds = drawing.bounds
                 bounds.size.height = drawing.bounds.maxY + 100
             
-            guard let image = drawing.image(from: bounds, scale: 1, userInterfaceStyle: .light).jpegData(compressionQuality: 1) else {
-                Logger.main.debug("Could not retrieve jpeg data from drawing")
+            guard let data = drawing.image(from: bounds, scale: 1, userInterfaceStyle: .light).jpegData(compressionQuality: 1) else {
                 self.stopLoading()
                 return
             }
             
-            let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            let fileURL = Settings.tmpDirectory.appendingPathComponent(self.node.name!).appendingPathExtension("jpg")
+            
+            if !data.writeToReturingBoolean(url: fileURL) {
+                self.stopLoading()
+                return
+            }
+            
+            let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
             
             DispatchQueue.main.async {
                 self.stopLoading()

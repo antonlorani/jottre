@@ -16,8 +16,11 @@ class InitialViewController: UIViewController {
     
     var nodeCollector: NodeCollector = NodeCollector()
     
+    var hasDocumentsDelayFinished: Bool = false
+    
     var hasDocuments: Bool = false {
         didSet {
+            if !hasDocumentsDelayFinished { return }
             UIView.animate(withDuration: 0.5) {
                 self.infoTextView.alpha = self.hasDocuments ? 0 : 1
                 self.collectionView.alpha = self.hasDocuments ? 1 : 0
@@ -91,7 +94,7 @@ class InitialViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         if !UIDevice.isLimited() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Add note", comment: ""), target: self, action: #selector(createNode)))
         }
         
         if !Downloader.isCloudEnabled {
@@ -116,15 +119,16 @@ class InitialViewController: UIViewController {
     
     
     private func setupDelegates() {
-                
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         nodeCollector.traitCollection = traitCollection
-        
         nodeCollector.addObserver(self)
-        nodeCollector.continueBackgroundFetch()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.collectionView.delegate = self
-            self.collectionView.dataSource = self
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+            self.hasDocumentsDelayFinished = true
+            self.hasDocuments = !(!self.hasDocuments) /// A simple solution to reassign the value to call didSet
         }
         
         settings.addObserver(self)
@@ -155,27 +159,7 @@ class InitialViewController: UIViewController {
             }
             name = name == "" ? noteName : name
             
-            self.nodeCollector.createNode(name: name) { (node) in
-//                
-//                guard let node = node else {
-//                    return
-//                }
-//                
-//                self.nodeCollector.disableObservers()
-//                self.nodeCollector.nodes.append(node)
-//                
-//                DispatchQueue.main.async {
-//                    
-//                    self.collectionView.performBatchUpdates {
-//                        let indexPath = IndexPath(item: self.nodeCollector.nodes.count - 1, section: 0)
-//                        self.collectionView.insertItems(at: [indexPath])
-//                    } completion: { (success) in
-//                        self.nodeCollector.enableObservers()
-//                    }
-//                    
-//                }
-                
-            }
+            self.nodeCollector.createNode(name: name) { (node) in }
             
         }))
         
