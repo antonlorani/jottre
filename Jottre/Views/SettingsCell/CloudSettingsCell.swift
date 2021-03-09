@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import OSLog
 
 protocol CloudSettingsCellDelegate {
     
@@ -49,6 +50,12 @@ class CloudSettingsCell: SettingsCell {
         switchView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         switchView.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
         switchView.heightAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
+        
+        title = NSLocalizedString("Synchronize with iCloud", comment: "")
+        
+        if UIDevice.isLimited() || !Downloader.isCloudEnabled {
+            switchView.isEnabled = false
+        }
         
         setupDelegates()
         

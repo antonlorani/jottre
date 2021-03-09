@@ -16,6 +16,15 @@ protocol NodeObserver {
     
 }
 
+struct NodeObserverReusable {
+    
+    var reuseIdentifier: String
+    
+    var observer: NodeObserver
+    
+}
+
+
 
 /// This class will manage the processes of a NodeCodable
 /// This includes: encoding, decoding and basic file system related methods
@@ -54,7 +63,9 @@ class Node: NSObject {
     
     var collector: NodeCollector?
     
-    var observers: [NodeObserver] = []
+    var observer: NodeObserver?
+    
+    var observers: [NodeObserverReusable] = []
     
     private var serializationQueue = DispatchQueue(label: "NodeSerializationQueue", qos: .background)
     
@@ -263,25 +274,6 @@ class Node: NSObject {
     }
     
     
-    /// Updates meta-data such as the thumbnail of the Node
-    /// - Parameter completion: Returns a boolean that indicates success or failure    
-    func updateMeta(completion: @escaping (_ success: Bool) -> Void) {
-        
-        guard let collector = self.collector else {
-            completion(false)
-            return
-        }
-        
-        collector.thumbnailGenerator.execute(for: self) { (success, image) in
-            self.thumbnail = image
-            self.didUpdate()
-            
-            completion(success)
-        }
-        
-    }
-    
-    
     /// Moves drawing to Node. Calls update to generate thumbnail
     /// - Parameter drawing: Given PKDrawing
     func setDrawing(drawing: PKDrawing) {
@@ -289,7 +281,7 @@ class Node: NSObject {
         codable?.drawing = drawing
         codable?.lastModified = NSDate().timeIntervalSince1970
         
-        updateMeta()
+        didUpdate()
         push()
         
     }
@@ -301,156 +293,10 @@ class Node: NSObject {
         if !observersEnabled { return }
         
         DispatchQueue.main.async {
-            self.observers.forEach({ $0.didUpdate(node: self) })
+            self.observer?.didUpdate(node: self)
+            self.observers.forEach({ $0.observer.didUpdate(node: self) })
         }
         
-    }
-    
-    
-    
-    // MARK: - Filesystem methods
-    
-    /// Moves all files in root directoy to cloud or local path
-    /// - Returns: Success or failure (true, false)
-    func moveFilesIfNeeded() -> Bool {
-
-        guard var cloudURL = Settings.getCloudPath(), let url = self.url else {
-            return true
-        }
-        var localURL = Settings.getLocalPath()
-
-        /// - Checks if this file is relevant to our iCloud | Local Storage discussion
-        if url.deletingPathExtension().deletingLastPathComponent() != cloudURL && url.deletingPathExtension().deletingLastPathComponent() != localURL {
-            return true
-        }
-            
-        cloudURL = cloudURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
-        localURL = localURL.appendingPathComponent(self.name!).appendingPathExtension("jot")
-                        
-        let sourceURL = settings.codable.usesCloud ? localURL : cloudURL
-        let destinationURL = settings.codable.usesCloud ? cloudURL : localURL
-        
-
-        /// - If the destinationURL already exists, there is no need to run the setUbiquitous method
-        if FileManager.default.fileExists(atPath: destinationURL.path) {
-            return true
-        }
-            
-        do {
-            try FileManager.default.moveItem(at: sourceURL, to: destinationURL)
-        } catch {
-            Logger.main.error("\(error.localizedDescription)")
-        }
-        
-        return true
-        
-    }
-    
-    
-    /// Checks wether there the node-file has changed after we read into memory
-    /// - Parameter completion: Boolean value that indicates an inConflict or a notInConflict
-    func inConflict(completion: ((Bool) -> Void)? = nil) {
-        
-        guard let url = self.url else {
-            completion?(false)
-            return
-        }
-        
-        let cloudURL = url.deletingPathExtension().deletingLastPathComponent().appendingPathComponent(".\(self.name!)").appendingPathExtension("jot").appendingPathExtension("icloud")
-
-        let tmpURL = FileManager.default.fileExists(atPath: cloudURL.path) ? cloudURL : url
-        
-        let tmpNode = Node(url: tmpURL)
-        tmpNode.pull { (success) in
-
-            if !success {
-                completion?(false)
-                return
-            }
-            
-            if tmpNode.initialDataHash != self.initialDataHash {
-                completion?(true)
-            } else {
-                completion?(false)
-            }
-            
-        }
-        
-    }
-    
-    
-    /// Renames the Nodes name
-    /// IMPORTANT: - name = name.jot; name.jot = name
-    /// - Parameters:
-    ///   - name: New name of the Node
-    ///   - completion: Returns a boolean that indicates success or failure
-    func rename(to name: String, completion: ((Bool) -> Void)? = nil) {
-        
-        guard let originURL = url, let destinationURL = url?.deletingLastPathComponent().appendingPathComponent(name).appendingPathExtension("jot") else {
-            completion?(false)
-            return
-        }
-        
-        do {
-            try FileManager.default.moveItem(at: originURL, to: destinationURL)
-        } catch {
-            Logger.main.error("\(error.localizedDescription)")
-            completion?(false)
-        }
-        
-        self.url = destinationURL
-        self.name = name
-                
-        completion?(true)
-        
-    }
-    
-    
-    /// Clones the Node's content. Name will be updated automatically with suffix 'copy'
-    /// - Parameter completion: Returns a boolean that indicates success or failure
-    func duplicate(completion: ((Bool) -> Void)? = nil) {
-        
-        guard let name = self.name, let url = self.url, let collector = self.collector else {
-            completion?(false)
-            return
-        }
-        
-        let croppedURL = url.deletingPathExtension().deletingLastPathComponent()
-        
-        let updatedName = NodeCollector.computeCopyName(baseName: name, path: croppedURL)
-        
-        let node = Node(url: croppedURL.appendingPathComponent(updatedName).appendingPathExtension("jot"))
-        node.setDrawing(drawing: self.codable!.drawing)
-        node.pull { (success) in
-            if success {
-                collector.nodes.append(node)
-                completion?(true)
-                return
-            }
-            completion?(false)
-        }
-        
-    }
-    
-    
-    /// Deletes the Node from the filesystem
-    /// - Parameter completion: Returns a boolean that indicates success or failure
-    func delete(completion: ((Bool) -> Void)? = nil) {
-        
-        guard let url = url else {
-            completion?(false)
-            return
-        }
-        
-        do {
-            try FileManager.default.removeItem(at: url)
-        } catch {
-            Logger.main.error("Could not delete Node at \(url). Reason: \(error.localizedDescription)")
-            completion?(false)
-        }
-        
-        completion?(true)
-
     }
     
     
@@ -469,9 +315,18 @@ class Node: NSObject {
     }
     
     
-    /// Adds a new observer to this class ;)
-    func addObserver(_ observer: NodeObserver) {
-        observers.append(observer)
+    /// Adds a new observer to this class
+    func addObserver(_ observer: NodeObserver, _ reuseIdentifier: String) {
+        observers.append(NodeObserverReusable(reuseIdentifier: reuseIdentifier, observer: observer))
     }
+
+
+    /// Removes an existing observer from this class
+    func deleteObserver(_ observer: NodeObserver, _ reuseIdentifier: String) {
+        observers.removeAll { (reusableObserver) -> Bool in
+            return reusableObserver.reuseIdentifier == reuseIdentifier
+        }
+    }
+    
     
 }

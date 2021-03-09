@@ -72,10 +72,8 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: indexPath) as? NodeCell else {
             fatalError("Cell is not of type NodeCell.")
         }
-        
-        nodeCollector.nodes[indexPath.row].addObserver(cell)
         cell.node = nodeCollector.nodes[indexPath.row]
-        
+        cell.node.observer = cell
         return cell
     }
     
