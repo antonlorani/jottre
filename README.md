@@ -57,7 +57,7 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 - [x] Animation of CollectionViewCells (Deleting, Inserting...) not implemented
 - [x] Deleting items takes too much time
 - [x] If removing items from collectionview, certain thumbnails were not shown correctly
-- [ ] Changing the userInterface style will not affect upcoming application-scenes
+- [x] Changing the userInterface style will not affect upcoming application-scenes
 - [x] As the ViewControllers widths shrunk the PencilKit Toolbar removes the forward/backwards button
 
 ## Up next
