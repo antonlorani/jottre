@@ -10,7 +10,7 @@ import OSLog
 import Foundation
 
 protocol NodeCollectorObserver {
-        
+    
     func didInsertNode(nodeCollector: NodeCollector, at index: Int)
     
     func didDeleteNode(nodeCollector: NodeCollector, at index: Int)
@@ -282,15 +282,11 @@ class NodeCollector {
     /// Removes a Node inside a NodeCollector at a certain index
     /// - Parameter index: Index of node in NodeCollector that will be removed
     func removeNode(at index: Int) {
+
+        self.nodes.remove(at: index)
         
-        DispatchQueue.main.async {
-            
-            self.nodes.remove(at: index)
-            
-            if !self.observersEnabled { return }
-            self.observers.forEach({ $0.didDeleteNode(nodeCollector: self, at: index) })
-        
-        }
+        if !self.observersEnabled { return }
+        self.observers.forEach({ $0.didDeleteNode(nodeCollector: self, at: index) })
     
     }
     
