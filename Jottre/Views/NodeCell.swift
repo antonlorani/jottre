@@ -148,7 +148,6 @@ class NodeCell: UICollectionViewCell {
 extension NodeCell: NodeObserver {
     
     func didUpdate(node: Node) {
-        print("Updated")
         updateMeta()
     }
     
