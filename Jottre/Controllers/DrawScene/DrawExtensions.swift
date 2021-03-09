@@ -84,28 +84,30 @@ extension DrawViewController: PKCanvasViewDelegate {
 extension DrawViewController: UIScreenshotServiceDelegate {
     
     func startLoading() {
+        toolPicker.setVisible(false, forFirstResponder: canvasView)
         canvasView.isUserInteractionEnabled = false
         loadingView.isAnimating = true
     }
     
     func stopLoading() {
+        toolPicker.setVisible(true, forFirstResponder: canvasView)
         canvasView.isUserInteractionEnabled = true
         loadingView.isAnimating = false
     }
     
     func drawingToPDF(_ completion: @escaping (_ PDFData: Data?, _ indexOfCurrentPage: Int, _ rectInCurrentPage: CGRect) -> Void) {
         
-        let drawing = self.canvasView.drawing
+        let drawing = canvasView.drawing
             
-        let visibleRect = self.canvasView.bounds
+        let visibleRect = canvasView.bounds
                 
-        let pdfWidth: CGFloat = self.node.codable!.width
+        let pdfWidth: CGFloat = node.codable!.width
         let pdfHeight = drawing.bounds.maxY + 100
-        let canvasContentSize = self.canvasView.contentSize.height
+        let canvasContentSize = canvasView.contentSize.height
                 
-        let xOffsetInPDF = pdfWidth - (pdfWidth * visibleRect.minX / self.canvasView.contentSize.width)
+        let xOffsetInPDF = pdfWidth - (pdfWidth * visibleRect.minX / canvasView.contentSize.width)
         let yOffsetInPDF = pdfHeight - (pdfHeight * visibleRect.maxY / canvasContentSize)
-        let rectWidthInPDF = pdfWidth * visibleRect.width / self.canvasView.contentSize.width
+        let rectWidthInPDF = pdfWidth * visibleRect.width / canvasView.contentSize.width
         let rectHeightInPDF = pdfHeight * visibleRect.height / canvasContentSize
             
         let visibleRectInPDF = CGRect(x: xOffsetInPDF, y: yOffsetInPDF, width: rectWidthInPDF, height: rectHeightInPDF)

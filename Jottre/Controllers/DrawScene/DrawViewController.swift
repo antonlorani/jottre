@@ -201,6 +201,8 @@ class DrawViewController: UIViewController {
     
     @objc func exportDrawing() {
         
+        toolPicker.setVisible(false, forFirstResponder: canvasView)
+        
         let alertTitle = NSLocalizedString("Export note", comment: "")
         let alertCancelTitle = NSLocalizedString("Cancel", comment: "")
         
@@ -214,7 +216,9 @@ class DrawViewController: UIViewController {
         alertController.addAction(createExportToJPGAction())
         alertController.addAction(createExportToPNGAction())
         alertController.addAction(createShareAction())
-        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: alertCancelTitle, style: .cancel, handler: { (action) in
+            self.toolPicker.setVisible(true, forFirstResponder: self.canvasView)
+        }))
         
         present(alertController, animated: true, completion: nil)
         
