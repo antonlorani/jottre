@@ -32,7 +32,7 @@ class SettingsViewController: UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             label.textAlignment = .center
-            label.text = "Preview v1.2"
+            label.text = "Preview v1.2.1"
             label.textColor = .secondaryLabel
         return label
     }()
