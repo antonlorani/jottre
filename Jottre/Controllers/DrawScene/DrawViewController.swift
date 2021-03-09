@@ -134,6 +134,7 @@ class DrawViewController: UIViewController {
     }
     
     
+    
     // MARK: - Methods
     
     func setupViews() {
@@ -235,7 +236,7 @@ class DrawViewController: UIViewController {
             DispatchQueue.main.async {
 
                 let alertTitle = NSLocalizedString("File conflict found", comment: "")
-                let alertMessage = String(format: NSLocalizedString("The file could not be saved. It seems that the original file (%d.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.", comment: "File conflict found (What happened, How to fix)"), self.node.name ?? "?")
+                let alertMessage = String(format: NSLocalizedString("The file could not be saved. It seems that the original file (%s.jot) on the disk has changed. (Maybe it was edited on another device at the same time?). Use one of the following options to fix the problem.", comment: "File conflict found (What happened, How to fix)"), self.node.name ?? "?")
                 let alertActionOverwriteTitle = NSLocalizedString("Overwrite", comment: "")
                 let alertActionCloseTitle = NSLocalizedString("Close without saving", comment: "")
                 let alertCancelTitle = NSLocalizedString("Cancel", comment: "")

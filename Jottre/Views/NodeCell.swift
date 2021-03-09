@@ -97,8 +97,9 @@ class NodeCell: UICollectionViewCell {
         
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-        layer.shadowOpacity = 0.1
-        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.05
+        
+        layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowRadius = 15
         layer.cornerRadius = 15
         
