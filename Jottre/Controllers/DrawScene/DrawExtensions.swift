@@ -8,11 +8,68 @@
 import Foundation
 import PencilKit
 
+extension DrawViewController {
+
+    func reloadNavigationItems() {
+        
+        navigationItem.hidesBackButton = hasModifiedDrawing
+        
+        if hasModifiedDrawing {
+            
+            navigationItem.setLeftBarButton(UIBarButtonItem(customView: NavigationTextButton(title: NSLocalizedString("Save", comment: "Save the document"), target: self, action: #selector(self.writeDrawingHandler))), animated: true)
+            
+        } else {
+            
+            navigationItem.leftBarButtonItem = nil
+            
+            if isUndoEnabled {
+            
+                let spaceButton = UIBarButtonItem(customView: SpaceButtonBarItem())
+                undoButton = UIBarButtonItem(customView: UndoButton(target: self, action: #selector(undoHandler)))
+                redoButton = UIBarButtonItem(customView: RedoButton(target: self, action: #selector(redoHandler)))
+                
+                navigationItem.leftItemsSupplementBackButton = true
+                navigationItem.setLeftBarButtonItems([spaceButton, undoButton, redoButton], animated: true)
+            
+                guard let undoManager = canvasView.undoManager else {
+                    return
+                }
+                
+                undoButton.isEnabled = undoManager.canUndo
+                redoButton.isEnabled = undoManager.canRedo
+                
+            } else {
+                
+                navigationItem.setLeftBarButtonItems(nil, animated: true)
+            
+            }
+            
+        }
+        
+    }
+    
+    
+    @objc func undoHandler() {
+        canvasView.undoManager?.undo()
+        reloadNavigationItems()
+    }
+    
+    
+    @objc func redoHandler() {
+        canvasView.undoManager?.redo()
+        reloadNavigationItems()
+    }
+    
+}
+
+
 extension DrawViewController: PKCanvasViewDelegate {
     
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
+        
         updateContentSizeForDrawing()
-
+        reloadNavigationItems()
+        
         if modifiedCount == 1 {
             hasModifiedDrawing = true
         } else {
@@ -84,6 +141,38 @@ extension DrawViewController: UIScreenshotServiceDelegate {
             completion(data, indexOfCurrentPage, rectInCurrentPage)
         }
             
+    }
+    
+}
+
+
+extension DrawViewController: PKToolPickerObserver {
+    
+    func toolPickerFramesObscuredDidChange(_ toolPicker: PKToolPicker) {
+        updateLayout(for: toolPicker)
+    }
+    
+    func toolPickerVisibilityDidChange(_ toolPicker: PKToolPicker) {
+        updateLayout(for: toolPicker)
+    }
+        
+    
+    func updateLayout(for toolPicker: PKToolPicker) {
+        let obscuredFrame = toolPicker.frameObscured(in: view)
+        
+        if obscuredFrame.isNull {
+            canvasView.contentInset = .zero
+        } else {
+            canvasView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.bounds.maxX - obscuredFrame.minY, right: 0)
+        }
+        
+        canvasView.scrollIndicatorInsets = canvasView.contentInset
+        
+        if isUndoEnabled != !obscuredFrame.isNull {
+            isUndoEnabled = !obscuredFrame.isNull
+            reloadNavigationItems()
+        }
+        
     }
     
 }

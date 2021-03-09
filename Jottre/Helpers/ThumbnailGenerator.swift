@@ -50,7 +50,7 @@ class ThumbnailGenerator {
             
             let thumbnailScale = UIScreen.main.scale * self.size.width / width
                     
-            let traitCollection = UITraitCollection(userInterfaceStyle: settings.preferedUserInterfaceStyle())
+            let traitCollection = UITraitCollection(userInterfaceStyle: settings.preferredUserInterfaceStyle())
             
             traitCollection.performAsCurrent {
                 let image = drawing.image(from: thumbnailRect, scale: thumbnailScale)

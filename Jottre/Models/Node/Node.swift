@@ -11,9 +11,7 @@ import OSLog
 
 
 protocol NodeObserver {
-    
     func didUpdate(node: Node)
-    
 }
 
 struct NodeObserverReusable {
@@ -68,6 +66,21 @@ class Node: NSObject {
     var observers: [NodeObserverReusable] = []
     
     private var serializationQueue = DispatchQueue(label: "NodeSerializationQueue", qos: .background)
+    
+    
+    static let NodeOpenDetailActivityType = "com.antonlorani.jottre.openDetail"
+    
+    static let NodeOpenDetailPath = "openDetail"
+    
+    static let NodeOpenDetailIdKey = "nodeURL"
+    
+    var openDetailUserActivity: NSUserActivity {
+        let userActivity = NSUserActivity(activityType: Node.NodeOpenDetailActivityType)
+            userActivity.title = Node.NodeOpenDetailPath
+            userActivity.userInfo = [Node.NodeOpenDetailIdKey: url!]
+            userActivity.requiredUserInfoKeys = [Node.NodeOpenDetailIdKey]
+        return userActivity
+    }
     
     
     
