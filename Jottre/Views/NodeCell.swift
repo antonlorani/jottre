@@ -15,7 +15,7 @@ class NodeCell: UICollectionViewCell {
         didSet {
             
             titleLabel.text = node?.name
-            setupDelegates()
+            updateMeta()
             guard let thumbnail = node?.thumbnail else {
                 return
             }
@@ -63,14 +63,22 @@ class NodeCell: UICollectionViewCell {
         super.didMoveToSuperview()
         
         setupViews()
-        //setupDelegates()
 
     }
+    
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
     
+    }
+    
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        updateMeta()
+        
     }
     
     
@@ -126,7 +134,7 @@ class NodeCell: UICollectionViewCell {
     }
  
     
-    func setupDelegates() {
+    func updateMeta() {
         
         guard let node = node else { return }
         node.updateMeta()
