@@ -43,7 +43,9 @@ class AppearanceSettingsCell: SettingsCell {
         colorLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         colorLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
         colorLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
+        
+        title = NSLocalizedString("Interface appearance", comment: "")
+        
     }
     
 }

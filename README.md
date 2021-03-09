@@ -24,10 +24,10 @@ At the moment the full version of Jottre only supports iPadOS. This means that '
 - Minimalistic design
 
 
+
 ## Update 1.5
 
 - Added support for multi-window
-
 
 
 ## Preview

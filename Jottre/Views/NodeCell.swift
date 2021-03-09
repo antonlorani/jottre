@@ -16,13 +16,6 @@ class NodeCell: UICollectionViewCell {
             
             titleLabel.text = node?.name
             updateMeta()
-            guard let thumbnail = node?.thumbnail else {
-                return
-            }
-            
-            UIView.animate(withDuration: 0.3) {
-                self.imageView.image = thumbnail
-            }
             
         }
     }
@@ -77,7 +70,8 @@ class NodeCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        updateMeta()
+        imageView.image = nil
+        titleLabel.text = nil
         
     }
     
@@ -135,9 +129,15 @@ class NodeCell: UICollectionViewCell {
  
     
     func updateMeta() {
-        
-        guard let node = node else { return }
-        node.updateMeta()
+
+        let thumbnailGenerator = ThumbnailGenerator(size: frame.size)
+        thumbnailGenerator.execute(for: node) { (success, thumbnail) in
+            if success {
+                DispatchQueue.main.async {
+                    self.imageView.image = thumbnail
+                }
+            }
+        }
         
     }
     
@@ -147,13 +147,8 @@ class NodeCell: UICollectionViewCell {
 extension NodeCell: NodeObserver {
     
     func didUpdate(node: Node) {
-        
-        guard let thumbnail = node.thumbnail else { return }
-        
-        DispatchQueue.main.async {
-            self.imageView.image = thumbnail
-        }
-        
+        print("Updated")
+        updateMeta()
     }
     
 }

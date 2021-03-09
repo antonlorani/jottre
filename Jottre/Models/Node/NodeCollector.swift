@@ -51,17 +51,13 @@ class NodeCollector {
         }
     }
     
-    var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
-    
     
     
     // MARK: - Init
     
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
-        
-        self.initializeBackgroundFetch(interval: 1)
-
+        initializeBackgroundFetch(interval: 1)
     }
     
     
@@ -130,7 +126,7 @@ class NodeCollector {
     
     /// Updates the meta-data for each Node in this object
     func update() {
-        nodes.forEach({ $0.updateMeta() })
+        nodes.forEach({ $0.didUpdate() })
     }
     
     
