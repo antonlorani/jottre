@@ -106,7 +106,6 @@ extension InitialViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        // Minimum size = 232
         let minWidth: CGFloat = 232
         let numberOfColumns: Int = Int((view.frame.width - 40) / minWidth)
         let space: CGFloat = (view.frame.width - 40).truncatingRemainder(dividingBy: minWidth)

@@ -84,16 +84,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let window = window, let updatedSettings = notification.object as? Settings else { return }
         
-        print(updatedSettings.preferredUserInterfaceStyle())
-        
-        if updatedSettings.preferredUserInterfaceStyle() == .dark {
-            print("Dark")
-        } else if updatedSettings.preferredUserInterfaceStyle() == .light {
-            print("lIght")
-        } else {
-            print("unspecified")
-        }
-        
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
             window.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
         }, completion: nil)

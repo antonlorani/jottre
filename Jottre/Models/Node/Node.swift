@@ -329,6 +329,9 @@ class Node: NSObject {
     
     
     /// Adds a new observer to this class
+    /// - Parameters:
+    ///   - observer: NodeObserver class that listens for a possible Node-update
+    ///   - reuseIdentifier: A unique string that is used to release the observer from the node.
     func addObserver(_ observer: NodeObserver, _ reuseIdentifier: String) {
         observers.append(NodeObserverReusable(reuseIdentifier: reuseIdentifier, observer: observer))
     }
