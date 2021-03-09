@@ -50,7 +50,6 @@ class InitialViewController: UIViewController {
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-            layout.itemSize = CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 40, height: 291)
             layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             layout.minimumLineSpacing = 20
             layout.minimumInteritemSpacing = 20
@@ -81,6 +80,13 @@ class InitialViewController: UIViewController {
         
         nodeCollector.traitCollection = traitCollection
         
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        collectionView.collectionViewLayout.invalidateLayout()
+    
     }
     
     
@@ -122,6 +128,7 @@ class InitialViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.dragDelegate = self
         
         nodeCollector.traitCollection = traitCollection
         nodeCollector.addObserver(self)
@@ -131,7 +138,7 @@ class InitialViewController: UIViewController {
             self.hasDocuments = !(!self.hasDocuments) /// A simple solution to reassign the value to call didSet
         }
         
-        settings.addObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
         
     }
     

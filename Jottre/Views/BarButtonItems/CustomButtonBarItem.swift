@@ -12,9 +12,13 @@ class CustomButtonBarItem: UIButton {
     
     // MARK: - Init
     
-    init(target: Any, action: Selector) {
+    init(target: Any?, action: Selector?) {
         super.init(frame: CGRect(origin: .zero, size: CGSize(width: 30, height: 30)))
-        self.addTarget(target, action: action, for: .touchUpInside)
+        
+        if let target = target, let action = action {
+            self.addTarget(target, action: action, for: .touchUpInside)
+        }
+        
     }
     
     required init?(coder: NSCoder) {

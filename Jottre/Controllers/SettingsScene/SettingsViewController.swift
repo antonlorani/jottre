@@ -32,7 +32,7 @@ class SettingsViewController: UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             label.textAlignment = .center
-            label.text = "Preview v1.2"
+            label.text = "Preview v1.5"
             label.textColor = .secondaryLabel
         return label
     }()
@@ -59,8 +59,6 @@ class SettingsViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.handleDone))
         
-        view.backgroundColor = .systemBackground
-        
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -81,11 +79,29 @@ class SettingsViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
+        settingsDidChange(Notification(name: Settings.didUpdateNotificationName, object: settings))
+        
     }
     
     
     @objc func handleDone() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @objc func settingsDidChange(_ notification: Notification) {
+        
+        guard let updatedSettings = notification.object as? Settings else { return }
+        
+        navigationController?.navigationBar.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
+        overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
+        view.backgroundColor = updatedSettings.preferredUserInterfaceBackgroundColor()
+        
+        UIView.transition(with: view, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.view.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
+        }, completion: nil)
+        
     }
     
 }

@@ -10,7 +10,7 @@ import OSLog
 import Foundation
 
 protocol NodeCollectorObserver {
-        
+    
     func didInsertNode(nodeCollector: NodeCollector, at index: Int)
     
     func didDeleteNode(nodeCollector: NodeCollector, at index: Int)
@@ -51,17 +51,13 @@ class NodeCollector {
         }
     }
     
-    var thumbnailGenerator: ThumbnailGenerator = ThumbnailGenerator(size: CGSize(width: UIScreen.main.bounds.width >= (232 * 2 + 40) ? 232 : UIScreen.main.bounds.width - 4, height: 291))
-    
     
     
     // MARK: - Init
     
     /// Initializes the NodeCollector object and automatically pulls Nodes from the default container-path
     init() {
-        
-        self.initializeBackgroundFetch(interval: 1)
-
+        initializeBackgroundFetch(interval: 1)
     }
     
     
@@ -130,7 +126,7 @@ class NodeCollector {
     
     /// Updates the meta-data for each Node in this object
     func update() {
-        nodes.forEach({ $0.updateMeta() })
+        nodes.forEach({ $0.didUpdate() })
     }
     
     
@@ -286,15 +282,11 @@ class NodeCollector {
     /// Removes a Node inside a NodeCollector at a certain index
     /// - Parameter index: Index of node in NodeCollector that will be removed
     func removeNode(at index: Int) {
+
+        self.nodes.remove(at: index)
         
-        DispatchQueue.main.async {
-            
-            self.nodes.remove(at: index)
-            
-            if !self.observersEnabled { return }
-            self.observers.forEach({ $0.didDeleteNode(nodeCollector: self, at: index) })
-        
-        }
+        if !self.observersEnabled { return }
+        self.observers.forEach({ $0.didDeleteNode(nodeCollector: self, at: index) })
     
     }
     

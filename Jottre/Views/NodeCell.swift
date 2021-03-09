@@ -15,14 +15,7 @@ class NodeCell: UICollectionViewCell {
         didSet {
             
             titleLabel.text = node?.name
-            setupDelegates()
-            guard let thumbnail = node?.thumbnail else {
-                return
-            }
-            
-            UIView.animate(withDuration: 0.3) {
-                self.imageView.image = thumbnail
-            }
+            updateMeta()
             
         }
     }
@@ -63,14 +56,23 @@ class NodeCell: UICollectionViewCell {
         super.didMoveToSuperview()
         
         setupViews()
-        //setupDelegates()
 
     }
+    
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         
         backgroundColor = traitCollection.userInterfaceStyle == UIUserInterfaceStyle.dark ? UIColor.secondarySystemBackground : UIColor.systemBackground
     
+    }
+    
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.image = nil
+        titleLabel.text = nil
+        
     }
     
     
@@ -95,8 +97,9 @@ class NodeCell: UICollectionViewCell {
         
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-        layer.shadowOpacity = 0.1
-        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.05
+        
+        layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowRadius = 15
         layer.cornerRadius = 15
         
@@ -126,10 +129,16 @@ class NodeCell: UICollectionViewCell {
     }
  
     
-    func setupDelegates() {
-        
-        guard let node = node else { return }
-        node.updateMeta()
+    func updateMeta() {
+
+        let thumbnailGenerator = ThumbnailGenerator(size: frame.size)
+        thumbnailGenerator.execute(for: node) { (success, thumbnail) in
+            if success {
+                DispatchQueue.main.async {
+                    self.imageView.image = thumbnail
+                }
+            }
+        }
         
     }
     
@@ -139,13 +148,7 @@ class NodeCell: UICollectionViewCell {
 extension NodeCell: NodeObserver {
     
     func didUpdate(node: Node) {
-        
-        guard let thumbnail = node.thumbnail else { return }
-        
-        DispatchQueue.main.async {
-            self.imageView.image = thumbnail
-        }
-        
+        updateMeta()
     }
     
 }
