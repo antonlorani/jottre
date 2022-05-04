@@ -8,17 +8,21 @@
  
 */
 
+"JTR.title" = "Jottre";
+
 /// - Alert
 
-"Cancel" = "Cancel";
+"JTR.Alert.cancel" = "Cancel";
 
+/// - CreateNoteAlert
 
-/// - Files
+"JTR.CreateNoteAlert.title" = "New note";
+"JTR.CreateNoteAlert.message" = "Enter a name for the new note";
+"JTR.CreateNoteAlert.primaryActionTitle" = "Create";
 
-"My note" = "My note";
-
-"(copy)" = "(copy)";
-
+/// - Note Name
+"JTR.Note.defaultName" = "My note";
+"JTR.Note.copySuffix" = "(copy)";
 
 
 /// - Appearance
@@ -34,7 +38,7 @@
 
 "Export note" = "Export note";
 
-"Add note" = "Add note";
+"JTR.AddNoteButton.title" = "Add note";
 
 "Save" = "Save";
 
@@ -49,15 +53,6 @@
 "Edit" = "Edit";
 
 
-
-/// - Create alert
-
-"New note" = "New note";
-
-"Enter a name for the new note" = "Enter a name for the new note";
-
-
-
 /// - Rename alert
 
 "Rename note" = "Rename note";
@@ -66,16 +61,12 @@
 
 
 
-/// - Info View
+/// - InfoText
 
-"No documents available yet. Click 'Add note' to create a new file." = "No documents available yet. Click 'Add note' to create a new file.";
-
-"Documents created with the 'Jottre for iPad' App can be viewed here." = "Documents created with the 'Jottre for iPad' App can be viewed here.";
-
-"Enable iCloud to view files created with 'Jottre for iPad'" = "Enable iCloud to view files created with 'Jottre for iPad'";
-
-"Enable iCloud to unlock the full potential of Jottre" = "Enable iCloud to unlock the full potential of Jottre";
-
+"JTR.InfoText.documentsNotAvailable.pad" = "No documents available yet. Click 'Add note' to create a new file.";
+"JTR.InfoText.documentsNotAvailable.other" = "Documents created with the 'Jottre for iPad' App can be viewed here.";
+"JTR.InfoText.enableCloud.pad" = "Enable iCloud to unlock the full potential of Jottre";
+"JTR.InfoText.enableCloud.other" = "Enable iCloud to view files created with 'Jottre for iPad'";
 
 
 /// - Info Alert iCloud

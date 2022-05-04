@@ -8,16 +8,21 @@
  
 */
 
+"JTR.title" = "Jottre";
+
 /// - Alert
 
-"Cancel" = "Abbrechen";
+"JTR.Alert.cancel" = "Abbrechen";
 
+/// - CreateNoteAlert
 
-/// - Files
+"JTR.CreateNoteAlert.title" = "Neue Notiz";
+"JTR.CreateNoteAlert.message" = "Gebe einen Namen für die neue Notiz ein";
+"JTR.CreateNoteAlert.primaryActionTitle" = "Erstellen";
 
-"My note" = "Meine Notiz";
-
-"(copy)" = "(Kopie)";
+/// - Note Name
+"JTR.Note.defaultName" = "Meine Notiz";
+"JTR.Note.copySuffix" = "(Kopie)";
 
 
 /// - Appearance
@@ -33,29 +38,18 @@
 
 "Export note" = "Exportieren";
 
-"Add note" = "Hinzufügen";
+"JTR.AddNoteButton.title" = "Hinzufügen";
 
 "Save" = "Sichern";
 
 
 "Share" = "Teilen";
 
-"Create" = "Erstellen";
-
 "Delete" = "Löschen";
 
 "Rename" = "Umbenennen";
 
 "Edit" = "Bearbeiten";
-
-
-
-/// - Create alert
-
-"New note" = "Neue Notiz";
-
-"Enter a name for the new note" = "Gebe einen Namen für die neue Notiz ein";
-
 
 
 /// - Rename alert
@@ -66,16 +60,12 @@
 
 
 
-/// - Info View
+/// - InfoText
 
-"No documents available yet. Click 'Add note' to create a new file." = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
-
-"Documents created with the 'Jottre for iPad' App can be viewed here." = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
-
-"Enable iCloud to view files created with 'Jottre for iPad'" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier angezeigt werden können";
-
-"Enable iCloud to unlock the full potential of Jottre" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen";
-
+"JTR.InfoText.documentsNotAvailable.pad" = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
+"JTR.InfoText.documentsNotAvailable.other" = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
+"JTR.InfoText.enableCloud.pad" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen.";
+"JTR.InfoText.enableCloud.other" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier aufgelistet werden können.";
 
 
 /// - Info Alert iCloud

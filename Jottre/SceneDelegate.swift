@@ -11,31 +11,44 @@ import OSLog
 /// - Make the Settings of this App globally available
 let settings: Settings = Settings()
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    
+
+    private var retainedRootCoordinator: RootCoordinator?
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        #if targetEnvironment(macCatalyst)
-        windowScene.titlebar?.toolbar?.isVisible = false
-        windowScene.titlebar?.titleVisibility = .hidden
-        #endif
-        
+        guard let windowScene = (scene as? UIWindowScene) else {
+            return
+        }
+
+        let localizableStringsDataSource = LocalizableStringsDataSource()
+        let navigationController = RootNavigationController()
+        let rootCoordinator = RootCoordinator(
+            navigationController: navigationController,
+            repository: RootCoordinatorRepository(localizableStringsDataSource: localizableStringsDataSource),
+            deviceEnvironmentDataSource: DeviceEnvironmentDataSource(device: UIDevice.current),
+            cloudDataSource: CloudDataSource(fileManager: FileManager.default),
+            localizableStringsDataSource: localizableStringsDataSource
+        )
+        retainedRootCoordinator = rootCoordinator
+
+        let newWindow = UIWindow()
+        newWindow.windowScene = windowScene
+        newWindow.rootViewController = navigationController
+        newWindow.makeKeyAndVisible()
+        window = newWindow
+        rootCoordinator.start()
+        hideToolbarIfNeeded(windowScene: windowScene)
+
+        /*
         NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
-        
-        let initialController = InitialViewController()
-        let initialNavigationController = NavigationViewController(rootViewController: initialController)
-        
-        window = UIWindow()
-        window?.windowScene = windowScene
-        window?.rootViewController = initialNavigationController
-        window?.makeKeyAndVisible()
-        
+         */
+
+        /*
         presentDocument(urlContext: connectionOptions.urlContexts)
         
         settings.didUpdate()
@@ -43,9 +56,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
             configure(window: window, with: userActivity)
         }
-        
+        */
     }
-    
+
+    private func hideToolbarIfNeeded(windowScene: UIWindowScene) {
+        #if targetEnvironment(macCatalyst)
+        windowScene.titlebar?.toolbar?.isVisible = false
+        windowScene.titlebar?.titleVisibility = .hidden
+        #endif
+    }
+
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
         return scene.userActivity
     }
@@ -53,7 +73,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         presentDocument(urlContext: URLContexts)
     }
-    
     
     func presentDocument(urlContext: Set<UIOpenURLContext>) {
                       
