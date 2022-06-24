@@ -8,21 +8,36 @@
  
 */
 
-"JTR.title" = "Jottre";
+
+// MARK: - Root Scene
+
+"Scene.Root.navigationTitle" = "Jottre";
+
+"Scene.Root.Info.DocumentsNotAvailable.pad" = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
+"Scene.Root.Info.DocumentsNotAvailable.other" = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
+"Scene.Root.Info.EnableCloud.pad" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen.";
+"Scene.Root.Info.EnableCloud.other" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier aufgelistet werden können.";
+
+"Scene.Root.BarButton.AddNote.title" = "Hinzufügen";
+
+// MARK: - Preferences Scene
+
+"Scene.Preferences.navigationTitle" = "Einstellungen";
+
 
 /// - Alert
 
-"JTR.Alert.cancel" = "Abbrechen";
+"Alert.Default.cancel" = "Abbrechen";
 
 /// - CreateNoteAlert
 
-"JTR.CreateNoteAlert.title" = "Neue Notiz";
-"JTR.CreateNoteAlert.message" = "Gebe einen Namen für die neue Notiz ein";
-"JTR.CreateNoteAlert.primaryActionTitle" = "Erstellen";
+"Alert.CreateNoteAlert.title" = "Neue Notiz";
+"Alert.CreateNoteAlert.message" = "Gebe einen Namen für die neue Notiz ein";
+"Alert.CreateNoteAlert.primaryActionTitle" = "Erstellen";
 
 /// - Note Name
-"JTR.Note.defaultName" = "Meine Notiz";
-"JTR.Note.copySuffix" = "(Kopie)";
+"Defaults.Note.name" = "Meine Notiz";
+"Defaults.Note.copySuffix" = "(Kopie)";
 
 
 /// - Appearance
@@ -37,8 +52,6 @@
 /// - Actions
 
 "Export note" = "Exportieren";
-
-"JTR.AddNoteButton.title" = "Hinzufügen";
 
 "Save" = "Sichern";
 
@@ -57,15 +70,6 @@
 "Rename note" = "Notiz neubenennen";
 
 "Enter a name for the selected note" = "Gebe einen neuen Namen für die neue Notiz ein";
-
-
-
-/// - InfoText
-
-"JTR.InfoText.documentsNotAvailable.pad" = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
-"JTR.InfoText.documentsNotAvailable.other" = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
-"JTR.InfoText.enableCloud.pad" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen.";
-"JTR.InfoText.enableCloud.other" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier aufgelistet werden können.";
 
 
 /// - Info Alert iCloud

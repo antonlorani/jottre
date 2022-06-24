@@ -8,22 +8,36 @@
  
 */
 
-"JTR.title" = "Jottre";
+// MARK: - Root Scene
 
-/// - Alert
+"Scene.Root.navigationTitle" = "Jottre";
 
-"JTR.Alert.cancel" = "Cancel";
+"Scene.Root.Info.DocumentsNotAvailable.pad" = "No documents available yet. Click 'Add note' to create a new file.";
+"Scene.Root.Info.DocumentsNotAvailable.other" = "Documents created with the 'Jottre for iPad' App can be viewed here.";
+"Scene.Root.Info.EnableCloud.pad" = "Enable iCloud to unlock the full potential of Jottre";
+"Scene.Root.Info.EnableCloud.other" = "Enable iCloud to view files created with 'Jottre for iPad'";
+"Scene.Root.BarButton.AddNote.title" = "Add note";
 
-/// - CreateNoteAlert
+// MARK: - Preferences Scene
 
-"JTR.CreateNoteAlert.title" = "New note";
-"JTR.CreateNoteAlert.message" = "Enter a name for the new note";
-"JTR.CreateNoteAlert.primaryActionTitle" = "Create";
+"Scene.Preferences.navigationTitle" = "Preferences";
 
-/// - Note Name
-"JTR.Note.defaultName" = "My note";
-"JTR.Note.copySuffix" = "(copy)";
 
+// MARK: - Alert
+
+"Alert.Default.cancel" = "Cancel";
+
+// MARK: - CreateNoteAlert
+
+"Alert.CreateNoteAlert.title" = "New note";
+"Alert.CreateNoteAlert.message" = "Enter a name for the new note";
+"Alert.CreateNoteAlert.primaryActionTitle" = "Create";
+
+// MARK: - Note Name
+"Defaults.Note.name" = "My note";
+"Defaults.Note.copySuffix" = "(copy)";
+
+// MARK: - Preferences
 
 /// - Appearance
 
@@ -37,8 +51,6 @@
 /// - Actions
 
 "Export note" = "Export note";
-
-"JTR.AddNoteButton.title" = "Add note";
 
 "Save" = "Save";
 
@@ -59,14 +71,6 @@
 
 "Enter a name for the selected note" = "Enter a name for the selected note";
 
-
-
-/// - InfoText
-
-"JTR.InfoText.documentsNotAvailable.pad" = "No documents available yet. Click 'Add note' to create a new file.";
-"JTR.InfoText.documentsNotAvailable.other" = "Documents created with the 'Jottre for iPad' App can be viewed here.";
-"JTR.InfoText.enableCloud.pad" = "Enable iCloud to unlock the full potential of Jottre";
-"JTR.InfoText.enableCloud.other" = "Enable iCloud to view files created with 'Jottre for iPad'";
 
 
 /// - Info Alert iCloud

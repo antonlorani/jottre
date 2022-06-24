@@ -5,6 +5,7 @@ final class RootCoordinator: Coordinator {
     var release: CoordinatorReleaseClosure?
 
     private var retainedPreferencesCoordinator: PreferencesCoordinator?
+    private var retainedNoteCoordinator: NoteCoordinator?
 
     private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
     private let cloudDataSource: CloudDataSourceProtocol
@@ -52,11 +53,25 @@ final class RootCoordinator: Coordinator {
     }
 
     func openPreferences() {
-        let preferencesCoordinator = PreferencesCoordinator(navigationController: navigationController)
+        let preferencesCoordinator = PreferencesCoordinator(
+            navigationController: navigationController,
+            deviceEnvironmentDataSource: deviceEnvironmentDataSource,
+            cloudDataSource: cloudDataSource,
+            localizableStringsDataSource: localizableStringsDataSource
+        )
         retainedPreferencesCoordinator = preferencesCoordinator
         preferencesCoordinator.start()
         preferencesCoordinator.release = { [weak self] in
             self?.retainedPreferencesCoordinator = nil
+        }
+    }
+
+    func openNote() {
+        let noteCoordinator = NoteCoordinator(navigationController: navigationController)
+        retainedNoteCoordinator = noteCoordinator
+        noteCoordinator.start()
+        noteCoordinator.release = { [weak self] in
+            self?.retainedNoteCoordinator = nil
         }
     }
 }

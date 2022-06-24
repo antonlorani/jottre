@@ -18,7 +18,7 @@ final class RootRepository: RootRepositoryProtocol {
     }
 
     func getNavigationTitle() -> String {
-        localizableStringsDataSource.getText(identifier: "JTR.title")
+        localizableStringsDataSource.getText(identifier: "Scene.Root.navigationTitle")
     }
 
     func getAddNoteButtonTitle() -> String? {
@@ -26,6 +26,6 @@ final class RootRepository: RootRepositoryProtocol {
             return nil
         }
 
-        return localizableStringsDataSource.getText(identifier: "JTR.AddNoteButton.title")
+        return localizableStringsDataSource.getText(identifier: "Scene.Root.BarButton.AddNote.title")
     }
 }

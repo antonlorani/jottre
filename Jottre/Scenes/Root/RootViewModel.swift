@@ -32,7 +32,7 @@ final class RootViewModel {
     func addNoteButtonDidTap() {
         coordinator?.showAddNoteAlert(
             onSubmit: { [weak self] text in
-                print(text)
+                self?.coordinator?.openNote()
             }
         )
     }

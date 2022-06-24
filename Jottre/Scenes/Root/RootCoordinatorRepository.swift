@@ -13,11 +13,11 @@ final class RootCoordinatorRepository: RootCoordinatorRepositoryProtocol {
 
     func getAddNoteAlert() -> AddNoteAlertContent {
         AddNoteAlertContent(
-            title: localizableStringsDataSource.getText(identifier: "JTR.CreateNoteAlert.title"),
-            message: localizableStringsDataSource.getText(identifier: "JTR.CreateNoteAlert.message"),
-            placeholder: localizableStringsDataSource.getText(identifier: "JTR.Note.defaultName"),
-            primaryActionTitle: localizableStringsDataSource.getText(identifier: "JTR.CreateNoteAlert.primaryActionTitle"),
-            cancelActionTitle: localizableStringsDataSource.getText(identifier: "JTR.Alert.cancel")
+            title: localizableStringsDataSource.getText(identifier: "Alert.CreateNoteAlert.title"),
+            message: localizableStringsDataSource.getText(identifier: "Alert.CreateNoteAlert.message"),
+            placeholder: localizableStringsDataSource.getText(identifier: "Defaults.Note.name"),
+            primaryActionTitle: localizableStringsDataSource.getText(identifier: "Alert.CreateNoteAlert.primaryActionTitle"),
+            cancelActionTitle: localizableStringsDataSource.getText(identifier: "Alert.Default.cancel")
         )
     }
 }

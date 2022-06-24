@@ -30,15 +30,15 @@ final class InfoTextViewRepository: InfoTextViewRepositoryProtocol {
         let identifier: String
         if isCloudEnabled {
             if isReadOnlyDevice {
-                identifier = "JTR.InfoText.documentsNotAvailable.other"
+                identifier = "Scene.Root.Info.DocumentsNotAvailable.other"
             } else {
-                identifier = "JTR.InfoText.documentsNotAvailable.pad"
+                identifier = "Scene.Root.Info.DocumentsNotAvailable.pad"
             }
         } else {
             if isReadOnlyDevice {
-                identifier = "JTR.InfoText.enableCloud.other"
+                identifier = "Scene.Root.Info.EnableCloud.other"
             } else {
-                identifier = "JTR.InfoText.enableCloud.pad"
+                identifier = "Scene.Root.Info.EnableCloud.pad"
             }
         }
         return localizableStringsDataSource.getText(identifier: identifier)
