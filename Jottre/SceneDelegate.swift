@@ -18,21 +18,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var retainedRootCoordinator: RootCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
 
-        let localizableStringsDataSource = LocalizableStringsDataSource()
         let navigationController = RootNavigationController()
         let rootCoordinator = RootCoordinator(
             navigationController: navigationController,
-            repository: RootCoordinatorRepository(localizableStringsDataSource: localizableStringsDataSource),
+            repository: RootCoordinatorRepository(localizableStringsDataSource: LocalizableStringsDataSource.shared),
             deviceEnvironmentDataSource: DeviceEnvironmentDataSource(device: UIDevice.current),
             cloudDataSource: CloudDataSource(fileManager: FileManager.default),
-            localizableStringsDataSource: localizableStringsDataSource
+            localizableStringsDataSource: LocalizableStringsDataSource.shared
         )
         retainedRootCoordinator = rootCoordinator
 
