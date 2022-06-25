@@ -22,6 +22,16 @@
 
 "Scene.Preferences.navigationTitle" = "Preferences";
 
+"Scene.Preferences.Item.Appearance.title" = "Appearance";
+"Scene.Preferences.Item.Source.title" = "Source available on GitHub";
+"Scene.Preferences.Item.Cloud.title" = "Synchronize with iCloud";
+"Scene.Preferences.Item.Version.title" = "Current Version";
+
+// MARK: - UserInterfaceStyle
+
+"UserInterfaceStyle.dark" = "Dark";
+"UserInterfaceStyle.light" = "Light";
+"UserInterfaceStyle.system" = "System";
 
 // MARK: - Alert
 
@@ -38,14 +48,6 @@
 "Defaults.Note.copySuffix" = "(copy)";
 
 // MARK: - Preferences
-
-/// - Appearance
-
-"Dark" = "Dark";
-
-"Light" = "Light";
-
-"System" = "System";
 
 
 /// - Actions
@@ -94,13 +96,3 @@
 "Overwrite" = "Overwrite";
 
 "Close without saving" = "Close without saving";
-
-
-
-/// - Settings
-
-"Settings" = "Settings";
-
-"Interface appearance" = "Interface appearance";
-
-"Synchronize with iCloud" = "Synchronize with iCloud";

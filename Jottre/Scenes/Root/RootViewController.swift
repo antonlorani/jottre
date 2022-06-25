@@ -13,8 +13,11 @@ final class RootViewController: UIViewController {
         let infoTextView = InfoTextView(
             viewModel: InfoTextViewModel(
                 repository: InfoTextViewRepository(
-                    deviceEnvironmentDataSource: viewModel.deviceEnvironmentDataSource,
-                    cloudDataSource: viewModel.cloudDataSource,
+                    environmentDataSource: EnvironmentDataSource(
+                        defaults: Defaults.shared,
+                        cloudDataSource: CloudDataSource.shared,
+                        deviceDataSource: DeviceDataSource.shared
+                    ),
                     localizableStringsDataSource: viewModel.localizableStringsDataSource
                 )
             )

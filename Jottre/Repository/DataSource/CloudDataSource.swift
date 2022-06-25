@@ -7,6 +7,8 @@ protocol CloudDataSourceProtocol {
 
 final class CloudDataSource: CloudDataSourceProtocol {
 
+    static let shared = CloudDataSource(fileManager: .default)
+
     private let fileManager: FileManager
 
     init(fileManager: FileManager) {

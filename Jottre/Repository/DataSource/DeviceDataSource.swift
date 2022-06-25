@@ -1,11 +1,13 @@
 import class UIKit.UIDevice
 
-protocol DeviceEnvironmentDataSourceProtocol {
+protocol DeviceDataSourceProtocol {
 
     func getIsReadOnly() -> Bool
 }
 
-final class DeviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol {
+final class DeviceDataSource: DeviceDataSourceProtocol {
+
+    static let shared = DeviceDataSource(device: .current)
 
     private let device: UIDevice
 

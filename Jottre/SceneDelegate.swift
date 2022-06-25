@@ -7,6 +7,16 @@
 
 import UIKit
 import OSLog
+import Combine
+
+extension UIView {
+
+    func animateTransition(newUserInterfaceStyle: UIUserInterfaceStyle) {
+        UIView.transition(with: self, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.overrideUserInterfaceStyle = newUserInterfaceStyle
+        }, completion: nil)
+    }
+}
 
 /// - Make the Settings of this App globally available
 let settings: Settings = Settings()
@@ -16,6 +26,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private var retainedRootCoordinator: RootCoordinator?
+    private var userInterfaceStyleCancellable: AnyCancellable?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
@@ -25,10 +36,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = RootNavigationController()
         let rootCoordinator = RootCoordinator(
             navigationController: navigationController,
+            defaults: Defaults.shared,
             repository: RootCoordinatorRepository(localizableStringsDataSource: LocalizableStringsDataSource.shared),
-            deviceEnvironmentDataSource: DeviceEnvironmentDataSource(device: UIDevice.current),
+            deviceDataSource: DeviceDataSource(device: UIDevice.current),
             cloudDataSource: CloudDataSource(fileManager: FileManager.default),
-            localizableStringsDataSource: LocalizableStringsDataSource.shared
+            localizableStringsDataSource: LocalizableStringsDataSource.shared,
+            openURLProvider: { url in
+                UIApplication.shared.open(url)
+            }
         )
         retainedRootCoordinator = rootCoordinator
 
@@ -40,15 +55,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         rootCoordinator.start()
         hideToolbarIfNeeded(windowScene: windowScene)
 
-        /*
-        NotificationCenter.default.addObserver(self, selector: #selector(settingsDidChange(_:)), name: Settings.didUpdateNotificationName, object: nil)
-         */
+        userInterfaceStyleCancellable = Defaults.shared
+            .publisher(\.customUserInterfaceStyle)
+            .compactMap(CustomUserInterfaceStyle.init)
+            .sink { [weak self] newCustomUserInterfaceStyle in
+                self?.window?.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle.userInterfaceStyle)
+            }
 
         /*
         presentDocument(urlContext: connectionOptions.urlContexts)
-        
-        settings.didUpdate()
-        
+
         if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
             configure(window: window, with: userActivity)
         }
@@ -90,22 +106,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
     }
-    
-    
-    
-    // MARK: - Observer methods
-    
-    @objc func settingsDidChange(_ notification: Notification) {
-        
-        guard let window = window, let updatedSettings = notification.object as? Settings else { return }
-        
-        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            window.overrideUserInterfaceStyle = updatedSettings.preferredUserInterfaceStyle()
-        }, completion: nil)
-        
-    }
-    
-    
     
     // MARK: - Drag methods
     
