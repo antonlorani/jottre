@@ -3,7 +3,7 @@ import UIKit
 final class ImageViewProvider: PreferencesCustomViewProvider {
 
     private struct Constants {
-        static let paddingVertical = CGFloat(5)
+        static let paddingVertical = CGFloat(10)
         static let tintColor = UIColor.systemGray
     }
 

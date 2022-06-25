@@ -74,7 +74,7 @@ final class PreferencesViewController: UIViewController {
         userInterfaceStyleCancellable = viewModel
             .customUserInterfaceStyle
             .sink { [weak self] newCustomUserInterfaceStyle in
-                self?.view.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle.userInterfaceStyle)
+                self?.view.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle)
             }
     }
 
@@ -91,6 +91,10 @@ extension PreferencesViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        items[indexPath.row].onClick?()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -143,9 +147,5 @@ extension PreferencesViewController: UITableViewDelegate, UITableViewDataSource 
         }
 
         cell.configure(title: title, customViewProvider: switchViewProvider)
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        items[indexPath.row].onClick?()
     }
 }

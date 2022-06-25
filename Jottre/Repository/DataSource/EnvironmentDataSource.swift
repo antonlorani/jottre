@@ -1,8 +1,10 @@
+import UIKit
+
 protocol EnvironmentDataSourceProtocol {
     
     func getCanUseCloud() -> Bool
     func getShouldUseCloud() -> Bool
-    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle
     func getIsReadOnly() -> Bool
 }
 
@@ -29,9 +31,9 @@ struct EnvironmentDataSource: EnvironmentDataSourceProtocol {
         getCanUseCloud() && defaults.usingCloud == true || getIsReadOnly()
     }
 
-    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle {
-        guard let userInterfaceStyle = defaults.get(\.customUserInterfaceStyle, CustomUserInterfaceStyle.self) else {
-            return .system
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle {
+        guard let userInterfaceStyle = defaults.get(\.customUserInterfaceStyle, UIUserInterfaceStyle.self) else {
+            return .unspecified
         }
         return userInterfaceStyle
     }

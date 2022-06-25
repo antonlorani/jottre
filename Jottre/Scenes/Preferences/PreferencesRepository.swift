@@ -1,16 +1,17 @@
+import UIKit
 import Combine
 
 protocol PreferencesRepositoryProtocol {
 
     func getNavigationTitle() -> String
     func getText(_ identifier: String) -> String
-    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle
-    func getUserInterfaceStyleAppearancePublisher() -> AnyPublisher<CustomUserInterfaceStyle, Never>
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle
+    func getUserInterfaceStylePublisher() -> AnyPublisher<UIUserInterfaceStyle, Never>
     func getCanUseCloud() -> Bool
     func getShouldUseCloud() -> Bool
     func getIsReadOnly() -> Bool
     func setUsingCloud(state: Bool)
-    func setUserInterfaceStyleAppearance(newUserInterfaceStyle: CustomUserInterfaceStyle)
+    func setUserInterfaceStyle(newUserInterfaceStyle: UIUserInterfaceStyle)
 }
 
 final class PreferencesRepository: PreferencesRepositoryProtocol {
@@ -53,18 +54,18 @@ final class PreferencesRepository: PreferencesRepositoryProtocol {
         defaults.usingCloud = state
     }
 
-    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle {
-        environmentDataSource.getUserInterfaceStyleAppearance()
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle {
+        environmentDataSource.getUserInterfaceStyle()
     }
 
-    func setUserInterfaceStyleAppearance(newUserInterfaceStyle: CustomUserInterfaceStyle) {
+    func setUserInterfaceStyle(newUserInterfaceStyle: UIUserInterfaceStyle) {
         defaults.customUserInterfaceStyle = newUserInterfaceStyle.rawValue
     }
 
-    func getUserInterfaceStyleAppearancePublisher() -> AnyPublisher<CustomUserInterfaceStyle, Never> {
+    func getUserInterfaceStylePublisher() -> AnyPublisher<UIUserInterfaceStyle, Never> {
         defaults
             .publisher(\.customUserInterfaceStyle)
-            .compactMap(CustomUserInterfaceStyle.init)
+            .compactMap(UIUserInterfaceStyle.init)
             .eraseToAnyPublisher()
     }
 }

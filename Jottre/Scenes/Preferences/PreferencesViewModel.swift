@@ -58,7 +58,7 @@ final class PreferencesViewModel {
     lazy var items = itemsSubject
         .eraseToAnyPublisher()
 
-    lazy var customUserInterfaceStyle = repository.getUserInterfaceStyleAppearancePublisher()
+    lazy var customUserInterfaceStyle = repository.getUserInterfaceStylePublisher()
 
     init(
         repository: PreferencesRepositoryProtocol,
@@ -76,13 +76,13 @@ final class PreferencesViewModel {
         let canUseCloud = repository.getCanUseCloud()
         let shouldUseCloud = repository.getShouldUseCloud()
         let isReadOnly = repository.getIsReadOnly()
-        let userInterfaceStyleAppearance = repository.getUserInterfaceStyleAppearance()
+        let userInterfaceStyle = repository.getUserInterfaceStyle()
 
         let newItems = makeItems(
             canUseCloud: canUseCloud,
             shouldUseCloud: shouldUseCloud,
             isReadOnly: isReadOnly,
-            userInterfaceStyleAppearance: userInterfaceStyleAppearance
+            userInterfaceStyle: userInterfaceStyle
         )
 
         itemsSubject.send(newItems)
@@ -140,14 +140,16 @@ final class PreferencesViewModel {
         return items
     }
 
-    private func appearanceItemDidTap(currentInterfaceStyle: CustomUserInterfaceStyle) {
-        switch currentInterfaceStyle {
-        case .system:
-            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .dark)
+    private func appearanceItemDidTap(currentUserInterfaceStyle: UIUserInterfaceStyle) {
+        switch currentUserInterfaceStyle {
+        case .unspecified:
+            repository.setUserInterfaceStyle(newUserInterfaceStyle: .dark)
         case .dark:
-            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .light)
+            repository.setUserInterfaceStyle(newUserInterfaceStyle: .light)
         case .light:
-            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .system)
+            repository.setUserInterfaceStyle(newUserInterfaceStyle: .unspecified)
+        default:
+            repository.setUserInterfaceStyle(newUserInterfaceStyle: .unspecified)
         }
         reload()
     }

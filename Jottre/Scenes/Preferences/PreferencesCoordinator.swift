@@ -27,7 +27,7 @@ final class PreferencesCoordinator: Coordinator {
     }
 
     func start() {
-        let preferencesNavigationController = PreferencesNavigationController()
+        let preferencesNavigationController = PreferencesNavigationController(defaults: defaults)
         let preferencesViewController = PreferencesViewController(
             viewModel: PreferencesViewModel(
                 repository: PreferencesRepository(

@@ -57,9 +57,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         userInterfaceStyleCancellable = Defaults.shared
             .publisher(\.customUserInterfaceStyle)
-            .compactMap(CustomUserInterfaceStyle.init)
+            .compactMap(UIUserInterfaceStyle.init)
             .sink { [weak self] newCustomUserInterfaceStyle in
-                self?.window?.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle.userInterfaceStyle)
+                self?.window?.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle)
             }
 
         /*

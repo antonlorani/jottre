@@ -1,20 +1,6 @@
 import UIKit
 
-enum CustomUserInterfaceStyle: Int {
-    case dark=0,
-         light=1,
-         system=2
-
-    var userInterfaceStyle: UIUserInterfaceStyle {
-        switch self {
-        case .dark:
-            return .dark
-        case .light:
-            return .light
-        case .system:
-            return .unspecified
-        }
-    }
+extension UIUserInterfaceStyle {
 
     var string: String {
         switch self {
@@ -22,7 +8,9 @@ enum CustomUserInterfaceStyle: Int {
             return LocalizableStringsDataSource.shared.getText(identifier: "UserInterfaceStyle.dark")
         case .light:
             return LocalizableStringsDataSource.shared.getText(identifier: "UserInterfaceStyle.light")
-        case .system:
+        case .unspecified:
+            return LocalizableStringsDataSource.shared.getText(identifier: "UserInterfaceStyle.system")
+        default:
             return LocalizableStringsDataSource.shared.getText(identifier: "UserInterfaceStyle.system")
         }
     }
