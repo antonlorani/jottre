@@ -27,6 +27,7 @@
 "Scene.Preferences.Item.Appearance.title" = "Erscheinungsbild";
 "Scene.Preferences.Item.Source.title" = "Source bei GitHub";
 "Scene.Preferences.Item.Cloud.title" = "Mit iCloud synchronisieren";
+"Scene.Preferences.Item.Cloud.notAvailableText" = "Nicht verfügbar";
 "Scene.Preferences.Item.Version.title" = "Aktuelle Version";
 
 

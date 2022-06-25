@@ -13,6 +13,7 @@ final class PreferencesViewModel {
             }
             struct Cloud {
                 static let titleIdentifier = "Scene.Preferences.Item.Cloud.title"
+                static let notAvailableTextIdentifier = "Scene.Preferences.Item.Cloud.notAvailableText"
             }
             struct Version {
                 static let titleIdentifier = "Scene.Preferences.Item.Version.title"
@@ -92,30 +93,40 @@ final class PreferencesViewModel {
         canUseCloud: Bool,
         shouldUseCloud: Bool,
         isReadOnly: Bool,
-        userInterfaceStyleAppearance: CustomUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> [Item] {
         var items = [Item]()
 
         items.append(
             .text(
                 title: repository.getText(Constants.Items.Appearance.titleIdentifier),
-                text: userInterfaceStyleAppearance.string,
+                text: userInterfaceStyle.string,
                 onClick: { [weak self] in
-                    self?.appearanceItemDidTap(currentInterfaceStyle: userInterfaceStyleAppearance)
+                    self?.appearanceItemDidTap(currentUserInterfaceStyle: userInterfaceStyle)
                 }
             )
         )
 
-        items.append(
-            .switch(
-                title: repository.getText(Constants.Items.Cloud.titleIdentifier),
-                isOn: shouldUseCloud,
-                isEnabled: (isReadOnly == false) && canUseCloud,
-                onClick: { newState in
-                    self.cloudItemDidTap(newState: newState)
-                }
+        if canUseCloud {
+            items.append(
+                .switch(
+                    title: repository.getText(Constants.Items.Cloud.titleIdentifier),
+                    isOn: shouldUseCloud,
+                    isEnabled: (isReadOnly == false) && canUseCloud,
+                    onClick: { newState in
+                        self.cloudItemDidTap(newState: newState)
+                    }
+                )
             )
-        )
+        } else {
+            items.append(
+                .text(
+                    title: repository.getText(Constants.Items.Cloud.titleIdentifier),
+                    text: repository.getText(Constants.Items.Cloud.notAvailableTextIdentifier),
+                    onClick: {}
+                )
+            )
+        }
 
         items.append(
             .image(

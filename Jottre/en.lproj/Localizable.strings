@@ -25,6 +25,7 @@
 "Scene.Preferences.Item.Appearance.title" = "Appearance";
 "Scene.Preferences.Item.Source.title" = "Source available on GitHub";
 "Scene.Preferences.Item.Cloud.title" = "Synchronize with iCloud";
+"Scene.Preferences.Item.Cloud.notAvailableText" = "Not available";
 "Scene.Preferences.Item.Version.title" = "Current Version";
 
 // MARK: - UserInterfaceStyle
