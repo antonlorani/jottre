@@ -9,7 +9,10 @@ protocol PreferencesRepositoryProtocol {
     func getCanUseCloud() -> Bool
     func getShouldUseCloud() -> Bool
     func getIsReadOnly() -> Bool
+<<<<<<< HEAD
     func setUsingCloud(state: Bool)
+=======
+>>>>>>> 6c59f0adac973792d37c8acc5b1e5df3722d571d
     func setUserInterfaceStyleAppearance(newUserInterfaceStyle: CustomUserInterfaceStyle)
 }
 
@@ -49,10 +52,13 @@ final class PreferencesRepository: PreferencesRepositoryProtocol {
         environmentDataSource.getShouldUseCloud()
     }
 
+<<<<<<< HEAD
     func setUsingCloud(state: Bool) {
         defaults.usingCloud = state
     }
 
+=======
+>>>>>>> 6c59f0adac973792d37c8acc5b1e5df3722d571d
     func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle {
         environmentDataSource.getUserInterfaceStyleAppearance()
     }

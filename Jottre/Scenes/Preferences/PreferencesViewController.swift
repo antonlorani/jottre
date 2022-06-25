@@ -20,7 +20,10 @@ final class PreferencesViewController: UIViewController {
 
     private var itemsCancellable: AnyCancellable?
     private var userInterfaceStyleCancellable: AnyCancellable?
+<<<<<<< HEAD
     private var retainedSwitchViewProviders = [IndexPath: SwitchViewProvider]()
+=======
+>>>>>>> 6c59f0adac973792d37c8acc5b1e5df3722d571d
     private var items = [PreferencesViewModel.Item]()
 
     private let viewModel: PreferencesViewModel

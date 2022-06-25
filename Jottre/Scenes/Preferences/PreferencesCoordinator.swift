@@ -43,7 +43,7 @@ final class PreferencesCoordinator: Coordinator {
                 openURLProvider: openURLProvider
             )
         )
-        preferencesNavigationController.modalPresentationStyle = .formSheet
+        preferencesNavigationController.modalPresentationStyle = .automatic
         preferencesNavigationController.setViewControllers([preferencesViewController], animated: false)
         navigationController.present(preferencesNavigationController, animated: true)
     }
