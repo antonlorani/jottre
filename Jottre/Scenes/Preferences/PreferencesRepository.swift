@@ -1,23 +1,30 @@
+import Combine
+
 protocol PreferencesRepositoryProtocol {
 
     func getNavigationTitle() -> String
+    func getText(_ identifier: String) -> String
+    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle
+    func getUserInterfaceStyleAppearancePublisher() -> AnyPublisher<CustomUserInterfaceStyle, Never>
+    func getCanUseCloud() -> Bool
+    func getShouldUseCloud() -> Bool
     func getIsReadOnly() -> Bool
-    func getIsCloudEnabled() -> Bool
+    func setUserInterfaceStyleAppearance(newUserInterfaceStyle: CustomUserInterfaceStyle)
 }
 
 final class PreferencesRepository: PreferencesRepositoryProtocol {
 
-    private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
-    private let cloudDataSource: CloudDataSourceProtocol
+    private let defaults: DefaultsProtocol
+    private let environmentDataSource: EnvironmentDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
 
     init(
-        deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol,
-        cloudDataSource: CloudDataSourceProtocol,
+        defaults: DefaultsProtocol,
+        environmentDataSource: EnvironmentDataSourceProtocol,
         localizableStringsDataSource: LocalizableStringsDataSourceProtocol
     ) {
-        self.deviceEnvironmentDataSource = deviceEnvironmentDataSource
-        self.cloudDataSource = cloudDataSource
+        self.defaults = defaults
+        self.environmentDataSource = environmentDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
     }
 
@@ -25,11 +32,34 @@ final class PreferencesRepository: PreferencesRepositoryProtocol {
         localizableStringsDataSource.getText(identifier: "Scene.Preferences.navigationTitle")
     }
 
-    func getIsReadOnly() -> Bool {
-        deviceEnvironmentDataSource.getIsReadOnly()
+    func getText(_ identifier: String) -> String {
+        localizableStringsDataSource.getText(identifier: identifier)
     }
 
-    func getIsCloudEnabled() -> Bool {
-        cloudDataSource.getIsEnabled()
+    func getIsReadOnly() -> Bool {
+        environmentDataSource.getIsReadOnly()
+    }
+
+    func getCanUseCloud() -> Bool {
+        environmentDataSource.getCanUseCloud()
+    }
+
+    func getShouldUseCloud() -> Bool {
+        environmentDataSource.getShouldUseCloud()
+    }
+
+    func getUserInterfaceStyleAppearance() -> CustomUserInterfaceStyle {
+        environmentDataSource.getUserInterfaceStyleAppearance()
+    }
+
+    func setUserInterfaceStyleAppearance(newUserInterfaceStyle: CustomUserInterfaceStyle) {
+        defaults.customUserInterfaceStyle = newUserInterfaceStyle.rawValue
+    }
+
+    func getUserInterfaceStyleAppearancePublisher() -> AnyPublisher<CustomUserInterfaceStyle, Never> {
+        defaults
+            .publisher(\.customUserInterfaceStyle)
+            .compactMap(CustomUserInterfaceStyle.init)
+            .eraseToAnyPublisher()
     }
 }

@@ -6,14 +6,14 @@ protocol RootRepositoryProtocol {
 
 final class RootRepository: RootRepositoryProtocol {
 
-    private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
+    private let deviceDataSource: DeviceDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
 
     init(
-        deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol,
+        deviceDataSource: DeviceDataSourceProtocol,
         localizableStringsDataSource: LocalizableStringsDataSourceProtocol
     ) {
-        self.deviceEnvironmentDataSource = deviceEnvironmentDataSource
+        self.deviceDataSource = deviceDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
     }
 
@@ -22,7 +22,7 @@ final class RootRepository: RootRepositoryProtocol {
     }
 
     func getAddNoteButtonTitle() -> String? {
-        guard deviceEnvironmentDataSource.getIsReadOnly() == false else {
+        guard deviceDataSource.getIsReadOnly() == false else {
             return nil
         }
 

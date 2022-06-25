@@ -5,37 +5,37 @@ protocol InfoTextViewRepositoryProtocol {
 
 final class InfoTextViewRepository: InfoTextViewRepositoryProtocol {
 
-    private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
-    private let cloudDataSource: CloudDataSourceProtocol
+    private let environmentDataSource: EnvironmentDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
 
     init(
-        deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol,
-        cloudDataSource: CloudDataSourceProtocol,
+        environmentDataSource: EnvironmentDataSourceProtocol,
         localizableStringsDataSource: LocalizableStringsDataSourceProtocol
     ) {
-        self.deviceEnvironmentDataSource = deviceEnvironmentDataSource
-        self.cloudDataSource = cloudDataSource
+        self.environmentDataSource = environmentDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
     }
 
     func getText() -> String {
         getText(
-            isCloudEnabled: cloudDataSource.getIsEnabled(),
-            isReadOnlyDevice: deviceEnvironmentDataSource.getIsReadOnly()
+            canUseCloud: environmentDataSource.getCanUseCloud(),
+            isReadOnly: environmentDataSource.getIsReadOnly()
         )
     }
 
-    private func getText(isCloudEnabled: Bool, isReadOnlyDevice: Bool) -> String {
+    private func getText(
+        canUseCloud: Bool,
+        isReadOnly: Bool
+    ) -> String {
         let identifier: String
-        if isCloudEnabled {
-            if isReadOnlyDevice {
+        if canUseCloud {
+            if isReadOnly {
                 identifier = "Scene.Root.Info.DocumentsNotAvailable.other"
             } else {
                 identifier = "Scene.Root.Info.DocumentsNotAvailable.pad"
             }
         } else {
-            if isReadOnlyDevice {
+            if isReadOnly {
                 identifier = "Scene.Root.Info.EnableCloud.other"
             } else {
                 identifier = "Scene.Root.Info.EnableCloud.pad"

@@ -26,6 +26,7 @@ final class PreferencesViewController: UIViewController {
     }()
 
     private var itemsCancellable: AnyCancellable?
+    private var userInterfaceStyleCancellable: AnyCancellable?
     private var items = [PreferencesViewModel.Item]()
 
     private let viewModel: PreferencesViewModel
@@ -74,6 +75,12 @@ final class PreferencesViewController: UIViewController {
             .sink { [weak self] newItems in
                 self?.items = newItems
                 self?.tableView.reloadData()
+            }
+
+        userInterfaceStyleCancellable = viewModel
+            .customUserInterfaceStyle
+            .sink { [weak self] newCustomUserInterfaceStyle in
+                self?.view.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle.userInterfaceStyle)
             }
     }
 

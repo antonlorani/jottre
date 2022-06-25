@@ -7,25 +7,30 @@ final class RootCoordinator: Coordinator {
     private var retainedPreferencesCoordinator: PreferencesCoordinator?
     private var retainedNoteCoordinator: NoteCoordinator?
 
-    private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
+    private let navigationController: UINavigationController
+    private let defaults: DefaultsProtocol
+    private let repository: RootCoordinatorRepositoryProtocol
+    private let deviceDataSource: DeviceDataSourceProtocol
     private let cloudDataSource: CloudDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
-
-    private let repository: RootCoordinatorRepositoryProtocol
-    private let navigationController: UINavigationController
+    private let openURLProvider: (URL) -> Void
 
     init(
         navigationController: UINavigationController,
+        defaults: DefaultsProtocol,
         repository: RootCoordinatorRepositoryProtocol,
-        deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol,
+        deviceDataSource: DeviceDataSourceProtocol,
         cloudDataSource: CloudDataSourceProtocol,
-        localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+        localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
+        openURLProvider: @escaping (URL) -> Void
     ) {
         self.navigationController = navigationController
+        self.defaults = defaults
         self.repository = repository
-        self.deviceEnvironmentDataSource = deviceEnvironmentDataSource
+        self.deviceDataSource = deviceDataSource
         self.cloudDataSource = cloudDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
+        self.openURLProvider = openURLProvider
     }
 
     func start() {
@@ -33,11 +38,9 @@ final class RootCoordinator: Coordinator {
             viewModel: RootViewModel(
                 coordinator: self,
                 repository: RootRepository(
-                    deviceEnvironmentDataSource: deviceEnvironmentDataSource,
+                    deviceDataSource: deviceDataSource,
                     localizableStringsDataSource: localizableStringsDataSource
                 ),
-                deviceEnvironmentDataSource: deviceEnvironmentDataSource,
-                cloudDataSource: cloudDataSource,
                 localizableStringsDataSource: localizableStringsDataSource
             )
         )
@@ -55,9 +58,11 @@ final class RootCoordinator: Coordinator {
     func openPreferences() {
         let preferencesCoordinator = PreferencesCoordinator(
             navigationController: navigationController,
-            deviceEnvironmentDataSource: deviceEnvironmentDataSource,
+            defaults: defaults,
+            deviceDataSource: deviceDataSource,
             cloudDataSource: cloudDataSource,
-            localizableStringsDataSource: localizableStringsDataSource
+            localizableStringsDataSource: localizableStringsDataSource,
+            openURLProvider: openURLProvider
         )
         retainedPreferencesCoordinator = preferencesCoordinator
         preferencesCoordinator.start()

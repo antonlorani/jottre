@@ -3,6 +3,23 @@ import UIKit
 
 final class PreferencesViewModel {
 
+    private struct Constants {
+        struct Items {
+            struct Appearance {
+                static let titleIdentifier = "Scene.Preferences.Item.Appearance.title"
+            }
+            struct Source {
+                static let titleIdentifier = "Scene.Preferences.Item.Source.title"
+            }
+            struct Cloud {
+                static let titleIdentifier = "Scene.Preferences.Item.Cloud.title"
+            }
+            struct Version {
+                static let titleIdentifier = "Scene.Preferences.Item.Version.title"
+            }
+        }
+    }
+
     enum Item {
         case text(title: String, text: String, onClick: () -> Void),
              `switch`(title: String, isOn: Bool, isEnabled: Bool, onClick: (_ newState: Bool) -> Void),
@@ -35,48 +52,102 @@ final class PreferencesViewModel {
 
     private weak var coordinator: PreferencesCoordinator?
     private let repository: PreferencesRepositoryProtocol
+    private let openURLProvider: (URL) -> Void
 
     private let itemsSubject = CurrentValueSubject<[Item], Never>([])
     lazy var items = itemsSubject
         .eraseToAnyPublisher()
 
+    lazy var customUserInterfaceStyle = repository.getUserInterfaceStyleAppearancePublisher()
+
     init(
         repository: PreferencesRepositoryProtocol,
-        coordinator: PreferencesCoordinator
+        coordinator: PreferencesCoordinator,
+        openURLProvider: @escaping (URL) -> Void
     ) {
         self.repository = repository
         self.coordinator = coordinator
-        self.navigationTitle = repository.getNavigationTitle()
-        load()
+        self.openURLProvider = openURLProvider
+        navigationTitle = repository.getNavigationTitle()
+        reload()
     }
 
-    func load() {
-        let newItems: [Item] = [
+    private func reload() {
+        let canUseCloud = repository.getCanUseCloud()
+        let shouldUseCloud = repository.getShouldUseCloud()
+        let isReadOnly = repository.getIsReadOnly()
+        let userInterfaceStyleAppearance = repository.getUserInterfaceStyleAppearance()
+
+        let newItems = makeItems(
+            canUseCloud: canUseCloud,
+            shouldUseCloud: shouldUseCloud,
+            isReadOnly: isReadOnly,
+            userInterfaceStyleAppearance: userInterfaceStyleAppearance
+        )
+
+        itemsSubject.send(newItems)
+    }
+
+    private func makeItems(
+        canUseCloud: Bool,
+        shouldUseCloud: Bool,
+        isReadOnly: Bool,
+        userInterfaceStyleAppearance: CustomUserInterfaceStyle
+    ) -> [Item] {
+        var items = [Item]()
+
+        items.append(
             .text(
-                title: "Erscheinungsbild",
-                text: "Dunkel",
-                onClick: {}
-            ),
+                title: repository.getText(Constants.Items.Appearance.titleIdentifier),
+                text: userInterfaceStyleAppearance.string,
+                onClick: { [weak self] in
+                    self?.appearanceDidTap(currentInterfaceStyle: userInterfaceStyleAppearance)
+                }
+            )
+        )
+
+        items.append(
+            .switch(
+                title: repository.getText(Constants.Items.Cloud.titleIdentifier),
+                isOn: shouldUseCloud,
+                isEnabled: (isReadOnly == false) && canUseCloud,
+                onClick: { _ in }
+            )
+        )
+
+        items.append(
             .image(
-                title: "Source bei GitHub",
+                title: repository.getText(Constants.Items.Source.titleIdentifier),
                 image: UIImage(
                     systemName: "link.circle.fill"
                 ),
-                onClick: {}
-            ),
-            .switch(
-                title: "Mit iCloud synchronisieren",
-                isOn: repository.getIsCloudEnabled(),
-                isEnabled: repository.getIsReadOnly(),
-                onClick: { newState in }
-            ),
+                onClick: { [weak self] in
+                    self?.openURLProvider(JottreGitHubURL().asURL())
+                }
+            )
+        )
+
+        items.append(
             .text(
-                title: "Version",
+                title: repository.getText(Constants.Items.Version.titleIdentifier),
                 text: "v2.0",
                 onClick: {}
             )
-        ]
-        itemsSubject.send(newItems)
+        )
+
+        return items
+    }
+
+    private func appearanceDidTap(currentInterfaceStyle: CustomUserInterfaceStyle) {
+        switch currentInterfaceStyle {
+        case .system:
+            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .dark)
+        case .dark:
+            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .light)
+        case .light:
+            repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .system)
+        }
+        reload()
     }
 
     func didClickDone() {

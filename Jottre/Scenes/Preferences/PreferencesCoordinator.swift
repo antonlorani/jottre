@@ -4,20 +4,26 @@ final class PreferencesCoordinator: Coordinator {
     var release: CoordinatorReleaseClosure?
 
     private let navigationController: UINavigationController
-    private let deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol
+    private let defaults: DefaultsProtocol
+    private let deviceDataSource: DeviceDataSourceProtocol
     private let cloudDataSource: CloudDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+    private let openURLProvider: (URL) -> Void
 
     init(
         navigationController: UINavigationController,
-        deviceEnvironmentDataSource: DeviceEnvironmentDataSourceProtocol,
+        defaults: DefaultsProtocol,
+        deviceDataSource: DeviceDataSourceProtocol,
         cloudDataSource: CloudDataSourceProtocol,
-        localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+        localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
+        openURLProvider: @escaping (URL) -> Void
     ) {
         self.navigationController = navigationController
-        self.deviceEnvironmentDataSource = deviceEnvironmentDataSource
+        self.defaults = defaults
+        self.deviceDataSource = deviceDataSource
         self.cloudDataSource = cloudDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
+        self.openURLProvider = openURLProvider
     }
 
     func start() {
@@ -25,14 +31,19 @@ final class PreferencesCoordinator: Coordinator {
         let preferencesViewController = PreferencesViewController(
             viewModel: PreferencesViewModel(
                 repository: PreferencesRepository(
-                    deviceEnvironmentDataSource: deviceEnvironmentDataSource,
-                    cloudDataSource: cloudDataSource,
+                    defaults: defaults,
+                    environmentDataSource: EnvironmentDataSource(
+                        defaults: defaults,
+                        cloudDataSource: cloudDataSource,
+                        deviceDataSource: deviceDataSource
+                    ),
                     localizableStringsDataSource: localizableStringsDataSource
                 ),
-                coordinator: self
+                coordinator: self,
+                openURLProvider: openURLProvider
             )
         )
-        preferencesNavigationController.modalPresentationStyle = .formSheet
+        preferencesNavigationController.modalPresentationStyle = .automatic
         preferencesNavigationController.setViewControllers([preferencesViewController], animated: false)
         navigationController.present(preferencesNavigationController, animated: true)
     }

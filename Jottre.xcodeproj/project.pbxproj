@@ -81,6 +81,13 @@
 		A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86425B372A800C65157 /* ExportActions.swift */; };
 		A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86725B374A200C65157 /* MenuActions.swift */; };
 		A6F60F8525CAA2CC002CAAE4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F60F8425CAA2CC002CAAE4 /* Data.swift */; };
+		A6F9A77228671BB20094ABE1 /* DefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77128671BB20094ABE1 /* DefaultsValue.swift */; };
+		A6F9A77428671BB60094ABE1 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77328671BB60094ABE1 /* DefaultsKey.swift */; };
+		A6F9A77828671CF30094ABE1 /* CustomUserInterfaceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77728671CF30094ABE1 /* CustomUserInterfaceStyle.swift */; };
+		A6F9A77928671D590094ABE1 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77028671BAD0094ABE1 /* Defaults.swift */; };
+		A6F9A77C286725430094ABE1 /* URLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77B286725430094ABE1 /* URLConvertible.swift */; };
+		A6F9A77E286726160094ABE1 /* JottreGitHubURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77D286726160094ABE1 /* JottreGitHubURL.swift */; };
+		A6F9A780286729190094ABE1 /* EnvironmentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77F286729190094ABE1 /* EnvironmentDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +170,13 @@
 		A6E3B86425B372A800C65157 /* ExportActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportActions.swift; sourceTree = "<group>"; };
 		A6E3B86725B374A200C65157 /* MenuActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActions.swift; sourceTree = "<group>"; };
 		A6F60F8425CAA2CC002CAAE4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		A6F9A77028671BAD0094ABE1 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		A6F9A77128671BB20094ABE1 /* DefaultsValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsValue.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Core/Defaults/DefaultsValue.swift"; sourceTree = "<group>"; };
+		A6F9A77328671BB60094ABE1 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsKey.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Core/Defaults/DefaultsKey.swift"; sourceTree = "<group>"; };
+		A6F9A77728671CF30094ABE1 /* CustomUserInterfaceStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUserInterfaceStyle.swift; sourceTree = "<group>"; };
+		A6F9A77B286725430094ABE1 /* URLConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLConvertible.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/URL/URLConvertible.swift"; sourceTree = "<group>"; };
+		A6F9A77D286726160094ABE1 /* JottreGitHubURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JottreGitHubURL.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/URL/JottreGitHubURL.swift"; sourceTree = "<group>"; };
+		A6F9A77F286729190094ABE1 /* EnvironmentDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnvironmentDataSource.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Repository/DataSource/EnvironmentDataSource.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +291,7 @@
 		A6CEB5092822F129009FAA84 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A6F9A76F28671BAA0094ABE1 /* Defaults */,
 				A6788A4F28245E5F00582729 /* Alert */,
 				A6CEB50A2822F12E009FAA84 /* Coordinator.swift */,
 			);
@@ -296,6 +311,7 @@
 		A6CEB50D2822F21B009FAA84 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				A6F9A77728671CF30094ABE1 /* CustomUserInterfaceStyle.swift */,
 				A6CEB53628230C25009FAA84 /* PreferencesNavigationController.swift */,
 				A6CFA37E28660E3000E5618E /* PreferencesCell */,
 				A6CEB5142822F23F009FAA84 /* PreferencesViewController.swift */,
@@ -330,6 +346,7 @@
 				A6CEB5272822F811009FAA84 /* DeviceDataSource.swift */,
 				A6CEB5292822F909009FAA84 /* CloudDataSource.swift */,
 				A6CEB52B2822FD7E009FAA84 /* LocalizableStringsDataSource.swift */,
+				A6F9A77F286729190094ABE1 /* EnvironmentDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -382,6 +399,7 @@
 		A6E3B7EA25B3260200C65157 /* Jottre */ = {
 			isa = PBXGroup;
 			children = (
+				A6F9A77A2867253D0094ABE1 /* URL */,
 				A6CEB5252822F804009FAA84 /* Repository */,
 				A6CEB5092822F129009FAA84 /* Core */,
 				A6CEB5012822F05A009FAA84 /* Scenes */,
@@ -475,6 +493,25 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		A6F9A76F28671BAA0094ABE1 /* Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				A6F9A77028671BAD0094ABE1 /* Defaults.swift */,
+				A6F9A77128671BB20094ABE1 /* DefaultsValue.swift */,
+				A6F9A77328671BB60094ABE1 /* DefaultsKey.swift */,
+			);
+			path = Defaults;
+			sourceTree = "<group>";
+		};
+		A6F9A77A2867253D0094ABE1 /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				A6F9A77B286725430094ABE1 /* URLConvertible.swift */,
+				A6F9A77D286726160094ABE1 /* JottreGitHubURL.swift */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -549,6 +586,7 @@
 				A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */,
 				A61A616725EEB44E0030684C /* SpaceButtonBarItem.swift in Sources */,
 				A61A616125EEB2B40030684C /* RedoButton.swift in Sources */,
+				A6F9A77428671BB60094ABE1 /* DefaultsKey.swift in Sources */,
 				A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */,
 				A6E3B84125B334AF00C65157 /* InitialExtensions.swift in Sources */,
 				A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */,
@@ -556,15 +594,18 @@
 				A6BB134825B4A469008C5D8A /* SettingsButton.swift in Sources */,
 				A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */,
 				A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */,
+				A6F9A77C286725430094ABE1 /* URLConvertible.swift in Sources */,
 				A6E3B84E25B3495800C65157 /* DrawExtensions.swift in Sources */,
 				A6CEB5172822F244009FAA84 /* PreferencesViewModel.swift in Sources */,
 				A673AEDA2825718800B40EA4 /* PreferencesCell.swift in Sources */,
 				A6E3B83D25B3340300C65157 /* UIView.swift in Sources */,
 				A6CEB52E2823018D009FAA84 /* RootRepository.swift in Sources */,
 				A6CEB5152822F23F009FAA84 /* PreferencesViewController.swift in Sources */,
+				A6F9A780286729190094ABE1 /* EnvironmentDataSource.swift in Sources */,
 				A6350E5425C9CEFB0059E96E /* NodeExtensions.swift in Sources */,
 				A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */,
 				A6CEB53A28230CED009FAA84 /* RootNavigationController.swift in Sources */,
+				A6F9A77E286726160094ABE1 /* JottreGitHubURL.swift in Sources */,
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6CEB53028230668009FAA84 /* RootCoordinatorRepository.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
@@ -573,6 +614,8 @@
 				A6788A5328245E7A00582729 /* UIAlert+exportNote.swift in Sources */,
 				A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */,
 				A6BB131325B46E2D008C5D8A /* SettingsCell.swift in Sources */,
+				A6F9A77828671CF30094ABE1 /* CustomUserInterfaceStyle.swift in Sources */,
+				A6F9A77928671D590094ABE1 /* Defaults.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6CEB5082822F100009FAA84 /* RootCoordinator.swift in Sources */,
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
@@ -610,6 +653,7 @@
 				A6CFA3822866111C00E5618E /* PreferencesCustomViewProvider.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
 				A6CEB5282822F811009FAA84 /* DeviceDataSource.swift in Sources */,
+				A6F9A77228671BB20094ABE1 /* DefaultsValue.swift in Sources */,
 				A6CEB52C2822FD7E009FAA84 /* LocalizableStringsDataSource.swift in Sources */,
 				A6CFA384286611BC00E5618E /* SwitchViewProvider.swift in Sources */,
 				A6CEB5132822F234009FAA84 /* NoteCoordinator.swift in Sources */,
