@@ -113,8 +113,8 @@ final class PreferencesViewModel {
                     title: repository.getText(Constants.Items.Cloud.titleIdentifier),
                     isOn: shouldUseCloud,
                     isEnabled: isReadOnly == false,
-                    onClick: { newState in
-                        self.cloudItemDidTap(newState: newState)
+                    onClick: { [weak self] newState in
+                        self?.cloudItemDidTap(newState: newState)
                     }
                 )
             )
