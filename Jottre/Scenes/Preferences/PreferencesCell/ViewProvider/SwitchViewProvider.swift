@@ -6,27 +6,35 @@ final class SwitchViewProvider: PreferencesCustomViewProvider {
         static let onTintColor = UIColor.systemBlue
     }
 
-    private let isOn: Bool
-    private let isEnabled: Bool
-    private let onClick: (_ newState: Bool) -> Void
+    private lazy var switchView: UISwitch = {
+        let switchView = UISwitch()
+        switchView.onTintColor = Constants.onTintColor
+        switchView.addTarget(self, action: #selector(switchDidSelect), for: .valueChanged)
+        return switchView
+    }()
+
+    private var onClick: ((_ newState: Bool) -> Void)?
 
     init(
         isOn: Bool,
         isEnabled: Bool,
         onClick: @escaping (_ newState: Bool) -> Void
     ) {
-        self.isOn = isOn
-        self.isEnabled = isEnabled
+        reuse(isOn: isOn, isEnabled: isEnabled, onClick: onClick)
+    }
+
+    func reuse(
+        isOn: Bool,
+        isEnabled: Bool,
+        onClick: @escaping (_ newState: Bool) -> Void
+    ) {
+        switchView.isOn = isOn
+        switchView.isEnabled = isEnabled
         self.onClick = onClick
     }
 
     func provideView() -> UIView {
-        let switchView = UISwitch()
-        switchView.isOn = isOn
-        switchView.isEnabled = isEnabled
-        switchView.onTintColor = Constants.onTintColor
-        switchView.addTarget(self, action: #selector(switchDidSelect(_:)), for: .valueChanged)
-        return switchView
+        switchView
     }
 
     func provideViewConstraints(superview: UIView, view: UIView) {
@@ -37,7 +45,7 @@ final class SwitchViewProvider: PreferencesCustomViewProvider {
         ])
     }
 
-    @objc private func switchDidSelect(_ sender: UISwitch) {
-        onClick(sender.isOn)
+    @objc private func switchDidSelect() {
+        onClick?(switchView.isOn)
     }
 }

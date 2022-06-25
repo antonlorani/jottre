@@ -16,6 +16,7 @@ final class CloudDataSource: CloudDataSourceProtocol {
     }
 
     func getIsEnabled() -> Bool {
+        return true
         fileManager.url(forUbiquityContainerIdentifier: nil) != nil
     }
 }

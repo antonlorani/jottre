@@ -1,13 +1,6 @@
 import UIKit
 import Combine
 
-extension UITableViewCell {
-
-    static var reuseIdentifier: String {
-        "\(Self.self)"
-    }
-}
-
 final class PreferencesViewController: UIViewController {
 
     private struct Constants {
@@ -21,12 +14,13 @@ final class PreferencesViewController: UIViewController {
         tableView.estimatedRowHeight = .leastNonzeroMagnitude
         tableView.separatorStyle = .none
         tableView.backgroundColor = Constants.backgroundColor
-        tableView.register(PreferencesCell.self, forCellReuseIdentifier: PreferencesCell.reuseIdentifier)
+        tableView.register(PreferencesCell.self)
         return tableView
     }()
 
     private var itemsCancellable: AnyCancellable?
     private var userInterfaceStyleCancellable: AnyCancellable?
+    private var retainedSwitchViewProviders = [IndexPath: SwitchViewProvider]()
     private var items = [PreferencesViewModel.Item]()
 
     private let viewModel: PreferencesViewModel
@@ -102,19 +96,53 @@ extension PreferencesViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PreferencesCell.reuseIdentifier) as? PreferencesCell else {
-            return .init()
-        }
+        let cell = tableView.dequeueReusableCell(PreferencesCell.self)
 
         switch item {
         case let .image(title, image, _):
             cell.configure(title: title, customViewProvider: ImageViewProvider(image: image))
         case let .switch(title, isOn, isEnabled, onClick):
-            cell.configure(title: title, customViewProvider: SwitchViewProvider(isOn: isOn, isEnabled: isEnabled, onClick: onClick))
+            configureCellWithSwitchView(
+                cell: cell,
+                title: title,
+                isOn: isOn,
+                isEnabled: isEnabled,
+                onClick: onClick,
+                indexPath: indexPath
+            )
         case let.text(title, text, _):
             cell.configure(title: title, customViewProvider: TextViewProvider(text: text))
         }
         return cell
+    }
+
+    private func configureCellWithSwitchView(
+        cell: PreferencesCell,
+        title: String,
+        isOn: Bool,
+        isEnabled: Bool,
+        onClick: @escaping (Bool) -> Void,
+        indexPath: IndexPath
+    ) {
+        let switchViewProvider: SwitchViewProvider
+        if let retainedSwitchViewProvider = retainedSwitchViewProviders[indexPath] {
+            retainedSwitchViewProvider.reuse(
+                isOn: isOn,
+                isEnabled: isEnabled,
+                onClick: onClick
+            )
+            switchViewProvider = retainedSwitchViewProvider
+        } else {
+            let newSwitchViewProvider = SwitchViewProvider(
+                isOn: isOn,
+                isEnabled: isEnabled,
+                onClick: onClick
+            )
+            retainedSwitchViewProviders[indexPath] = newSwitchViewProvider
+            switchViewProvider = newSwitchViewProvider
+        }
+
+        cell.configure(title: title, customViewProvider: switchViewProvider)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -101,7 +101,7 @@ final class PreferencesViewModel {
                 title: repository.getText(Constants.Items.Appearance.titleIdentifier),
                 text: userInterfaceStyleAppearance.string,
                 onClick: { [weak self] in
-                    self?.appearanceDidTap(currentInterfaceStyle: userInterfaceStyleAppearance)
+                    self?.appearanceItemDidTap(currentInterfaceStyle: userInterfaceStyleAppearance)
                 }
             )
         )
@@ -111,7 +111,9 @@ final class PreferencesViewModel {
                 title: repository.getText(Constants.Items.Cloud.titleIdentifier),
                 isOn: shouldUseCloud,
                 isEnabled: (isReadOnly == false) && canUseCloud,
-                onClick: { _ in }
+                onClick: { newState in
+                    self.cloudItemDidTap(newState: newState)
+                }
             )
         )
 
@@ -138,7 +140,7 @@ final class PreferencesViewModel {
         return items
     }
 
-    private func appearanceDidTap(currentInterfaceStyle: CustomUserInterfaceStyle) {
+    private func appearanceItemDidTap(currentInterfaceStyle: CustomUserInterfaceStyle) {
         switch currentInterfaceStyle {
         case .system:
             repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .dark)
@@ -147,6 +149,11 @@ final class PreferencesViewModel {
         case .light:
             repository.setUserInterfaceStyleAppearance(newUserInterfaceStyle: .system)
         }
+        reload()
+    }
+
+    private func cloudItemDidTap(newState: Bool) {
+        repository.setUsingCloud(state: newState)
         reload()
     }
 
