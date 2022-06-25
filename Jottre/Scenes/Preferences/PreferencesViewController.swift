@@ -13,7 +13,7 @@ final class PreferencesViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = .leastNonzeroMagnitude
         tableView.separatorStyle = .none
-        tableView.backgroundColor = Constants.backgroundColor
+        tableView.backgroundColor = .clear
         tableView.register(PreferencesCell.self)
         return tableView
     }()
