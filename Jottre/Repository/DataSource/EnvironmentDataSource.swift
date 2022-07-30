@@ -28,11 +28,11 @@ struct EnvironmentDataSource: EnvironmentDataSourceProtocol {
     }
 
     func getShouldUseCloud() -> Bool {
-        getCanUseCloud() && defaults.usingCloud == true || getIsReadOnly()
+        getCanUseCloud() && defaults.get(UsingCloudEntry()) == true || getIsReadOnly()
     }
 
     func getUserInterfaceStyle() -> UIUserInterfaceStyle {
-        guard let userInterfaceStyle = defaults.get(\.customUserInterfaceStyle, UIUserInterfaceStyle.self) else {
+        guard let userInterfaceStyle = defaults.get(PreferredUserInterfaceStyleEntry(), UIUserInterfaceStyle.self) else {
             return .unspecified
         }
         return userInterfaceStyle

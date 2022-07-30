@@ -23,10 +23,11 @@ final class PreferencesNavigationController: UINavigationController {
 
     private func bindDefaults(defaults: DefaultsProtocol) {
         userInterfaceStyleCancellable = defaults
-            .publisher(\.customUserInterfaceStyle)
+            .publisher(PreferredUserInterfaceStyleEntry())
+            .replaceNil(with: UIUserInterfaceStyle.unspecified.rawValue)
             .compactMap(UIUserInterfaceStyle.init)
-            .sink { [weak self] customUserInterfaceStyle in
-                self?.view.animateTransition(newUserInterfaceStyle: customUserInterfaceStyle)
+            .sink { [weak self] preferredUserInterfaceStyle in
+                self?.view.animateTransition(newUserInterfaceStyle: preferredUserInterfaceStyle)
             }
     }
 }

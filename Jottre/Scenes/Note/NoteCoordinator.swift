@@ -5,7 +5,9 @@ final class NoteCoordinator: Coordinator {
 
     private let navigationController: UINavigationController
 
-    init(navigationController: UINavigationController) {
+    init(
+        navigationController: UINavigationController
+    ) {
         self.navigationController = navigationController
     }
 

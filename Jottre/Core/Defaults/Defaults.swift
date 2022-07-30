@@ -1,87 +1,77 @@
 import Combine
 import Foundation
 
-@dynamicMemberLookup
-protocol DefaultsProtocol {
-    subscript<T: DefaultsValue>(dynamicMember keyPath: KeyPath<DefaultsKey, T>) -> T? { get nonmutating set }
-    func get<T: DefaultsValue>(_ keyPath: KeyPath<DefaultsKey, T>) -> T?
-    func get<R: RawRepresentable>(_ keyPath: KeyPath<DefaultsKey, R.RawValue>, _ rawRepresentable: R.Type) -> R? where R.RawValue: DefaultsValue
-    func get<L: LosslessStringConvertible>(_ keyPath: KeyPath<DefaultsKey, String>, _ losslessStringConvertible: L.Type) -> L?
+protocol DefaultsEntryProtocol {
 
-    func set<T: DefaultsValue>(_ value: T?, _ keyPath: KeyPath<DefaultsKey, T>)
-    func publisher<T: DefaultsValue>(_ keyPath: KeyPath<DefaultsKey, T>) -> AnyPublisher<T, Never>
+    associatedtype Value
+
+    var key: String { get }
+    var valueType: Value.Type { get }
 }
 
-@dynamicMemberLookup
+protocol DefaultsProtocol {
+
+    func get<E: DefaultsEntryProtocol>(_ entry: E) -> E.Value?
+
+    func set<E: DefaultsEntryProtocol>(_ entry: E, _ value: E.Value?)
+
+    func get<E: DefaultsEntryProtocol, T: RawRepresentable>(_ entry: E, _ type: T.Type) -> T? where E.Value == T.RawValue
+
+    func get<E: DefaultsEntryProtocol, T: LosslessStringConvertible>(_ entry: E, _ type: T.Type) -> T? where E.Value == String
+
+    func publisher<E: DefaultsEntryProtocol>(_ entry: E) -> AnyPublisher<E.Value?, Never>
+}
+
 struct Defaults: DefaultsProtocol {
 
-    static let shared = Defaults(userDefaults: UserDefaults.standard)
+    static let shared = Defaults(userDefaults: .standard)
 
-    private let defaultsSubject = PassthroughSubject<(value: Any?, identifier: String), Never>()
+    private let defaultsSubject = PassthroughSubject<(key: String, value: Any?), Never>()
+
     private let userDefaults: UserDefaults
 
     init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
     }
 
-    subscript<T: DefaultsValue>(dynamicMember keyPath: KeyPath<DefaultsKey, T>) -> T? {
-        get {
-            get(keyPath)
-        }
-        nonmutating set {
-            set(newValue, keyPath)
-        }
+    func get<E: DefaultsEntryProtocol>(_ entry: E) -> E.Value? {
+        userDefaults.object(forKey: entry.key) as? E.Value
     }
 
-    // MARK: - Getter
+    func set<E: DefaultsEntryProtocol>(_ entry: E, _ value: E.Value?) {
+        if let value = value {
+            userDefaults.set(value, forKey: entry.key)
+        } else {
+            userDefaults.removeObject(forKey: entry.key)
+        }
 
-    func publisher<T: DefaultsValue>(_ keyPath: KeyPath<DefaultsKey, T>) -> AnyPublisher<T, Never> {
-        let targetIdentifier = identifier(keyPath: keyPath)
-        return defaultsSubject
-            .filter { _, identifier in
-                identifier == targetIdentifier
+        defaultsSubject.send((key: entry.key, value: value))
+    }
+
+    func get<E: DefaultsEntryProtocol, T: RawRepresentable>(_ entry: E, _ type: T.Type) -> T? where E.Value == T.RawValue {
+        guard let value = get(entry) else {
+            return nil
+        }
+        return T(rawValue: value)
+    }
+
+    func get<E: DefaultsEntryProtocol, T: LosslessStringConvertible>(_ entry: E, _ type: T.Type) -> T? where E.Value == String {
+        guard let value = get(entry) else {
+            return nil
+        }
+        return T(value)
+    }
+
+    func publisher<E: DefaultsEntryProtocol>(_ entry: E) -> AnyPublisher<E.Value?, Never> {
+        defaultsSubject
+            .filter { key, _ in
+                key == entry.key
             }
-            .map { value, _ in
-                return value as? T
+            .map { _, value in
+                value as? E.Value
             }
-            .prepend(get(keyPath))
+            .prepend(get(entry))
             .compactMap { $0 }
             .eraseToAnyPublisher()
-    }
-
-    func get<T: DefaultsValue>(_ keyPath: KeyPath<DefaultsKey, T>) -> T? {
-        userDefaults.object(forKey: identifier(keyPath: keyPath)) as? T
-    }
-
-    func get<R: RawRepresentable>(_ keyPath: KeyPath<DefaultsKey, R.RawValue>, _ rawRepresentable: R.Type) -> R? where R.RawValue: DefaultsValue {
-        guard let value = get(keyPath) else {
-            return nil
-        }
-        return R(rawValue: value)
-    }
-
-    func get<L: LosslessStringConvertible>(_ keyPath: KeyPath<DefaultsKey, String>, _ losslessStringConvertible: L.Type) -> L? {
-        guard let value = get(keyPath) else {
-            return nil
-        }
-        return L.init(value)
-    }
-
-    // MARK: - Setter
-
-    func set<T: DefaultsValue>(_ value: T?, _ keyPath: KeyPath<DefaultsKey, T>) {
-        let identifier = identifier(keyPath: keyPath)
-    
-        if let value = value {
-            userDefaults.set(value, forKey: identifier)
-        } else {
-            userDefaults.removeObject(forKey: identifier)
-        }
-
-        defaultsSubject.send((value: value, identifier: identifier))
-    }
-
-    private func identifier<T>(keyPath: KeyPath<DefaultsKey, T>) -> String {
-        NSExpression(forKeyPath: keyPath).keyPath
     }
 }

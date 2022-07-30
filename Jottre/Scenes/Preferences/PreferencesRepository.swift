@@ -51,7 +51,7 @@ final class PreferencesRepository: PreferencesRepositoryProtocol {
     }
 
     func setUsingCloud(state: Bool) {
-        defaults.usingCloud = state
+        defaults.set(UsingCloudEntry(), state)
     }
 
     func getUserInterfaceStyle() -> UIUserInterfaceStyle {
@@ -59,12 +59,13 @@ final class PreferencesRepository: PreferencesRepositoryProtocol {
     }
 
     func setUserInterfaceStyle(newUserInterfaceStyle: UIUserInterfaceStyle) {
-        defaults.customUserInterfaceStyle = newUserInterfaceStyle.rawValue
+        defaults.set(PreferredUserInterfaceStyleEntry(), newUserInterfaceStyle.rawValue)
     }
 
     func getUserInterfaceStylePublisher() -> AnyPublisher<UIUserInterfaceStyle, Never> {
         defaults
-            .publisher(\.customUserInterfaceStyle)
+            .publisher(PreferredUserInterfaceStyleEntry())
+            .replaceNil(with: UIUserInterfaceStyle.unspecified.rawValue)
             .compactMap(UIUserInterfaceStyle.init)
             .eraseToAnyPublisher()
     }

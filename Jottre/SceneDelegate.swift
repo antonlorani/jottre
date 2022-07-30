@@ -55,11 +55,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         rootCoordinator.start()
         hideToolbarIfNeeded(windowScene: windowScene)
 
-        userInterfaceStyleCancellable = Defaults.shared
-            .publisher(\.customUserInterfaceStyle)
+        userInterfaceStyleCancellable = Defaults
+            .shared
+            .publisher(PreferredUserInterfaceStyleEntry())
+            .replaceNil(with: UIUserInterfaceStyle.unspecified.rawValue)
             .compactMap(UIUserInterfaceStyle.init)
-            .sink { [weak self] newCustomUserInterfaceStyle in
-                self?.window?.animateTransition(newUserInterfaceStyle: newCustomUserInterfaceStyle)
+            .sink { [weak self] preferredUserInterfaceStyle in
+                self?.window?.animateTransition(newUserInterfaceStyle: preferredUserInterfaceStyle)
             }
 
         /*
