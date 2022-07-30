@@ -67,6 +67,7 @@
 		A6CFA3882866147800E5618E /* TextViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CFA3872866147800E5618E /* TextViewProvider.swift */; };
 		A6DB2A072895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A062895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift */; };
 		A6DB2A092895C1D700FF2A1E /* UsingCloudEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A082895C1D700FF2A1E /* UsingCloudEntry.swift */; };
+		A6DB2A102895C82200FF2A1E /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */; };
 		A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EB25B3260200C65157 /* AppDelegate.swift */; };
 		A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */; };
 		A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F425B3260300C65157 /* Assets.xcassets */; };
@@ -158,6 +159,7 @@
 		A6CFA3872866147800E5618E /* TextViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewProvider.swift; sourceTree = "<group>"; };
 		A6DB2A062895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreferredUserInterfaceStyleEntry.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Preferences/PreferredUserInterfaceStyleEntry.swift"; sourceTree = "<group>"; };
 		A6DB2A082895C1D700FF2A1E /* UsingCloudEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsingCloudEntry.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Preferences/UsingCloudEntry.swift"; sourceTree = "<group>"; };
+		A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NoteCell.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/NoteCell/NoteCell.swift"; sourceTree = "<group>"; };
 		A6E3B7E825B3260200C65157 /* Jottre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jottre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E3B7EB25B3260200C65157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 		A6CEB5022822F062009FAA84 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB2A0A2895C7D000FF2A1E /* NoteCell */,
 				A6CEB51E2822F6F2009FAA84 /* InfoTextView */,
 				A6CEB5032822F06D009FAA84 /* RootViewController.swift */,
 				A6CEB5052822F072009FAA84 /* RootViewModel.swift */,
@@ -403,6 +406,14 @@
 				A6CFA3872866147800E5618E /* TextViewProvider.swift */,
 			);
 			path = ViewProvider;
+			sourceTree = "<group>";
+		};
+		A6DB2A0A2895C7D000FF2A1E /* NoteCell */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */,
+			);
+			path = NoteCell;
 			sourceTree = "<group>";
 		};
 		A6E3B7DF25B3260200C65157 = {
@@ -681,6 +692,7 @@
 				A6CEB5042822F06D009FAA84 /* RootViewController.swift in Sources */,
 				A6CFA3822866111C00E5618E /* PreferencesCustomViewProvider.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
+				A6DB2A102895C82200FF2A1E /* NoteCell.swift in Sources */,
 				A6CEB5282822F811009FAA84 /* DeviceDataSource.swift in Sources */,
 				A6CEB52C2822FD7E009FAA84 /* LocalizableStringsDataSource.swift in Sources */,
 				A6CFA384286611BC00E5618E /* SwitchViewProvider.swift in Sources */,
