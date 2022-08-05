@@ -5,8 +5,8 @@ final class PreferencesNavigationController: UINavigationController {
 
     private var userInterfaceStyleCancellable: AnyCancellable?
 
-    init(defaults: DefaultsProtocol) {
-        super.init(nibName: nil, bundle: nil)
+    init(rootViewController: PreferencesViewController, defaults: DefaultsProtocol) {
+        super.init(rootViewController: rootViewController)
 
         setUpViews()
         bindDefaults(defaults: defaults)

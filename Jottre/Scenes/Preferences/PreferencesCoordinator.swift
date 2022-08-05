@@ -27,7 +27,6 @@ final class PreferencesCoordinator: Coordinator {
     }
 
     func start() {
-        let preferencesNavigationController = PreferencesNavigationController(defaults: defaults)
         let preferencesViewController = PreferencesViewController(
             viewModel: PreferencesViewModel(
                 repository: PreferencesRepository(
@@ -43,8 +42,11 @@ final class PreferencesCoordinator: Coordinator {
                 openURLProvider: openURLProvider
             )
         )
+        let preferencesNavigationController = PreferencesNavigationController(
+            rootViewController: preferencesViewController,
+            defaults: defaults
+        )
         preferencesNavigationController.modalPresentationStyle = .automatic
-        preferencesNavigationController.setViewControllers([preferencesViewController], animated: false)
         navigationController.present(preferencesNavigationController, animated: true)
     }
 

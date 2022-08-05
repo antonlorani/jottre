@@ -16,7 +16,6 @@ final class DeviceDataSource: DeviceDataSourceProtocol {
     }
 
     func getIsReadOnly() -> Bool {
-        return false
         #if targetEnvironment(macCatalyst)
             return true
         #else

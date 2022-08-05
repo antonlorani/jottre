@@ -1,8 +1,12 @@
+import Combine
+
 final class InfoTextViewModel {
 
-    let text: String
+    let infoTextString: AnyPublisher<String, Never>
 
-    init(repository: InfoTextViewRepositoryProtocol) {
-        text = repository.getText()
+    init(infoTextString: AnyPublisher<String?, Never>) {
+        self.infoTextString = infoTextString
+            .replaceNil(with: String())
+            .eraseToAnyPublisher()
     }
 }

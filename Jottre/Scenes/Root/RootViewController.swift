@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class RootViewController: UIViewController {
 
@@ -18,19 +19,9 @@ final class RootViewController: UIViewController {
 
     private lazy var infoTextView: InfoTextView = {
         let infoTextView = InfoTextView(
-            viewModel: InfoTextViewModel(
-                repository: InfoTextViewRepository(
-                    environmentDataSource: EnvironmentDataSource(
-                        defaults: Defaults.shared,
-                        cloudDataSource: CloudDataSource.shared,
-                        deviceDataSource: DeviceDataSource.shared
-                    ),
-                    localizableStringsDataSource: viewModel.localizableStringsDataSource
-                )
-            )
+            viewModel: InfoTextViewModel(infoTextString: viewModel.infoTextString)
         )
         infoTextView.translatesAutoresizingMaskIntoConstraints = false
-        infoTextView.alpha = 0
         return infoTextView
     }()
 
@@ -47,12 +38,12 @@ final class RootViewController: UIViewController {
         return collectionView
     }()
 
-    private let items: [RootViewModel.Item]
+    private var cancellables = Set<AnyCancellable>()
+    private var items = [RootViewModel.Item]()
     private let viewModel: RootViewModel
 
     init(viewModel: RootViewModel) {
         self.viewModel = viewModel
-        items = viewModel.items
         super.init(nibName: nil, bundle: nil)
 
         setUpViews()
@@ -62,6 +53,7 @@ final class RootViewController: UIViewController {
         )
         setUpConstraints()
         setUpDelegates()
+        bindViewModel()
     }
 
     @available(*, unavailable)
@@ -106,8 +98,8 @@ final class RootViewController: UIViewController {
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
@@ -121,6 +113,25 @@ final class RootViewController: UIViewController {
     private func setUpDelegates() {
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+
+    private func bindViewModel() {
+        viewModel
+            .items
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] items in
+                self?.items = items
+                self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
+
+        viewModel
+            .isInfoTextViewHidden
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isInfoTextViewHidden in
+                self?.infoTextView.isHidden = isInfoTextViewHidden
+            }
+            .store(in: &cancellables)
     }
 
     @objc private func addNoteButtonDidTap(_ sender: UIBarButtonItem) {

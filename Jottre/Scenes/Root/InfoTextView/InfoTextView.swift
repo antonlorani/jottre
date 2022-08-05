@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class InfoTextView: UITextView {
 
@@ -8,10 +9,13 @@ final class InfoTextView: UITextView {
         static let backgroundColor = UIColor.clear
     }
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(viewModel: InfoTextViewModel) {
         super.init(frame: .zero, textContainer: nil)
 
-        setUpViews(viewModel: viewModel)
+        setUpViews()
+        bindViewModel(viewModel: viewModel)
     }
 
     @available(*, unavailable)
@@ -19,8 +23,7 @@ final class InfoTextView: UITextView {
         fatalError("\(#function) not implemented")
     }
 
-    private func setUpViews(viewModel: InfoTextViewModel) {
-        text = viewModel.text
+    private func setUpViews() {
         isEditable = false
         isSelectable = false
         font = Constants.font
@@ -28,5 +31,15 @@ final class InfoTextView: UITextView {
         textAlignment = .center
         isScrollEnabled = false
         backgroundColor = Constants.backgroundColor
+    }
+
+    private func bindViewModel(viewModel: InfoTextViewModel) {
+        viewModel
+            .infoTextString
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] infoTextString in
+                self?.text = infoTextString
+            }
+            .store(in: &cancellables)
     }
 }

@@ -15,7 +15,7 @@
 
 "Scene.Root.Info.DocumentsNotAvailable.pad" = "Noch keine Dokumente vorhanden. Klicke auf 'Hinzufügen', um eine neue Datei zu erstellen.";
 "Scene.Root.Info.DocumentsNotAvailable.other" = "Dokumente die mit der 'Jottre for iPad' App erstellt wurden, werden hier angezeigt.";
-"Scene.Root.Info.EnableCloud.pad" = "Aktiviere iCloud um das volle potenzial von Jottre auszuschöpfen.";
+"Scene.Root.Info.EnableCloud.pad" = "Aktiviere iCloud um das volle Potenzial von Jottre auszuschöpfen.";
 "Scene.Root.Info.EnableCloud.other" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier aufgelistet werden können.";
 
 "Scene.Root.BarButton.AddNote.title" = "Hinzufügen";

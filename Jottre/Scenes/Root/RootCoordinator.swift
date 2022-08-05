@@ -39,7 +39,15 @@ final class RootCoordinator: Coordinator {
                 coordinator: self,
                 repository: RootRepository(
                     deviceDataSource: deviceDataSource,
-                    localizableStringsDataSource: localizableStringsDataSource
+                    localizableStringsDataSource: localizableStringsDataSource,
+                    infoTextRepository: InfoTextViewRepository(
+                        environmentDataSource: EnvironmentDataSource(
+                            defaults: defaults,
+                            cloudDataSource: cloudDataSource,
+                            deviceDataSource: deviceDataSource
+                        ),
+                        localizableStringsDataSource: localizableStringsDataSource
+                    )
                 ),
                 localizableStringsDataSource: localizableStringsDataSource
             )

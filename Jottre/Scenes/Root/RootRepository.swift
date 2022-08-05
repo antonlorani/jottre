@@ -1,5 +1,6 @@
 protocol RootRepositoryProtocol {
 
+    func getInfoText() -> String
     func getNavigationTitle() -> String
     func getAddNoteButtonTitle() -> String?
 }
@@ -8,13 +9,20 @@ final class RootRepository: RootRepositoryProtocol {
 
     private let deviceDataSource: DeviceDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+    private let infoTextRepository: InfoTextViewRepositoryProtocol
 
     init(
         deviceDataSource: DeviceDataSourceProtocol,
-        localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+        localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
+        infoTextRepository: InfoTextViewRepositoryProtocol
     ) {
         self.deviceDataSource = deviceDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
+        self.infoTextRepository = infoTextRepository
+    }
+
+    func getInfoText() -> String {
+        infoTextRepository.getText()
     }
 
     func getNavigationTitle() -> String {
