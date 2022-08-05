@@ -1,9 +1,9 @@
-protocol RootCoordinatorRepositoryProtocol {
+protocol AddNoteRepositoryProtocol {
 
     func getAddNoteAlert() -> AddNoteAlertContent
 }
 
-final class RootCoordinatorRepository: RootCoordinatorRepositoryProtocol {
+final class AddNoteRepository: AddNoteRepositoryProtocol {
 
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
 

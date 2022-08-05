@@ -90,11 +90,7 @@ final class RootViewModel {
     }
 
     func addNoteButtonDidTap() {
-        coordinator?.showAddNoteAlert(
-            onSubmit: { [weak self] text in
-                self?.coordinator?.openNote()
-            }
-        )
+        coordinator?.showAddNoteAlert()
     }
 
     func openPreferencesButtonDidTap() {

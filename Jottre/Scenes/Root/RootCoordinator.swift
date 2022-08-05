@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class RootCoordinator: Coordinator {
 
@@ -9,7 +10,6 @@ final class RootCoordinator: Coordinator {
 
     private let navigationController: UINavigationController
     private let defaults: DefaultsProtocol
-    private let repository: RootCoordinatorRepositoryProtocol
     private let deviceDataSource: DeviceDataSourceProtocol
     private let cloudDataSource: CloudDataSourceProtocol
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
@@ -18,7 +18,6 @@ final class RootCoordinator: Coordinator {
     init(
         navigationController: UINavigationController,
         defaults: DefaultsProtocol,
-        repository: RootCoordinatorRepositoryProtocol,
         deviceDataSource: DeviceDataSourceProtocol,
         cloudDataSource: CloudDataSourceProtocol,
         localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
@@ -26,7 +25,6 @@ final class RootCoordinator: Coordinator {
     ) {
         self.navigationController = navigationController
         self.defaults = defaults
-        self.repository = repository
         self.deviceDataSource = deviceDataSource
         self.cloudDataSource = cloudDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
@@ -55,12 +53,29 @@ final class RootCoordinator: Coordinator {
         navigationController.pushViewController(rootViewController, animated: false)
     }
 
-    func showAddNoteAlert(onSubmit: @escaping (String) -> Void) {
-        let alertController = UIAlertController.makeAddNoteAlert(
-            content: repository.getAddNoteAlert(),
-            onSubmit: onSubmit
+    private var storedAddNoteCoordinator: AddNoteCoordinator?
+
+    func showAddNoteAlert() {
+        let addNoteCoordinator = AddNoteCoordinator(
+            navigationController: navigationController,
+            repository: AddNoteRepository(
+                localizableStringsDataSource: localizableStringsDataSource
+            )
         )
-        navigationController.present(alertController, animated: true, completion: nil)
+        storedAddNoteCoordinator = addNoteCoordinator
+
+        var cancellable: AnyCancellable?
+        cancellable = addNoteCoordinator
+            .startFlow()
+            .sink { [weak self] noteBusinessModel in
+                if let noteBusinessModel = noteBusinessModel {
+                    self?.openNote(noteBusinessModel: noteBusinessModel)
+                }
+
+                cancellable?.cancel()
+                cancellable = nil
+                self?.storedAddNoteCoordinator = nil
+            }
     }
 
     func openPreferences() {
@@ -79,8 +94,11 @@ final class RootCoordinator: Coordinator {
         }
     }
 
-    func openNote() {
-        let noteCoordinator = NoteCoordinator(navigationController: navigationController)
+    func openNote(noteBusinessModel: NoteBusinessModel) {
+        let noteCoordinator = NoteCoordinator(
+            navigationController: navigationController,
+            noteBusinessModel: noteBusinessModel
+        )
         retainedNoteCoordinator = noteCoordinator
         noteCoordinator.start()
         noteCoordinator.release = { [weak self] in

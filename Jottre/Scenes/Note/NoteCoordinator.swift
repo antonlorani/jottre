@@ -4,17 +4,21 @@ final class NoteCoordinator: Coordinator {
     var release: CoordinatorReleaseClosure?
 
     private let navigationController: UINavigationController
+    private let noteBusinessModel: NoteBusinessModel
 
     init(
-        navigationController: UINavigationController
+        navigationController: UINavigationController,
+        noteBusinessModel: NoteBusinessModel
     ) {
         self.navigationController = navigationController
+        self.noteBusinessModel = noteBusinessModel
     }
 
     func start() {
         let noteViewController = NoteViewController(
             viewModel: NoteViewModel(
-                coordinator: self
+                coordinator: self,
+                noteBusinessModel: noteBusinessModel
             )
         )
         navigationController.pushViewController(noteViewController, animated: true)
@@ -25,7 +29,7 @@ final class NoteCoordinator: Coordinator {
         onJPGSelected: @escaping () -> Void,
         onPNGSelected: @escaping () -> Void
     ) {
-        let alert = UIAlertController.makeExportNoteAlert(
+        let alertController = UIAlertController.makeExportNoteAlert(
             content: ExportNoteAlertContent(
                 title: "Export note",
                 cancelActionTitle: "Cancel",
@@ -45,6 +49,6 @@ final class NoteCoordinator: Coordinator {
                 ]
             )
         )
-        navigationController.present(alert, animated: true, completion: nil)
+        navigationController.present(alertController, animated: true, completion: nil)
     }
 }

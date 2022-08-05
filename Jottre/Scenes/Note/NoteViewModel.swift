@@ -1,11 +1,17 @@
 final class NoteViewModel {
     private weak var coordinator: NoteCoordinator?
 
-    init(coordinator: NoteCoordinator) {
+    let navigationTitle: String
+
+    init(
+        coordinator: NoteCoordinator,
+        noteBusinessModel: NoteBusinessModel
+    ) {
         self.coordinator = coordinator
+        navigationTitle = noteBusinessModel.name
     }
 
-    func exportNoteDidTap() {
+    func didClickExportNote() {
         weak var `self` = self
         coordinator?.showExportNoteAlert(
             onPDFSelected: {

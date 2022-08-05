@@ -1,11 +1,12 @@
 import UIKit
+import Combine
 
 extension UIAlertController {
 
     static func makeAddNoteAlert(
-        content: AddNoteAlertContent,
-        onSubmit: @escaping (String) -> Void
-    ) -> UIAlertController {
+        content: AddNoteAlertContent
+    ) -> AnyPublisher<(UIAlertController, AnyPublisher<String?, Never>), Never> {
+        let noteNameSubject = PassthroughSubject<String?, Never>()
         let controller = UIAlertController(
             title: content.title,
             message: content.message,
@@ -20,11 +21,11 @@ extension UIAlertController {
                 style: .default,
                 handler: { _ in
                     guard let text = controller.textFields?.first?.text else {
-                        onSubmit(content.placeholder)
+                        noteNameSubject.send(content.placeholder)
                         return
                     }
 
-                    onSubmit(text.isEmpty ? content.placeholder : text)
+                    noteNameSubject.send(text.isEmpty ? content.placeholder : text)
                 }
             )
         )
@@ -32,9 +33,11 @@ extension UIAlertController {
             UIAlertAction(
                 title: content.cancelActionTitle,
                 style: .cancel,
-                handler: nil
+                handler: { _ in
+                    noteNameSubject.send(nil)
+                }
             )
         )
-        return controller
+        return Just((controller, noteNameSubject.eraseToAnyPublisher())).eraseToAnyPublisher()
     }
 }

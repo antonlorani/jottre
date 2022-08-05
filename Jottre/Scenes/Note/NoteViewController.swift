@@ -14,7 +14,7 @@ final class NoteViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
 
-        setUpNavigationBar()
+        setUpNavigationBar(navigationTitle: viewModel.navigationTitle)
         setUpViews()
     }
 
@@ -23,14 +23,16 @@ final class NoteViewController: UIViewController {
         fatalError("\(#function) not implemented")
     }
 
-    private func setUpNavigationBar() {
+    private func setUpNavigationBar(
+        navigationTitle: String
+    ) {
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "Hello, World!"
+        navigationItem.title = navigationTitle
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: Constants.ExportNoteBarButton.systemName),
             style: .plain,
             target: self,
-            action: #selector(exportNoteDidTap(_:))
+            action: #selector(didClickExportNote(_:))
         )
     }
 
@@ -38,7 +40,7 @@ final class NoteViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
 
-    @objc private func exportNoteDidTap(_ sender: UIBarButtonItem) {
-        viewModel.exportNoteDidTap()
+    @objc private func didClickExportNote(_ sender: UIBarButtonItem) {
+        viewModel.didClickExportNote()
     }
 }

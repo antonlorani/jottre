@@ -37,7 +37,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let rootCoordinator = RootCoordinator(
             navigationController: navigationController,
             defaults: Defaults.shared,
-            repository: RootCoordinatorRepository(localizableStringsDataSource: LocalizableStringsDataSource.shared),
             deviceDataSource: DeviceDataSource(device: UIDevice.current),
             cloudDataSource: CloudDataSource(fileManager: FileManager.default),
             localizableStringsDataSource: LocalizableStringsDataSource.shared,

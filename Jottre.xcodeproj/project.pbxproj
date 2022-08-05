@@ -25,6 +25,9 @@
 		A673AEDA2825718800B40EA4 /* PreferencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673AED92825718800B40EA4 /* PreferencesCell.swift */; };
 		A6788A5128245E7300582729 /* ExportNoteAlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6788A5028245E7300582729 /* ExportNoteAlertContent.swift */; };
 		A6788A5328245E7A00582729 /* UIAlert+exportNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6788A5228245E7A00582729 /* UIAlert+exportNote.swift */; };
+		A69EB85C289DB657004408FB /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB85B289DB657004408FB /* Note.swift */; };
+		A69EB863289DB960004408FB /* AddNoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB862289DB960004408FB /* AddNoteRepository.swift */; };
+		A69EB864289DB9F7004408FB /* AddNoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB861289DB947004408FB /* AddNoteCoordinator.swift */; };
 		A6A8803E25BAB41E0080DD9D /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8803D25BAB41E0080DD9D /* Downloader.swift */; };
 		A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */; };
 		A6BB130C25B46057008C5D8A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB130B25B46057008C5D8A /* Settings.swift */; };
@@ -55,7 +58,6 @@
 		A6CEB52A2822F909009FAA84 /* CloudDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5292822F909009FAA84 /* CloudDataSource.swift */; };
 		A6CEB52C2822FD7E009FAA84 /* LocalizableStringsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB52B2822FD7E009FAA84 /* LocalizableStringsDataSource.swift */; };
 		A6CEB52E2823018D009FAA84 /* RootRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB52D2823018D009FAA84 /* RootRepository.swift */; };
-		A6CEB53028230668009FAA84 /* RootCoordinatorRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB52F28230668009FAA84 /* RootCoordinatorRepository.swift */; };
 		A6CEB532282306A8009FAA84 /* AddNoteAlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB531282306A8009FAA84 /* AddNoteAlertContent.swift */; };
 		A6CEB534282308E9009FAA84 /* UIAlert+addNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB533282308E9009FAA84 /* UIAlert+addNote.swift */; };
 		A6CEB53728230C25009FAA84 /* PreferencesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB53628230C25009FAA84 /* PreferencesNavigationController.swift */; };
@@ -115,6 +117,9 @@
 		A673AED92825718800B40EA4 /* PreferencesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCell.swift; sourceTree = "<group>"; };
 		A6788A5028245E7300582729 /* ExportNoteAlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportNoteAlertContent.swift; sourceTree = "<group>"; };
 		A6788A5228245E7A00582729 /* UIAlert+exportNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+exportNote.swift"; sourceTree = "<group>"; };
+		A69EB85B289DB657004408FB /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Note.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Note.swift"; sourceTree = "<group>"; };
+		A69EB861289DB947004408FB /* AddNoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteCoordinator.swift; sourceTree = "<group>"; };
+		A69EB862289DB960004408FB /* AddNoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddNoteRepository.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/AddNote/AddNoteRepository.swift"; sourceTree = "<group>"; };
 		A6A8803D25BAB41E0080DD9D /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		A6BB130625B45ECB008C5D8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A6BB130B25B46057008C5D8A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -147,7 +152,6 @@
 		A6CEB5292822F909009FAA84 /* CloudDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudDataSource.swift; sourceTree = "<group>"; };
 		A6CEB52B2822FD7E009FAA84 /* LocalizableStringsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableStringsDataSource.swift; sourceTree = "<group>"; };
 		A6CEB52D2823018D009FAA84 /* RootRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootRepository.swift; sourceTree = "<group>"; };
-		A6CEB52F28230668009FAA84 /* RootCoordinatorRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinatorRepository.swift; sourceTree = "<group>"; };
 		A6CEB531282306A8009FAA84 /* AddNoteAlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteAlertContent.swift; sourceTree = "<group>"; };
 		A6CEB533282308E9009FAA84 /* UIAlert+addNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+addNote.swift"; sourceTree = "<group>"; };
 		A6CEB53628230C25009FAA84 /* PreferencesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesNavigationController.swift; sourceTree = "<group>"; };
@@ -254,6 +258,15 @@
 			path = Alerts;
 			sourceTree = "<group>";
 		};
+		A69EB85D289DB6C2004408FB /* AddNote */ = {
+			isa = PBXGroup;
+			children = (
+				A69EB861289DB947004408FB /* AddNoteCoordinator.swift */,
+				A69EB862289DB960004408FB /* AddNoteRepository.swift */,
+			);
+			path = AddNote;
+			sourceTree = "<group>";
+		};
 		A6BB130525B45E52008C5D8A /* SettingsScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,9 +311,11 @@
 		A6CEB5012822F05A009FAA84 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				A69EB85D289DB6C2004408FB /* AddNote */,
 				A6CEB50D2822F21B009FAA84 /* Preferences */,
 				A6CEB50C2822F20C009FAA84 /* Note */,
 				A6CEB5022822F062009FAA84 /* Root */,
+				A69EB85B289DB657004408FB /* Note.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -315,7 +330,6 @@
 				A6CEB5052822F072009FAA84 /* RootViewModel.swift */,
 				A6CEB5072822F100009FAA84 /* RootCoordinator.swift */,
 				A6CEB52D2823018D009FAA84 /* RootRepository.swift */,
-				A6CEB52F28230668009FAA84 /* RootCoordinatorRepository.swift */,
 				A6CEB53928230CED009FAA84 /* RootNavigationController.swift */,
 			);
 			path = Root;
@@ -650,7 +664,6 @@
 				A6CEB53A28230CED009FAA84 /* RootNavigationController.swift in Sources */,
 				A6F9A77E286726160094ABE1 /* JottreGitHubURL.swift in Sources */,
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
-				A6CEB53028230668009FAA84 /* RootCoordinatorRepository.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
 				A6C0D70325B9DB9D00336230 /* URL.swift in Sources */,
 				A6CEB50B2822F12E009FAA84 /* Coordinator.swift in Sources */,
@@ -658,6 +671,7 @@
 				A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */,
 				A6BB131325B46E2D008C5D8A /* SettingsCell.swift in Sources */,
 				A6F9A77828671CF30094ABE1 /* CustomUserInterfaceStyle.swift in Sources */,
+				A69EB863289DB960004408FB /* AddNoteRepository.swift in Sources */,
 				A6F9A77928671D590094ABE1 /* Defaults.swift in Sources */,
 				A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */,
 				A6CEB5082822F100009FAA84 /* RootCoordinator.swift in Sources */,
@@ -691,6 +705,7 @@
 				A6BB131025B46BA2008C5D8A /* SettingsNavigationViewController.swift in Sources */,
 				A6E3B82825B32AD300C65157 /* NavigationTextButton.swift in Sources */,
 				A6CEB5202822F6FB009FAA84 /* InfoTextView.swift in Sources */,
+				A69EB864289DB9F7004408FB /* AddNoteCoordinator.swift in Sources */,
 				A61BB9FA25D0604200E63CF6 /* ShareButton.swift in Sources */,
 				A650EE6825C5819500830112 /* NodeCodable.swift in Sources */,
 				A6CEB532282306A8009FAA84 /* AddNoteAlertContent.swift in Sources */,
@@ -700,6 +715,7 @@
 				A6CEB5042822F06D009FAA84 /* RootViewController.swift in Sources */,
 				A6CFA3822866111C00E5618E /* PreferencesCustomViewProvider.swift in Sources */,
 				A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */,
+				A69EB85C289DB657004408FB /* Note.swift in Sources */,
 				A6DB2A102895C82200FF2A1E /* NoteCell.swift in Sources */,
 				A6CEB5282822F811009FAA84 /* DeviceDataSource.swift in Sources */,
 				A6CEB52C2822FD7E009FAA84 /* LocalizableStringsDataSource.swift in Sources */,
