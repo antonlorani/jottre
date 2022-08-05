@@ -30,6 +30,7 @@ final class PreferencesViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         setUpViews()
+        setUpNavigationItem()
         setUpConstraints()
         setUpDelegates()
         bindViewModel()
@@ -43,10 +44,12 @@ final class PreferencesViewController: UIViewController {
     private func setUpViews() {
         view.backgroundColor = Constants.backgroundColor
 
+        view.addSubview(tableView)
+    }
+
+    private func setUpNavigationItem() {
         navigationItem.title = viewModel.navigationTitle
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didClickDone(_:)))
-
-        view.addSubview(tableView)
     }
 
     private func setUpConstraints() {
@@ -66,6 +69,7 @@ final class PreferencesViewController: UIViewController {
     private func bindViewModel() {
         itemsCancellable = viewModel
             .items
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] newItems in
                 self?.items = newItems
                 self?.tableView.reloadData()

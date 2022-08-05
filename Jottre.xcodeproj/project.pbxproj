@@ -238,13 +238,20 @@
 			path = ExportNote;
 			sourceTree = "<group>";
 		};
-		A6788A4F28245E5F00582729 /* Alert */ = {
+		A6788A4F28245E5F00582729 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
 				A6788A4E28245E5600582729 /* ExportNote */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		A69EB858289DA52D004408FB /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
 				A6CEB53528230B60009FAA84 /* AddNote */,
 			);
-			path = Alert;
+			path = Alerts;
 			sourceTree = "<group>";
 		};
 		A6BB130525B45E52008C5D8A /* SettingsScene */ = {
@@ -301,6 +308,7 @@
 		A6CEB5022822F062009FAA84 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				A69EB858289DA52D004408FB /* Alerts */,
 				A6DB2A0A2895C7D000FF2A1E /* NoteCell */,
 				A6CEB51E2822F6F2009FAA84 /* InfoTextView */,
 				A6CEB5032822F06D009FAA84 /* RootViewController.swift */,
@@ -318,7 +326,6 @@
 			children = (
 				A6659CD028675E2D00D6FE75 /* Extensions */,
 				A6F9A76F28671BAA0094ABE1 /* Defaults */,
-				A6788A4F28245E5F00582729 /* Alert */,
 				A6CEB50A2822F12E009FAA84 /* Coordinator.swift */,
 			);
 			path = Core;
@@ -327,6 +334,7 @@
 		A6CEB50C2822F20C009FAA84 /* Note */ = {
 			isa = PBXGroup;
 			children = (
+				A6788A4F28245E5F00582729 /* Alerts */,
 				A6CEB50E2822F229009FAA84 /* NoteViewController.swift */,
 				A6CEB5102822F22F009FAA84 /* NoteViewModel.swift */,
 				A6CEB5122822F234009FAA84 /* NoteCoordinator.swift */,
@@ -382,8 +390,8 @@
 		A6CEB53528230B60009FAA84 /* AddNote */ = {
 			isa = PBXGroup;
 			children = (
-				A6CEB531282306A8009FAA84 /* AddNoteAlertContent.swift */,
 				A6CEB533282308E9009FAA84 /* UIAlert+addNote.swift */,
+				A6CEB531282306A8009FAA84 /* AddNoteAlertContent.swift */,
 			);
 			path = AddNote;
 			sourceTree = "<group>";

@@ -99,22 +99,22 @@ final class RootViewController: UIViewController {
     private func setUpViews() {
         view.backgroundColor = .systemBackground
 
-        view.addSubview(infoTextView)
         view.addSubview(collectionView)
+        view.addSubview(infoTextView)
     }
 
     private func setUpConstraints() {
-        NSLayoutConstraint.activate([
-            infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            infoTextView.widthAnchor.constraint(equalToConstant: Constants.InfoText.width),
-            infoTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.InfoText.minHeight)
-        ])
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            infoTextView.widthAnchor.constraint(equalToConstant: Constants.InfoText.width),
+            infoTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.InfoText.minHeight)
         ])
     }
 

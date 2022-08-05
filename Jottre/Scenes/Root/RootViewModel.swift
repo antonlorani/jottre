@@ -19,27 +19,27 @@ final class RootViewModel {
             image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
             onSelect: {}
         ),
-        Item.note(
+        .note(
             title: "Calculator Pro+",
             image: UIImage(systemName: "text.below.photo.fill")!,
             onSelect: {}
         ),
-        Item.note(
+        .note(
             title: "Calculator Pro+ 540985 43850 34589 458",
             image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
             onSelect: {}
         ),
-        Item.note(
+        .note(
             title: "Calculator Pro+",
             image: UIImage(systemName: "text.below.photo.fill")!,
             onSelect: {}
         ),
-        Item.note(
+        .note(
             title: "Calculator Pro+ 540985 43850 34589 458",
             image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
             onSelect: {}
         ),
-        Item.note(
+        .note(
             title: "Calculator Pro+",
             image: UIImage(systemName: "text.below.photo.fill")!,
             onSelect: {}
