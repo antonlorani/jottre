@@ -9,13 +9,11 @@ final class InfoTextView: UITextView {
         static let backgroundColor = UIColor.clear
     }
 
-    private var cancellables = Set<AnyCancellable>()
-
-    init(viewModel: InfoTextViewModel) {
+    init(text: String) {
         super.init(frame: .zero, textContainer: nil)
+        self.text = text
 
         setUpViews()
-        bindViewModel(viewModel: viewModel)
     }
 
     @available(*, unavailable)
@@ -31,15 +29,5 @@ final class InfoTextView: UITextView {
         textAlignment = .center
         isScrollEnabled = false
         backgroundColor = Constants.backgroundColor
-    }
-
-    private func bindViewModel(viewModel: InfoTextViewModel) {
-        viewModel
-            .infoTextString
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] infoTextString in
-                self?.text = infoTextString
-            }
-            .store(in: &cancellables)
     }
 }

@@ -3,20 +3,24 @@ import Combine
 
 final class RootViewModel {
 
-    enum Item {
-        case note(title: String, image: UIImage, onSelect: () -> Void)
-
-        var onSelect: () -> Void {
-            switch self {
-            case let .note(_, _, onSelect):
-                return onSelect
-            }
-        }
+    struct Item {
+        let title: String
+        let image: UIImage
+        let onSelect: () -> Void
     }
 
-    lazy var infoTextString: AnyPublisher<String?, Never> = items
+    enum Info {
+        case largeText(text: String),
+             loading(title: String)
+    }
+
+    lazy var remoteFilesCountText: AnyPublisher<String?, Never> = repository
+        .getRemoteFilesText()
+        .eraseToAnyPublisher()
+
+    private lazy var infoText: AnyPublisher<String?, Never> = items
         .map(\.isEmpty)
-        .prepend(true)
+        .prepend(false)
         .map { [weak self] shouldShowInfoText in
             guard let self = self, shouldShowInfoText else {
                 return nil
@@ -26,45 +30,54 @@ final class RootViewModel {
         .share()
         .eraseToAnyPublisher()
 
-    lazy var isInfoTextViewHidden: AnyPublisher<Bool, Never> = infoTextString
-        .map { $0 == nil }
+    private let isLoadingSubject = CurrentValueSubject<Bool, Never>(true)
+
+    lazy var info = infoText
+        .removeDuplicates()
+        .combineLatest(
+            isLoadingSubject
+                .removeDuplicates()
+                .eraseToAnyPublisher()
+        )
+        .map { [weak self] infoText, isLoading -> Info? in
+            guard let self = self else {
+                return nil
+            }
+            if isLoading {
+                return Info.loading(title: self.repository.getLoadingTitle())
+            }
+            
+            if let infoText = infoText {
+                return Info.largeText(text: infoText)
+            } else {
+                return nil
+            }
+        }
         .eraseToAnyPublisher()
 
-    lazy var items: AnyPublisher<[Item], Never> = Just(
-        [
-            Item.note(
-                title: "Calculator Pro+ 540985 43850 34589 458",
-                image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
-                onSelect: {}
-            ),
-            .note(
-                title: "Calculator Pro+",
-                image: UIImage(systemName: "text.below.photo.fill")!,
-                onSelect: {}
-            ),
-            .note(
-                title: "Calculator Pro+ 540985 43850 34589 458",
-                image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
-                onSelect: {}
-            ),
-            .note(
-                title: "Calculator Pro+",
-                image: UIImage(systemName: "text.below.photo.fill")!,
-                onSelect: {}
-            ),
-            .note(
-                title: "Calculator Pro+ 540985 43850 34589 458",
-                image: UIImage(systemName: "photo.fill.on.rectangle.fill")!,
-                onSelect: {}
-            ),
-            .note(
-                title: "Calculator Pro+",
-                image: UIImage(systemName: "text.below.photo.fill")!,
-                onSelect: {}
-            )
-        ]
-    )
-    .eraseToAnyPublisher()
+    lazy var items: AnyPublisher<[Item], Never> = repository
+        .getFiles(preferredThumbnailSize: Just(CGSize(width: 200, height: 200)).eraseToAnyPublisher())
+        .map { fileBusinessModels in
+            fileBusinessModels
+                .sorted(by: { lhs, rhs in
+                    guard let modificationDateLhs = lhs.modificationDate, let modificationDateRhs = rhs.modificationDate else {
+                        return false
+                    }
+                    return modificationDateLhs.compare(modificationDateRhs) == .orderedAscending
+                })
+                .map { fileBusinessModel in
+                    Item(
+                        title: fileBusinessModel.name,
+                        image: fileBusinessModel.thumbnailImage,
+                        onSelect: {}
+                    )
+                }
+        }
+        .handleEvents(receiveOutput: { [weak self] _ in
+            self?.isLoadingSubject.send(false)
+        })
+        .share()
+        .eraseToAnyPublisher()
 
     let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
 

@@ -4,9 +4,8 @@ import Combine
 final class RootViewController: UIViewController {
 
     private struct Constants {
-        struct InfoText {
+        struct InfoContainerView {
             static let width = CGFloat(300)
-            static let minHeight = CGFloat(20)
         }
 
         struct CollectionView {
@@ -15,14 +14,22 @@ final class RootViewController: UIViewController {
             static let minWidth = CGFloat(232)
             static let height = CGFloat(291)
         }
+
+        struct BackgroundLoadingView {
+            static let paddingBottom = CGFloat(5)
+        }
     }
 
-    private lazy var infoTextView: InfoTextView = {
-        let infoTextView = InfoTextView(
-            viewModel: InfoTextViewModel(infoTextString: viewModel.infoTextString)
-        )
-        infoTextView.translatesAutoresizingMaskIntoConstraints = false
-        return infoTextView
+    private let backgroundLoadingViewContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private let infoContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private let collectionView: UICollectionView = {
@@ -33,7 +40,7 @@ final class RootViewController: UIViewController {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .systemBackground
         collectionView.register(NoteCell.self, forCellWithReuseIdentifier: NoteCell.reuseIdentifier)
         return collectionView
     }()
@@ -45,7 +52,6 @@ final class RootViewController: UIViewController {
     init(viewModel: RootViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-
         setUpViews()
         setUpNavigationItem(
             title: viewModel.getNavigationTitle(),
@@ -65,7 +71,6 @@ final class RootViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         collectionView.collectionViewLayout.invalidateLayout()
-
     }
 
     private func setUpNavigationItem(
@@ -73,6 +78,7 @@ final class RootViewController: UIViewController {
         addNoteButtonTitle: String?
     ) {
         navigationItem.title = title
+        navigationItem.largeTitleDisplayMode = .automatic
 
         if let addNoteButtonTitle = addNoteButtonTitle {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -92,21 +98,24 @@ final class RootViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         view.addSubview(collectionView)
-        view.addSubview(infoTextView)
+        view.addSubview(infoContainerView)
+        view.addSubview(backgroundLoadingViewContainer)
     }
 
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            infoTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            infoTextView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            infoTextView.widthAnchor.constraint(equalToConstant: Constants.InfoText.width),
-            infoTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.InfoText.minHeight)
+            infoContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            backgroundLoadingViewContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backgroundLoadingViewContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.BackgroundLoadingView.paddingBottom)
         ])
     }
 
@@ -121,15 +130,28 @@ final class RootViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] items in
                 self?.items = items
-                self?.collectionView.reloadData()
+                self?.collectionView.performBatchUpdates({
+                    self?.collectionView.reloadSections(IndexSet(integer: .zero))
+                })
             }
             .store(in: &cancellables)
 
         viewModel
-            .isInfoTextViewHidden
+            .info
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isInfoTextViewHidden in
-                self?.infoTextView.isHidden = isInfoTextViewHidden
+            .sink { [weak self] info in
+                self?.updateInfo(info: info)
+            }
+            .store(in: &cancellables)
+
+        viewModel
+            .remoteFilesCountText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] remoteFilesText in
+                self?.backgroundLoadingViewContainer.subviews.forEach { $0.removeFromSuperview() }
+                if let remoteFilesText = remoteFilesText {
+                    self?.setUpBackgroundLoading(text: remoteFilesText)
+                }
             }
             .store(in: &cancellables)
     }
@@ -140,6 +162,55 @@ final class RootViewController: UIViewController {
 
     @objc private func openPreferencesButtonDidTap(_ sender: UIBarButtonItem) {
         viewModel.openPreferencesButtonDidTap()
+    }
+
+    private func updateInfo(info: RootViewModel.Info?) {
+        infoContainerView.subviews.forEach { $0.removeFromSuperview() }
+        collectionView.isHidden = true
+        switch info {
+        case let .largeText(text):
+            setUpLargeText(text: text)
+        case let .loading(title):
+            setUpLoading(title: title)
+        case .none:
+            collectionView.isHidden = false
+        }
+    }
+
+    private func setUpLargeText(text: String) {
+        let infoTextView = InfoTextView(text: text)
+        infoTextView.translatesAutoresizingMaskIntoConstraints = false
+        infoContainerView.addSubview(infoTextView)
+        NSLayoutConstraint.activate([
+            infoTextView.topAnchor.constraint(equalTo: infoContainerView.topAnchor),
+            infoTextView.leadingAnchor.constraint(equalTo: infoContainerView.leadingAnchor),
+            infoTextView.trailingAnchor.constraint(equalTo: infoContainerView.trailingAnchor),
+            infoTextView.bottomAnchor.constraint(equalTo: infoContainerView.bottomAnchor)
+        ])
+    }
+
+    private func setUpLoading(title: String) {
+        let loadingView = LoadingView(title: title, tintColor: .systemGray2)
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        infoContainerView.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: infoContainerView.topAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: infoContainerView.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: infoContainerView.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: infoContainerView.bottomAnchor)
+        ])
+    }
+
+    private func setUpBackgroundLoading(text: String) {
+        let backgroundLoadingView = BackgroundLoadingView(title: text)
+        backgroundLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundLoadingViewContainer.addSubview(backgroundLoadingView)
+        NSLayoutConstraint.activate([
+            backgroundLoadingView.topAnchor.constraint(equalTo: backgroundLoadingViewContainer.topAnchor),
+            backgroundLoadingView.leadingAnchor.constraint(equalTo: backgroundLoadingViewContainer.leadingAnchor),
+            backgroundLoadingView.trailingAnchor.constraint(equalTo: backgroundLoadingViewContainer.trailingAnchor),
+            backgroundLoadingView.bottomAnchor.constraint(equalTo: backgroundLoadingViewContainer.bottomAnchor)
+        ])
     }
 }
 
@@ -156,16 +227,11 @@ extension RootViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.row]
 
-        let cell: UICollectionViewCell
-        switch item {
-        case let .note(title, image, _):
-            cell = makeNoteCell(
-                indexPath: indexPath,
-                title: title,
-                image: image
-            )
-        }
-        return cell
+        return makeNoteCell(
+            indexPath: indexPath,
+            title: item.title,
+            image: item.image
+        )
     }
 
     private func makeNoteCell(indexPath: IndexPath, title: String, image: UIImage) -> UICollectionViewCell {
@@ -177,7 +243,10 @@ extension RootViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        makeCellSize()
+    }
 
+    private func makeCellSize() -> CGSize {
         let minWidth = Constants.CollectionView.minWidth
         let widthWithSpacing = CGFloat(collectionView.frame.width - Constants.CollectionView.spacing * 2)
         let numberOfColumns = Int(widthWithSpacing / minWidth)

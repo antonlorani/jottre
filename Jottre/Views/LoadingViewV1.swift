@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class LoadingView: UIView {
+class LoadingViewV1: UIView {
     
     // MARK: - Properties
     

@@ -25,6 +25,9 @@
 		A673AEDA2825718800B40EA4 /* PreferencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A673AED92825718800B40EA4 /* PreferencesCell.swift */; };
 		A6788A5128245E7300582729 /* ExportNoteAlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6788A5028245E7300582729 /* ExportNoteAlertContent.swift */; };
 		A6788A5328245E7A00582729 /* UIAlert+exportNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6788A5228245E7A00582729 /* UIAlert+exportNote.swift */; };
+		A694B48628DF947D00047A43 /* FileSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A694B48528DF947D00047A43 /* FileSystem.swift */; };
+		A694B48828DF9C8C00047A43 /* LocalFileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A694B48728DF9C8C00047A43 /* LocalFileDataSource.swift */; };
+		A694B48A28DF9C9200047A43 /* RemoteFileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A694B48928DF9C9200047A43 /* RemoteFileDataSource.swift */; };
 		A69EB85C289DB657004408FB /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB85B289DB657004408FB /* Note.swift */; };
 		A69EB863289DB960004408FB /* AddNoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB862289DB960004408FB /* AddNoteRepository.swift */; };
 		A69EB864289DB9F7004408FB /* AddNoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69EB861289DB947004408FB /* AddNoteCoordinator.swift */; };
@@ -40,7 +43,7 @@
 		A6BB134F25B4B2D0008C5D8A /* CloudSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB134E25B4B2D0008C5D8A /* CloudSettingsCell.swift */; };
 		A6C0D70325B9DB9D00336230 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70225B9DB9D00336230 /* URL.swift */; };
 		A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70625B9F21400336230 /* PKDrawing.swift */; };
-		A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70A25B9F42400336230 /* LoadingView.swift */; };
+		A6C0D70B25B9F42400336230 /* LoadingViewV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C0D70A25B9F42400336230 /* LoadingViewV1.swift */; };
 		A6CEB5042822F06D009FAA84 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5032822F06D009FAA84 /* RootViewController.swift */; };
 		A6CEB5062822F072009FAA84 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5052822F072009FAA84 /* RootViewModel.swift */; };
 		A6CEB5082822F100009FAA84 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5072822F100009FAA84 /* RootCoordinator.swift */; };
@@ -52,7 +55,6 @@
 		A6CEB5172822F244009FAA84 /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5162822F244009FAA84 /* PreferencesViewModel.swift */; };
 		A6CEB5192822F24A009FAA84 /* PreferencesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5182822F24A009FAA84 /* PreferencesCoordinator.swift */; };
 		A6CEB5202822F6FB009FAA84 /* InfoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB51F2822F6FB009FAA84 /* InfoTextView.swift */; };
-		A6CEB5222822F701009FAA84 /* InfoTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5212822F701009FAA84 /* InfoTextViewModel.swift */; };
 		A6CEB5242822F7FF009FAA84 /* InfoTextViewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5232822F7FF009FAA84 /* InfoTextViewRepository.swift */; };
 		A6CEB5282822F811009FAA84 /* DeviceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5272822F811009FAA84 /* DeviceDataSource.swift */; };
 		A6CEB52A2822F909009FAA84 /* CloudDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEB5292822F909009FAA84 /* CloudDataSource.swift */; };
@@ -70,6 +72,8 @@
 		A6DB2A072895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A062895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift */; };
 		A6DB2A092895C1D700FF2A1E /* UsingCloudEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A082895C1D700FF2A1E /* UsingCloudEntry.swift */; };
 		A6DB2A102895C82200FF2A1E /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */; };
+		A6DD511628E08AC900FF007D /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DD511528E08AC900FF007D /* LoadingView.swift */; };
+		A6DD511928E099DC00FF007D /* BackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DD511828E099DC00FF007D /* BackgroundLoadingView.swift */; };
 		A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EB25B3260200C65157 /* AppDelegate.swift */; };
 		A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */; };
 		A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F425B3260300C65157 /* Assets.xcassets */; };
@@ -90,6 +94,7 @@
 		A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B85D25B3673C00C65157 /* UIDevice.swift */; };
 		A6E3B86525B372A800C65157 /* ExportActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86425B372A800C65157 /* ExportActions.swift */; };
 		A6E3B86825B374A200C65157 /* MenuActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B86725B374A200C65157 /* MenuActions.swift */; };
+		A6E4986E289E723E0009005B /* FileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4986D289E723E0009005B /* FileRepository.swift */; };
 		A6F60F8525CAA2CC002CAAE4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F60F8425CAA2CC002CAAE4 /* Data.swift */; };
 		A6F9A77828671CF30094ABE1 /* CustomUserInterfaceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77728671CF30094ABE1 /* CustomUserInterfaceStyle.swift */; };
 		A6F9A77928671D590094ABE1 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F9A77028671BAD0094ABE1 /* Defaults.swift */; };
@@ -117,6 +122,9 @@
 		A673AED92825718800B40EA4 /* PreferencesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCell.swift; sourceTree = "<group>"; };
 		A6788A5028245E7300582729 /* ExportNoteAlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportNoteAlertContent.swift; sourceTree = "<group>"; };
 		A6788A5228245E7A00582729 /* UIAlert+exportNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlert+exportNote.swift"; sourceTree = "<group>"; };
+		A694B48528DF947D00047A43 /* FileSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileSystem.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/FileSystem/FileSystem.swift"; sourceTree = "<group>"; };
+		A694B48728DF9C8C00047A43 /* LocalFileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalFileDataSource.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/FileSystem/LocalFileDataSource.swift"; sourceTree = "<group>"; };
+		A694B48928DF9C9200047A43 /* RemoteFileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteFileDataSource.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/FileSystem/RemoteFileDataSource.swift"; sourceTree = "<group>"; };
 		A69EB85B289DB657004408FB /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Note.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Note.swift"; sourceTree = "<group>"; };
 		A69EB861289DB947004408FB /* AddNoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteCoordinator.swift; sourceTree = "<group>"; };
 		A69EB862289DB960004408FB /* AddNoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddNoteRepository.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/AddNote/AddNoteRepository.swift"; sourceTree = "<group>"; };
@@ -134,7 +142,7 @@
 		A6BB134E25B4B2D0008C5D8A /* CloudSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSettingsCell.swift; sourceTree = "<group>"; };
 		A6C0D70225B9DB9D00336230 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		A6C0D70625B9F21400336230 /* PKDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKDrawing.swift; sourceTree = "<group>"; };
-		A6C0D70A25B9F42400336230 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		A6C0D70A25B9F42400336230 /* LoadingViewV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewV1.swift; sourceTree = "<group>"; };
 		A6CEB5032822F06D009FAA84 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		A6CEB5052822F072009FAA84 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		A6CEB5072822F100009FAA84 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -146,7 +154,6 @@
 		A6CEB5162822F244009FAA84 /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		A6CEB5182822F24A009FAA84 /* PreferencesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCoordinator.swift; sourceTree = "<group>"; };
 		A6CEB51F2822F6FB009FAA84 /* InfoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTextView.swift; sourceTree = "<group>"; };
-		A6CEB5212822F701009FAA84 /* InfoTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTextViewModel.swift; sourceTree = "<group>"; };
 		A6CEB5232822F7FF009FAA84 /* InfoTextViewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTextViewRepository.swift; sourceTree = "<group>"; };
 		A6CEB5272822F811009FAA84 /* DeviceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDataSource.swift; sourceTree = "<group>"; };
 		A6CEB5292822F909009FAA84 /* CloudDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudDataSource.swift; sourceTree = "<group>"; };
@@ -164,6 +171,8 @@
 		A6DB2A062895C18B00FF2A1E /* PreferredUserInterfaceStyleEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreferredUserInterfaceStyleEntry.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Preferences/PreferredUserInterfaceStyleEntry.swift"; sourceTree = "<group>"; };
 		A6DB2A082895C1D700FF2A1E /* UsingCloudEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsingCloudEntry.swift; path = "../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Preferences/UsingCloudEntry.swift"; sourceTree = "<group>"; };
 		A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NoteCell.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/NoteCell/NoteCell.swift"; sourceTree = "<group>"; };
+		A6DD511528E08AC900FF007D /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadingView.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/LoadingView/LoadingView.swift"; sourceTree = "<group>"; };
+		A6DD511828E099DC00FF007D /* BackgroundLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BackgroundLoadingView.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/BackgroundLoadingView/BackgroundLoadingView.swift"; sourceTree = "<group>"; };
 		A6E3B7E825B3260200C65157 /* Jottre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jottre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E3B7EB25B3260200C65157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -187,6 +196,7 @@
 		A6E3B85D25B3673C00C65157 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Jottre/Helpers/UIDevice.swift; sourceTree = SOURCE_ROOT; };
 		A6E3B86425B372A800C65157 /* ExportActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportActions.swift; sourceTree = "<group>"; };
 		A6E3B86725B374A200C65157 /* MenuActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActions.swift; sourceTree = "<group>"; };
+		A6E4986D289E723E0009005B /* FileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileRepository.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Repository/FileRepository.swift"; sourceTree = "<group>"; };
 		A6F60F8425CAA2CC002CAAE4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		A6F9A77028671BAD0094ABE1 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		A6F9A77728671CF30094ABE1 /* CustomUserInterfaceStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUserInterfaceStyle.swift; sourceTree = "<group>"; };
@@ -248,6 +258,16 @@
 				A6788A4E28245E5600582729 /* ExportNote */,
 			);
 			path = Alerts;
+			sourceTree = "<group>";
+		};
+		A694B48428DF946F00047A43 /* FileSystem */ = {
+			isa = PBXGroup;
+			children = (
+				A694B48528DF947D00047A43 /* FileSystem.swift */,
+				A694B48728DF9C8C00047A43 /* LocalFileDataSource.swift */,
+				A694B48928DF9C9200047A43 /* RemoteFileDataSource.swift */,
+			);
+			path = FileSystem;
 			sourceTree = "<group>";
 		};
 		A69EB858289DA52D004408FB /* Alerts */ = {
@@ -323,6 +343,8 @@
 		A6CEB5022822F062009FAA84 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				A6DD511728E099D100FF007D /* BackgroundLoadingView */,
+				A6DD511428E08ABC00FF007D /* LoadingView */,
 				A69EB858289DA52D004408FB /* Alerts */,
 				A6DB2A0A2895C7D000FF2A1E /* NoteCell */,
 				A6CEB51E2822F6F2009FAA84 /* InfoTextView */,
@@ -376,7 +398,6 @@
 			isa = PBXGroup;
 			children = (
 				A6CEB51F2822F6FB009FAA84 /* InfoTextView.swift */,
-				A6CEB5212822F701009FAA84 /* InfoTextViewModel.swift */,
 				A6CEB5232822F7FF009FAA84 /* InfoTextViewRepository.swift */,
 			);
 			path = InfoTextView;
@@ -386,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				A6CEB5262822F80B009FAA84 /* DataSource */,
+				A6E4986D289E723E0009005B /* FileRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -438,6 +460,22 @@
 			path = NoteCell;
 			sourceTree = "<group>";
 		};
+		A6DD511428E08ABC00FF007D /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				A6DD511528E08AC900FF007D /* LoadingView.swift */,
+			);
+			path = LoadingView;
+			sourceTree = "<group>";
+		};
+		A6DD511728E099D100FF007D /* BackgroundLoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				A6DD511828E099DC00FF007D /* BackgroundLoadingView.swift */,
+			);
+			path = BackgroundLoadingView;
+			sourceTree = "<group>";
+		};
 		A6E3B7DF25B3260200C65157 = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +495,7 @@
 		A6E3B7EA25B3260200C65157 /* Jottre */ = {
 			isa = PBXGroup;
 			children = (
+				A694B48428DF946F00047A43 /* FileSystem */,
 				A6F9A77A2867253D0094ABE1 /* URL */,
 				A6CEB5252822F804009FAA84 /* Repository */,
 				A6CEB5092822F129009FAA84 /* Core */,
@@ -494,7 +533,7 @@
 				A61BBA0125D0634400E63CF6 /* BarButtonItems */,
 				A6BB131525B472D9008C5D8A /* SettingsCell */,
 				A6E3B83925B333EC00C65157 /* NodeCell.swift */,
-				A6C0D70A25B9F42400336230 /* LoadingView.swift */,
+				A6C0D70A25B9F42400336230 /* LoadingViewV1.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -648,6 +687,7 @@
 				A6330A7F25D05F6700068DE5 /* AddButton.swift in Sources */,
 				A6E3B85225B34ACB00C65157 /* ThumbnailGenerator.swift in Sources */,
 				A6BB134825B4A469008C5D8A /* SettingsButton.swift in Sources */,
+				A694B48A28DF9C9200047A43 /* RemoteFileDataSource.swift in Sources */,
 				A6E3B82C25B32AEB00C65157 /* NavigationViewController.swift in Sources */,
 				A6BB130725B45ECB008C5D8A /* SettingsViewController.swift in Sources */,
 				A6F9A77C286725430094ABE1 /* URLConvertible.swift in Sources */,
@@ -659,6 +699,7 @@
 				A6CEB5152822F23F009FAA84 /* PreferencesViewController.swift in Sources */,
 				A6F9A780286729190094ABE1 /* EnvironmentDataSource.swift in Sources */,
 				A6350E5425C9CEFB0059E96E /* NodeExtensions.swift in Sources */,
+				A6DD511928E099DC00FF007D /* BackgroundLoadingView.swift in Sources */,
 				A6C0D70725B9F21400336230 /* PKDrawing.swift in Sources */,
 				A6659CD428675E4100D6FE75 /* UICollectionViewCell+ReusableCell.swift in Sources */,
 				A6CEB53A28230CED009FAA84 /* RootNavigationController.swift in Sources */,
@@ -666,6 +707,7 @@
 				A6E3B84B25B347C100C65157 /* DrawViewController.swift in Sources */,
 				A6E3B85E25B3673C00C65157 /* UIDevice.swift in Sources */,
 				A6C0D70325B9DB9D00336230 /* URL.swift in Sources */,
+				A694B48628DF947D00047A43 /* FileSystem.swift in Sources */,
 				A6CEB50B2822F12E009FAA84 /* Coordinator.swift in Sources */,
 				A6788A5328245E7A00582729 /* UIAlert+exportNote.swift in Sources */,
 				A650EE6B25C585D300830112 /* NodeDecoderExtension.swift in Sources */,
@@ -678,7 +720,6 @@
 				A6E3B83425B32BBC00C65157 /* Node.swift in Sources */,
 				A61BB9FE25D0608B00E63CF6 /* CustomButtonBarItem.swift in Sources */,
 				A6CEB5112822F22F009FAA84 /* NoteViewModel.swift in Sources */,
-				A6CEB5222822F701009FAA84 /* InfoTextViewModel.swift in Sources */,
 				A61A616425EEB34E0030684C /* UndoButton.swift in Sources */,
 				A6CEB50F2822F229009FAA84 /* NoteViewController.swift in Sources */,
 				A6E3B82F25B32B0700C65157 /* InitialViewController.swift in Sources */,
@@ -721,10 +762,13 @@
 				A6CEB52C2822FD7E009FAA84 /* LocalizableStringsDataSource.swift in Sources */,
 				A6CFA384286611BC00E5618E /* SwitchViewProvider.swift in Sources */,
 				A6CEB5132822F234009FAA84 /* NoteCoordinator.swift in Sources */,
-				A6C0D70B25B9F42400336230 /* LoadingView.swift in Sources */,
+				A6C0D70B25B9F42400336230 /* LoadingViewV1.swift in Sources */,
 				A6E3B82125B32AB400C65157 /* Logger.swift in Sources */,
 				A6CEB53728230C25009FAA84 /* PreferencesNavigationController.swift in Sources */,
 				A6CFA3882866147800E5618E /* TextViewProvider.swift in Sources */,
+				A694B48828DF9C8C00047A43 /* LocalFileDataSource.swift in Sources */,
+				A6DD511628E08AC900FF007D /* LoadingView.swift in Sources */,
+				A6E4986E289E723E0009005B /* FileRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

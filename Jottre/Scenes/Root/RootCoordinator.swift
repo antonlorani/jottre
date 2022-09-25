@@ -7,6 +7,8 @@ final class RootCoordinator: Coordinator {
 
     private var retainedPreferencesCoordinator: PreferencesCoordinator?
     private var retainedNoteCoordinator: NoteCoordinator?
+    private var retainedAddNoteCoordinator: AddNoteCoordinator?
+
 
     private let navigationController: UINavigationController
     private let defaults: DefaultsProtocol
@@ -45,6 +47,18 @@ final class RootCoordinator: Coordinator {
                             deviceDataSource: deviceDataSource
                         ),
                         localizableStringsDataSource: localizableStringsDataSource
+                    ),
+                    fileRepository: FileRepository(
+                        defaults: Defaults.shared,
+                        localFileDataSource: .shared,
+                        fileSystem: FileSystem(
+                            defaults: Defaults.shared,
+                            localFileDataSource: .shared,
+                            remoteFileDataSource: RemoteFileDataSource(
+                                fileManager: .default,
+                                localFileDataSource:.shared
+                            )
+                        )
                     )
                 ),
                 localizableStringsDataSource: localizableStringsDataSource
@@ -53,8 +67,6 @@ final class RootCoordinator: Coordinator {
         navigationController.pushViewController(rootViewController, animated: false)
     }
 
-    private var storedAddNoteCoordinator: AddNoteCoordinator?
-
     func showAddNoteAlert() {
         let addNoteCoordinator = AddNoteCoordinator(
             navigationController: navigationController,
@@ -62,7 +74,7 @@ final class RootCoordinator: Coordinator {
                 localizableStringsDataSource: localizableStringsDataSource
             )
         )
-        storedAddNoteCoordinator = addNoteCoordinator
+        retainedAddNoteCoordinator = addNoteCoordinator
 
         var cancellable: AnyCancellable?
         cancellable = addNoteCoordinator
@@ -74,7 +86,7 @@ final class RootCoordinator: Coordinator {
 
                 cancellable?.cancel()
                 cancellable = nil
-                self?.storedAddNoteCoordinator = nil
+                self?.retainedAddNoteCoordinator = nil
             }
     }
 

@@ -33,8 +33,8 @@ class DrawViewController: UIViewController {
     
     // MARK: - Subviews
     
-    var loadingView: LoadingView = {
-        return LoadingView()
+    var loadingView: LoadingViewV1 = {
+        return LoadingViewV1()
     }()
     
     var canvasView: PKCanvasView = {

@@ -4,14 +4,10 @@ import Foundation
 struct Note: Codable {
     let drawing: PKDrawing
     let width: CGFloat
-    let version: Int
-    let lastModified: Double
 
-    init(drawing: PKDrawing, width: CGFloat = 1200, version: Int = 1, lastModified: Double = Date().timeIntervalSince1970) {
+    init(drawing: PKDrawing, width: CGFloat = 1200) {
         self.drawing = drawing
         self.width = width
-        self.version = version
-        self.lastModified = lastModified
     }
 }
 

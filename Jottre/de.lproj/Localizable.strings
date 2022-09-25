@@ -19,6 +19,8 @@
 "Scene.Root.Info.EnableCloud.other" = "Aktiviere iCloud, damit Dokumente die mit 'Jottre for iPad' erstellt wurden hier aufgelistet werden können.";
 
 "Scene.Root.BarButton.AddNote.title" = "Hinzufügen";
+"Scene.Root.Loading.title" = "Lade Daten";
+"Scene.Root.BackgroundLoading.title" = "Lade %d Dateien";
 
 // MARK: - Preferences Scene
 

@@ -7,7 +7,7 @@ final class NoteCell: UICollectionViewCell {
 
         struct Title {
             static let font = UIFont.systemFont(ofSize: 19, weight: .bold)
-            static let contentInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+            static let contentInset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
         }
 
         struct TitleContainer {
@@ -19,7 +19,7 @@ final class NoteCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Constants.Title.font
-        label.numberOfLines = 2
+        label.numberOfLines = .zero
         return label
     }()
 
@@ -27,6 +27,8 @@ final class NoteCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        imageView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         return imageView
     }()
 
@@ -85,9 +87,9 @@ final class NoteCell: UICollectionViewCell {
         ])
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: titleContainer.topAnchor, constant: Constants.Title.contentInset.top),
-            titleLabel.leadingAnchor.constraint(equalTo: titleContainer.leadingAnchor, constant: Constants.Title.contentInset.top),
-            titleLabel.trailingAnchor.constraint(equalTo: titleContainer.trailingAnchor, constant: -Constants.Title.contentInset.top),
-            titleLabel.bottomAnchor.constraint(equalTo: titleContainer.bottomAnchor, constant: -Constants.Title.contentInset.top)
+            titleLabel.leadingAnchor.constraint(equalTo: titleContainer.leadingAnchor, constant: Constants.Title.contentInset.left),
+            titleLabel.trailingAnchor.constraint(equalTo: titleContainer.trailingAnchor, constant: -Constants.Title.contentInset.right),
+            titleLabel.bottomAnchor.constraint(equalTo: titleContainer.bottomAnchor, constant: -Constants.Title.contentInset.bottom)
         ])
     }
 }
