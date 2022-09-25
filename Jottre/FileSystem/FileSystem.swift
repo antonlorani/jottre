@@ -1,30 +1,6 @@
 import Foundation
 import Combine
 
-/*
- What do we want to achive?
- - Synchronizing files-updates between the local- and remote-filesystem and the apps-frontend
-
- How will it be implemented?
- - Given directory
- - Timer to emit event every 0.5? seconds
- - List files inside this directory (Only files that contain a .jot extension)
- - Check if file is a remote file
-    -> Yes: Use `remote-file-publisher`
-    -> No: Use `local-file-publisher`
-
- ## `local-file-publisher` stack
- - PassthroughSubject that takes a single file-url as input
- - 'removeDuplicates' before added to array
- - Reads contents of file to produce image -> Removes unused data afterwards
- - Sends FileBusinessModel object to array (can be accessed from the outside) -> With debounce to limit number of publishing updates
-
- ## `remote-file-publisher` stack
- - PassthroughSubject that takes a single file-url as input
- - Subscription inside remote-file-stack start download of respective file
- - Array in which hashes of file-urls reside in that are currently downloaded -> Once download ended, remove corresponding element from array -> (Accessible from the outside)
- */
-
 struct File: Equatable {
     let name: String
     let url: URL
