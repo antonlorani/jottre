@@ -38,7 +38,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             navigationController: navigationController,
             defaults: Defaults.shared,
             deviceDataSource: DeviceDataSource(device: UIDevice.current),
-            cloudDataSource: CloudDataSource(fileManager: FileManager.default),
+            cloudDataSource: CloudDataSource(
+                fileManager: FileManager.default
+            ),
+            localFileDataSource: LocalFileDataSource.shared,
+            remoteFileDataSource: RemoteFileDataSource(
+                fileManager: .default,
+                localFileDataSource: LocalFileDataSource.shared
+            ),
             localizableStringsDataSource: LocalizableStringsDataSource.shared,
             openURLProvider: { url in
                 UIApplication.shared.open(url)

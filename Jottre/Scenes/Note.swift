@@ -14,14 +14,24 @@ struct Note: Codable {
 struct NoteBusinessModel {
 
     let name: String
+    
     private let note: Note
+    private let file: File
 
-    init(name: String, note: Note) {
-        self.name = name
+    init(
+        file: File,
+        note: Note
+    ) {
+        name = file.name
+        self.file = file
         self.note = note
     }
 
     func asNote() -> Note {
         note
+    }
+
+    func asFile() -> File {
+        file
     }
 }

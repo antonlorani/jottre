@@ -1,14 +1,26 @@
+import Foundation
+
 protocol AddNoteRepositoryProtocol {
 
     func getAddNoteAlert() -> AddNoteAlertContent
+    func createNote(name: String) -> URL?
 }
 
 final class AddNoteRepository: AddNoteRepositoryProtocol {
 
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
+    private let noteDataSource: NoteFileDataSource
 
-    init(localizableStringsDataSource: LocalizableStringsDataSourceProtocol) {
+    init(
+        localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
+        noteDataSource: NoteFileDataSource
+    ) {
         self.localizableStringsDataSource = localizableStringsDataSource
+        self.noteDataSource = noteDataSource
+    }
+
+    func createNote(name: String) -> URL? {
+        noteDataSource.createNote(name: name)
     }
 
     func getAddNoteAlert() -> AddNoteAlertContent {

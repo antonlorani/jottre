@@ -44,6 +44,7 @@ final class FileSystem {
                 .filter { $0.contains(".jot") }
                 .map { fileName in
                     let url = directory.appendingPathComponent(fileName)
+                    let fileName = self.localFileDataSource.getName(url: url)
                     let modificationDate = self.localFileDataSource.getModifiedDate(url: url)
 
                     return File(

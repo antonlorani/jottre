@@ -130,9 +130,9 @@ final class RootViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] items in
                 self?.items = items
-                self?.collectionView.performBatchUpdates({
+                self?.collectionView.performBatchUpdates {
                     self?.collectionView.reloadSections(IndexSet(integer: .zero))
-                })
+                }
             }
             .store(in: &cancellables)
 
@@ -222,6 +222,10 @@ extension RootViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         items.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        items[indexPath.row].onSelect()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

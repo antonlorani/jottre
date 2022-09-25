@@ -18,8 +18,16 @@ struct LocalFileDataSource {
         return attributes[FileAttributeKey.modificationDate] as? Date
     }
 
+    func getName(url: URL) -> String {
+        url.deletingPathExtension().lastPathComponent
+    }
+
     func getFileData(url: URL) -> Data? {
         try? Data(contentsOf: url)
+    }
+
+    func setFileData(url: URL, data: Data) -> Bool {
+        (try? data.write(to: url)) != nil
     }
 
     func getFiles(path: String) -> [String] {

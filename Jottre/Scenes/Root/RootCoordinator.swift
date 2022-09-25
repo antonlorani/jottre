@@ -14,6 +14,8 @@ final class RootCoordinator: Coordinator {
     private let defaults: DefaultsProtocol
     private let deviceDataSource: DeviceDataSourceProtocol
     private let cloudDataSource: CloudDataSourceProtocol
+    private let localFileDataSource: LocalFileDataSource
+    private let remoteFileDataSource: RemoteFileDataSource
     private let localizableStringsDataSource: LocalizableStringsDataSourceProtocol
     private let openURLProvider: (URL) -> Void
 
@@ -22,6 +24,8 @@ final class RootCoordinator: Coordinator {
         defaults: DefaultsProtocol,
         deviceDataSource: DeviceDataSourceProtocol,
         cloudDataSource: CloudDataSourceProtocol,
+        localFileDataSource: LocalFileDataSource,
+        remoteFileDataSource: RemoteFileDataSource,
         localizableStringsDataSource: LocalizableStringsDataSourceProtocol,
         openURLProvider: @escaping (URL) -> Void
     ) {
@@ -29,6 +33,8 @@ final class RootCoordinator: Coordinator {
         self.defaults = defaults
         self.deviceDataSource = deviceDataSource
         self.cloudDataSource = cloudDataSource
+        self.localFileDataSource = localFileDataSource
+        self.remoteFileDataSource = remoteFileDataSource
         self.localizableStringsDataSource = localizableStringsDataSource
         self.openURLProvider = openURLProvider
     }
@@ -50,13 +56,13 @@ final class RootCoordinator: Coordinator {
                     ),
                     fileRepository: FileRepository(
                         defaults: Defaults.shared,
-                        localFileDataSource: .shared,
+                        localFileDataSource: localFileDataSource,
                         fileSystem: FileSystem(
                             defaults: Defaults.shared,
-                            localFileDataSource: .shared,
+                            localFileDataSource: localFileDataSource,
                             remoteFileDataSource: RemoteFileDataSource(
                                 fileManager: .default,
-                                localFileDataSource:.shared
+                                localFileDataSource: localFileDataSource
                             )
                         )
                     )
@@ -71,7 +77,12 @@ final class RootCoordinator: Coordinator {
         let addNoteCoordinator = AddNoteCoordinator(
             navigationController: navigationController,
             repository: AddNoteRepository(
-                localizableStringsDataSource: localizableStringsDataSource
+                localizableStringsDataSource: localizableStringsDataSource,
+                noteDataSource: NoteFileDataSource(
+                    defaults: defaults,
+                    localFileDataSource: localFileDataSource,
+                    remoteFileDataSource: remoteFileDataSource
+                )
             )
         )
         retainedAddNoteCoordinator = addNoteCoordinator
@@ -79,11 +90,10 @@ final class RootCoordinator: Coordinator {
         var cancellable: AnyCancellable?
         cancellable = addNoteCoordinator
             .startFlow()
-            .sink { [weak self] noteBusinessModel in
-                if let noteBusinessModel = noteBusinessModel {
-                    self?.openNote(noteBusinessModel: noteBusinessModel)
+            .sink { [weak self] url in
+                if let url = url {
+                    self?.openNote(url: url)
                 }
-
                 cancellable?.cancel()
                 cancellable = nil
                 self?.retainedAddNoteCoordinator = nil
@@ -106,10 +116,13 @@ final class RootCoordinator: Coordinator {
         }
     }
 
-    func openNote(noteBusinessModel: NoteBusinessModel) {
+    func openNote(url: URL) {
         let noteCoordinator = NoteCoordinator(
+            defaults: defaults,
+            localFileDataSource: localFileDataSource,
+            remoteFileDataSource: remoteFileDataSource,
             navigationController: navigationController,
-            noteBusinessModel: noteBusinessModel
+            url: url
         )
         retainedNoteCoordinator = noteCoordinator
         noteCoordinator.start()

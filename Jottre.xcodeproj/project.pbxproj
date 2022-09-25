@@ -74,6 +74,7 @@
 		A6DB2A102895C82200FF2A1E /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */; };
 		A6DD511628E08AC900FF007D /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DD511528E08AC900FF007D /* LoadingView.swift */; };
 		A6DD511928E099DC00FF007D /* BackgroundLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DD511828E099DC00FF007D /* BackgroundLoadingView.swift */; };
+		A6DD511B28E0BA8D00FF007D /* NoteFileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DD511A28E0BA8D00FF007D /* NoteFileDataSource.swift */; };
 		A6E3B7EC25B3260200C65157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7EB25B3260200C65157 /* AppDelegate.swift */; };
 		A6E3B7EE25B3260200C65157 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */; };
 		A6E3B7F525B3260300C65157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6E3B7F425B3260300C65157 /* Assets.xcassets */; };
@@ -173,6 +174,7 @@
 		A6DB2A0F2895C82200FF2A1E /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NoteCell.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/NoteCell/NoteCell.swift"; sourceTree = "<group>"; };
 		A6DD511528E08AC900FF007D /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadingView.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/LoadingView/LoadingView.swift"; sourceTree = "<group>"; };
 		A6DD511828E099DC00FF007D /* BackgroundLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BackgroundLoadingView.swift; path = "../../../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/Scenes/Root/BackgroundLoadingView/BackgroundLoadingView.swift"; sourceTree = "<group>"; };
+		A6DD511A28E0BA8D00FF007D /* NoteFileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NoteFileDataSource.swift; path = "../../../../../../../../MacOS Monterey/Users/antonlorani/Documents/projects/Jottre/Jottre/FileSystem/NoteFileDataSource.swift"; sourceTree = "<group>"; };
 		A6E3B7E825B3260200C65157 /* Jottre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jottre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E3B7EB25B3260200C65157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E3B7ED25B3260200C65157 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				A694B48528DF947D00047A43 /* FileSystem.swift */,
 				A694B48728DF9C8C00047A43 /* LocalFileDataSource.swift */,
 				A694B48928DF9C9200047A43 /* RemoteFileDataSource.swift */,
+				A6DD511A28E0BA8D00FF007D /* NoteFileDataSource.swift */,
 			);
 			path = FileSystem;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				A6BB130C25B46057008C5D8A /* Settings.swift in Sources */,
 				A6BB134F25B4B2D0008C5D8A /* CloudSettingsCell.swift in Sources */,
 				A6659CDA28675E6100D6FE75 /* UITableView+register.swift in Sources */,
+				A6DD511B28E0BA8D00FF007D /* NoteFileDataSource.swift in Sources */,
 				A6CEB534282308E9009FAA84 /* UIAlert+addNote.swift in Sources */,
 				A6CFA386286613C800E5618E /* ImageViewProvider.swift in Sources */,
 				A6BB134C25B4AEFC008C5D8A /* SettingsExtensions.swift in Sources */,

@@ -71,10 +71,13 @@ struct RootRepository: RootRepositoryProtocol {
                 guard count != .zero else {
                     return nil
                 }
-                return String(
-                    format: localizableStringsDataSource.getText(identifier: "Scene.Root.BackgroundLoading.title"),
-                    count
-                )
+                let format: String
+                if count == 1 {
+                    format = localizableStringsDataSource.getText(identifier: "Scene.Root.BackgroundLoading.Title.singular")
+                } else {
+                    format = localizableStringsDataSource.getText(identifier: "Scene.Root.BackgroundLoading.Title.plural")
+                }
+                return String(format: format, count)
             }
             .eraseToAnyPublisher()
     }

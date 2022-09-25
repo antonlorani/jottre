@@ -63,13 +63,15 @@ final class RootViewModel {
                     guard let modificationDateLhs = lhs.modificationDate, let modificationDateRhs = rhs.modificationDate else {
                         return false
                     }
-                    return modificationDateLhs.compare(modificationDateRhs) == .orderedAscending
+                    return modificationDateLhs.compare(modificationDateRhs) == .orderedDescending
                 })
                 .map { fileBusinessModel in
                     Item(
                         title: fileBusinessModel.name,
                         image: fileBusinessModel.thumbnailImage,
-                        onSelect: {}
+                        onSelect: { [weak self] in
+                            self?.coordinator?.openNote(url: fileBusinessModel.url)
+                        }
                     )
                 }
         }

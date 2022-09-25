@@ -4,7 +4,7 @@ final class BackgroundLoadingView: UIView {
 
     private struct Constants {
         static let cornerRadius = CGFloat(15)
-        static let backgroundColor = UIColor.systemBlue
+        static let backgroundColor = UIColor.darkGray.withAlphaComponent(0.9)
         static let contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 10)
     }
 

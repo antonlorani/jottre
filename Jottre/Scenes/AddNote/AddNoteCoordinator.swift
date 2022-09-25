@@ -2,7 +2,7 @@ import UIKit
 import Combine
 import PencilKit
 
-final class AddNoteCoordinator {
+struct AddNoteCoordinator {
 
     private let navigationController: UINavigationController
     private let repository: AddNoteRepositoryProtocol
@@ -15,24 +15,20 @@ final class AddNoteCoordinator {
         self.repository = repository
     }
 
-    func startFlow() -> AnyPublisher<NoteBusinessModel?, Never> {
+    func startFlow() -> AnyPublisher<URL?, Never> {
         UIAlertController
             .makeAddNoteAlert(content: repository.getAddNoteAlert())
             .first()
             .receive(on: DispatchQueue.main)
-            .flatMap { [weak self] alertController, noteNamePublisher in
-                self?.navigationController.present(alertController, animated: true, completion: nil)
+            .flatMap { alertController, noteNamePublisher -> AnyPublisher<String?, Never> in
+                navigationController.present(alertController, animated: true)
                 return noteNamePublisher
             }
-            // TODO: Evaluate noteName availability
-            .map { noteName -> NoteBusinessModel? in
-                guard let noteName = noteName else {
+            .compactMap { name in
+                guard let name = name else {
                     return nil
                 }
-                return NoteBusinessModel(
-                    name: noteName,
-                    note: Note(drawing: PKDrawing())
-                )
+                return repository.createNote(name: name)
             }
             .eraseToAnyPublisher()
     }

@@ -18,7 +18,8 @@
 "Scene.Root.Info.EnableCloud.other" = "Enable iCloud to view files created with 'Jottre for iPad'";
 "Scene.Root.BarButton.AddNote.title" = "Add note";
 "Scene.Root.Loading.title" = "Please wait";
-"Scene.Root.BackgroundLoading.title" = "Downloading %d files";
+"Scene.Root.BackgroundLoading.Title.singular" = "Downloading %d file";
+"Scene.Root.BackgroundLoading.Title.plural" = "Downloading %d files";
 
 // MARK: - Preferences Scene
 

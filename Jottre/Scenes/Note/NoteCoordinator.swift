@@ -3,22 +3,36 @@ import UIKit
 final class NoteCoordinator: Coordinator {
     var release: CoordinatorReleaseClosure?
 
+    private let defaults: DefaultsProtocol
+    private let localFileDataSource: LocalFileDataSource
+    private let remoteFileDataSource: RemoteFileDataSource
     private let navigationController: UINavigationController
-    private let noteBusinessModel: NoteBusinessModel
+    private let url: URL
 
     init(
+        defaults: DefaultsProtocol,
+        localFileDataSource: LocalFileDataSource,
+        remoteFileDataSource: RemoteFileDataSource,
         navigationController: UINavigationController,
-        noteBusinessModel: NoteBusinessModel
+        url: URL
     ) {
+        self.defaults = defaults
+        self.localFileDataSource = localFileDataSource
+        self.remoteFileDataSource = remoteFileDataSource
         self.navigationController = navigationController
-        self.noteBusinessModel = noteBusinessModel
+        self.url = url
     }
 
     func start() {
         let noteViewController = NoteViewController(
             viewModel: NoteViewModel(
+                noteDataSource: NoteFileDataSource(
+                    defaults: defaults,
+                    localFileDataSource: localFileDataSource,
+                    remoteFileDataSource: remoteFileDataSource
+                ),
                 coordinator: self,
-                noteBusinessModel: noteBusinessModel
+                url: url
             )
         )
         navigationController.pushViewController(noteViewController, animated: true)

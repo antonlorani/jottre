@@ -20,7 +20,8 @@
 
 "Scene.Root.BarButton.AddNote.title" = "Hinzufügen";
 "Scene.Root.Loading.title" = "Lade Daten";
-"Scene.Root.BackgroundLoading.title" = "Lade %d Dateien";
+"Scene.Root.BackgroundLoading.Title.singular" = "Lade %d Datei";
+"Scene.Root.BackgroundLoading.Title.plural" = "Lade %d Dateien";
 
 // MARK: - Preferences Scene
 

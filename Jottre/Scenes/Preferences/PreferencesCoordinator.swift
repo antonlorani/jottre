@@ -46,7 +46,7 @@ final class PreferencesCoordinator: Coordinator {
             rootViewController: preferencesViewController,
             defaults: defaults
         )
-        preferencesNavigationController.modalPresentationStyle = .automatic
+        preferencesNavigationController.modalPresentationStyle = .formSheet
         navigationController.present(preferencesNavigationController, animated: true)
     }
 
