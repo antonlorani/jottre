@@ -5,12 +5,12 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000243">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000275">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: xcodegen generate --spec ../project.yml" time="0.020236">
+      <testcase classname="fastlane.lanes" name="1: xcodegen generate --spec ../project.yml" time="0.028078">
         
       </testcase>
     
