@@ -21,4 +21,4 @@ Simple and minimalistic handwriting app across Apple platforms.
   <img src="images/mode.jpg" style="width: calc(100% - 20px);" height=auto>
 </p>
 
-© Anton Lorani, 2021
+© Anton Lorani, 2021-2026
