@@ -1,0 +1,24 @@
+name: Jottre
+options:
+  bundleIdPrefix: com.antonlorani
+  deploymentTarget:
+    iOS: "15.0"
+
+targets:
+  Jottre:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - Sources
+    resources:
+      - Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
+        PRODUCT_NAME: Jottre
+        SWIFT_VERSION: "5.10"
+        SUPPORTS_MACCATALYST: YES
+        DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
+        BUNDLE_IDENTIFIER_MACCATALYST: com.antonlorani.jottre
+    packages: []

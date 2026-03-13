@@ -1,0 +1,8 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Generate the Xcode project using XcodeGen"
+  lane :generate_project do
+    sh("xcodegen generate --spec ../project.yml")
+  end
+end
