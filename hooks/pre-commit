@@ -1,0 +1,16 @@
+#!/bin/bash
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.rb$')
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+bundle exec rubocop --autocorrect-all $STAGED_FILES
+
+MODIFIED=$(git diff --name-only $STAGED_FILES)
+if [ -n "$MODIFIED" ]; then
+  echo -e "\033[0;31mFormatting applied. Restage affected files.\033[0m"
+  exit 1
+fi
+
+exit 0
