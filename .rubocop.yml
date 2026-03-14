@@ -1,0 +1,32 @@
+Layout/IndentationWidth:
+  Width: 4
+
+plugins:
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - 'vendor/**/*'
+
+Metrics:
+  Enabled: false
+
+Naming:
+  Enabled: false
+
+Style:
+  Enabled: false
+
+Lint:
+  Enabled: false
+
+Security:
+  Enabled: true
+
+Security/Open:
+  Enabled: false
+
+Performance:
+  Enabled: false
