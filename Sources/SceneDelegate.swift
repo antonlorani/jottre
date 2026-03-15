@@ -29,7 +29,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigation = Navigation(
             openURLProvider: { [weak self] url in
                 Task { @MainActor in
-                    self?.rootCoordinator?.handle(url: url)
+                    guard let viewControllers = self?.rootCoordinator?.handle(url: url) else {
+                        return
+                    }
+                    navigationController.setViewControllers(viewControllers, animated: true)
                 }
             },
             presentViewControllerProvider: { [weak navigationController] viewController, animated in

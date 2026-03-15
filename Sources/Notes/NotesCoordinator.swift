@@ -41,7 +41,7 @@ final class NotesCoordinator: NavigationCoordinator {
         }
 
         if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
-            return viewControllers + childCoordinator.handle(url: url)
+            viewControllers.append(contentsOf: childCoordinator.handle(url: url))
         }
 
         return viewControllers
