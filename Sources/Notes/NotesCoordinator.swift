@@ -6,7 +6,7 @@ final class NotesCoordinator: NavigationCoordinator {
     private lazy var childCoordinators: [NavigationCoordinator] = [
         settingsCoordinatorFactory.make(navigation: navigation),
         CreateNoteCoordinator(navigation: navigation),
-        EditNoteCoordinator(navigation: navigation)
+        editNoteCoordinatorFactory.make(navigation: navigation)
     ]
 
     private var retainedRootViewController: UIViewController?
@@ -14,15 +14,18 @@ final class NotesCoordinator: NavigationCoordinator {
     private let navigation: Navigation
     private let notesViewControllerFactory: NotesViewControllerFactory
     private let settingsCoordinatorFactory: SettingsCoordinatorFactory
+    private let editNoteCoordinatorFactory: EditNoteCoordinatorFactory
 
     init(
         navigation: Navigation,
         notesViewControllerFactory: NotesViewControllerFactory,
-        settingsCoordinatorFactory: SettingsCoordinatorFactory
+        settingsCoordinatorFactory: SettingsCoordinatorFactory,
+        editNoteCoordinatorFactory: EditNoteCoordinatorFactory
     ) {
         self.navigation = navigation
         self.notesViewControllerFactory = notesViewControllerFactory
         self.settingsCoordinatorFactory = settingsCoordinatorFactory
+        self.editNoteCoordinatorFactory = editNoteCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {

@@ -3,9 +3,14 @@ import UIKit
 final class EditNoteCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
+    private let editNoteViewControllerFactory: EditNoteViewControllerFactory
 
-    init(navigation: Navigation) {
+    init(
+        navigation: Navigation,
+        editNoteViewControllerFactory: EditNoteViewControllerFactory
+    ) {
         self.navigation = navigation
+        self.editNoteViewControllerFactory = editNoteViewControllerFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -13,6 +18,8 @@ final class EditNoteCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
-        [EditNoteViewController(viewModel: EditNoteViewModel(coordinator: self))]
+        [
+            editNoteViewControllerFactory.make(coordinator: self)
+        ]
     }
 }

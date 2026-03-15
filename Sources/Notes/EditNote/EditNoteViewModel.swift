@@ -6,4 +6,8 @@ final class EditNoteViewModel: Sendable {
     init(coordinator: EditNoteCoordinator) {
         self.coordinator = coordinator
     }
+
+    func didTapToggleEditingButton() {
+        
+    }
 }

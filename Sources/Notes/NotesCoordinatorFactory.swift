@@ -12,7 +12,8 @@ struct IOS18NotesCoordinatorFactory: NotesCoordinatorFactory {
         NotesCoordinator(
             navigation: navigation,
             notesViewControllerFactory: IOS18NotesViewControllerFactory(),
-            settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory()
+            settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory(),
+            editNoteCoordinatorFactory: IOS18EditNoteCoordinatorFactory()
         )
     }
 }
@@ -24,7 +25,8 @@ struct IOS26NotesCoordinatorFactory: NotesCoordinatorFactory {
         NotesCoordinator(
             navigation: navigation,
             notesViewControllerFactory: IOS26NotesViewControllerFactory(),
-            settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory()
+            settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory(),
+            editNoteCoordinatorFactory: IOS26EditNoteCoordinatorFactory()
         )
     }
 }
