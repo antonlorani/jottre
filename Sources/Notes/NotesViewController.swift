@@ -136,13 +136,12 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let spacing = Constants.CollectionViewFlowLayout.spacing
-        let available = collectionView.bounds.width - Constants.CollectionViewFlowLayout.inset * 2
-        let columns = max(1, floor((available + spacing) / (Constants.CollectionViewFlowLayout.minimumCellWidth + spacing)))
+        let inset = Constants.CollectionViewFlowLayout.inset
+        let minWidth = Constants.CollectionViewFlowLayout.minimumCellWidth
+        let available = collectionView.bounds.width - inset * 2
+        let columns = max(1, floor((available + spacing) / (minWidth + spacing)))
         let width = (available - spacing * (columns - 1)) / columns
-        return CGSize(
-            width: width,
-            height: width * 1.1
-        )
+        return CGSize(width: width, height: width * 1.1)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
