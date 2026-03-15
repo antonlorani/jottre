@@ -9,7 +9,7 @@ final class CreateNoteCoordinator: NavigationCoordinator {
     }
 
     func shouldHandle(url: URL) -> Bool {
-        false
+        url.path.hasPrefix(CreateNoteURL().path)
     }
 
     func handle(url: URL) -> [UIViewController] {
