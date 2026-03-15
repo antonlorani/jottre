@@ -2,14 +2,33 @@
 final class NotesViewModel: Sendable {
 
     struct Item {
-        let name: String
+        let note: NoteBusinessModel
         let onAction: () -> Void
     }
+
+    let items: AsyncStream<[Item]>
+    private let itemsContinuation: AsyncStream<[Item]>.Continuation
 
     private weak var coordinator: NotesCoordinator?
 
     init(coordinator: NotesCoordinator) {
         self.coordinator = coordinator
+
+        (items, itemsContinuation) = AsyncStream.makeStream(
+            of: [Item].self,
+            bufferingPolicy: .bufferingOldest(1)
+        )
+        itemsContinuation.yield([
+            Item(
+                note: NoteBusinessModel(
+                    previewImage: nil,
+                    name: "Hello, world!"
+                ),
+                onAction: {
+                    print("Hello, world!")
+                }
+            )
+        ])
     }
 
     func didTapSettingsButton() {

@@ -67,8 +67,8 @@ final class NoteCell: UICollectionViewCell {
         ])
     }
 
-    func configure(item: NoteBusinessModel) {
-        previewImageView.image = item.previewImage
-        nameLabel.text = item.name
+    func configure(note: NoteBusinessModel) {
+        previewImageView.image = note.previewImage
+        nameLabel.text = note.name
     }
 }

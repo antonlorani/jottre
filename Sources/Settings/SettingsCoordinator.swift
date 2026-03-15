@@ -13,17 +13,21 @@ final class SettingsCoordinator: NavigationCoordinator {
         self.settingsViewControllerFactory = settingsViewControllerFactory
     }
 
-    func shouldHandle(deepLink: DeepLink) -> Bool {
-        deepLink.path.hasPrefix(SettingsDeepLink().path)
+    func shouldHandle(url: URL) -> Bool {
+        url.path.hasPrefix(SettingsURL().path)
     }
 
-    func handle(deepLink: DeepLink) -> [UIViewController] {
+    func handle(url: URL) -> [UIViewController] {
         let navigationController = UINavigationController(
             rootViewController: settingsViewControllerFactory.make(coordinator: self)
         )
         navigationController.navigationBar.prefersLargeTitles = true
         navigation.present(navigationController, animated: true)
         return []
+    }
+
+    func openExternalLink(url: URL) {
+        navigation.open(url: url)
     }
 
     func dismiss() {

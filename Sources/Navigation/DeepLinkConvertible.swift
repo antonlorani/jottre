@@ -1,15 +1,34 @@
-/// Allows conformances to be converted to a ``DeepLink``.
-protocol DeepLinkConvertible: Sendable {
+import Foundation
 
+/// Allows conformances to be converted to a ``URL``.
+protocol URLConvertible: Sendable {
+
+    var scheme: String? { get }
+    var host: String? { get }
     var path: String { get }
 
-    func toDeepLink() -> DeepLink
+    func toURL() -> URL
 }
 
-extension DeepLinkConvertible {
+extension URLConvertible {
 
-    func toDeepLink() -> DeepLink {
+    var scheme: String? {
+        nil
+    }
+
+    var host: String? {
+        nil
+    }
+
+    func toURL() -> URL {
         assert(path.starts(with: "/"))
-        return DeepLink(path: path)
+        var components = URLComponents()
+        components.scheme = scheme
+        components.host = host
+        components.path = path
+        guard let url = components.url else {
+            preconditionFailure()
+        }
+        return url
     }
 }

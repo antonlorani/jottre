@@ -8,11 +8,11 @@ final class EditNoteCoordinator: NavigationCoordinator {
         self.navigation = navigation
     }
 
-    func shouldHandle(deepLink: DeepLink) -> Bool {
-        deepLink.path.hasPrefix(EditNoteDeepLink().path)
+    func shouldHandle(url: URL) -> Bool {
+        url.path.hasPrefix(EditNoteURL().path)
     }
 
-    func handle(deepLink: DeepLink) -> [UIViewController] {
+    func handle(url: URL) -> [UIViewController] {
         [EditNoteViewController(viewModel: EditNoteViewModel(coordinator: self))]
     }
 }

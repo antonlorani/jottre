@@ -11,13 +11,6 @@ final class NotesViewController: UIViewController {
         }
     }
 
-    struct Item {
-        let note: NoteBusinessModel
-        let onAction: () -> Void
-    }
-
-    private var items = [Item]()
-
     private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -45,6 +38,9 @@ final class NotesViewController: UIViewController {
         return collectionView
     }()
 
+    private var itemsTask: Task<Void, Never>?
+    private var items = [NotesViewModel.Item]()
+
     private let viewModel: NotesViewModel
     private let settingsBarButtonItemFactory: BarButtonItemFactory
     private let createNoteBarButtonItemFactory: BarButtonItemFactory
@@ -57,24 +53,24 @@ final class NotesViewController: UIViewController {
         self.viewModel = viewModel
         self.settingsBarButtonItemFactory = settingsBarButtonItemFactory
         self.createNoteBarButtonItemFactory = createNoteBarButtonItemFactory
-        items = [
-            .init(
-                note: NoteBusinessModel(
-                    previewImage: nil,
-                    name: "Hello, world!"
-                ),
-                onAction: {
-                    print("Hello, world!")
-                }
-            )
-        ]
         super.init(nibName: nil, bundle: nil)
+
+        itemsTask = Task { [weak self] in
+            for await items in viewModel.items {
+                self?.items = items
+                self?.collectionView.reloadData()
+            }
+        }
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         assertionFailure("\(#function) has not been implemented")
         return nil
+    }
+
+    deinit {
+        itemsTask?.cancel()
     }
 
     override func viewDidLoad() {
@@ -128,10 +124,12 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = items[indexPath.row]
+        guard let item = items[safe: indexPath.row] else {
+            return UICollectionViewCell()
+        }
 
         return makeNoteCell(
-            item: item,
+            note: item.note,
             indexPath: indexPath
         )
     }
@@ -148,11 +146,11 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        items[indexPath.row].onAction()
+        items[safe: indexPath.row]?.onAction()
     }
 
     private func makeNoteCell(
-        item: Item,
+        note: NoteBusinessModel,
         indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -161,7 +159,7 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
         ) as? NoteCell else {
             return UICollectionViewCell()
         }
-        cell.configure(item: item.note)
+        cell.configure(note: note)
         return cell
     }
 }

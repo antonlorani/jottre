@@ -27,9 +27,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController.navigationBar.scrollEdgeAppearance = appearance
 
         let navigation = Navigation(
-            openDeepLinkProvider: { [weak self] deepLink in
+            openURLProvider: { [weak self] url in
                 Task { @MainActor in
-                    self?.rootCoordinator?.handle(deepLink: deepLink)
+                    self?.rootCoordinator?.handle(url: url)
                 }
             },
             presentViewControllerProvider: { [weak navigationController] viewController, animated in
@@ -44,8 +44,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         )
 
-        let url = connectionOptions.urlContexts.first?.url ?? URL(string: "https://www.jottre.com")!
-        let deepLink = DeepLink(url: url)
+        let url = if let url = connectionOptions.urlContexts.first?.url {
+            url
+        } else {
+            NotesURL().toURL()
+        }
 
         let notesCoordinatorFactory: NotesCoordinatorFactory = if #available(iOS 26, *) {
             IOS26NotesCoordinatorFactory()
@@ -53,9 +56,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             IOS18NotesCoordinatorFactory()
         }
 
-        let rootCoordinator = notesCoordinatorFactory.make(navigation: navigation)
+        let rootCoordinator = RootCoordinator(
+            navigation: navigation,
+            notesCoordinatorFactory: notesCoordinatorFactory
+        )
         self.rootCoordinator = rootCoordinator
-        navigationController.viewControllers = rootCoordinator.handle(deepLink: deepLink)
+        navigationController.viewControllers = rootCoordinator.handle(url: url)
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = navigationController

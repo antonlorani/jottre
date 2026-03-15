@@ -8,11 +8,11 @@ final class CreateNoteCoordinator: NavigationCoordinator {
         self.navigation = navigation
     }
 
-    func shouldHandle(deepLink: DeepLink) -> Bool {
+    func shouldHandle(url: URL) -> Bool {
         false
     }
 
-    func handle(deepLink: DeepLink) -> [UIViewController] {
+    func handle(url: URL) -> [UIViewController] {
         []
     }
 }

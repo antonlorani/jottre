@@ -25,11 +25,11 @@ final class NotesCoordinator: NavigationCoordinator {
         self.settingsCoordinatorFactory = settingsCoordinatorFactory
     }
 
-    func shouldHandle(deepLink: DeepLink) -> Bool {
+    func shouldHandle(url: URL) -> Bool {
         true
     }
 
-    func handle(deepLink: DeepLink) -> [UIViewController] {
+    func handle(url: URL) -> [UIViewController] {
         var viewControllers: [UIViewController]
 
         if let retainedRootViewController {
@@ -40,22 +40,22 @@ final class NotesCoordinator: NavigationCoordinator {
             viewControllers = [rootViewController]
         }
 
-        if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(deepLink: deepLink) }) {
-            return viewControllers + childCoordinator.handle(deepLink: deepLink)
+        if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
+            return viewControllers + childCoordinator.handle(url: url)
         }
 
         return viewControllers
     }
 
     func openSettings() {
-        navigation.open(deepLink: SettingsDeepLink())
+        navigation.open(url: SettingsURL())
     }
 
     func openCreateNote() {
-        navigation.open(deepLink: CreateNoteDeepLink())
+        navigation.open(url: CreateNoteURL())
     }
 
     func openNote(_ note: NoteBusinessModel) {
-        navigation.open(deepLink: EditNoteDeepLink())
+        navigation.open(url: EditNoteURL())
     }
 }

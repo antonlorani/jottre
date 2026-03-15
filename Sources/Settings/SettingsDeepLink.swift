@@ -1,3 +1,3 @@
-struct SettingsDeepLink: DeepLinkConvertible {
+struct SettingsURL: URLConvertible {
     let path = "/settings"
 }
