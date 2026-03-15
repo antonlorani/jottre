@@ -24,8 +24,11 @@ final class NotesViewModel: Sendable {
                     previewImage: nil,
                     name: "Hello, world!"
                 ),
-                onAction: {
-                    print("Hello, world!")
+                onAction: { [weak self] in
+                    self?.coordinator?.openNote(NoteBusinessModel(
+                        previewImage: nil,
+                        name: "Hello, world!"
+                    ))
                 }
             )
         ])
