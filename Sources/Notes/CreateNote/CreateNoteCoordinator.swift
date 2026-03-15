@@ -24,7 +24,10 @@ final class CreateNoteCoordinator: NavigationCoordinator {
             textField.returnKeyType = .done
         }
 
-        let createAction = UIAlertAction(title: "Create", style: .default) { [weak self] _ in
+        let createAction = UIAlertAction(
+            title: "Create",
+            style: .default
+        ) { [weak self] _ in
             guard
                 let self,
                 let title = alertController.textFields?.first?.text,
@@ -34,8 +37,12 @@ final class CreateNoteCoordinator: NavigationCoordinator {
             }
             navigation.open(url: EditNoteURL().toURL())
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alertController.addAction(createAction)
+
+        let cancelAction = UIAlertAction(
+            title: "Cancel",
+            style: .cancel
+        )
         alertController.addAction(cancelAction)
 
         navigation.present(alertController, animated: true)
