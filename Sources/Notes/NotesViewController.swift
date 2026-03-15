@@ -95,7 +95,7 @@ final class NotesViewController: UIViewController {
         )
         navigationItem.rightBarButtonItem = createNoteBarButtonItemFactory.make(
             primaryAction: UIAction { [weak self] _ in
-                self?.viewModel.didTapSettingsButton()
+                self?.viewModel.didTapCreateNoteButton()
             }
         )
     }

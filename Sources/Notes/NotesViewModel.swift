@@ -35,7 +35,7 @@ final class NotesViewModel: Sendable {
         coordinator?.openSettings()
     }
 
-    func didTapAddButton() {
+    func didTapCreateNoteButton() {
         coordinator?.openCreateNote()
     }
 }

@@ -13,6 +13,32 @@ final class CreateNoteCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
-        []
+        let alertController = UIAlertController(
+            title: "Create note",
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.addTextField { textField in
+            textField.placeholder = "Name"
+            textField.autocapitalizationType = .sentences
+            textField.returnKeyType = .done
+        }
+
+        let createAction = UIAlertAction(title: "Create", style: .default) { [weak self] _ in
+            guard
+                let self,
+                let title = alertController.textFields?.first?.text,
+                !title.isEmpty
+            else {
+                return
+            }
+            navigation.open(url: EditNoteURL().toURL())
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(createAction)
+        alertController.addAction(cancelAction)
+
+        navigation.present(alertController, animated: true)
+        return []
     }
 }
