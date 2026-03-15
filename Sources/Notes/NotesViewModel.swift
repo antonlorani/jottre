@@ -1,37 +1,45 @@
 @MainActor
 final class NotesViewModel: Sendable {
 
-    struct Item {
-        let note: NoteBusinessModel
-        let onAction: () -> Void
+    enum State {
+        struct Item {
+            let note: NoteBusinessModel
+            let onAction: () -> Void
+        }
+
+        case filled(items: [Item])
+        case empty(title: String)
     }
 
-    let items: AsyncStream<[Item]>
-    private let itemsContinuation: AsyncStream<[Item]>.Continuation
+    let state: AsyncStream<State>
+    private let stateContinuation: AsyncStream<State>.Continuation
 
     private weak var coordinator: NotesCoordinator?
 
     init(coordinator: NotesCoordinator) {
         self.coordinator = coordinator
 
-        (items, itemsContinuation) = AsyncStream.makeStream(
-            of: [Item].self,
+        (state, stateContinuation) = AsyncStream.makeStream(
+            of: State.self,
             bufferingPolicy: .bufferingOldest(1)
         )
-        itemsContinuation.yield([
-            Item(
-                note: NoteBusinessModel(
-                    previewImage: nil,
-                    name: "Hello, world!"
-                ),
-                onAction: { [weak self] in
-                    self?.coordinator?.openNote(NoteBusinessModel(
-                        previewImage: nil,
-                        name: "Hello, world!"
-                    ))
-                }
-            )
-        ])
+        stateContinuation.yield(.empty(title: "A blank page full of possibilities. Go ahead, jot something insanely great!"))
+        //         .filled(
+        //             [
+        //                 Item(
+        //                     note: NoteBusinessModel(
+        //                         previewImage: nil,
+        //                         name: "Hello, world!"
+        //                     ),
+        //                     onAction: { [weak self] in
+        //                         self?.coordinator?.openNote(NoteBusinessModel(
+        //                             previewImage: nil,
+        //                             name: "Hello, world!"
+        //                         ))
+        //                     }
+        //                 )
+        //             ]
+        //          )
     }
 
     func didTapSettingsButton() {

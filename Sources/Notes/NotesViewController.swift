@@ -38,8 +38,32 @@ final class NotesViewController: UIViewController {
         return collectionView
     }()
 
-    private var itemsTask: Task<Void, Never>?
-    private var items = [NotesViewModel.Item]()
+    private lazy var emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+
+    private lazy var emptyStateConstraints = [
+        emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        emptyStateLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        emptyStateLabel.widthAnchor
+            .constraint(lessThanOrEqualTo: view.widthAnchor, constant: -(Constants.CollectionViewFlowLayout.inset * 2)),
+        emptyStateLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300)
+    ]
+
+    private lazy var filledStateConstraints = [
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ]
+
+    private var stateTask: Task<Void, Never>?
+    private var items = [NotesViewModel.State.Item]()
 
     private let viewModel: NotesViewModel
     private let settingsBarButtonItemFactory: BarButtonItemFactory
@@ -55,10 +79,9 @@ final class NotesViewController: UIViewController {
         self.createNoteBarButtonItemFactory = createNoteBarButtonItemFactory
         super.init(nibName: nil, bundle: nil)
 
-        itemsTask = Task { [weak self] in
-            for await items in viewModel.items {
-                self?.items = items
-                self?.collectionView.reloadData()
+        stateTask = Task { [weak self] in
+            for await state in viewModel.state {
+                self?.handleState(state: state)
             }
         }
     }
@@ -70,7 +93,7 @@ final class NotesViewController: UIViewController {
     }
 
     deinit {
-        itemsTask?.cancel()
+        stateTask?.cancel()
     }
 
     override func viewDidLoad() {
@@ -102,14 +125,42 @@ final class NotesViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
+    }
 
+    private func handleState(state: NotesViewModel.State) {
+        switch state {
+        case let .filled(items):
+            assert(!items.isEmpty, "An empty items state MUST be represented as 'NotesViewModel.State.empty'.")
+            handleFilledState(items: items)
+        case let .empty(title):
+            handleEmptyState(title: title)
+        }
+    }
+
+    private func handleFilledState(items: [NotesViewModel.State.Item]) {
+        self.items = items
+        collectionView.reloadData()
+
+        guard collectionView.superview == nil else {
+            return
+        }
+        emptyStateLabel.removeFromSuperview()
         view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        NSLayoutConstraint.deactivate(emptyStateConstraints)
+        NSLayoutConstraint.activate(filledStateConstraints)
+    }
+
+    private func handleEmptyState(title: String) {
+        items.removeAll()
+
+        guard emptyStateLabel.superview == nil else {
+            return
+        }
+        emptyStateLabel.text = title
+        collectionView.removeFromSuperview()
+        view.addSubview(emptyStateLabel)
+        NSLayoutConstraint.deactivate(filledStateConstraints)
+        NSLayoutConstraint.activate(emptyStateConstraints)
     }
 }
 
