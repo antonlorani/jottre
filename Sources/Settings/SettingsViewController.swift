@@ -95,7 +95,7 @@ final class SettingsViewController: UIViewController {
     private func setUpNavigationItem() {
         navigationItem.title = "Settings"
 
-        navigationItem.leftBarButtonItem = closeBarButtonItemFactory.make(
+        navigationItem.rightBarButtonItem = closeBarButtonItemFactory.make(
             primaryAction: UIAction { [weak self] _ in
                 self?.viewModel.didTapCloseButton()
             }
