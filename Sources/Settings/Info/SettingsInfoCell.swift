@@ -1,8 +1,8 @@
 import UIKit
 
-final class SettingsToggleCell: UICollectionViewCell {
+final class SettingsInfoCell: UICollectionViewCell {
 
-    static let reuseIdentifier = "SettingsToggleCell"
+    static let reuseIdentifier = "SettingsInfoCell"
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -11,10 +11,13 @@ final class SettingsToggleCell: UICollectionViewCell {
         return label
     }()
 
-    private let toggle: UISwitch = {
-        let toggle = UISwitch()
-        toggle.translatesAutoresizingMaskIntoConstraints = false
-        return toggle
+    private let valueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 17)
+        label.textAlignment = .right
+        label.textColor = .secondaryLabel
+        return label
     }()
 
     override init(frame: CGRect) {
@@ -34,20 +37,20 @@ final class SettingsToggleCell: UICollectionViewCell {
         contentView.clipsToBounds = true
 
         contentView.addSubview(nameLabel)
-        contentView.addSubview(toggle)
+        contentView.addSubview(valueLabel)
 
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: toggle.leadingAnchor, constant: -8),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: valueLabel.leadingAnchor, constant: -8),
 
-            toggle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            toggle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            valueLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
 
-    func configure(name: String, isOn: Bool) {
-        nameLabel.text = name
-        toggle.isOn = isOn
+    func configure(businessModel: SettingsInfoBusinessModel) {
+        nameLabel.text = businessModel.name
+        valueLabel.text = businessModel.value
     }
 }

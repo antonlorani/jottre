@@ -49,13 +49,18 @@ final class SettingsDropdownCell: UICollectionViewCell {
         ])
     }
 
-    func configure(name: String, value: String, options: [String], onSelect: @escaping (String) -> Void) {
-        nameLabel.text = name
-        dropdownButton.setTitle(value, for: .normal)
-        dropdownButton.menu = UIMenu(children: options.map { option in
-            UIAction(title: option, state: option == value ? .on : .off) { _ in
-                onSelect(option)
+    func configure(businessModel: SettingsDropdownBusinessModel) {
+        nameLabel.text = businessModel.name
+        dropdownButton.setTitle(businessModel.current.label, for: .normal)
+        dropdownButton.menu = UIMenu(
+            children: businessModel.options.map { option in
+                UIAction(
+                    title: option.label,
+                    state: AnyHashable(option.value.hashValue) == AnyHashable(businessModel.current.value) ? .on : .off
+                ) { _ in
+                    businessModel.onAction(option)
+                }
             }
-        })
+        )
     }
 }

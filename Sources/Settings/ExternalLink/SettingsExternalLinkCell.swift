@@ -51,7 +51,7 @@ final class SettingsExternalLinkCell: UICollectionViewCell {
         ])
     }
 
-    func configure(name: String) {
-        nameLabel.text = name
+    func configure(businessModel: SettingsExternalLinkBusinessModel) {
+        nameLabel.text = businessModel.name
     }
 }

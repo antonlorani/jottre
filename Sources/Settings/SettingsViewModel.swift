@@ -1,18 +1,14 @@
 import Foundation
+import UIKit
 
 @MainActor
 final class SettingsViewModel: Sendable {
 
-    struct Item {
-        enum Content {
-            case dropdown(value: String, options: [String])
-            case toggle(isOn: Bool)
-            case externalLink(onAction: () -> Void)
-            case text(value: String)
-        }
-
-        let name: String
-        let content: Content
+    enum Item {
+        case dropdown(SettingsDropdownBusinessModel)
+        case toggle(SettingsToggleBusinessModel)
+        case externalLink(SettingsExternalLinkBusinessModel, onAction: () -> Void)
+        case text(SettingsInfoBusinessModel)
     }
 
     let items: AsyncStream<[Item]>
@@ -32,19 +28,52 @@ final class SettingsViewModel: Sendable {
 
     private func makeItems() -> [Item] {
         [
-            Item(name: "Appearance", content: .dropdown(value: "Light", options: ["System", "Dark", "Light"])),
-            Item(name: "iCloud Synchronization", content: .toggle(isOn: false)),
-            Item(
-                name: "Stargaze on Github",
-                content: .externalLink(onAction: { [weak self] in
+            .dropdown(
+                SettingsDropdownBusinessModel(
+                    name: "Appearance",
+                    current: SettingsDropdownBusinessModel.Option(
+                        label: makeLabel(userInterfaceStyle: .unspecified),
+                        value: UIUserInterfaceStyle.unspecified
+                    ),
+                    options: [UIUserInterfaceStyle.unspecified, .dark, .light].map { userInterfaceStyle in
+                        SettingsDropdownBusinessModel.Option(
+                            label: makeLabel(userInterfaceStyle: userInterfaceStyle),
+                            value: userInterfaceStyle
+                        )
+                    },
+                    onAction: { [weak self] newOption in
+
+                    }
+                )),
+            .toggle(SettingsToggleBusinessModel(
+                name: "iCloud Synchronization",
+                isOn: false
+            )),
+            .externalLink(
+                SettingsExternalLinkBusinessModel(name: "Stargaze on Github"),
+                onAction: { [weak self] in
                     self?.coordinator?.openExternalLink(url: JottreGithubURL().toURL())
-                })
+                }
             ),
-            Item(name: "Version", content: .text(value: "2.0.0")),
+            .text(SettingsInfoBusinessModel(
+                name: "Version",
+                value: "2.0.0"
+            ))
         ]
     }
 
     func didTapCloseButton() {
         coordinator?.dismiss()
+    }
+
+    private func makeLabel(userInterfaceStyle: UIUserInterfaceStyle) -> String {
+        switch userInterfaceStyle {
+        case .light:
+            "Light"
+        case .dark:
+            "Dark"
+        default:
+            "System"
+        }
     }
 }

@@ -47,8 +47,8 @@ final class SettingsViewController: UIViewController {
             forCellWithReuseIdentifier: SettingsExternalLinkCell.reuseIdentifier
         )
         collectionView.register(
-            SettingsTextCell.self,
-            forCellWithReuseIdentifier: SettingsTextCell.reuseIdentifier
+            SettingsInfoCell.self,
+            forCellWithReuseIdentifier: SettingsInfoCell.reuseIdentifier
         )
         return collectionView
     }()
@@ -126,41 +126,34 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let item = items[safe: indexPath.row] else {
-            return UICollectionViewCell()
-        }
-        return switch item.content {
-        case let .dropdown(value, options):
+        switch items[safe: indexPath.row] {
+        case let .dropdown(businessModel):
             makeSettingsDropdownCell(
-                name: item.name,
-                value: value,
-                options: options,
+                businessModel: businessModel,
                 indexPath: indexPath
             )
-        case let .toggle(isOn):
+        case let .toggle(businessModel):
             makeSettingsToggleCell(
-                name: item.name,
-                isOn: isOn,
+                businessModel: businessModel,
                 indexPath: indexPath
             )
-        case .externalLink:
+        case let .externalLink(businessModel, _):
             makeSettingsExternalLinkCell(
-                name: item.name,
+                businessModel: businessModel,
                 indexPath: indexPath
             )
-        case let .text(value):
-            makeSettingsTextCell(
-                name: item.name,
-                value: value,
+        case let .text(businessModel):
+            makeSettingsInfoCell(
+                businessModel: businessModel,
                 indexPath: indexPath
             )
+        case nil:
+            UICollectionViewCell()
         }
     }
 
     private func makeSettingsDropdownCell(
-        name: String,
-        value: String,
-        options: [String],
+        businessModel: SettingsDropdownBusinessModel,
         indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -169,19 +162,12 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         ) as? SettingsDropdownCell else {
             return UICollectionViewCell()
         }
-        cell.configure(name: name, value: value, options: options) { [weak self] selected in
-            self?.items[indexPath.row] = .init(
-                name: name,
-                content: .dropdown(value: selected, options: options)
-            )
-            self?.collectionView.reloadItems(at: [indexPath])
-        }
+        cell.configure(businessModel: businessModel)
         return cell
     }
 
     private func makeSettingsToggleCell(
-        name: String,
-        isOn: Bool,
+        businessModel: SettingsToggleBusinessModel,
         indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -190,12 +176,12 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         ) as? SettingsToggleCell else {
             return UICollectionViewCell()
         }
-        cell.configure(name: name, isOn: isOn)
+        cell.configure(businessModel: businessModel)
         return cell
     }
 
     private func makeSettingsExternalLinkCell(
-        name: String,
+        businessModel: SettingsExternalLinkBusinessModel,
         indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -204,22 +190,21 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         ) as? SettingsExternalLinkCell else {
             return UICollectionViewCell()
         }
-        cell.configure(name: name)
+        cell.configure(businessModel: businessModel)
         return cell
     }
 
-    private func makeSettingsTextCell(
-        name: String,
-        value: String,
+    private func makeSettingsInfoCell(
+        businessModel: SettingsInfoBusinessModel,
         indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsTextCell.reuseIdentifier,
+            withReuseIdentifier: SettingsInfoCell.reuseIdentifier,
             for: indexPath
-        ) as? SettingsTextCell else {
+        ) as? SettingsInfoCell else {
             return UICollectionViewCell()
         }
-        cell.configure(name: name, value: value)
+        cell.configure(businessModel: businessModel)
         return cell
     }
 
@@ -230,15 +215,18 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
     ) -> CGSize {
         let inset = Constants.CollectionViewFlowLayout.inset
         let width = collectionView.bounds.width - inset * 2
-        return CGSize(width: width, height: Constants.CollectionViewFlowLayout.itemHeight)
+        return CGSize(
+            width: width,
+            height: Constants.CollectionViewFlowLayout.itemHeight
+        )
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let item = items[safe: indexPath.row] else {
-            return
-        }
-        if case let .externalLink(onAction) = item.content {
+        switch items[safe: indexPath.row] {
+        case let .externalLink(_, onAction):
             onAction()
+        default:
+            break
         }
     }
 }
