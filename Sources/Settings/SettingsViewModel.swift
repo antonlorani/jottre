@@ -45,12 +45,24 @@ final class SettingsViewModel: Sendable {
 
                     }
                 )),
-            .toggle(SettingsToggleBusinessModel(
-                name: "iCloud Synchronization",
-                isOn: false
-            )),
+//            .toggle(SettingsToggleBusinessModel(
+//                name: "iCloud Synchronization",
+//                isOn: false
+//            )),
             .externalLink(
-                SettingsExternalLinkBusinessModel(name: "Stargaze on Github"),
+                SettingsExternalLinkBusinessModel(
+                    name: "iCloud Synchronization",
+                    info: "Learn how to enable iCloud on this device.",
+                ),
+                onAction: { [weak self] in
+                    self?.coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
+                }
+            ),
+            .externalLink(
+                SettingsExternalLinkBusinessModel(
+                    name: "Stargaze on Github",
+                    info: nil
+                ),
                 onAction: { [weak self] in
                     self?.coordinator?.openExternalLink(url: JottreGithubURL().toURL())
                 }

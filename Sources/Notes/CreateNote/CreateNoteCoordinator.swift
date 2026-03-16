@@ -14,7 +14,7 @@ final class CreateNoteCoordinator: NavigationCoordinator {
 
     func handle(url: URL) -> [UIViewController] {
         let alertController = UIAlertController(
-            title: "Create note",
+            title: "New Jot",
             message: nil,
             preferredStyle: .alert
         )

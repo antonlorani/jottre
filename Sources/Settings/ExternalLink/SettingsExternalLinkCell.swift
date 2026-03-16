@@ -2,12 +2,33 @@ import UIKit
 
 final class SettingsExternalLinkCell: UICollectionViewCell {
 
+    private enum Constants {
+
+        struct ArrowImage {
+            static let size = CGFloat(20)
+        }
+    }
+
     static let reuseIdentifier = "SettingsExternalLinkCell"
+
+    private let labelContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 17)
+        return label
+    }()
+
+    private lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .secondaryLabel
         return label
     }()
 
@@ -19,6 +40,17 @@ final class SettingsExternalLinkCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
+
+    private lazy var withInfoLabelConstraints = [
+        infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+        infoLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
+        infoLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
+        infoLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
+    ]
+
+    private lazy var withoutInfoLabelConstraints = [
+        nameLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor)
+    ]
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,22 +68,38 @@ final class SettingsExternalLinkCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
 
-        contentView.addSubview(nameLabel)
+        contentView.addSubview(labelContainer)
+        labelContainer.addSubview(nameLabel)
         contentView.addSubview(arrowImageView)
 
         NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: arrowImageView.leadingAnchor, constant: -8),
+            labelContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: arrowImageView.leadingAnchor, constant: -8),
+
+            nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
 
             arrowImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             arrowImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            arrowImageView.widthAnchor.constraint(equalToConstant: 20),
-            arrowImageView.heightAnchor.constraint(equalToConstant: 20),
-        ])
+            arrowImageView.widthAnchor.constraint(equalToConstant: Constants.ArrowImage.size),
+            arrowImageView.heightAnchor.constraint(equalToConstant: Constants.ArrowImage.size),
+        ] + withoutInfoLabelConstraints)
     }
 
     func configure(businessModel: SettingsExternalLinkBusinessModel) {
         nameLabel.text = businessModel.name
+
+        infoLabel.removeFromSuperview()
+        NSLayoutConstraint.deactivate(withoutInfoLabelConstraints + withInfoLabelConstraints)
+
+        if let info = businessModel.info {
+            infoLabel.text = info
+            labelContainer.addSubview(infoLabel)
+            NSLayoutConstraint.activate(withInfoLabelConstraints)
+        } else {
+            NSLayoutConstraint.activate(withoutInfoLabelConstraints)
+        }
     }
 }
