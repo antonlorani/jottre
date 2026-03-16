@@ -68,15 +68,18 @@ final class NotesViewController: UIViewController {
     private let viewModel: NotesViewModel
     private let settingsBarButtonItemFactory: BarButtonItemFactory
     private let createNoteBarButtonItemFactory: BarButtonItemFactory
+    private let enableCloudBarButtonItem: BarButtonItemFactory
 
     init(
         viewModel: NotesViewModel,
         settingsBarButtonItemFactory: BarButtonItemFactory,
-        createNoteBarButtonItemFactory: BarButtonItemFactory
+        createNoteBarButtonItemFactory: BarButtonItemFactory,
+        enableCloudBarButtonItem: BarButtonItemFactory
     ) {
         self.viewModel = viewModel
         self.settingsBarButtonItemFactory = settingsBarButtonItemFactory
         self.createNoteBarButtonItemFactory = createNoteBarButtonItemFactory
+        self.enableCloudBarButtonItem = enableCloudBarButtonItem
         super.init(nibName: nil, bundle: nil)
 
         stateTask = Task { [weak self] in
@@ -111,11 +114,18 @@ final class NotesViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
 #endif
         
-        navigationItem.leftBarButtonItem = settingsBarButtonItemFactory.make(
-            primaryAction: UIAction { [weak self] _ in
-                self?.viewModel.didTapSettingsButton()
-            }
-        )
+        navigationItem.leftBarButtonItems = [
+            settingsBarButtonItemFactory.make(
+                primaryAction: UIAction { [weak self] _ in
+                    self?.viewModel.didTapSettingsButton()
+                }
+            ),
+            enableCloudBarButtonItem.make(
+                primaryAction: UIAction { [weak self] _ in
+                    self?.viewModel.didTapEnableCloudButton()
+                }
+            )
+        ]
         navigationItem.rightBarButtonItem = createNoteBarButtonItemFactory.make(
             primaryAction: UIAction { [weak self] _ in
                 self?.viewModel.didTapCreateNoteButton()

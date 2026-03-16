@@ -11,6 +11,8 @@ final class NotesViewModel: Sendable {
         case empty(title: String)
     }
 
+    let shouldShowEnableCloudButton = true
+
     let state: AsyncStream<State>
     private let stateContinuation: AsyncStream<State>.Continuation
 
@@ -48,5 +50,9 @@ final class NotesViewModel: Sendable {
 
     func didTapCreateNoteButton() {
         coordinator?.openCreateNote()
+    }
+
+    func didTapEnableCloudButton() {
+        coordinator?.openEnableCloudPage()
     }
 }

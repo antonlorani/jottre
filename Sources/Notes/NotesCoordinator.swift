@@ -61,4 +61,8 @@ final class NotesCoordinator: NavigationCoordinator {
     func openNote(_ note: NoteBusinessModel) {
         navigation.open(url: EditNoteURL())
     }
+
+    func openEnableCloudPage() {
+        
+    }
 }
