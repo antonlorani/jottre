@@ -5,6 +5,7 @@ final class NotesCoordinator: NavigationCoordinator {
 
     private lazy var childCoordinators: [NavigationCoordinator] = [
         settingsCoordinatorFactory.make(navigation: navigation),
+        enableCloudCoordinatorFactory.make(navigation: navigation),
         CreateNoteCoordinator(navigation: navigation),
         editNoteCoordinatorFactory.make(navigation: navigation)
     ]
@@ -14,17 +15,20 @@ final class NotesCoordinator: NavigationCoordinator {
     private let navigation: Navigation
     private let notesViewControllerFactory: NotesViewControllerFactory
     private let settingsCoordinatorFactory: SettingsCoordinatorFactory
+    private let enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory
     private let editNoteCoordinatorFactory: EditNoteCoordinatorFactory
 
     init(
         navigation: Navigation,
         notesViewControllerFactory: NotesViewControllerFactory,
         settingsCoordinatorFactory: SettingsCoordinatorFactory,
+        enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory,
         editNoteCoordinatorFactory: EditNoteCoordinatorFactory
     ) {
         self.navigation = navigation
         self.notesViewControllerFactory = notesViewControllerFactory
         self.settingsCoordinatorFactory = settingsCoordinatorFactory
+        self.enableCloudCoordinatorFactory = enableCloudCoordinatorFactory
         self.editNoteCoordinatorFactory = editNoteCoordinatorFactory
     }
 
@@ -63,6 +67,6 @@ final class NotesCoordinator: NavigationCoordinator {
     }
 
     func openEnableCloudPage() {
-        
+        navigation.open(url: EnableCloudURL())
     }
 }
