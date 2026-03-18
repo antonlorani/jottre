@@ -4,6 +4,7 @@ final class NotesViewModel: Sendable {
     enum State {
         struct Item {
             let note: NoteBusinessModel
+            let menuConfigurations: [NoteMenuConfiguration]
             let onAction: () -> Void
         }
 
@@ -18,30 +19,42 @@ final class NotesViewModel: Sendable {
 
     private weak var coordinator: NotesCoordinator?
 
-    init(coordinator: NotesCoordinator) {
+    init(
+        coordinator: NotesCoordinator,
+        menuConfigurationFactory: NoteMenuConfigurationFactory
+    ) {
         self.coordinator = coordinator
 
         (state, stateContinuation) = AsyncStream.makeStream(
             of: State.self,
-            bufferingPolicy: .bufferingOldest(1)
+            bufferingPolicy: .bufferingNewest(1)
         )
         stateContinuation.yield(.empty(title: "A blank page full of possibilities. Go ahead, jot something insanely great!"))
-        //         .filled(
-        //             [
-        //                 Item(
-        //                     note: NoteBusinessModel(
-        //                         previewImage: nil,
-        //                         name: "Hello, world!"
-        //                     ),
-        //                     onAction: { [weak self] in
-        //                         self?.coordinator?.openNote(NoteBusinessModel(
-        //                             previewImage: nil,
-        //                             name: "Hello, world!"
-        //                         ))
-        //                     }
-        //                 )
-        //             ]
-        //          )
+        stateContinuation.yield(
+            .filled(
+                items: [
+                    State.Item(
+                        note: NoteBusinessModel(
+                            previewImage: nil,
+                            name: "Hello, world!"
+                        ),
+                        menuConfigurations: menuConfigurationFactory.make(
+                            onShare: { _ in },
+                            onRename: {},
+                            onDuplicate: {},
+                            onDelete: {},
+                            onShowInFiles: {}
+                        ),
+                        onAction: { [weak self] in
+                            self?.coordinator?.openNote(NoteBusinessModel(
+                                previewImage: nil,
+                                name: "Hello, world!"
+                            ))
+                        }
+                    )
+                ]
+            )
+        )
     }
 
     func didTapSettingsButton() {

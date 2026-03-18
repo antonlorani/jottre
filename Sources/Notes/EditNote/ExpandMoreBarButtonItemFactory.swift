@@ -1,29 +1,29 @@
 import UIKit
 
-struct IOS18ExpandMoreBarButtonItemFactory: BarButtonItemFactory {
+protocol ExpandMoreMenuBarButtonItemFactory: Sendable {
 
-    func make(primaryAction: UIAction) -> UIBarButtonItem {
+    func make(menu: UIMenu) -> UIBarButtonItem
+}
+
+struct IOS18ExpandMoreMenuBarButtonItemFactory: ExpandMoreMenuBarButtonItemFactory {
+
+    func make(menu: UIMenu) -> UIBarButtonItem {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "ellipsis.circle.fill")?
             .withTintColor(.systemBackground, renderingMode: .alwaysOriginal)
         configuration.cornerStyle = .capsule
         configuration.buttonSize = .medium
-        return UIBarButtonItem(
-            customView: UIButton(
-                configuration: configuration,
-                primaryAction: primaryAction
-            )
-        )
+        let button = UIButton(configuration: configuration)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        return UIBarButtonItem(customView: button)
     }
 }
 
 @available(iOS 26, *)
-struct IOS26ExpandMoreBarButtonItemFactory: BarButtonItemFactory {
+struct IOS26ExpandMoreMenuBarButtonItemFactory: ExpandMoreMenuBarButtonItemFactory {
 
-    func make(primaryAction: UIAction) -> UIBarButtonItem {
-        UIBarButtonItem(
-            image: UIImage(systemName: "ellipsis"),
-            primaryAction: primaryAction
-        )
+    func make(menu: UIMenu) -> UIBarButtonItem {
+        UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: menu)
     }
 }

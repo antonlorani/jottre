@@ -10,9 +10,12 @@ struct IOS18EditNoteViewControllerFactory: EditNoteViewControllerFactory {
 
     func make(coordinator: EditNoteCoordinator) -> UIViewController {
         EditNoteViewController(
-            viewModel: EditNoteViewModel(coordinator: coordinator),
+            viewModel: EditNoteViewModel(
+                coordinator: coordinator,
+                menuConfigurationFactory: NoteMenuConfigurationFactory()
+            ),
             toggleEditingBarButtonItemFactory: IOS18ToggleEditingBarButtonItemFactory(),
-            expandMoreBarButtonItemFactory: IOS18ExpandMoreBarButtonItemFactory()
+            expandMoreBarButtonItemFactory: IOS18ExpandMoreMenuBarButtonItemFactory()
         )
     }
 }
@@ -22,9 +25,12 @@ struct IOS26EditNoteViewControllerFactory: EditNoteViewControllerFactory {
 
     func make(coordinator: EditNoteCoordinator) -> UIViewController {
         EditNoteViewController(
-            viewModel: EditNoteViewModel(coordinator: coordinator),
+            viewModel: EditNoteViewModel(
+                coordinator: coordinator,
+                menuConfigurationFactory: NoteMenuConfigurationFactory()
+            ),
             toggleEditingBarButtonItemFactory: IOS26ToggleEditingBarButtonItemFactory(),
-            expandMoreBarButtonItemFactory: IOS26ExpandMoreBarButtonItemFactory()
+            expandMoreBarButtonItemFactory: IOS26ExpandMoreMenuBarButtonItemFactory()
         )
     }
 }

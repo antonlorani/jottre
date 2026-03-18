@@ -3,14 +3,17 @@ import UIKit
 @MainActor
 final class NotesCoordinator: NavigationCoordinator {
 
+    private var retainedShareNoteCoordinator: Coordinator?
+    private var retainedDeleteNoteCoordinator: Coordinator?
+    private var retainedRenameNoteCoordinator: Coordinator?
+    private var retainedNotesViewController: UIViewController?
+
     private lazy var childCoordinators: [NavigationCoordinator] = [
         settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
         CreateNoteCoordinator(navigation: navigation),
         editNoteCoordinatorFactory.make(navigation: navigation)
     ]
-
-    private var retainedRootViewController: UIViewController?
 
     private let navigation: Navigation
     private let notesViewControllerFactory: NotesViewControllerFactory
@@ -39,12 +42,12 @@ final class NotesCoordinator: NavigationCoordinator {
     func handle(url: URL) -> [UIViewController] {
         var viewControllers: [UIViewController]
 
-        if let retainedRootViewController {
-            viewControllers = [retainedRootViewController]
+        if let retainedNotesViewController {
+            viewControllers = [retainedNotesViewController]
         } else {
-            let rootViewController = notesViewControllerFactory.make(coordinator: self)
-            self.retainedRootViewController = rootViewController
-            viewControllers = [rootViewController]
+            let notesViewController = notesViewControllerFactory.make(coordinator: self)
+            self.retainedNotesViewController = notesViewController
+            viewControllers = [notesViewController]
         }
 
         if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
@@ -68,5 +71,39 @@ final class NotesCoordinator: NavigationCoordinator {
 
     func openEnableCloudPage() {
         navigation.open(url: EnableCloudURL())
+    }
+
+    func showShareNote(format: ShareFormat) {
+        let coordinator = ShareNoteCoordinator(
+            navigation: navigation,
+            format: format
+        )
+        retainedShareNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedShareNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showRenameAlert() {
+        let coordinator = RenameNoteCoordinator(navigation: navigation)
+        retainedRenameNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedRenameNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showDeleteConfirmationAlert() {
+        let coordinator = DeleteNoteCoordinator(navigation: navigation)
+        retainedShareNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedShareNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showInFiles() {
+
     }
 }

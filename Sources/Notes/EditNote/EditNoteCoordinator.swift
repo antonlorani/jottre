@@ -2,6 +2,10 @@ import UIKit
 
 final class EditNoteCoordinator: NavigationCoordinator {
 
+    private var retainedShareNoteCoordinator: Coordinator?
+    private var retainedDeleteNoteCoordinator: Coordinator?
+    private var retainedRenameNoteCoordinator: Coordinator?
+
     private let navigation: Navigation
     private let editNoteViewControllerFactory: EditNoteViewControllerFactory
 
@@ -21,5 +25,39 @@ final class EditNoteCoordinator: NavigationCoordinator {
         [
             editNoteViewControllerFactory.make(coordinator: self)
         ]
+    }
+
+    func showShareNote(format: ShareFormat) {
+        let coordinator = ShareNoteCoordinator(
+            navigation: navigation,
+            format: format
+        )
+        retainedShareNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedShareNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showRenameAlert() {
+        let coordinator = RenameNoteCoordinator(navigation: navigation)
+        retainedRenameNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedRenameNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showDeleteConfirmationAlert() {
+        let coordinator = DeleteNoteCoordinator(navigation: navigation)
+        retainedShareNoteCoordinator = coordinator
+        coordinator.onEnd = { [weak self] in
+            self?.retainedShareNoteCoordinator = nil
+        }
+        coordinator.start()
+    }
+
+    func showInFiles() {
+        
     }
 }

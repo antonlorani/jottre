@@ -38,7 +38,7 @@ final class NoteCell: UICollectionViewCell {
     }
 
     private func setUpViews() {
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
 
