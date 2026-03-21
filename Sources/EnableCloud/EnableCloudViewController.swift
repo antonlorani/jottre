@@ -3,19 +3,49 @@ import UIKit
 final class EnableCloudViewController: UIViewController {
 
     private enum Constants {
-        static let horizontalPadding = CGFloat(16)
+        enum Headline {
+            static let font = {
+                let font = UIFont.preferredFont(forTextStyle: .largeTitle)
+                return UIFont.boldSystemFont(ofSize: font.pointSize)
+            }()
+        }
+
+        enum Subheadline {
+            static let font = {
+                let font = UIFont.preferredFont(forTextStyle: .subheadline)
+                return UIFont.boldSystemFont(ofSize: font.pointSize)
+            }()
+        }
+
         static let itemSpacing = CGFloat(8)
-        static let learnButtonHeight = CGFloat(56)
-        static let scrollContentTopInset = CGFloat(24)
         static let featureIconSize = CGFloat(28)
-        static let featureRowCornerRadius = CGFloat(12)
+        static let featureRowCornerRadius = CGFloat(20)
         static let featureRowPadding = CGFloat(16)
     }
 
-    private let scrollView: UIScrollView = {
+    private let headlineLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Enable iCloud"
+        label.font = Constants.Headline.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let subheadlineLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
+        label.font = Constants.Subheadline.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let contentScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.alwaysBounceVertical = true
         return scrollView
     }()
 
@@ -28,36 +58,18 @@ final class EnableCloudViewController: UIViewController {
         return stackView
     }()
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Enable iCloud"
-        label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
     private lazy var learnButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.title = "Learn How To Enable"
         configuration.image = UIImage(systemName: "arrow.up.forward")
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 8
-        configuration.baseBackgroundColor = .systemBlue
-        configuration.baseForegroundColor = .white
+        configuration.baseBackgroundColor = .label
+        configuration.baseForegroundColor = .systemBackground
         configuration.cornerStyle = .capsule
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = .systemFont(ofSize: 17, weight: .bold)
+            outgoing.font = .systemFont(ofSize: 17, weight: .semibold)
             return outgoing
         }
         let button = UIButton(
@@ -103,15 +115,12 @@ final class EnableCloudViewController: UIViewController {
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
 
-        view.addSubview(scrollView)
+        view.addSubview(headlineLabel)
+        view.addSubview(subheadlineLabel)
+        view.addSubview(contentScrollView)
+        contentScrollView.addSubview(contentStackView)
         view.addSubview(learnButton)
 
-        scrollView.addSubview(contentStackView)
-
-        contentStackView.addArrangedSubview(titleLabel)
-        contentStackView.setCustomSpacing(16, after: titleLabel)
-        contentStackView.addArrangedSubview(descriptionLabel)
-        contentStackView.setCustomSpacing(24, after: descriptionLabel)
         contentStackView.addArrangedSubview(
             makeFeatureRow(
                 systemImageName: "macbook.and.iphone",
@@ -126,48 +135,31 @@ final class EnableCloudViewController: UIViewController {
         )
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(
-                equalTo: learnButton.topAnchor,
-                constant: -Constants.horizontalPadding
-            ),
+            headlineLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headlineLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            headlineLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
-            contentStackView.topAnchor.constraint(
-                equalTo: scrollView.topAnchor,
-                constant: Constants.scrollContentTopInset
-            ),
-            contentStackView.leadingAnchor.constraint(
-                equalTo: scrollView.leadingAnchor,
-                constant: Constants.horizontalPadding
-            ),
-            contentStackView.trailingAnchor.constraint(
-                equalTo: scrollView.trailingAnchor,
-                constant: -Constants.horizontalPadding
-            ),
-            contentStackView.bottomAnchor.constraint(
-                equalTo: scrollView.bottomAnchor,
-                constant: -Constants.horizontalPadding
-            ),
-            contentStackView.widthAnchor.constraint(
-                equalTo: scrollView.widthAnchor,
-                constant: -(Constants.horizontalPadding * 2)
-            ),
+            subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
+            subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.layoutMarginsGuide.leadingAnchor),
+            subheadlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).withPriority(.defaultHigh),
+            subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.layoutMarginsGuide.trailingAnchor),
 
-            learnButton.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: Constants.horizontalPadding
-            ),
-            learnButton.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Constants.horizontalPadding
-            ),
-            learnButton.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Constants.horizontalPadding
-            ),
-            learnButton.heightAnchor.constraint(equalToConstant: Constants.learnButtonHeight),
+            contentScrollView.topAnchor.constraint(equalTo: subheadlineLabel.bottomAnchor, constant: 24),
+            contentScrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
+
+            contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
+            contentStackView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
+
+            learnButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            learnButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            learnButton.heightAnchor.constraint(equalToConstant: 59),
         ])
     }
 
@@ -188,6 +180,7 @@ final class EnableCloudViewController: UIViewController {
         label.text = text
         label.font = .systemFont(ofSize: 17)
         label.numberOfLines = 0
+
 
         containerView.addSubview(imageView)
         containerView.addSubview(label)

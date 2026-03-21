@@ -56,7 +56,7 @@ final class NotesViewController: UIViewController {
     ]
 
     private lazy var filledStateConstraints = [
-        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        collectionView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -242,7 +242,10 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
         ) as? NoteCell else {
             return UICollectionViewCell()
         }
-        cell.configure(note: note)
+        cell.configure(
+            note: note,
+            infoText: nil
+        )
         return cell
     }
 }

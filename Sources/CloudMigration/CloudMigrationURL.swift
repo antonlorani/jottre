@@ -1,3 +1,3 @@
 struct CloudMigrationURL: URLConvertible {
-    let path = "/settings/cloud-migration"
+    let path = "/cloud-migration"
 }

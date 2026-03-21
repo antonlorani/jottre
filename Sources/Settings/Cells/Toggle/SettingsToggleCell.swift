@@ -30,7 +30,7 @@ final class SettingsToggleCell: UICollectionViewCell {
 
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 12
+        contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
 
         contentView.addSubview(nameLabel)

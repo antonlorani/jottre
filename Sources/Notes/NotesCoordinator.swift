@@ -12,7 +12,8 @@ final class NotesCoordinator: NavigationCoordinator {
         settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
         CreateNoteCoordinator(navigation: navigation),
-        editNoteCoordinatorFactory.make(navigation: navigation)
+        editNoteCoordinatorFactory.make(navigation: navigation),
+        CloudMigrationCoordinator(navigation: navigation)
     ]
 
     private let navigation: Navigation

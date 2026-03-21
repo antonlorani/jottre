@@ -25,6 +25,25 @@ final class NoteCell: UICollectionViewCell {
         return label
     }()
 
+    private lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
+        label.textColor = .secondaryLabel
+        return label
+    }()
+
+    private lazy var withInfoLabelConstraints = [
+        infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+        infoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        infoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+    ]
+
+    private lazy var withoutInfoLabelConstraints = [
+        nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+    ]
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -47,28 +66,38 @@ final class NoteCell: UICollectionViewCell {
         contentView.addSubview(nameLabel)
 
         NSLayoutConstraint.activate([
-            previewImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            previewImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            previewImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            previewImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: separatorLine.topAnchor),
-        ])
 
-        NSLayoutConstraint.activate([
-            separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            separatorLine.heightAnchor.constraint(equalToConstant: 1)
-        ])
+            separatorLine.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            separatorLine.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            separatorLine.heightAnchor.constraint(equalToConstant: 1),
 
-        NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 8),
-            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-        ])
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: 8),
+            nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor, constant: -16),
+        ] + withoutInfoLabelConstraints)
     }
 
-    func configure(note: NoteBusinessModel) {
+    func configure(
+        note: NoteBusinessModel,
+        infoText: String?
+    ) {
         previewImageView.image = note.previewImage
         nameLabel.text = note.name
+
+        infoLabel.removeFromSuperview()
+        NSLayoutConstraint.deactivate(withInfoLabelConstraints + withoutInfoLabelConstraints)
+
+        if let infoText {
+            infoLabel.text = infoText
+            contentView.addSubview(infoLabel)
+            NSLayoutConstraint.activate(withInfoLabelConstraints)
+        } else {
+            NSLayoutConstraint.activate(withoutInfoLabelConstraints)
+        }
     }
 }

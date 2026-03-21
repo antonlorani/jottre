@@ -50,7 +50,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let url = if let url = connectionOptions.urlContexts.first?.url {
             url
         } else {
-            EditNoteURL().toURL()
+            CloudMigrationURL().toURL()
         }
 
         let notesCoordinatorFactory: NotesCoordinatorFactory = if #available(iOS 26, *) {
