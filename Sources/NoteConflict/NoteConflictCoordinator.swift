@@ -11,7 +11,8 @@ final class NoteConflictCoordinator: Coordinator {
     }
 
     func start() {
-
+        let viewModel = NoteConflictViewModel(coordinator: self)
+        navigation.present(NoteConflictViewController(viewModel: viewModel), animated: true)
     }
 
     func dismiss() {

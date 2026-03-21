@@ -35,13 +35,13 @@ final class NoteCell: UICollectionViewCell {
 
     private lazy var withInfoLabelConstraints = [
         infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
-        infoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-        infoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        infoLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+        infoLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+        infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
     ]
 
     private lazy var withoutInfoLabelConstraints = [
-        nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
     ]
 
     override init(frame: CGRect) {
@@ -71,14 +71,13 @@ final class NoteCell: UICollectionViewCell {
             previewImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: separatorLine.topAnchor),
 
-            separatorLine.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            separatorLine.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             separatorLine.heightAnchor.constraint(equalToConstant: 1),
 
-            nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: 8),
-            nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor, constant: -16),
+            nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: 12),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
         ] + withoutInfoLabelConstraints)
     }
 
