@@ -8,8 +8,7 @@ final class NoteConflictViewModel: Sendable {
         let infoText: String?
     }
 
-    let headline: String
-    let subheadline: String
+    let pageHeaderConfiguration: PageHeaderView.Configuration
 
     private(set) lazy var notes = [
         NoteItem(
@@ -23,21 +22,21 @@ final class NoteConflictViewModel: Sendable {
     ]
 
     private(set) lazy var actions = [
-        CallToActionStackView.ButtonConfiguration(
+        PageCallToActionView.ActionConfiguration(
             style: .primary,
             title: "Keep Version A",
             icon: nil)
         { [weak self] in
             self?.didTapKeepVersionA()
         },
-        CallToActionStackView.ButtonConfiguration(
+        PageCallToActionView.ActionConfiguration(
             style: .primary,
             title: "Keep Version B",
             icon: nil
         ) { [weak self] in
             self?.didTapKeepVersionB()
         },
-        CallToActionStackView.ButtonConfiguration(
+        PageCallToActionView.ActionConfiguration(
             style: .secondary,
             title: "Keep Both",
             icon: nil
@@ -50,8 +49,10 @@ final class NoteConflictViewModel: Sendable {
 
     init(coordinator: NoteConflictCoordinator) {
         self.coordinator = coordinator
-        headline = "Version Conflict"
-        subheadline = "\"Sketch Final\" was edited on two devices at the same time. Choose a version to keep."
+        pageHeaderConfiguration = PageHeaderView.Configuration(
+            headline: "Version Conflict",
+            subheadline: #""Sketch Final" was edited on two devices at the same time. Choose a version to keep."#
+        )
     }
 
     private func didTapKeepVersionA() {

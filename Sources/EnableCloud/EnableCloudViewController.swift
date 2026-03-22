@@ -3,44 +3,16 @@ import UIKit
 final class EnableCloudViewController: UIViewController {
 
     private enum Constants {
-        enum Headline {
-            static let font = {
-                let font = UIFont.preferredFont(forTextStyle: .largeTitle)
-                return UIFont.boldSystemFont(ofSize: font.pointSize)
-            }()
-        }
-
-        enum Subheadline {
-            static let font = {
-                let font = UIFont.preferredFont(forTextStyle: .subheadline)
-                return UIFont.boldSystemFont(ofSize: font.pointSize)
-            }()
-        }
-
         static let itemSpacing = CGFloat(8)
         static let featureIconSize = CGFloat(28)
         static let featureRowCornerRadius = CGFloat(20)
         static let featureRowPadding = CGFloat(16)
     }
 
-    private let headlineLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Enable iCloud"
-        label.font = Constants.Headline.font
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private let subheadlineLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
-        label.font = Constants.Subheadline.font
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
+    private lazy var pageHeaderView: PageHeaderView = {
+        let view = PageHeaderView(configuration: viewModel.pageHeaderConfiguration)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private let contentScrollView: UIScrollView = {
@@ -58,7 +30,11 @@ final class EnableCloudViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var callToActionStackView = CallToActionStackView(buttons: viewModel.actions)
+    private lazy var callToActionView: PageCallToActionView = {
+        let view = PageCallToActionView(actions: viewModel.actions)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private let viewModel: EnableCloudViewModel
     private let closeBarButtonItemFactory: BarButtonItemFactory
@@ -94,11 +70,10 @@ final class EnableCloudViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         view.directionalLayoutMargins.bottom = 16
 
-        view.addSubview(headlineLabel)
-        view.addSubview(subheadlineLabel)
+        view.addSubview(pageHeaderView)
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentStackView)
-        view.addSubview(callToActionStackView)
+        view.addSubview(callToActionView)
 
         contentStackView.addArrangedSubview(
             makeFeatureRow(
@@ -114,20 +89,14 @@ final class EnableCloudViewController: UIViewController {
         )
 
         NSLayoutConstraint.activate([
-            headlineLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headlineLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            headlineLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            pageHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            pageHeaderView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            pageHeaderView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
-            subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
-            subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.layoutMarginsGuide.leadingAnchor),
-            subheadlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).withPriority(.defaultHigh),
-            subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
-            subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.layoutMarginsGuide.trailingAnchor),
-
-            contentScrollView.topAnchor.constraint(equalTo: subheadlineLabel.bottomAnchor, constant: 24),
+            contentScrollView.topAnchor.constraint(equalTo: pageHeaderView.bottomAnchor, constant: 24),
             contentScrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: callToActionStackView.topAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
 
             contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
@@ -135,9 +104,9 @@ final class EnableCloudViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
             contentStackView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
 
-            callToActionStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            callToActionStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            callToActionStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 

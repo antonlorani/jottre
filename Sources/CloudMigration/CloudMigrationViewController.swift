@@ -3,20 +3,6 @@ import UIKit
 final class CloudMigrationViewController: UIViewController {
 
     private enum Constants {
-        enum Headline {
-            static let font = {
-                let font = UIFont.preferredFont(forTextStyle: .largeTitle)
-                return UIFont.boldSystemFont(ofSize: font.pointSize)
-            }()
-        }
-
-        enum Subheadline {
-            static let font = {
-                let font = UIFont.preferredFont(forTextStyle: .subheadline)
-                return UIFont.boldSystemFont(ofSize: font.pointSize)
-            }()
-        }
-
         enum CollectionViewFlowLayout {
             static let inset = CGFloat(16)
             static let spacing = CGFloat(8)
@@ -24,24 +10,10 @@ final class CloudMigrationViewController: UIViewController {
         }
     }
 
-    private let headlineLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "iCloud is ready"
-        label.font = Constants.Headline.font
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private let subheadlineLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Your Jots can now sync across all your devices. Choose which ones to bring along."
-        label.font = Constants.Subheadline.font
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
+    private lazy var pageHeaderView: PageHeaderView = {
+        let view = PageHeaderView(configuration: viewModel.pageHeaderConfiguration)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
@@ -69,7 +41,11 @@ final class CloudMigrationViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var callToActionStackView = CallToActionStackView(buttons: viewModel.actions)
+    private lazy var callToActionView: PageCallToActionView = {
+        let view = PageCallToActionView(actions: viewModel.actions)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private var itemsTask: Task<Void, Never>?
     private var items = [CloudMigrationViewModel.Item]()
@@ -107,30 +83,23 @@ final class CloudMigrationViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         view.directionalLayoutMargins.bottom = 16
 
-        view.addSubview(headlineLabel)
-        view.addSubview(subheadlineLabel)
+        view.addSubview(pageHeaderView)
         view.addSubview(collectionView)
-        view.addSubview(callToActionStackView)
+        view.addSubview(callToActionView)
 
         NSLayoutConstraint.activate([
-            headlineLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-            headlineLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            headlineLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            pageHeaderView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            pageHeaderView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            pageHeaderView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
-            subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
-            subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.layoutMarginsGuide.leadingAnchor),
-            subheadlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).withPriority(.defaultHigh),
-            subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
-            subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.layoutMarginsGuide.trailingAnchor),
-
-            collectionView.topAnchor.constraint(equalTo: subheadlineLabel.bottomAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: pageHeaderView.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: callToActionStackView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
 
-            callToActionStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            callToActionStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            callToActionStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 

@@ -1,8 +1,8 @@
 import UIKit
 
-final class CallToActionStackView: UIStackView {
+final class PageCallToActionView: UIStackView {
 
-    struct ButtonConfiguration {
+    struct ActionConfiguration {
         enum Style {
             case primary
             case secondary
@@ -13,13 +13,12 @@ final class CallToActionStackView: UIStackView {
         let action: () -> Void
     }
 
-    init(buttons: [ButtonConfiguration]) {
+    init(actions: [ActionConfiguration]) {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
         axis = .vertical
         spacing = 8
-        for config in buttons {
-            addArrangedSubview(makeButton(for: config))
+        for action in actions {
+            addArrangedSubview(makeButton(action: action))
         }
     }
 
@@ -39,9 +38,9 @@ final class CallToActionStackView: UIStackView {
         super.layoutSubviews()
     }
 
-    private func makeButton(for config: ButtonConfiguration) -> UIButton {
+    private func makeButton(action: ActionConfiguration) -> UIButton {
         var configuration = UIButton.Configuration.filled()
-        switch config.style {
+        switch action.style {
         case .primary:
             configuration.baseBackgroundColor = .label
             configuration.baseForegroundColor = .systemBackground
@@ -49,8 +48,8 @@ final class CallToActionStackView: UIStackView {
             configuration.baseBackgroundColor = .secondarySystemGroupedBackground
             configuration.baseForegroundColor = .label
         }
-        configuration.title = config.title
-        if let iconName = config.icon {
+        configuration.title = action.title
+        if let iconName = action.icon {
             configuration.image = UIImage(systemName: iconName)
             configuration.imagePlacement = .trailing
             configuration.imagePadding = 8
@@ -64,7 +63,7 @@ final class CallToActionStackView: UIStackView {
         let button = UIButton(
             configuration: configuration,
             primaryAction: UIAction { _ in
-                config.action()
+                action.action()
             }
         )
         button.translatesAutoresizingMaskIntoConstraints = false

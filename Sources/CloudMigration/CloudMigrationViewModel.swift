@@ -13,10 +13,19 @@ final class CloudMigrationViewModel: Sendable {
 
     private weak var coordinator: CloudMigrationCoordinator?
 
-    private(set) lazy var actions: [CallToActionStackView.ButtonConfiguration] = [
-        .init(style: .primary, title: "Done", icon: nil, action: { [weak self] in
+    let pageHeaderConfiguration = PageHeaderView.Configuration(
+        headline: "iCloud is ready",
+        subheadline: "Your Jots can now sync across all your devices. Choose which ones to bring along."
+    )
+
+    private(set) lazy var actions = [
+        PageCallToActionView.ActionConfiguration(
+            style: .primary,
+            title: "Done",
+            icon: nil
+        ) { [weak self] in
             self?.didTapDoneButton()
-        }),
+        }
     ]
 
     init(coordinator: CloudMigrationCoordinator) {
