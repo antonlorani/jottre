@@ -2,6 +2,7 @@ import UIKit
 
 final class EditNoteCoordinator: NavigationCoordinator {
 
+    private var retainedNoteConflictCoordinator: Coordinator?
     private var retainedShareNoteCoordinator: Coordinator?
     private var retainedDeleteNoteCoordinator: Coordinator?
     private var retainedRenameNoteCoordinator: Coordinator?
@@ -22,7 +23,11 @@ final class EditNoteCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
-        [
+
+        retainedNoteConflictCoordinator = NoteConflictCoordinator(navigation: navigation)
+        retainedNoteConflictCoordinator?.start()
+
+        return [
             editNoteViewControllerFactory.make(coordinator: self)
         ]
     }

@@ -82,7 +82,7 @@ final class CloudMigrationNoteCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             previewImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             previewImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            previewImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 8),
+            previewImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             previewImageView.widthAnchor.constraint(equalToConstant: 70),
 
             separatorLine.leadingAnchor.constraint(equalTo: previewImageView.trailingAnchor),

@@ -18,10 +18,11 @@ final class NotesViewController: UIViewController {
         flowLayout.minimumLineSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.sectionInset = UIEdgeInsets(
             top: Constants.CollectionViewFlowLayout.inset,
-            left: Constants.CollectionViewFlowLayout.inset,
+            left: 0,
             bottom: Constants.CollectionViewFlowLayout.inset,
-            right: Constants.CollectionViewFlowLayout.inset
+            right: 0
         )
+        flowLayout.sectionInsetReference = .fromLayoutMargins
         return flowLayout
     }()
 
@@ -34,6 +35,7 @@ final class NotesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = view.backgroundColor
+        collectionView.preservesSuperviewLayoutMargins = true
         collectionView.register(NoteCell.self, forCellWithReuseIdentifier: NoteCell.reuseIdentifier)
         return collectionView
     }()
@@ -133,6 +135,13 @@ final class NotesViewController: UIViewController {
         )
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
     }
@@ -220,9 +229,8 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let spacing = Constants.CollectionViewFlowLayout.spacing
-        let inset = Constants.CollectionViewFlowLayout.inset
         let minWidth = Constants.CollectionViewFlowLayout.minimumCellWidth
-        let available = collectionView.bounds.width - inset * 2
+        let available = collectionView.bounds.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
         let columns = max(1, floor((available + spacing) / (minWidth + spacing)))
         let width = (available - spacing * (columns - 1)) / columns
         return CGSize(width: width, height: width * 1.1)

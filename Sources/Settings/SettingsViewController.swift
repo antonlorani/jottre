@@ -18,10 +18,11 @@ final class SettingsViewController: UIViewController {
         flowLayout.minimumLineSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.sectionInset = UIEdgeInsets(
             top: Constants.CollectionViewFlowLayout.inset,
-            left: Constants.CollectionViewFlowLayout.inset,
+            left: 0,
             bottom: Constants.CollectionViewFlowLayout.inset,
-            right: Constants.CollectionViewFlowLayout.inset
+            right: 0
         )
+        flowLayout.sectionInsetReference = .fromLayoutMargins
         return flowLayout
     }()
 
@@ -102,6 +103,13 @@ final class SettingsViewController: UIViewController {
         )
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
 
@@ -110,7 +118,7 @@ final class SettingsViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 }
@@ -213,8 +221,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let inset = Constants.CollectionViewFlowLayout.inset
-        let width = collectionView.bounds.width - inset * 2
+        let width = collectionView.bounds.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
         return CGSize(
             width: width,
             height: Constants.CollectionViewFlowLayout.itemHeight

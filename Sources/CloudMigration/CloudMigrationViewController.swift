@@ -50,11 +50,12 @@ final class CloudMigrationViewController: UIViewController {
         flowLayout.minimumInteritemSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.minimumLineSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.sectionInset = UIEdgeInsets(
-            top: Constants.CollectionViewFlowLayout.inset,
-            left: Constants.CollectionViewFlowLayout.inset,
+            top: 0,
+            left: 0,
             bottom: Constants.CollectionViewFlowLayout.inset,
-            right: Constants.CollectionViewFlowLayout.inset
+            right: 0
         )
+        flowLayout.sectionInsetReference = .fromLayoutMargins
         return flowLayout
     }()
 
@@ -158,6 +159,13 @@ final class CloudMigrationViewController: UIViewController {
         ])
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     private func handleItems(items: [CloudMigrationViewModel.Item]) {
         self.items = items
         collectionView.reloadData()
@@ -204,8 +212,10 @@ extension CloudMigrationViewController: UICollectionViewDelegate, UICollectionVi
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let inset = Constants.CollectionViewFlowLayout.inset
-        let width = collectionView.bounds.width - inset * 2
+        let spacing = Constants.CollectionViewFlowLayout.spacing
+        let available = collectionView.bounds.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
+        let columns: CGFloat = collectionView.bounds.width > collectionView.bounds.height ? 2 : 1
+        let width = (available - spacing * (columns - 1)) / columns
         return CGSize(
             width: width,
             height: Constants.CollectionViewFlowLayout.itemHeight
