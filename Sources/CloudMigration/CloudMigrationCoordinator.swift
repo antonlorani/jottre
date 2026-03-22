@@ -13,9 +13,12 @@ final class CloudMigrationCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
-        navigation.present(CloudMigrationViewController(
-            viewModel: CloudMigrationViewModel(coordinator: self)
-        ), animated: true)
+        let navigationController = UINavigationController(
+            rootViewController: CloudMigrationViewController(
+                viewModel: CloudMigrationViewModel(coordinator: self)
+            )
+        )
+        navigation.present(navigationController, animated: true)
         return []
     }
 

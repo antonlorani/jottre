@@ -13,6 +13,12 @@ final class CloudMigrationViewModel: Sendable {
 
     private weak var coordinator: CloudMigrationCoordinator?
 
+    private(set) lazy var actions: [CallToActionStackView.ButtonConfiguration] = [
+        .init(style: .primary, title: "Done", icon: nil, action: { [weak self] in
+            self?.didTapDoneButton()
+        }),
+    ]
+
     init(coordinator: CloudMigrationCoordinator) {
         self.coordinator = coordinator
 
@@ -63,7 +69,7 @@ final class CloudMigrationViewModel: Sendable {
         
     }
 
-    func didTapDoneButton() {
+    private func didTapDoneButton() {
         coordinator?.dismiss()
     }
 }

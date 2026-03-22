@@ -8,20 +8,10 @@ final class NoteConflictViewModel: Sendable {
         let infoText: String?
     }
 
-    struct ActionItem: Sendable {
-        enum Style: Sendable {
-            case primary
-            case secondary
-        }
-        let title: String
-        let style: Style
-        let onTap: @MainActor @Sendable () -> Void
-    }
-
     let headline: String
     let subheadline: String
 
-    private(set) lazy var notes: [NoteItem] = [
+    private(set) lazy var notes = [
         NoteItem(
             note: NoteBusinessModel(previewImage: nil, name: "Version A"),
             infoText: "This Device - now"
@@ -32,16 +22,28 @@ final class NoteConflictViewModel: Sendable {
         ),
     ]
 
-    private(set) lazy var actions: [ActionItem] = [
-        ActionItem(title: "Keep Version A", style: .primary, onTap: { [weak self] in
+    private(set) lazy var actions = [
+        CallToActionStackView.ButtonConfiguration(
+            style: .primary,
+            title: "Keep Version A",
+            icon: nil)
+        { [weak self] in
             self?.didTapKeepVersionA()
-        }),
-        ActionItem(title: "Keep Version B", style: .primary, onTap: { [weak self] in
+        },
+        CallToActionStackView.ButtonConfiguration(
+            style: .primary,
+            title: "Keep Version B",
+            icon: nil
+        ) { [weak self] in
             self?.didTapKeepVersionB()
-        }),
-        ActionItem(title: "Keep Both", style: .secondary, onTap: { [weak self] in
+        },
+        CallToActionStackView.ButtonConfiguration(
+            style: .secondary,
+            title: "Keep Both",
+            icon: nil
+        ) { [weak self] in
             self?.didTapKeepBoth()
-        }),
+        },
     ]
 
     private weak var coordinator: NoteConflictCoordinator?

@@ -63,13 +63,7 @@ final class NoteConflictViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var actionsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
-    }()
+    private lazy var callToActionStackView = CallToActionStackView(buttons: viewModel.actions)
 
     private let viewModel: NoteConflictViewModel
 
@@ -90,21 +84,10 @@ final class NoteConflictViewController: UIViewController {
         setUpViews()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        if view.bounds.width > view.bounds.height {
-            actionsStackView.axis = .horizontal
-            actionsStackView.distribution = .fillEqually
-        } else {
-            actionsStackView.axis = .vertical
-            actionsStackView.distribution = .fill
-        }
-    }
-
     private func setUpViews() {
         isModalInPresentation = true
         view.backgroundColor = .systemGroupedBackground
+        view.directionalLayoutMargins.bottom = 16
 
         headlineLabel.text = viewModel.headline
         subheadlineLabel.text = viewModel.subheadline
@@ -114,7 +97,7 @@ final class NoteConflictViewController: UIViewController {
         scrollContentView.addSubview(headlineLabel)
         scrollContentView.addSubview(subheadlineLabel)
         scrollContentView.addSubview(notesStackView)
-        view.addSubview(actionsStackView)
+        view.addSubview(callToActionStackView)
 
         for noteItem in viewModel.notes {
             let cell = NoteCell(frame: .zero)
@@ -122,15 +105,11 @@ final class NoteConflictViewController: UIViewController {
             notesStackView.addArrangedSubview(cell)
         }
 
-        for action in viewModel.actions {
-            actionsStackView.addArrangedSubview(makeActionButton(for: action))
-        }
-
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: actionsStackView.topAnchor, constant: -16),
+            scrollView.bottomAnchor.constraint(equalTo: callToActionStackView.topAnchor, constant: -16),
 
             scrollContentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             scrollContentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -154,37 +133,10 @@ final class NoteConflictViewController: UIViewController {
             notesStackView.heightAnchor.constraint(equalToConstant: Constants.NotesStack.itemHeight),
             notesStackView.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: -16),
 
-            actionsStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            actionsStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            actionsStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16),
+            callToActionStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 
-    private func makeActionButton(for action: NoteConflictViewModel.ActionItem) -> UIButton {
-        var configuration = UIButton.Configuration.filled()
-        switch action.style {
-        case .primary:
-            configuration.baseBackgroundColor = .label
-            configuration.baseForegroundColor = .systemBackground
-        case .secondary:
-            configuration.baseBackgroundColor = .secondarySystemGroupedBackground
-            configuration.baseForegroundColor = .label
-        }
-        configuration.title = action.title
-        configuration.cornerStyle = .capsule
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = .systemFont(ofSize: 17, weight: .semibold)
-            return outgoing
-        }
-        let button = UIButton(
-            configuration: configuration,
-            primaryAction: UIAction { _ in
-                action.onTap()
-            }
-        )
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 59).isActive = true
-        return button
-    }
 }

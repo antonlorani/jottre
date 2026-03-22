@@ -58,29 +58,7 @@ final class EnableCloudViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var learnButton: UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.title = "Learn How To Enable"
-        configuration.image = UIImage(systemName: "arrow.up.forward")
-        configuration.imagePlacement = .trailing
-        configuration.imagePadding = 8
-        configuration.baseBackgroundColor = .label
-        configuration.baseForegroundColor = .systemBackground
-        configuration.cornerStyle = .capsule
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = .systemFont(ofSize: 17, weight: .semibold)
-            return outgoing
-        }
-        let button = UIButton(
-            configuration: configuration,
-            primaryAction: UIAction { [weak self] _ in
-                self?.viewModel.didTapLearnHowToEnable()
-            }
-        )
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var callToActionStackView = CallToActionStackView(buttons: viewModel.actions)
 
     private let viewModel: EnableCloudViewModel
     private let closeBarButtonItemFactory: BarButtonItemFactory
@@ -114,12 +92,13 @@ final class EnableCloudViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
+        view.directionalLayoutMargins.bottom = 16
 
         view.addSubview(headlineLabel)
         view.addSubview(subheadlineLabel)
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentStackView)
-        view.addSubview(learnButton)
+        view.addSubview(callToActionStackView)
 
         contentStackView.addArrangedSubview(
             makeFeatureRow(
@@ -148,7 +127,7 @@ final class EnableCloudViewController: UIViewController {
             contentScrollView.topAnchor.constraint(equalTo: subheadlineLabel.bottomAnchor, constant: 24),
             contentScrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: callToActionStackView.topAnchor),
 
             contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
@@ -156,10 +135,9 @@ final class EnableCloudViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
             contentStackView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
 
-            learnButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            learnButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-            learnButton.heightAnchor.constraint(equalToConstant: 59),
+            callToActionStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 

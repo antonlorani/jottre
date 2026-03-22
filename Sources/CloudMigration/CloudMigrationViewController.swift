@@ -49,12 +49,6 @@ final class CloudMigrationViewController: UIViewController {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumInteritemSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.minimumLineSpacing = Constants.CollectionViewFlowLayout.spacing
-        flowLayout.sectionInset = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: Constants.CollectionViewFlowLayout.inset,
-            right: 0
-        )
         flowLayout.sectionInsetReference = .fromLayoutMargins
         return flowLayout
     }()
@@ -75,26 +69,7 @@ final class CloudMigrationViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var doneButton: UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.title = "Done"
-        configuration.baseBackgroundColor = .label
-        configuration.baseForegroundColor = .systemBackground
-        configuration.cornerStyle = .capsule
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = .systemFont(ofSize: 17, weight: .semibold)
-            return outgoing
-        }
-        let button = UIButton(
-            configuration: configuration,
-            primaryAction: UIAction { [weak self] _ in
-                self?.viewModel.didTapDoneButton()
-            }
-        )
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var callToActionStackView = CallToActionStackView(buttons: viewModel.actions)
 
     private var itemsTask: Task<Void, Never>?
     private var items = [CloudMigrationViewModel.Item]()
@@ -130,14 +105,15 @@ final class CloudMigrationViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .systemGroupedBackground
+        view.directionalLayoutMargins.bottom = 16
 
         view.addSubview(headlineLabel)
         view.addSubview(subheadlineLabel)
         view.addSubview(collectionView)
-        view.addSubview(doneButton)
+        view.addSubview(callToActionStackView)
 
         NSLayoutConstraint.activate([
-            headlineLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 42),
+            headlineLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
             headlineLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             headlineLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
@@ -150,12 +126,11 @@ final class CloudMigrationViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: subheadlineLabel.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: callToActionStackView.topAnchor),
 
-            doneButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            doneButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            doneButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -16),
-            doneButton.heightAnchor.constraint(equalToConstant: 59),
+            callToActionStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionStackView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 
