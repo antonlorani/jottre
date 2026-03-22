@@ -3,9 +3,14 @@ import UIKit
 final class CloudMigrationCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
+    private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory
 
-    init(navigation: Navigation) {
+    init(
+        navigation: Navigation,
+        cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory
+    ) {
         self.navigation = navigation
+        self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -14,9 +19,7 @@ final class CloudMigrationCoordinator: NavigationCoordinator {
 
     func handle(url: URL) -> [UIViewController] {
         let navigationController = UINavigationController(
-            rootViewController: CloudMigrationViewController(
-                viewModel: CloudMigrationViewModel(coordinator: self)
-            )
+            rootViewController: cloudMigrationViewControllerFactory.make(coordinator: self)
         )
         navigation.present(navigationController, animated: true)
         return []

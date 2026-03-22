@@ -16,12 +16,6 @@ final class NotesViewController: UIViewController {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumInteritemSpacing = Constants.CollectionViewFlowLayout.spacing
         flowLayout.minimumLineSpacing = Constants.CollectionViewFlowLayout.spacing
-        flowLayout.sectionInset = UIEdgeInsets(
-            top: Constants.CollectionViewFlowLayout.inset,
-            left: 0,
-            bottom: Constants.CollectionViewFlowLayout.inset,
-            right: 0
-        )
         flowLayout.sectionInsetReference = .fromLayoutMargins
         return flowLayout
     }()
@@ -68,20 +62,17 @@ final class NotesViewController: UIViewController {
     private var items = [NotesViewModel.State.Item]()
 
     private let viewModel: NotesViewModel
-    private let settingsBarButtonItemFactory: BarButtonItemFactory
-    private let createNoteBarButtonItemFactory: BarButtonItemFactory
-    private let enableCloudBarButtonItem: BarButtonItemFactory
+    private let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+    private let textBarButtonItemFactory: TextBarButtonItemFactory
 
     init(
         viewModel: NotesViewModel,
-        settingsBarButtonItemFactory: BarButtonItemFactory,
-        createNoteBarButtonItemFactory: BarButtonItemFactory,
-        enableCloudBarButtonItem: BarButtonItemFactory
+        symbolBarButtonItemFactory: SymbolBarButtonItemFactory,
+        textBarButtonItemFactory: TextBarButtonItemFactory
     ) {
         self.viewModel = viewModel
-        self.settingsBarButtonItemFactory = settingsBarButtonItemFactory
-        self.createNoteBarButtonItemFactory = createNoteBarButtonItemFactory
-        self.enableCloudBarButtonItem = enableCloudBarButtonItem
+        self.symbolBarButtonItemFactory = symbolBarButtonItemFactory
+        self.textBarButtonItemFactory = textBarButtonItemFactory
         super.init(nibName: nil, bundle: nil)
 
         stateTask = Task { [weak self] in
@@ -117,18 +108,25 @@ final class NotesViewController: UIViewController {
 #endif
         
         navigationItem.leftBarButtonItems = [
-            settingsBarButtonItemFactory.make(
-                primaryAction: UIAction { [weak self] _ in
-                    self?.viewModel.didTapSettingsButton()
-                }
+            symbolBarButtonItemFactory.make(
+                symbolName: "gear",
+                primaryAction: .action(
+                    UIAction { [weak self] _ in
+                        self?.viewModel.didTapSettingsButton()
+                    }
+                )
             ),
-            enableCloudBarButtonItem.make(
-                primaryAction: UIAction { [weak self] _ in
-                    self?.viewModel.didTapEnableCloudButton()
-                }
+            symbolBarButtonItemFactory.make(
+                symbolName: "icloud.slash",
+                primaryAction: .action(
+                    UIAction { [weak self] _ in
+                        self?.viewModel.didTapEnableCloudButton()
+                    }
+                )
             )
         ]
-        navigationItem.rightBarButtonItem = createNoteBarButtonItemFactory.make(
+        navigationItem.rightBarButtonItem = textBarButtonItemFactory.make(
+            title: "Create",
             primaryAction: UIAction { [weak self] _ in
                 self?.viewModel.didTapCreateNoteButton()
             }

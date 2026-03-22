@@ -35,6 +35,7 @@ final class SettingsViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = view.backgroundColor
+        collectionView.preservesSuperviewLayoutMargins = true
         collectionView.register(
             SettingsDropdownCell.self,
             forCellWithReuseIdentifier: SettingsDropdownCell.reuseIdentifier
@@ -58,14 +59,14 @@ final class SettingsViewController: UIViewController {
     private var items = [SettingsViewModel.Item]()
 
     private let viewModel: SettingsViewModel
-    private let closeBarButtonItemFactory: BarButtonItemFactory
+    private let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     init(
         viewModel: SettingsViewModel,
-        closeBarButtonItemFactory: BarButtonItemFactory
+        symbolBarButtonItemFactory: SymbolBarButtonItemFactory
     ) {
         self.viewModel = viewModel
-        self.closeBarButtonItemFactory = closeBarButtonItemFactory
+        self.symbolBarButtonItemFactory = symbolBarButtonItemFactory
         super.init(nibName: nil, bundle: nil)
 
         itemsTask = Task { [weak self] in
@@ -96,10 +97,13 @@ final class SettingsViewController: UIViewController {
     private func setUpNavigationItem() {
         navigationItem.title = "Settings"
 
-        navigationItem.rightBarButtonItem = closeBarButtonItemFactory.make(
-            primaryAction: UIAction { [weak self] _ in
-                self?.viewModel.didTapCloseButton()
-            }
+        navigationItem.rightBarButtonItem = symbolBarButtonItemFactory.make(
+            symbolName: "xmark",
+            primaryAction: .action(
+                UIAction { [weak self] _ in
+                    self?.viewModel.didTapCloseButton()
+                }
+            )
         )
     }
 

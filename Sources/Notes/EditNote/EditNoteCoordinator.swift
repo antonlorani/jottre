@@ -9,13 +9,16 @@ final class EditNoteCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
     private let editNoteViewControllerFactory: EditNoteViewControllerFactory
+    private let noteConflictCoordinatorFactory: NoteConflictCoordinatorFactory
 
     init(
         navigation: Navigation,
-        editNoteViewControllerFactory: EditNoteViewControllerFactory
+        editNoteViewControllerFactory: EditNoteViewControllerFactory,
+        noteConflictCoordinatorFactory: NoteConflictCoordinatorFactory
     ) {
         self.navigation = navigation
         self.editNoteViewControllerFactory = editNoteViewControllerFactory
+        self.noteConflictCoordinatorFactory = noteConflictCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -24,7 +27,8 @@ final class EditNoteCoordinator: NavigationCoordinator {
 
     func handle(url: URL) -> [UIViewController] {
 
-        retainedNoteConflictCoordinator = NoteConflictCoordinator(navigation: navigation)
+        retainedNoteConflictCoordinator = noteConflictCoordinatorFactory
+            .make(navigation: navigation)
         retainedNoteConflictCoordinator?.start()
 
         return [

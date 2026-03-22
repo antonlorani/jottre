@@ -14,9 +14,8 @@ struct IOS18NotesViewControllerFactory: NotesViewControllerFactory {
                 coordinator: coordinator,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
-            settingsBarButtonItemFactory: IOS18SettingsBarButtonItemFactory(),
-            createNoteBarButtonItemFactory: IOS18CreateNoteBarButtonItemFactory(),
-            enableCloudBarButtonItem: IOS18EnableCloudBarButtonItemFactory()
+            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory(),
+            textBarButtonItemFactory: IOS18TextBarButtonItemFactory()
         )
     }
 }
@@ -30,9 +29,8 @@ struct IOS26NotesViewControllerFactory: NotesViewControllerFactory {
                 coordinator: coordinator,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
-            settingsBarButtonItemFactory: IOS26SettingsBarButtonItemFactory(),
-            createNoteBarButtonItemFactory: IOS26CreateNoteBarButtonItemFactory(),
-            enableCloudBarButtonItem: IOS26EnableCloudBarButtonItemFactory()
+            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory(),
+            textBarButtonItemFactory: IOS26TextBarButtonItemFactory()
         )
     }
 }

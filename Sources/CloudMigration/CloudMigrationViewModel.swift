@@ -1,22 +1,12 @@
 import Foundation
 
 @MainActor
-final class CloudMigrationViewModel: Sendable {
+final class CloudMigrationViewModel: PageViewModel, Sendable {
 
-    struct Item: Sendable {
-        let businessModel: CloudMigrationNoteBusinessModel
-        let onAction: @MainActor @Sendable () -> Void
-    }
-
-    let items: AsyncStream<[Item]>
-    private let itemsContinuation: AsyncStream<[Item]>.Continuation
+    let items: AsyncStream<[PageItem]>
+    private let _itemsContinuation: AsyncStream<[PageItem]>.Continuation
 
     private weak var coordinator: CloudMigrationCoordinator?
-
-    let pageHeaderConfiguration = PageHeaderView.Configuration(
-        headline: "iCloud is ready",
-        subheadline: "Your Jots can now sync across all your devices. Choose which ones to bring along."
-    )
 
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
@@ -31,14 +21,23 @@ final class CloudMigrationViewModel: Sendable {
     init(coordinator: CloudMigrationCoordinator) {
         self.coordinator = coordinator
 
-        (items, itemsContinuation) = AsyncStream.makeStream(
-            of: [Item].self,
+        (items, _itemsContinuation) = AsyncStream.makeStream(
+            of: [PageItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        itemsContinuation.yield(
-            [
-                Item(
-                    businessModel: CloudMigrationNoteBusinessModel(
+        _itemsContinuation.yield([
+            PageItem(
+                content: .pageHeader(
+                    PageHeaderBusinessModel(
+                        headline: "iCloud is ready",
+                        subheadline: "Your Jots can now sync across all your devices. Choose which ones to bring along."
+                    )
+                ),
+                sizing: .fullWidth
+            ),
+            PageItem(
+                content: .migrationNote(
+                    CloudMigrationNoteBusinessModel(
                         previewImage: nil,
                         name: "Project Brainstorm",
                         lastEditedDateString: "February 15 2026",
@@ -48,35 +47,36 @@ final class CloudMigrationViewModel: Sendable {
                         self?.didTapItem(index: 0)
                     }
                 ),
-                Item(
-                    businessModel: CloudMigrationNoteBusinessModel(
+                sizing: .adaptiveGrid(maxColumns: 2, height: 68)
+            ),
+            PageItem(
+                content: .migrationNote(
+                    CloudMigrationNoteBusinessModel(
                         previewImage: nil,
                         name: "Sketch Ideas",
                         lastEditedDateString: "May 11 2023",
                         isCloudSynchronized: false
                     ),
-                    onAction: {
-
-                    }
+                    onAction: {}
                 ),
-                Item(
-                    businessModel: CloudMigrationNoteBusinessModel(
+                sizing: .adaptiveGrid(maxColumns: 2, height: 68)
+            ),
+            PageItem(
+                content: .migrationNote(
+                    CloudMigrationNoteBusinessModel(
                         previewImage: nil,
                         name: "Calculator Pro",
                         lastEditedDateString: "April 25 2021",
                         isCloudSynchronized: true
                     ),
-                    onAction: {
-
-                    }
+                    onAction: {}
                 ),
-            ]
-        )
+                sizing: .adaptiveGrid(maxColumns: 2, height: 68)
+            ),
+        ])
     }
 
-    private func didTapItem(index: Int) {
-        
-    }
+    private func didTapItem(index: Int) {}
 
     private func didTapDoneButton() {
         coordinator?.dismiss()

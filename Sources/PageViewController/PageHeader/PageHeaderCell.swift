@@ -1,11 +1,7 @@
 import UIKit
 
-final class PageHeaderView: UIView {
-
-    struct Configuration {
-        let headline: String
-        let subheadline: String
-    }
+final class PageHeaderCell: UICollectionViewCell {
+    static let reuseIdentifier = "PageHeaderCell"
 
     private let headlineLabel: UILabel = {
         let label = UILabel()
@@ -31,10 +27,9 @@ final class PageHeaderView: UIView {
         return label
     }()
 
-    init(configuration: Configuration) {
-        super.init(frame: .zero)
-        headlineLabel.text = configuration.headline
-        subheadlineLabel.text = configuration.subheadline
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
         setUpViews()
     }
 
@@ -44,20 +39,25 @@ final class PageHeaderView: UIView {
     }
 
     private func setUpViews() {
-        addSubview(headlineLabel)
-        addSubview(subheadlineLabel)
+        contentView.addSubview(headlineLabel)
+        contentView.addSubview(subheadlineLabel)
 
         NSLayoutConstraint.activate([
-            headlineLabel.topAnchor.constraint(equalTo: topAnchor),
-            headlineLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            headlineLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headlineLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headlineLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            headlineLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
 
             subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
-            subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.leadingAnchor),
             subheadlineLabel.centerXAnchor.constraint(equalTo: centerXAnchor).withPriority(.defaultHigh),
             subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
-            subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            subheadlineLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
+            subheadlineLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
         ])
+    }
+
+    func configure(pageHeader: PageHeaderBusinessModel) {
+        headlineLabel.text = pageHeader.headline
+        subheadlineLabel.text = pageHeader.subheadline
     }
 }

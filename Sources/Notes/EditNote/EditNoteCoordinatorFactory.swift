@@ -9,7 +9,8 @@ struct IOS18EditNoteCoordinatorFactory: EditNoteCoordinatorFactory {
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditNoteCoordinator(
             navigation: navigation,
-            editNoteViewControllerFactory: IOS18EditNoteViewControllerFactory()
+            editNoteViewControllerFactory: IOS18EditNoteViewControllerFactory(),
+            noteConflictCoordinatorFactory: IOS18NoteConflictCoordinatorFactory()
         )
     }
 }
@@ -20,7 +21,8 @@ struct IOS26EditNoteCoordinatorFactory: EditNoteCoordinatorFactory {
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditNoteCoordinator(
             navigation: navigation,
-            editNoteViewControllerFactory: IOS26EditNoteViewControllerFactory()
+            editNoteViewControllerFactory: IOS26EditNoteViewControllerFactory(),
+            noteConflictCoordinatorFactory: IOS26NoteConflictCoordinatorFactory()
         )
     }
 }

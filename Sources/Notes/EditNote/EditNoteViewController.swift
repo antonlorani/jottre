@@ -25,17 +25,14 @@ final class EditNoteViewController: UIViewController {
     private var isEditingTask: Task<Void, Never>?
 
     private let viewModel: EditNoteViewModel
-    private let toggleEditingBarButtonItemFactory: ToggleEditingBarButtonItemFactory
-    private let expandMoreBarButtonItemFactory: ExpandMoreMenuBarButtonItemFactory
+    private let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     init(
         viewModel: EditNoteViewModel,
-        toggleEditingBarButtonItemFactory: ToggleEditingBarButtonItemFactory,
-        expandMoreBarButtonItemFactory: ExpandMoreMenuBarButtonItemFactory
+        symbolBarButtonItemFactory: SymbolBarButtonItemFactory
     ) {
         self.viewModel = viewModel
-        self.toggleEditingBarButtonItemFactory = toggleEditingBarButtonItemFactory
-        self.expandMoreBarButtonItemFactory = expandMoreBarButtonItemFactory
+        self.symbolBarButtonItemFactory = symbolBarButtonItemFactory
         super.init(nibName: nil, bundle: nil)
 
         isEditingTask = Task { @MainActor in
@@ -118,18 +115,26 @@ final class EditNoteViewController: UIViewController {
         var barButtonItems = [UIBarButtonItem]()
         barButtonItems
             .append(
-                expandMoreBarButtonItemFactory
-                    .make(menu: UIMenu.make(noteMenuConfigurations: viewModel.menuConfigurations))
+                symbolBarButtonItemFactory
+                    .make(
+                        symbolName: "ellipsis",
+                        primaryAction: .menu(
+                            .make(
+                                noteMenuConfigurations: viewModel.menuConfigurations
+                            )
+                        )
+                    )
             )
 
         if let isEditing {
             barButtonItems.append(
-                toggleEditingBarButtonItemFactory.make(
-                    primaryAction: UIAction { [weak self] _ in
-                        self?.viewModel.didTapToggleEditingButton(isEditing: isEditing)
-                    },
-                    isOn: isEditing
-                )
+                symbolBarButtonItemFactory
+                    .make(
+                        symbolName: isEditing ? "pencil.tip.crop.circle.fill" : "pencil.tip.crop.circle",
+                        primaryAction: .action(UIAction { [weak self] _ in
+                            self?.viewModel.didTapToggleEditingButton(isEditing: isEditing)
+                        })
+                    )
             )
         }
 

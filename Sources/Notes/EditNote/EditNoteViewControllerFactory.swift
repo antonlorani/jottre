@@ -14,8 +14,7 @@ struct IOS18EditNoteViewControllerFactory: EditNoteViewControllerFactory {
                 coordinator: coordinator,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
-            toggleEditingBarButtonItemFactory: IOS18ToggleEditingBarButtonItemFactory(),
-            expandMoreBarButtonItemFactory: IOS18ExpandMoreMenuBarButtonItemFactory()
+            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
         )
     }
 }
@@ -29,8 +28,7 @@ struct IOS26EditNoteViewControllerFactory: EditNoteViewControllerFactory {
                 coordinator: coordinator,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
-            toggleEditingBarButtonItemFactory: IOS26ToggleEditingBarButtonItemFactory(),
-            expandMoreBarButtonItemFactory: IOS26ExpandMoreMenuBarButtonItemFactory()
+            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
         )
     }
 }

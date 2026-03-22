@@ -1,11 +1,21 @@
 import UIKit
 
-struct IOS18SettingsBarButtonItemFactory: BarButtonItemFactory {
+protocol TextBarButtonItemFactory: Sendable {
 
-    func make(primaryAction: UIAction) -> UIBarButtonItem {
+    func make(
+        title: String,
+        primaryAction: UIAction
+    ) -> UIBarButtonItem
+}
+
+struct IOS18TextBarButtonItemFactory: TextBarButtonItemFactory {
+
+    func make(
+        title: String,
+        primaryAction: UIAction
+    ) -> UIBarButtonItem {
         var configuration = UIButton.Configuration.filled()
-        configuration.image = UIImage(systemName: "gear")?
-            .withTintColor(.systemBackground, renderingMode: .alwaysOriginal)
+        configuration.title = title
         configuration.baseBackgroundColor = .label
         configuration.baseForegroundColor = .systemBackground
         configuration.cornerStyle = .capsule
@@ -20,11 +30,14 @@ struct IOS18SettingsBarButtonItemFactory: BarButtonItemFactory {
 }
 
 @available(iOS 26, *)
-struct IOS26SettingsBarButtonItemFactory: BarButtonItemFactory {
+struct IOS26TextBarButtonItemFactory: TextBarButtonItemFactory {
 
-    func make(primaryAction: UIAction) -> UIBarButtonItem {
+    func make(
+        title: String,
+        primaryAction: UIAction
+    ) -> UIBarButtonItem {
         UIBarButtonItem(
-            image: UIImage(systemName: "gear"),
+            title: title,
             primaryAction: primaryAction
         )
     }

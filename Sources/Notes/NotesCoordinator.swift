@@ -13,7 +13,7 @@ final class NotesCoordinator: NavigationCoordinator {
         enableCloudCoordinatorFactory.make(navigation: navigation),
         CreateNoteCoordinator(navigation: navigation),
         editNoteCoordinatorFactory.make(navigation: navigation),
-        CloudMigrationCoordinator(navigation: navigation)
+        cloudMigrationCoordinatorFactory.make(navigation: navigation)
     ]
 
     private let navigation: Navigation
@@ -21,19 +21,22 @@ final class NotesCoordinator: NavigationCoordinator {
     private let settingsCoordinatorFactory: SettingsCoordinatorFactory
     private let enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory
     private let editNoteCoordinatorFactory: EditNoteCoordinatorFactory
+    private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
 
     init(
         navigation: Navigation,
         notesViewControllerFactory: NotesViewControllerFactory,
         settingsCoordinatorFactory: SettingsCoordinatorFactory,
         enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory,
-        editNoteCoordinatorFactory: EditNoteCoordinatorFactory
+        editNoteCoordinatorFactory: EditNoteCoordinatorFactory,
+        cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
     ) {
         self.navigation = navigation
         self.notesViewControllerFactory = notesViewControllerFactory
         self.settingsCoordinatorFactory = settingsCoordinatorFactory
         self.enableCloudCoordinatorFactory = enableCloudCoordinatorFactory
         self.editNoteCoordinatorFactory = editNoteCoordinatorFactory
+        self.cloudMigrationCoordinatorFactory = cloudMigrationCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {

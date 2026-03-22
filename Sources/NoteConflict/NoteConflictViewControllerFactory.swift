@@ -1,16 +1,16 @@
 import UIKit
 
 @MainActor
-protocol EnableCloudViewControllerFactory: Sendable {
+protocol NoteConflictViewControllerFactory: Sendable {
 
-    func make(coordinator: EnableCloudCoordinator) -> UIViewController
+    func make(coordinator: NoteConflictCoordinator) -> UIViewController
 }
 
-struct IOS18EnableCloudViewControllerFactory: EnableCloudViewControllerFactory {
+struct IOS18NoteConflictViewControllerFactory: NoteConflictViewControllerFactory {
 
-    func make(coordinator: EnableCloudCoordinator) -> UIViewController {
+    func make(coordinator: NoteConflictCoordinator) -> UIViewController {
         PageViewController(
-            viewModel: EnableCloudViewModel(
+            viewModel: NoteConflictViewModel(
                 coordinator: coordinator
             ),
             textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
@@ -20,11 +20,11 @@ struct IOS18EnableCloudViewControllerFactory: EnableCloudViewControllerFactory {
 }
 
 @available(iOS 26, *)
-struct IOS26EnableCloudViewControllerFactory: EnableCloudViewControllerFactory {
+struct IOS26NoteConflictViewControllerFactory: NoteConflictViewControllerFactory {
 
-    func make(coordinator: EnableCloudCoordinator) -> UIViewController {
+    func make(coordinator: NoteConflictCoordinator) -> UIViewController {
         PageViewController(
-            viewModel: EnableCloudViewModel(
+            viewModel: NoteConflictViewModel(
                 coordinator: coordinator
             ),
             textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),

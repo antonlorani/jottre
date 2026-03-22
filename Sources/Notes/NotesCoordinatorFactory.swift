@@ -14,7 +14,8 @@ struct IOS18NotesCoordinatorFactory: NotesCoordinatorFactory {
             notesViewControllerFactory: IOS18NotesViewControllerFactory(),
             settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS18EnableCloudCoordinatorFactory(),
-            editNoteCoordinatorFactory: IOS18EditNoteCoordinatorFactory()
+            editNoteCoordinatorFactory: IOS18EditNoteCoordinatorFactory(),
+            cloudMigrationCoordinatorFactory: IOS18CloudMigrationCoordinatorFactory()
         )
     }
 }
@@ -28,7 +29,8 @@ struct IOS26NotesCoordinatorFactory: NotesCoordinatorFactory {
             notesViewControllerFactory: IOS26NotesViewControllerFactory(),
             settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS26EnableCloudCoordinatorFactory(),
-            editNoteCoordinatorFactory: IOS26EditNoteCoordinatorFactory()
+            editNoteCoordinatorFactory: IOS26EditNoteCoordinatorFactory(),
+            cloudMigrationCoordinatorFactory: IOS26CloudMigrationCoordinatorFactory()
         )
     }
 }

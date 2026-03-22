@@ -11,7 +11,7 @@ struct IOS18SettingsViewControllerFactory: SettingsViewControllerFactory {
     func make(coordinator: SettingsCoordinator) -> UIViewController {
         SettingsViewController(
             viewModel: SettingsViewModel(coordinator: coordinator),
-            closeBarButtonItemFactory: IOS18CloseBarButtonItemFactory(),
+            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
         )
     }
 }
@@ -22,7 +22,7 @@ struct IOS26SettingsViewControllerFactory: SettingsViewControllerFactory {
     func make(coordinator: SettingsCoordinator) -> UIViewController {
         SettingsViewController(
             viewModel: SettingsViewModel(coordinator: coordinator),
-            closeBarButtonItemFactory: IOS26CloseBarButtonItemFactory()
+            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
         )
     }
 }
