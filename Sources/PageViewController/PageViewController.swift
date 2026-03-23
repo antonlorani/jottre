@@ -6,14 +6,35 @@ final class PageViewController: UIViewController {
         static let itemSpacing = CGFloat(8)
     }
 
-    private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = Constants.itemSpacing
-        layout.minimumLineSpacing = Constants.itemSpacing
-        layout.sectionInset = .zero
-        layout.sectionInsetReference = .fromLayoutMargins
-        return layout
+    private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        return UICollectionViewCompositionalLayout(
+            sectionProvider: { [weak self] _, environment in
+                guard let self else {
+                    return self?.makeDefaultLayoutSection()
+                }
+                return makeLayoutSection(
+                    items: self.dataSource.snapshot().itemIdentifiers,
+                    contentWidth: environment.container.effectiveContentSize.width
+                )
+            },
+            configuration: configuration
+        )
+    }()
+
+    private lazy var dataSource: UICollectionViewDiffableDataSource<Int, PageCellItem> = {
+        UICollectionViewDiffableDataSource(
+            collectionView: collectionView
+        ) { [weak self] collectionView, indexPath, item in
+            self?.registerIfNeeded(item.cellType)
+
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: item.cellType.reuseIdentifier,
+                for: indexPath
+            )
+            item.configure(cell)
+            return cell
+        }
     }()
 
     private lazy var collectionView: UICollectionView = {
@@ -22,11 +43,6 @@ final class PageViewController: UIViewController {
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.preservesSuperviewLayoutMargins = true
         collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(PageHeaderCell.self, forCellWithReuseIdentifier: PageHeaderCell.reuseIdentifier)
-        collectionView.register(FeatureRowCell.self, forCellWithReuseIdentifier: FeatureRowCell.reuseIdentifier)
-        collectionView.register(CloudMigrationNoteCell.self, forCellWithReuseIdentifier: CloudMigrationNoteCell.reuseIdentifier)
-        collectionView.register(NoteCell.self, forCellWithReuseIdentifier: NoteCell.reuseIdentifier)
         return collectionView
     }()
 
@@ -36,13 +52,10 @@ final class PageViewController: UIViewController {
         return view
     }()
 
-    private lazy var sizingHeaderCell = PageHeaderCell()
-    private lazy var sizingFeatureRowCell = FeatureRowCell()
+    private var registeredReuseIdentifiers = Set<String>()
 
     private var leftNavigationItemsTask: Task<Void, Never>?
     private var rightNavigationItemsTask: Task<Void, Never>?
-
-    private var items = [PageItem]()
     private var itemsTask: Task<Void, Never>?
 
     private let viewModel: PageViewModel
@@ -85,12 +98,50 @@ final class PageViewController: UIViewController {
 
     deinit {
         itemsTask?.cancel()
+        leftNavigationItemsTask?.cancel()
+        rightNavigationItemsTask?.cancel()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUpViews()
+    }
+
+    private func setUpViews() {
+        view.backgroundColor = .systemGroupedBackground
+        view.directionalLayoutMargins.bottom = 16
+        navigationItem.largeTitleDisplayMode = .never
+
+        view.addSubview(collectionView)
+        view.addSubview(callToActionView)
+
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
+
+            callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+        ])
+    }
+
+    private func registerIfNeeded(_ cellType: any PageCell.Type) {
+        let identifier = cellType.reuseIdentifier
+        guard !registeredReuseIdentifiers.contains(identifier) else {
+            return
+        }
+        collectionView.register(cellType, forCellWithReuseIdentifier: identifier)
+        registeredReuseIdentifiers.insert(identifier)
+    }
+
+    private func handleItems(_ items: [PageCellItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, PageCellItem>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(items)
+        dataSource.apply(snapshot, animatingDifferences: true)
+        collectionViewLayout.invalidateLayout()
     }
 
     private func handleRightNavigationItems(navigationItems: [PageNavigationItem]) {
@@ -142,240 +193,149 @@ final class PageViewController: UIViewController {
         }
     }
 
-    private func setUpViews() {
-        view.backgroundColor = .systemGroupedBackground
-        view.directionalLayoutMargins.bottom = 16
-        navigationItem.largeTitleDisplayMode = .never
-
-        view.addSubview(collectionView)
-        view.addSubview(callToActionView)
-
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
-
-            callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-        ])
+    private func makeDefaultLayoutSection() -> NSCollectionLayoutSection {
+        let (group, _) = makeFullWidthRowLayoutGroup(estimatedHeight: 120)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsetsReference = .layoutMargins
+        return section
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
+    private func makeLayoutSection(
+        items: [PageCellItem],
+        contentWidth: CGFloat
+    ) -> NSCollectionLayoutSection {
+        let rowGroups = makeRowLayoutGroups(
+            items: items,
+            contentWidth: contentWidth
+        )
+        guard !rowGroups.isEmpty else {
+            return makeDefaultLayoutSection()
+        }
 
-        coordinator.animate(alongsideTransition: { [weak self] _ in
-            self?.collectionViewLayout.invalidateLayout()
-        })
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(1000)
+            ),
+            subitems: rowGroups
+        )
+        group.interItemSpacing = .fixed(Constants.itemSpacing)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsetsReference = .layoutMargins
+        return section
     }
 
-    private func handleItems(_ items: [PageItem]) {
-        self.items = items
-        collectionView.reloadData()
-    }
-}
-
-extension PageViewController: UICollectionViewDataSource {
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        .zero
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        items.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return switch items[safe: indexPath.row]?.content {
-        case let .pageHeader(pageHeader):
-            configurePageHeaderCell(
-                pageHeader: pageHeader,
-                indexPath: indexPath
+    private func makeRowLayoutGroups(
+        items: [PageCellItem],
+        contentWidth: CGFloat
+    ) -> [NSCollectionLayoutGroup] {
+        var groups: [NSCollectionLayoutGroup] = []
+        var i = 0
+        while i < items.count {
+            let (group, consumed) = makeRowLayoutGroup(
+                sizing: items[i].sizing,
+                contentWidth: contentWidth
             )
-        case let .featureRow(featureRow):
-            configureFeatureRowCell(
-                featureRow: featureRow,
-                indexPath: indexPath
+            groups.append(group)
+            i += min(consumed, items.count - i)
+        }
+        return groups
+    }
+
+    private func makeRowLayoutGroup(
+        sizing: PageCellSizingStrategy,
+        contentWidth: CGFloat
+    ) -> (NSCollectionLayoutGroup, Int) {
+        switch sizing {
+        case let .fullWidth(estimatedHeight):
+            return makeFullWidthRowLayoutGroup(
+                estimatedHeight: estimatedHeight
             )
-        case let .migrationNote(businessModel, _):
-            configureCloudMigrationNoteCell(
-                businessModel: businessModel,
-                indexPath: indexPath
+        case let .equalSplit(perRow, height):
+            return makeEqualSplitRowLayoutGroup(
+                perRow: perRow,
+                height: height
             )
-        case let .note(note, infoText, _):
-            configureNoteCell(
-                note: note,
-                infoText: infoText,
-                indexPath: indexPath
+        case let .adaptiveGrid(maxColumns, height):
+            return makeAdaptiveGridRowLayoutGroup(
+                maxColumns: maxColumns,
+                height: height,
+                contentWidth: contentWidth
             )
-        case nil:
-            UICollectionViewCell()
         }
     }
 
-    private func configurePageHeaderCell(
-        pageHeader: PageHeaderBusinessModel,
-        indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PageHeaderCell.reuseIdentifier,
-            for: indexPath
-        ) as? PageHeaderCell else {
-            return UICollectionViewCell()
-        }
-        cell.configure(pageHeader: pageHeader)
-        return cell
+    private func makeFullWidthRowLayoutGroup(
+        estimatedHeight: CGFloat
+    ) -> (NSCollectionLayoutGroup, Int) {
+        let item = NSCollectionLayoutItem(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(estimatedHeight)
+            )
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(estimatedHeight)
+            ),
+            subitems: [item]
+        )
+        return (group, 1)
     }
 
-    private func configureFeatureRowCell(
-        featureRow: FeatureRowBusinessModel,
-        indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: FeatureRowCell.reuseIdentifier,
-            for: indexPath
-        ) as? FeatureRowCell else {
-            return UICollectionViewCell()
-        }
-        cell.configure(featureRow: featureRow)
-        return cell
+    private func makeEqualSplitRowLayoutGroup(
+        perRow: Int,
+        height: CGFloat
+    ) -> (NSCollectionLayoutGroup, Int) {
+        let item = NSCollectionLayoutItem(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0 / CGFloat(perRow)),
+                heightDimension: .absolute(height)
+            )
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(height)
+            ),
+            subitem: item,
+            count: perRow
+        )
+        group.interItemSpacing = .fixed(Constants.itemSpacing)
+        return (group, perRow)
     }
 
-    private func configureCloudMigrationNoteCell(
-        businessModel: CloudMigrationNoteBusinessModel,
-        indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CloudMigrationNoteCell.reuseIdentifier,
-            for: indexPath
-        ) as? CloudMigrationNoteCell else {
-            return UICollectionViewCell()
-        }
-        cell.configure(businessModel: businessModel)
-        return cell
-    }
-
-    private func configureNoteCell(
-        note: NoteBusinessModel,
-        infoText: String?,
-        indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NoteCell.reuseIdentifier,
-            for: indexPath
-        ) as? NoteCell else {
-            return UICollectionViewCell()
-        }
-        cell.configure(note: note, infoText: infoText)
-        return cell
+    private func makeAdaptiveGridRowLayoutGroup(
+        maxColumns: Int,
+        height: CGFloat,
+        contentWidth: CGFloat
+    ) -> (NSCollectionLayoutGroup, Int) {
+        let minCellWidth: CGFloat = 160
+        let columns = min(maxColumns, max(1, Int(contentWidth / minCellWidth)))
+        let item = NSCollectionLayoutItem(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0 / CGFloat(columns)),
+                heightDimension: .absolute(height)
+            )
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(height)
+            ),
+            subitem: item,
+            count: columns
+        )
+        group.interItemSpacing = .fixed(Constants.itemSpacing)
+        return (group, columns)
     }
 }
 
 extension PageViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let item = items[safe: indexPath.row] else { return }
-        switch item.content {
-        case let .migrationNote(_, onAction):
-            onAction()
-        case let .note(_, _, onAction):
-            onAction()
-        default:
-            break
-        }
-    }
-}
-
-extension PageViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        guard let item = items[safe: indexPath.row] else {
-            return .zero
-        }
-
-        let margins = collectionView.layoutMargins
-        let maxWidth = collectionView.bounds.width - margins.left - margins.right
-
-        return switch item.sizing {
-        case .fullWidth:
-            makeFullWidthSize(
-                content: item.content,
-                maxWidth: maxWidth
-            )
-        case let .equalSplit(perRow, itemHeight):
-            makeEqualSplitSize(
-                perRow: perRow,
-                itemHeight: itemHeight,
-                maxWidth: maxWidth
-            )
-        case let .adaptiveGrid(maxColumns, itemHeight):
-            makeAdaptiveGrid(
-                maxColumns: maxColumns,
-                itemHeight: itemHeight,
-                maxWidth: maxWidth
-            )
-        }
-    }
-
-    private func makeFullWidthSize(
-        content: PageItem.Content,
-        maxWidth: CGFloat
-    ) -> CGSize {
-        let targetSize = CGSize(
-            width: maxWidth,
-            height: UIView.layoutFittingCompressedSize.height
-        )
-
-        switch content {
-        case let .pageHeader(pageHeader):
-            sizingHeaderCell.configure(pageHeader: pageHeader)
-            return sizingHeaderCell.contentView.systemLayoutSizeFitting(
-                targetSize,
-                withHorizontalFittingPriority: .required,
-                verticalFittingPriority: .fittingSizeLevel
-            )
-
-        case let .featureRow(featureRow):
-            sizingFeatureRowCell.configure(featureRow: featureRow)
-            return sizingFeatureRowCell.contentView.systemLayoutSizeFitting(
-                targetSize,
-                withHorizontalFittingPriority: .required,
-                verticalFittingPriority: .fittingSizeLevel
-            )
-
-        case .migrationNote, .note:
-            return CGSize(width: maxWidth, height: 44)
-        }
-    }
-
-    private func makeEqualSplitSize(
-        perRow: Int,
-        itemHeight: CGFloat,
-        maxWidth: CGFloat
-    ) -> CGSize {
-        let totalSpacing = Constants.itemSpacing * CGFloat(perRow - 1)
-        let width = (maxWidth - totalSpacing) / CGFloat(perRow)
-        return CGSize(width: width, height: itemHeight)
-    }
-
-    private func makeAdaptiveGrid(
-        maxColumns: Int,
-        itemHeight: CGFloat,
-        maxWidth: CGFloat
-    ) -> CGSize {
-        let isLandscape = collectionView.bounds.width > collectionView.bounds.height
-        let columns = CGFloat(isLandscape ? maxColumns : 1)
-        let totalSpacing = Constants.itemSpacing * (columns - 1)
-        let width = (maxWidth - totalSpacing) / columns
-        return CGSize(width: width, height: itemHeight)
+        dataSource.itemIdentifier(for: indexPath)?.handleAction(.tap)
     }
 }

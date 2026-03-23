@@ -3,8 +3,8 @@ import Foundation
 @MainActor
 final class NoteConflictViewModel: PageViewModel, Sendable {
 
-    let items: AsyncStream<[PageItem]>
-    private let _itemsContinuation: AsyncStream<[PageItem]>.Continuation
+    let items: AsyncStream<[PageCellItem]>
+    private let _itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
@@ -36,35 +36,34 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
         self.coordinator = coordinator
 
         (items, _itemsContinuation) = AsyncStream.makeStream(
-            of: [PageItem].self,
+            of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
         _itemsContinuation.yield([
-            PageItem(
-                content: .pageHeader(
-                    PageHeaderBusinessModel(
-                        headline: "Version Conflict",
-                        subheadline: #""Sketch Final" was edited on two devices at the same time. Choose a version to keep."#
-                    )
-                ),
-                sizing: .fullWidth
+            .pageHeader(
+                headline: "Version Conflict",
+                subheadline: #""Sketch Final" was edited on two devices at the same time. Choose a version to keep."#
             ),
-            PageItem(
-                content: .note(
-                    NoteBusinessModel(previewImage: nil, name: "Version A"),
-                    infoText: "This Device - now",
-                    onAction: {}
+            .note(
+                note: NoteBusinessModel(
+                    previewImage: nil,
+                    name: "Version A",
+                    lastEditedDateString: "",
+                    isCloudSynchronized: false
                 ),
-                sizing: .equalSplit(perRow: 2, height: 250)
+                infoText: "This Device - now",
+                sizing: .equalSplit(perRow: 2, itemHeight: 250)
             ),
-            PageItem(
-                content: .note(
-                    NoteBusinessModel(previewImage: nil, name: "Version B"),
-                    infoText: "iPhone - 3:08 pm",
-                    onAction: {}
+            .note(
+                note: NoteBusinessModel(
+                    previewImage: nil,
+                    name: "Version B",
+                    lastEditedDateString: "",
+                    isCloudSynchronized: false
                 ),
-                sizing: .equalSplit(perRow: 2, height: 250)
-            ),
+                infoText: "iPhone - 3:08 pm",
+                sizing: .equalSplit(perRow: 2, itemHeight: 250)
+            )
         ])
     }
 

@@ -1,6 +1,6 @@
 import UIKit
 
-final class FeatureRowCell: UICollectionViewCell {
+final class FeatureRowCell: UICollectionViewCell, PageCell {
     static let reuseIdentifier = "FeatureRowCell"
 
     private enum Constants {
@@ -71,8 +71,19 @@ final class FeatureRowCell: UICollectionViewCell {
         ])
     }
 
-    func configure(featureRow: FeatureRowBusinessModel) {
-        iconImageView.image = UIImage(systemName: featureRow.systemImageName)
-        textLabel.text = featureRow.text
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        let size = contentView.systemLayoutSizeFitting(
+            CGSize(width: attributes.frame.width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        attributes.frame.size.height = size.height
+        return attributes
+    }
+
+    func configure(viewModel: FeatureRowCellViewModel) {
+        iconImageView.image = UIImage(systemName: viewModel.systemImageName)
+        textLabel.text = viewModel.text
     }
 }

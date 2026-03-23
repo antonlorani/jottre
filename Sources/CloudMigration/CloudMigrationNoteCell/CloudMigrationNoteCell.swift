@@ -1,6 +1,6 @@
 import UIKit
 
-final class CloudMigrationNoteCell: UICollectionViewCell {
+final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
     static let reuseIdentifier = "CloudMigrationNoteCell"
 
     private enum Constants {
@@ -90,15 +90,17 @@ final class CloudMigrationNoteCell: UICollectionViewCell {
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLine.widthAnchor.constraint(equalToConstant: 1),
 
+            labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
             labelContainer.leadingAnchor.constraint(equalTo: separatorLine.trailingAnchor, constant: 16),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            labelContainer.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: -8),
             labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: checkboxImageView.leadingAnchor, constant: -8),
 
             nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
 
-            lastEditedDateLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            lastEditedDateLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
             lastEditedDateLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
             lastEditedDateLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
             lastEditedDateLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
@@ -110,10 +112,10 @@ final class CloudMigrationNoteCell: UICollectionViewCell {
         ])
     }
 
-    func configure(businessModel: CloudMigrationNoteBusinessModel) {
-        previewImageView.image = businessModel.previewImage
-        nameLabel.text = businessModel.name
-        lastEditedDateLabel.text = businessModel.lastEditedDateString
-        checkboxImageView.image = Constants.Checbox.image(isOn: businessModel.isCloudSynchronized)
+    func configure(viewModel: CloudMigrationNoteCellViewModel) {
+        previewImageView.image = viewModel.note.previewImage
+        nameLabel.text = viewModel.note.name
+        lastEditedDateLabel.text = viewModel.note.lastEditedDateString
+        checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.note.isCloudSynchronized)
     }
 }

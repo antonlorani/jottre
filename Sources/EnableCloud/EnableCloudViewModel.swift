@@ -6,8 +6,8 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
     let rightNavigationItems: AsyncStream<[PageNavigationItem]>
     private let rightNavigationItemsContinuation: AsyncStream<[PageNavigationItem]>.Continuation
 
-    let items: AsyncStream<[PageItem]>
-    private let itemsContinuation: AsyncStream<[PageItem]>.Continuation
+    let items: AsyncStream<[PageCellItem]>
+    private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
     private weak var coordinator: EnableCloudCoordinator?
 
@@ -25,37 +25,22 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
         self.coordinator = coordinator
 
         (items, itemsContinuation) = AsyncStream.makeStream(
-            of: [PageItem].self,
+            of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
         itemsContinuation.yield([
-            PageItem(
-                content: .pageHeader(
-                    PageHeaderBusinessModel(
-                        headline: "Enable iCloud",
-                        subheadline: "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
-                    )
-                ),
-                sizing: .fullWidth
+            PageCellItem.pageHeader(
+                headline: "Enable iCloud",
+                subheadline: "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
             ),
-            PageItem(
-                content: .featureRow(
-                    FeatureRowBusinessModel(
-                        systemImageName: "macbook.and.iphone",
-                        text: "Synchronize jots across all your Apple devices"
-                    )
-                ),
-                sizing: .fullWidth
+            PageCellItem.featureRow(
+                systemImageName: "macbook.and.iphone",
+                text: "Synchronize jots across all your Apple devices"
             ),
-            PageItem(
-                content: .featureRow(
-                    FeatureRowBusinessModel(
-                        systemImageName: "person.3.fill",
-                        text: "Share jots with others"
-                    )
-                ),
-                sizing: .fullWidth
-            ),
+            PageCellItem.featureRow(
+                systemImageName: "person.3.fill",
+                text: "Share jots with others"
+            )
         ])
 
         (rightNavigationItems, rightNavigationItemsContinuation) = AsyncStream.makeStream(

@@ -249,8 +249,10 @@ extension NotesViewController: UICollectionViewDelegate, UICollectionViewDataSou
             return UICollectionViewCell()
         }
         cell.configure(
-            note: note,
-            infoText: nil
+            viewModel: NoteCellViewModel(
+                note: note,
+                infoText: nil
+            )
         )
         return cell
     }

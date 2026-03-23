@@ -5,7 +5,7 @@ protocol PageViewModel: AnyObject {
     var leftNavigationItems: AsyncStream<[PageNavigationItem]> { get }
     var rightNavigationItems: AsyncStream<[PageNavigationItem]> { get }
     
-    var items: AsyncStream<[PageItem]> { get }
+    var items: AsyncStream<[PageCellItem]> { get }
     var actions: [PageCallToActionView.ActionConfiguration] { get }
 }
 

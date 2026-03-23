@@ -30,240 +30,36 @@ final class NotesViewModel: Sendable {
             bufferingPolicy: .bufferingNewest(1)
         )
         stateContinuation.yield(.empty(title: "A blank page full of possibilities. Go ahead, jot something insanely great!"))
-//        stateContinuation.yield(
-//            .filled(
-//                items: [
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    ),
-//                    State.Item(
-//                        note: NoteBusinessModel(
-//                            previewImage: nil,
-//                            name: "Hello, world!"
-//                        ),
-//                        menuConfigurations: menuConfigurationFactory.make(
-//                            onShare: { _ in },
-//                            onRename: {},
-//                            onDuplicate: {},
-//                            onDelete: {},
-//                            onShowInFiles: {}
-//                        ),
-//                        onAction: { [weak self] in
-//                            self?.coordinator?.openNote(NoteBusinessModel(
-//                                previewImage: nil,
-//                                name: "Hello, world!"
-//                            ))
-//                        }
-//                    )
-//                ]
-//            )
-//        )
+        stateContinuation.yield(
+            .filled(
+                items: [State.Item](
+                    repeating: State.Item(
+                        note: NoteBusinessModel(
+                            previewImage: nil,
+                            name: "Hello, world!",
+                            lastEditedDateString: "",
+                            isCloudSynchronized: false
+                        ),
+                        menuConfigurations: menuConfigurationFactory.make(
+                            onShare: { _ in },
+                            onRename: {},
+                            onDuplicate: {},
+                            onDelete: {},
+                            onShowInFiles: {}
+                        ),
+                        onAction: { [weak self] in
+                            self?.coordinator?.openNote(NoteBusinessModel(
+                                previewImage: nil,
+                                name: "Hello, world!",
+                                lastEditedDateString: "",
+                                isCloudSynchronized: false
+                            ))
+                        }
+                    ),
+                    count: 21
+                )
+            )
+        )
     }
 
     func didTapSettingsButton() {

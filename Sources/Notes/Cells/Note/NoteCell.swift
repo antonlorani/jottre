@@ -1,6 +1,6 @@
 import UIKit
 
-final class NoteCell: UICollectionViewCell {
+final class NoteCell: UICollectionViewCell, PageCell {
     static let reuseIdentifier = "NoteCell"
 
     private let previewImageView: UIImageView = {
@@ -82,16 +82,15 @@ final class NoteCell: UICollectionViewCell {
     }
 
     func configure(
-        note: NoteBusinessModel,
-        infoText: String?
+        viewModel: NoteCellViewModel
     ) {
-        previewImageView.image = note.previewImage
-        nameLabel.text = note.name
+        previewImageView.image = viewModel.note.previewImage
+        nameLabel.text = viewModel.note.name
 
         infoLabel.removeFromSuperview()
         NSLayoutConstraint.deactivate(withInfoLabelConstraints + withoutInfoLabelConstraints)
 
-        if let infoText {
+        if let infoText = viewModel.infoText {
             infoLabel.text = infoText
             contentView.addSubview(infoLabel)
             NSLayoutConstraint.activate(withInfoLabelConstraints)
