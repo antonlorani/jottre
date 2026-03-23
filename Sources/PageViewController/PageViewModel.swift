@@ -2,6 +2,7 @@ import UIKit
 
 @MainActor
 protocol PageViewModel: AnyObject {
+    var title: String? { get }
     var leftNavigationItems: AsyncStream<[PageNavigationItem]> { get }
     var rightNavigationItems: AsyncStream<[PageNavigationItem]> { get }
     
@@ -10,6 +11,14 @@ protocol PageViewModel: AnyObject {
 }
 
 extension PageViewModel {
+
+    var title: String? {
+        nil
+    }
+
+    var actions: [PageCallToActionView.ActionConfiguration] {
+        []
+    }
 
     var leftNavigationItems: AsyncStream<[PageNavigationItem]> {
         return AsyncStream { continuation in

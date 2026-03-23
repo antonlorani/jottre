@@ -9,7 +9,8 @@ extension PageCellItem {
     static func note(
         note: NoteBusinessModel,
         infoText: String?,
-        sizing: PageCellSizingStrategy
+        sizing: PageCellSizingStrategy,
+        onAction: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
             id: NoteID(
@@ -20,7 +21,8 @@ extension PageCellItem {
             sizing: sizing,
             viewModel: NoteCellViewModel(
                 note: note,
-                infoText: infoText
+                infoText: infoText,
+                onAction: onAction
             )
         )
     }

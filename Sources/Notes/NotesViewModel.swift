@@ -1,76 +1,98 @@
+import UIKit
+
 @MainActor
-final class NotesViewModel: Sendable {
+final class NotesViewModel: PageViewModel {
 
-    enum State {
-        struct Item {
-            let note: NoteBusinessModel
-            let menuConfigurations: [NoteMenuConfiguration]
-            let onAction: () -> Void
-        }
-
-        case filled(items: [Item])
-        case empty(title: String)
+    var title: String? {
+#if targetEnvironment(macCatalyst)
+        nil
+#else
+        "Jottre"
+#endif
     }
 
-    let shouldShowEnableCloudButton = true
+    let leftNavigationItems: AsyncStream<[PageNavigationItem]>
+    private let leftNavigationItemsContinuation: AsyncStream<[PageNavigationItem]>.Continuation
 
-    let state: AsyncStream<State>
-    private let stateContinuation: AsyncStream<State>.Continuation
+    let rightNavigationItems: AsyncStream<[PageNavigationItem]>
+    private let rightNavigationItemsContinuation: AsyncStream<[PageNavigationItem]>.Continuation
+
+    let items: AsyncStream<[PageCellItem]>
+    private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
     private weak var coordinator: NotesCoordinator?
 
-    init(
-        coordinator: NotesCoordinator,
-        menuConfigurationFactory: NoteMenuConfigurationFactory
-    ) {
+    let actions = [PageCallToActionView.ActionConfiguration]()
+
+    init(coordinator: NotesCoordinator) {
         self.coordinator = coordinator
 
-        (state, stateContinuation) = AsyncStream.makeStream(
-            of: State.self,
+        (items, itemsContinuation) = AsyncStream.makeStream(
+            of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        stateContinuation.yield(.empty(title: "A blank page full of possibilities. Go ahead, jot something insanely great!"))
-        stateContinuation.yield(
-            .filled(
-                items: [State.Item](
-                    repeating: State.Item(
-                        note: NoteBusinessModel(
-                            previewImage: nil,
-                            name: "Hello, world!",
-                            lastEditedDateString: "",
-                            isCloudSynchronized: false
-                        ),
-                        menuConfigurations: menuConfigurationFactory.make(
-                            onShare: { _ in },
-                            onRename: {},
-                            onDuplicate: {},
-                            onDelete: {},
-                            onShowInFiles: {}
-                        ),
-                        onAction: { [weak self] in
-                            self?.coordinator?.openNote(NoteBusinessModel(
-                                previewImage: nil,
-                                name: "Hello, world!",
-                                lastEditedDateString: "",
-                                isCloudSynchronized: false
-                            ))
-                        }
-                    ),
-                    count: 21
-                )
+
+        let notes = [
+            NoteBusinessModel(
+                previewImage: nil,
+                name: "Calculator Pro",
+                lastEditedDateString: "",
+                isCloudSynchronized: false
+            ),
+            NoteBusinessModel(
+                previewImage: nil,
+                name: "Project Sketch",
+                lastEditedDateString: "",
+                isCloudSynchronized: false
             )
+        ]
+
+        itemsContinuation.yield(notes.map { note in
+            PageCellItem.note(
+                note: note,
+                infoText: nil,
+                sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
+                onAction: { [weak coordinator] in
+                    Task { @MainActor in
+                        coordinator?.openNote(note)
+                    }
+                }
+            )
+        })
+
+        (leftNavigationItems, leftNavigationItemsContinuation) = AsyncStream.makeStream(
+            of: [PageNavigationItem].self,
+            bufferingPolicy: .bufferingNewest(1)
         )
-    }
+        leftNavigationItemsContinuation.yield([
+            .symbol(
+                systemImageName: "gear",
+            ) { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.openSettings()
+                }
+            },
+            .symbol(
+                systemImageName: "icloud.slash",
+            ) { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.openEnableCloudPage()
+                }
+            }
+        ])
 
-    func didTapSettingsButton() {
-        coordinator?.openSettings()
-    }
-
-    func didTapCreateNoteButton() {
-        coordinator?.openCreateNote()
-    }
-
-    func didTapEnableCloudButton() {
-        coordinator?.openEnableCloudPage()
+        (rightNavigationItems, rightNavigationItemsContinuation) = AsyncStream.makeStream(
+            of: [PageNavigationItem].self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        rightNavigationItemsContinuation.yield([
+            .text(
+                title: "Create"
+            ) { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.openCreateNote()
+                }
+            }
+        ])
     }
 }

@@ -89,6 +89,8 @@ final class PageViewController: UIViewController {
                 self?.handleRightNavigationItems(navigationItems: navigationItems)
             }
         }
+
+        setUpViews()
     }
 
     @available(*, unavailable)
@@ -104,10 +106,11 @@ final class PageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpViews()
+
     }
 
     private func setUpViews() {
+        navigationItem.title = viewModel.title
         view.backgroundColor = .systemGroupedBackground
         view.directionalLayoutMargins.bottom = 16
         navigationItem.largeTitleDisplayMode = .never
@@ -257,10 +260,11 @@ final class PageViewController: UIViewController {
                 perRow: perRow,
                 height: height
             )
-        case let .adaptiveGrid(maxColumns, height):
+        case let .adaptiveGrid(maxColumns, minItemWidth, itemHeight):
             return makeAdaptiveGridRowLayoutGroup(
                 maxColumns: maxColumns,
-                height: height,
+                minItemWidth: minItemWidth,
+                itemHeight: itemHeight,
                 contentWidth: contentWidth
             )
         }
@@ -309,26 +313,28 @@ final class PageViewController: UIViewController {
 
     private func makeAdaptiveGridRowLayoutGroup(
         maxColumns: Int,
-        height: CGFloat,
+        minItemWidth: CGFloat,
+        itemHeight: CGFloat,
         contentWidth: CGFloat
     ) -> (NSCollectionLayoutGroup, Int) {
-        let minCellWidth: CGFloat = 160
-        let columns = min(maxColumns, max(1, Int(contentWidth / minCellWidth)))
+        let spacing = Constants.itemSpacing
+        let columns = min(maxColumns, max(1, Int((contentWidth + spacing) / (minItemWidth + spacing))))
+
         let item = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1.0 / CGFloat(columns)),
-                heightDimension: .absolute(height)
+                heightDimension: .absolute(itemHeight)
             )
         )
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(height)
+                heightDimension: .absolute(itemHeight)
             ),
             subitem: item,
             count: columns
         )
-        group.interItemSpacing = .fixed(Constants.itemSpacing)
+        group.interItemSpacing = .fixed(spacing)
         return (group, columns)
     }
 }

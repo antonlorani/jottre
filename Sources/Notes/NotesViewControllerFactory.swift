@@ -9,14 +9,12 @@ protocol NotesViewControllerFactory: Sendable {
 struct IOS18NotesViewControllerFactory: NotesViewControllerFactory {
 
     func make(coordinator: NotesCoordinator) -> UIViewController {
-        NotesViewController(
-            viewModel: NotesViewModel(
-                coordinator: coordinator,
-                menuConfigurationFactory: NoteMenuConfigurationFactory()
-            ),
-            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory(),
-            textBarButtonItemFactory: IOS18TextBarButtonItemFactory()
+        let viewController = PageViewController(
+            viewModel: NotesViewModel(coordinator: coordinator),
+            textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
+            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
         )
+        return viewController
     }
 }
 
@@ -24,13 +22,16 @@ struct IOS18NotesViewControllerFactory: NotesViewControllerFactory {
 struct IOS26NotesViewControllerFactory: NotesViewControllerFactory {
 
     func make(coordinator: NotesCoordinator) -> UIViewController {
-        NotesViewController(
-            viewModel: NotesViewModel(
-                coordinator: coordinator,
-                menuConfigurationFactory: NoteMenuConfigurationFactory()
-            ),
-            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory(),
-            textBarButtonItemFactory: IOS26TextBarButtonItemFactory()
+        let viewController = PageViewController(
+            viewModel: NotesViewModel(coordinator: coordinator),
+            textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),
+            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
         )
+#if targetEnvironment(macCatalyst)
+        viewController.navigationItem.largeTitleDisplayMode
+#else
+        viewController.navigationItem.largeTitleDisplayMode = .always
+#endif
+        return viewController
     }
 }

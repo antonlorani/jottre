@@ -52,7 +52,8 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
                     isCloudSynchronized: false
                 ),
                 infoText: "This Device - now",
-                sizing: .equalSplit(perRow: 2, itemHeight: 250)
+                sizing: .equalSplit(perRow: 2, itemHeight: 250),
+                onAction: { /* no-op */ }
             ),
             .note(
                 note: NoteBusinessModel(
@@ -62,7 +63,8 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
                     isCloudSynchronized: false
                 ),
                 infoText: "iPhone - 3:08 pm",
-                sizing: .equalSplit(perRow: 2, itemHeight: 250)
+                sizing: .equalSplit(perRow: 2, itemHeight: 250),
+                onAction: { /* no-op */ }
             )
         ])
     }
