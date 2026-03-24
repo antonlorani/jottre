@@ -1,18 +1,16 @@
 import UIKit
 
-final class CreateNoteCoordinator: NavigationCoordinator {
-
+final class CreateNoteCoordinator: Coordinator {
+    
+    var onEnd: (() -> Void)?
+    
     private let navigation: Navigation
-
+    
     init(navigation: Navigation) {
         self.navigation = navigation
     }
-
-    func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(CreateNoteURL().path)
-    }
-
-    func handle(url: URL) -> [UIViewController] {
+    
+    func start() {
         let alertController = UIAlertController(
             title: "New Jot",
             message: nil,
@@ -23,7 +21,7 @@ final class CreateNoteCoordinator: NavigationCoordinator {
             textField.autocapitalizationType = .sentences
             textField.returnKeyType = .done
         }
-
+        
         let createAction = UIAlertAction(
             title: "Create",
             style: .default
@@ -38,14 +36,13 @@ final class CreateNoteCoordinator: NavigationCoordinator {
             navigation.open(url: EditNoteURL().toURL())
         }
         alertController.addAction(createAction)
-
+        
         let cancelAction = UIAlertAction(
             title: "Cancel",
             style: .cancel
         )
         alertController.addAction(cancelAction)
-
+        
         navigation.present(alertController, animated: true)
-        return []
     }
 }

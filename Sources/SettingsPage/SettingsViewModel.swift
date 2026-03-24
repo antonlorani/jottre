@@ -3,7 +3,9 @@ import UIKit
 @MainActor
 final class SettingsViewModel: PageViewModel {
 
-    var title: String? { "Settings" }
+    var title: String? {
+        "Settings"
+    }
 
     let rightNavigationItems: AsyncStream<[PageNavigationItem]>
     private let rightNavigationItemsContinuation: AsyncStream<[PageNavigationItem]>.Continuation

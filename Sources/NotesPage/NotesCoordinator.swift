@@ -3,15 +3,16 @@ import UIKit
 @MainActor
 final class NotesCoordinator: NavigationCoordinator {
 
+    private var retainedCreateNoteCoordinator: Coordinator?
     private var retainedShareNoteCoordinator: Coordinator?
     private var retainedDeleteNoteCoordinator: Coordinator?
     private var retainedRenameNoteCoordinator: Coordinator?
+
     private var retainedNotesViewController: UIViewController?
 
     private lazy var childCoordinators: [NavigationCoordinator] = [
         settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
-        CreateNoteCoordinator(navigation: navigation),
         editNoteCoordinatorFactory.make(navigation: navigation),
         cloudMigrationCoordinatorFactory.make(navigation: navigation)
     ]
@@ -66,7 +67,11 @@ final class NotesCoordinator: NavigationCoordinator {
     }
 
     func openCreateNote() {
-        navigation.open(url: CreateNoteURL())
+        retainedCreateNoteCoordinator = CreateNoteCoordinator(navigation: navigation)
+        retainedCreateNoteCoordinator?.onEnd = { [weak self] in
+            self?.retainedCreateNoteCoordinator = nil
+        }
+        retainedCreateNoteCoordinator?.start()
     }
 
     func openNote(_ note: NoteBusinessModel) {
