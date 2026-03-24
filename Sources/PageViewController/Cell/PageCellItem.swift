@@ -1,3 +1,5 @@
+import UIKit
+
 struct PageCellItem: Sendable, Hashable {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -9,6 +11,7 @@ struct PageCellItem: Sendable, Hashable {
     let sizing: PageCellSizingStrategy
     let configure: @Sendable (_ cell: Any) -> Void
     let handleAction: @Sendable @MainActor (_ action: PageCellAction) -> Void
+    let contextMenuConfiguration: @Sendable @MainActor () -> UIContextMenuConfiguration?
 
     init<
         Cell: PageCell,
@@ -30,6 +33,7 @@ struct PageCellItem: Sendable, Hashable {
             cell.configure(viewModel: viewModel)
         }
         handleAction = { viewModel.handle(action: $0) }
+        contextMenuConfiguration = { viewModel.handleContextMenuConfiguration() }
     }
 
     func hash(into hasher: inout Hasher) {

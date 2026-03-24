@@ -5,7 +5,7 @@ extension PageCellItem {
         PageCellItem(
             id: title,
             cellType: EmptyStateCell.self,
-            sizing: .fullWidth(estimatedHeight: 50),
+            sizing: .fullWidth(estimatedHeight: 100),
             viewModel: EmptyStateCellViewModel(title: title)
         )
     }

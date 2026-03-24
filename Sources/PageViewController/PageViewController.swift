@@ -344,4 +344,12 @@ extension PageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource.itemIdentifier(for: indexPath)?.handleAction(.tap)
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        dataSource.itemIdentifier(for: indexPath)?.contextMenuConfiguration()
+    }
 }

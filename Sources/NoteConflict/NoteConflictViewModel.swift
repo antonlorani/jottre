@@ -52,6 +52,7 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
                     isCloudSynchronized: false
                 ),
                 infoText: "This Device - now",
+                noteMenuConfigurations: [],
                 sizing: .equalSplit(perRow: 2, itemHeight: 250),
                 onAction: { /* no-op */ }
             ),
@@ -63,6 +64,7 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
                     isCloudSynchronized: false
                 ),
                 infoText: "iPhone - 3:08 pm",
+                noteMenuConfigurations: [],
                 sizing: .equalSplit(perRow: 2, itemHeight: 250),
                 onAction: { /* no-op */ }
             )

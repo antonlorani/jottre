@@ -20,13 +20,12 @@ final class NotesViewModel: PageViewModel {
     let items: AsyncStream<[PageCellItem]>
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
-    private weak var coordinator: NotesCoordinator?
-
     let actions = [PageCallToActionView.ActionConfiguration]()
 
-    init(coordinator: NotesCoordinator) {
-        self.coordinator = coordinator
-
+    init(
+        coordinator: NotesCoordinator,
+        menuConfigurationFactory: NoteMenuConfigurationFactory
+    ) {
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
@@ -51,6 +50,31 @@ final class NotesViewModel: PageViewModel {
             PageCellItem.note(
                 note: note,
                 infoText: nil,
+                noteMenuConfigurations: menuConfigurationFactory.make(
+                    onShare: { [weak coordinator] format in
+                        Task { @MainActor in
+                            coordinator?.showShareNote(format: format)
+                        }
+                    },
+                    onRename: { [weak coordinator] in
+                        Task { @MainActor in
+                            coordinator?.showRenameAlert()
+                        }
+                    },
+                    onDuplicate: {
+                        /* no-op */
+                    },
+                    onDelete: { [weak coordinator] in
+                        Task { @MainActor in
+                            coordinator?.showDeleteConfirmationAlert()
+                        }
+                    },
+                    onShowInFiles: { [weak coordinator] in
+                        Task { @MainActor in
+                            coordinator?.showInFiles()
+                        }
+                    }
+                ),
                 sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
                 onAction: { [weak coordinator] in
                     Task { @MainActor in
@@ -59,6 +83,9 @@ final class NotesViewModel: PageViewModel {
                 }
             )
         })
+        itemsContinuation.yield([
+            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+        ])
 
         (leftNavigationItems, leftNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
