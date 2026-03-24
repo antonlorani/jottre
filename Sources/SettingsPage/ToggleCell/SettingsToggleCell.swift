@@ -7,7 +7,7 @@ final class SettingsToggleCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
 

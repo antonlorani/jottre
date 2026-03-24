@@ -6,10 +6,7 @@ final class PageHeaderCell: UICollectionViewCell, PageCell {
     private let headlineLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = {
-            let font = UIFont.preferredFont(forTextStyle: .largeTitle)
-            return UIFont.boldSystemFont(ofSize: font.pointSize)
-        }()
+        label.font = UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -18,10 +15,7 @@ final class PageHeaderCell: UICollectionViewCell, PageCell {
     private let subheadlineLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = {
-            let font = UIFont.preferredFont(forTextStyle: .subheadline)
-            return UIFont.boldSystemFont(ofSize: font.pointSize)
-        }()
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .medium)
         label.textAlignment = .center
         label.numberOfLines = 0
         return label

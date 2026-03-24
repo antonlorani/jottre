@@ -2,11 +2,16 @@ import UIKit
 
 final class PageCallToActionView: UIStackView {
 
+    private enum Constants {
+        static let height = CGFloat(50)
+    }
+
     struct ActionConfiguration {
         enum Style {
             case primary
             case secondary
         }
+
         let style: Style
         let title: String
         let icon: String?
@@ -57,7 +62,7 @@ final class PageCallToActionView: UIStackView {
         configuration.cornerStyle = .capsule
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = .systemFont(ofSize: 17, weight: .semibold)
+            outgoing.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
             return outgoing
         }
         let button = UIButton(
@@ -67,7 +72,7 @@ final class PageCallToActionView: UIStackView {
             }
         )
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.heightAnchor.constraint(equalToConstant: Constants.height).isActive = true
         return button
     }
 }

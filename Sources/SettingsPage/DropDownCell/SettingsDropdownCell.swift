@@ -7,7 +7,7 @@ final class SettingsDropdownCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
 
@@ -15,7 +15,7 @@ final class SettingsDropdownCell: UICollectionViewCell, PageCell {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.showsMenuAsPrimaryAction = true
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .body, weight: .semibold)
         button.setTitleColor(.label, for: .normal)
         return button
     }()

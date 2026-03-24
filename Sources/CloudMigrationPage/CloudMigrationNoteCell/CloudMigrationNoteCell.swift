@@ -36,14 +36,14 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
 
     private let lastEditedDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12)
+        label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
         return label
     }()

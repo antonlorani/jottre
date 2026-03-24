@@ -20,7 +20,7 @@ final class FeatureRowCell: UICollectionViewCell, PageCell {
     private let textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
         return label
     }()

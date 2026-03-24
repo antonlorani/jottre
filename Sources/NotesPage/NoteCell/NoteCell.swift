@@ -21,14 +21,14 @@ final class NoteCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.font = .preferredFont(forTextStyle: .body, weight: .semibold)
         return label
     }()
 
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
+        label.font = .preferredFont(forTextStyle: .caption1, weight: .semibold)
         label.textColor = .secondaryLabel
         return label
     }()

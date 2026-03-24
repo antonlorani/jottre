@@ -7,14 +7,14 @@ final class SettingsInfoCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
 
     private let valueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17)
+        label.font = .preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         label.textColor = .secondaryLabel
         return label
