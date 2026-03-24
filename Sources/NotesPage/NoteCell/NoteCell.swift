@@ -37,11 +37,11 @@ final class NoteCell: UICollectionViewCell, PageCell {
         infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
         infoLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
         infoLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-        infoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+        infoLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
     ]
 
     private lazy var withoutInfoLabelConstraints = [
-        nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
+        nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
     ]
 
     override init(frame: CGRect) {
@@ -60,6 +60,12 @@ final class NoteCell: UICollectionViewCell, PageCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layoutMargins = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: 12,
+            right: 8
+        )
 
         contentView.addSubview(previewImageView)
         contentView.addSubview(separatorLine)

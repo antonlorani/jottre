@@ -35,16 +35,22 @@ final class SettingsInfoCell: UICollectionViewCell, PageCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layoutMargins = UIEdgeInsets(
+            top: .zero,
+            left: 16,
+            bottom: .zero,
+            right: 16
+        )
 
         contentView.addSubview(nameLabel)
         contentView.addSubview(valueLabel)
 
         NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: valueLabel.leadingAnchor, constant: -8),
 
-            valueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            valueLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             valueLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }

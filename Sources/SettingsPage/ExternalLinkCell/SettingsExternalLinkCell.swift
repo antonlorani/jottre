@@ -67,13 +67,19 @@ final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layoutMargins = UIEdgeInsets(
+            top: .zero,
+            left: 16,
+            bottom: .zero,
+            right: 16
+        )
 
         contentView.addSubview(labelContainer)
         labelContainer.addSubview(nameLabel)
         contentView.addSubview(arrowImageView)
 
         NSLayoutConstraint.activate([
-            labelContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            labelContainer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: arrowImageView.leadingAnchor, constant: -8),
 
@@ -81,7 +87,7 @@ final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
 
-            arrowImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            arrowImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             arrowImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             arrowImageView.widthAnchor.constraint(equalToConstant: Constants.ArrowImage.size),
             arrowImageView.heightAnchor.constraint(equalToConstant: Constants.ArrowImage.size),

@@ -71,6 +71,12 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layoutMargins = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: 8,
+            right: 16
+        )
 
         contentView.addSubview(previewImageView)
         contentView.addSubview(separatorLine)
@@ -80,9 +86,9 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
         contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
-            previewImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            previewImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            previewImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            previewImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             previewImageView.widthAnchor.constraint(equalToConstant: 70),
 
             separatorLine.leadingAnchor.constraint(equalTo: previewImageView.trailingAnchor),
@@ -90,10 +96,11 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLine.widthAnchor.constraint(equalToConstant: 1),
 
-            labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
+            labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
             labelContainer.leadingAnchor.constraint(equalTo: separatorLine.trailingAnchor, constant: 16),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: -8),
+            labelContainer.bottomAnchor
+                .constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor),
             labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: checkboxImageView.leadingAnchor, constant: -8),
 
             nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
@@ -105,7 +112,7 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
             lastEditedDateLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
             lastEditedDateLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
 
-            checkboxImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            checkboxImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             checkboxImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             checkboxImageView.widthAnchor.constraint(equalToConstant: Constants.Checbox.size),
             checkboxImageView.heightAnchor.constraint(equalToConstant: Constants.Checbox.size),

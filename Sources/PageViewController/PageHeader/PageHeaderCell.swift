@@ -1,6 +1,13 @@
 import UIKit
 
 final class PageHeaderCell: UICollectionViewCell, PageCell {
+    private struct Constants {
+
+        struct Subheadline {
+            static let maxWidth = CGFloat(300)
+        }
+    }
+
     static let reuseIdentifier = "PageHeaderCell"
 
     private let headlineLabel: UILabel = {
@@ -44,7 +51,7 @@ final class PageHeaderCell: UICollectionViewCell, PageCell {
             subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
             subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.leadingAnchor),
             subheadlineLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).withPriority(.defaultHigh),
-            subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.Subheadline.maxWidth),
             subheadlineLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
             subheadlineLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
         ])

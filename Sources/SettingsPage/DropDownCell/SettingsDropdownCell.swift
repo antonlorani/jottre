@@ -35,16 +35,22 @@ final class SettingsDropdownCell: UICollectionViewCell, PageCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layoutMargins = UIEdgeInsets(
+            top: .zero,
+            left: 16,
+            bottom: .zero,
+            right: 16
+        )
 
         contentView.addSubview(nameLabel)
         contentView.addSubview(dropdownButton)
 
         NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: dropdownButton.leadingAnchor, constant: -8),
 
-            dropdownButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            dropdownButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             dropdownButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
