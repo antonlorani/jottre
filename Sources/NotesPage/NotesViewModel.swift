@@ -7,7 +7,7 @@ final class NotesViewModel: PageViewModel {
 #if targetEnvironment(macCatalyst)
         nil
 #else
-        "Jottre"
+        L10n.App.title
 #endif
     }
 
@@ -114,7 +114,7 @@ final class NotesViewModel: PageViewModel {
         )
         rightNavigationItemsContinuation.yield([
             .text(
-                title: "Create"
+                title: L10n.Action.create
             ) { [weak coordinator] in
                 Task { @MainActor in
                     coordinator?.openCreateNote()

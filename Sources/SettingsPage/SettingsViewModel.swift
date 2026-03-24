@@ -4,7 +4,7 @@ import UIKit
 final class SettingsViewModel: PageViewModel {
 
     var title: String? {
-        "Settings"
+        L10n.Settings.title
     }
 
     let rightNavigationItems: AsyncStream<[PageNavigationItem]>
@@ -26,7 +26,7 @@ final class SettingsViewModel: PageViewModel {
 
         itemsContinuation.yield([
             .settingsDropdown(
-                name: "Appearance",
+                name: L10n.Settings.Appearance.title,
                 current: .init(
                     label: SettingsViewModel.makeLabel(userInterfaceStyle: .unspecified),
                     value: UIUserInterfaceStyle.unspecified
@@ -44,8 +44,8 @@ final class SettingsViewModel: PageViewModel {
 //                isOn: false
 //            ),
             .settingsExternalLink(
-                name: "iCloud Synchronization",
-                info: "Learn how to enable iCloud on this device.",
+                name: L10n.Settings.ICloud.title,
+                info: L10n.Settings.ICloud.info,
                 onAction: { [weak coordinator] in
                     Task { @MainActor in
                         coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
@@ -53,7 +53,7 @@ final class SettingsViewModel: PageViewModel {
                 }
             ),
             .settingsExternalLink(
-                name: "Stargaze on Github",
+                name: L10n.Settings.Github.title,
                 info: nil,
                 onAction: { [weak coordinator] in
                     Task { @MainActor in
@@ -62,7 +62,7 @@ final class SettingsViewModel: PageViewModel {
                 }
             ),
             .settingsInfo(
-                name: "Version",
+                name: L10n.Settings.Version.title,
                 value: "2.0.0"
             )
         ])
@@ -79,11 +79,11 @@ final class SettingsViewModel: PageViewModel {
     private static func makeLabel(userInterfaceStyle: UIUserInterfaceStyle) -> String {
         switch userInterfaceStyle {
         case .light:
-            "Light"
+            L10n.Settings.Appearance.light
         case .dark:
-            "Dark"
+            L10n.Settings.Appearance.dark
         default:
-            "System"
+            L10n.Settings.Appearance.system
         }
     }
 }

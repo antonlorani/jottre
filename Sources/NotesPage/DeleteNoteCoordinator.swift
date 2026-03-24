@@ -12,16 +12,16 @@ final class DeleteNoteCoordinator: Coordinator {
 
     func start() {
         let alertController = UIAlertController(
-            title: "Delete Note",
-            message: "Are you sure you want to delete this note? This action cannot be undone.",
+            title: L10n.Notes.Delete.title,
+            message: L10n.Notes.Delete.message,
             preferredStyle: .alert
         )
         alertController.addAction(UIAlertAction(
-            title: "Cancel",
+            title: L10n.Action.cancel,
             style: .cancel
         ))
         alertController.addAction(UIAlertAction(
-            title: "Delete",
+            title: L10n.Action.delete,
             style: .destructive
         ) { [weak self] _ in
             self?.navigation.dismiss(animated: true)

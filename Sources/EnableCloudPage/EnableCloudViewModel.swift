@@ -14,7 +14,7 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
             style: .primary,
-            title: "Learn How To Enable",
+            title: L10n.EnableCloud.Action.learnHowToEnable,
             icon: "arrow.up.forward"
         ) { [weak self] in
             self?.didTapLearnHowToEnable()
@@ -30,16 +30,16 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
         )
         itemsContinuation.yield([
             PageCellItem.pageHeader(
-                headline: "Enable iCloud",
-                subheadline: "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
+                headline: L10n.EnableCloud.title,
+                subheadline: L10n.EnableCloud.subtitle
             ),
             PageCellItem.featureRow(
                 systemImageName: "macbook.and.iphone",
-                text: "Synchronize jots across all your Apple devices"
+                text: L10n.EnableCloud.Feature.sync
             ),
             PageCellItem.featureRow(
                 systemImageName: "person.3.fill",
-                text: "Share jots with others"
+                text: L10n.EnableCloud.Feature.share
             )
         ])
 

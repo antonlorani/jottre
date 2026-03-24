@@ -11,7 +11,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
             style: .primary,
-            title: "Done",
+            title: L10n.Action.done,
             icon: nil
         ) { [weak self] in
             self?.didTapDoneButton()
@@ -28,8 +28,8 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
         _itemsContinuation.yield(
             [
                 .pageHeader(
-                    headline: "iCloud is ready",
-                    subheadline: "Your Jots can now sync across all your devices. Choose which ones to bring along."
+                    headline: L10n.CloudMigration.title,
+                    subheadline: L10n.CloudMigration.subtitle
                 ),
                 .cloudMigrationNote(note: NoteBusinessModel(
                     previewImage: nil,

@@ -12,18 +12,18 @@ final class CreateNoteCoordinator: Coordinator {
     
     func start() {
         let alertController = UIAlertController(
-            title: "New Jot",
+            title: L10n.Notes.Create.title,
             message: nil,
             preferredStyle: .alert
         )
         alertController.addTextField { textField in
-            textField.placeholder = "Name"
+            textField.placeholder = L10n.Notes.Create.namePlaceholder
             textField.autocapitalizationType = .sentences
             textField.returnKeyType = .done
         }
-        
+
         let createAction = UIAlertAction(
-            title: "Create",
+            title: L10n.Action.create,
             style: .default
         ) { [weak self] _ in
             guard
@@ -36,9 +36,9 @@ final class CreateNoteCoordinator: Coordinator {
             navigation.open(url: EditNoteURL().toURL())
         }
         alertController.addAction(createAction)
-        
+
         let cancelAction = UIAlertAction(
-            title: "Cancel",
+            title: L10n.Action.cancel,
             style: .cancel
         )
         alertController.addAction(cancelAction)

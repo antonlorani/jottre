@@ -10,23 +10,23 @@ struct NoteMenuConfigurationFactory: Sendable {
         [
             .group(
                 NoteMenuConfiguration.Group(
-                    title: "Share",
+                    title: L10n.Action.share,
                     systemImageName: "square.and.arrow.up",
                     actions: [
                         NoteMenuConfiguration.Action(
-                            title: "PDF",
+                            title: L10n.Share.Format.pdf,
                             systemImageName: "doc.fill"
                         ) {
                             onShare(.pdf)
                         },
                         NoteMenuConfiguration.Action(
-                            title: "JPG",
+                            title: L10n.Share.Format.jpg,
                             systemImageName: "photo.fill"
                         ) {
                             onShare(.jpg)
                         },
                         NoteMenuConfiguration.Action(
-                            title: "PNG",
+                            title: L10n.Share.Format.png,
                             systemImageName: "photo"
                         ) {
                             onShare(.png)
@@ -36,7 +36,7 @@ struct NoteMenuConfigurationFactory: Sendable {
             ),
             .action(
                 NoteMenuConfiguration.Action(
-                    title: "Rename",
+                    title: L10n.Action.rename,
                     systemImageName: "pencil"
                 ) {
                     onRename()
@@ -44,7 +44,7 @@ struct NoteMenuConfigurationFactory: Sendable {
             ),
             .action(
                 NoteMenuConfiguration.Action(
-                    title: "Duplicate",
+                    title: L10n.Action.duplicate,
                     systemImageName: "plus.square.on.square"
                 ) {
                     onDuplicate()
@@ -52,7 +52,7 @@ struct NoteMenuConfigurationFactory: Sendable {
             ),
             .action(
                 NoteMenuConfiguration.Action(
-                    title: "Delete",
+                    title: L10n.Action.delete,
                     systemImageName: "trash",
                     isDestructive: true
                 ) {
@@ -63,9 +63,9 @@ struct NoteMenuConfigurationFactory: Sendable {
                 NoteMenuConfiguration.Action(
                     title: {
 #if targetEnvironment(macCatalyst)
-                        "Show in Finder"
+                        L10n.Notes.Menu.showInFinder
 #else
-                        "Show in Files"
+                        L10n.Notes.Menu.showInFiles
 #endif
                     }(),
                     systemImageName: "folder"

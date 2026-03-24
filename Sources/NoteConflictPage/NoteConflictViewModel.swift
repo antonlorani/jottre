@@ -9,21 +9,21 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
             style: .primary,
-            title: "Keep Version A",
+            title: L10n.NoteConflict.Action.keepVersionA,
             icon: nil
         ) { [weak self] in
             self?.didTapKeepVersionA()
         },
         PageCallToActionView.ActionConfiguration(
             style: .primary,
-            title: "Keep Version B",
+            title: L10n.NoteConflict.Action.keepVersionB,
             icon: nil
         ) { [weak self] in
             self?.didTapKeepVersionB()
         },
         PageCallToActionView.ActionConfiguration(
             style: .secondary,
-            title: "Keep Both",
+            title: L10n.NoteConflict.Action.keepBoth,
             icon: nil
         ) { [weak self] in
             self?.didTapKeepBoth()
@@ -41,8 +41,8 @@ final class NoteConflictViewModel: PageViewModel, Sendable {
         )
         _itemsContinuation.yield([
             .pageHeader(
-                headline: "Version Conflict",
-                subheadline: #""Sketch Final" was edited on two devices at the same time. Choose a version to keep."#
+                headline: L10n.NoteConflict.title,
+                subheadline: L10n.NoteConflict.subtitle("Sketch Final")
             ),
             .note(
                 note: NoteBusinessModel(

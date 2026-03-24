@@ -3,6 +3,9 @@ options:
   bundleIdPrefix: com.antonlorani
   deploymentTarget:
     iOS: "15.0"
+  knownRegions:
+    - en
+    - de
 
 targets:
   Jottre:
@@ -12,6 +15,7 @@ targets:
     sources:
       - Sources
       - path: Resources/Assets.xcassets
+      - path: Resources/Localizable.xcstrings
       - path: Resources/Info.plist
         buildPhase: none
     info:
@@ -33,4 +37,5 @@ targets:
         SUPPORTS_MACCATALYST: YES
         DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
         BUNDLE_IDENTIFIER_MACCATALYST: com.antonlorani.jottre
+        SWIFT_EMIT_LOC_STRINGS: YES
     packages: []

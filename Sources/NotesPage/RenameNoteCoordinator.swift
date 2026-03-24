@@ -12,7 +12,7 @@ final class RenameNoteCoordinator: Coordinator {
 
     func start() {
         let alertController = UIAlertController(
-            title: "Rename Note",
+            title: L10n.Notes.Rename.title,
             message: nil,
             preferredStyle: .alert
         )
@@ -20,13 +20,13 @@ final class RenameNoteCoordinator: Coordinator {
             textField.clearButtonMode = .whileEditing
         }
         alertController.addAction(UIAlertAction(
-            title: "Cancel",
+            title: L10n.Action.cancel,
             style: .cancel
         ))
         alertController.addAction(UIAlertAction(
-            title: "Rename",
+            title: L10n.Action.rename,
             style: .default
-        ) { [weak alertController] _ in
+        ) { _ in
             // TODO: Apply rename with alertController?.textFields?.first?.text
         })
         navigation.present(alertController, animated: true)
