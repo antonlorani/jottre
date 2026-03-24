@@ -3,6 +3,7 @@ import UIKit
 final class PageCallToActionView: UIStackView {
 
     private enum Constants {
+
         static let height = CGFloat(50)
     }
 
@@ -21,7 +22,7 @@ final class PageCallToActionView: UIStackView {
     init(actions: [ActionConfiguration]) {
         super.init(frame: .zero)
         axis = .vertical
-        spacing = 8
+        spacing = DesignTokens.Spacing.xs
         for action in actions {
             addArrangedSubview(makeButton(action: action))
         }
@@ -57,7 +58,7 @@ final class PageCallToActionView: UIStackView {
         if let iconName = action.icon {
             configuration.image = UIImage(systemName: iconName)
             configuration.imagePlacement = .trailing
-            configuration.imagePadding = 8
+            configuration.imagePadding = DesignTokens.Spacing.xs
         }
         configuration.cornerStyle = .capsule
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in

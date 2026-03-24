@@ -3,6 +3,7 @@ import UIKit
 final class SettingsExternalLinkCell: SettingsCell<UIImageView>, PageCell {
 
     private enum Constants {
+
         static let arrowSize = CGFloat(20)
     }
 

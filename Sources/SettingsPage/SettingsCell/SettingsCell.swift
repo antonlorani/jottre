@@ -43,9 +43,9 @@ class SettingsCell<T: UIView>: UICollectionViewCell {
 
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 20
+        contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
         contentView.clipsToBounds = true
-        contentView.layoutMargins = UIEdgeInsets(top: .zero, left: 16, bottom: .zero, right: 16)
+        contentView.layoutMargins = UIEdgeInsets(top: .zero, left: DesignTokens.Spacing.md, bottom: .zero, right: DesignTokens.Spacing.md)
 
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -56,7 +56,7 @@ class SettingsCell<T: UIView>: UICollectionViewCell {
         NSLayoutConstraint.activate([
             labelContainer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: accessoryView.leadingAnchor, constant: -8),
+            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: accessoryView.leadingAnchor, constant: -DesignTokens.Spacing.xs),
 
             nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),

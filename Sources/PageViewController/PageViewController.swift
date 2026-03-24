@@ -2,9 +2,6 @@ import UIKit
 
 final class PageViewController: UIViewController {
 
-    private enum Constants {
-        static let itemSpacing = CGFloat(8)
-    }
 
     private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
@@ -112,7 +109,7 @@ final class PageViewController: UIViewController {
     private func setUpViews() {
         navigationItem.title = viewModel.title
         view.backgroundColor = .systemGroupedBackground
-        view.directionalLayoutMargins.bottom = 16
+        view.directionalLayoutMargins.bottom = DesignTokens.Spacing.md
         navigationItem.largeTitleDisplayMode = .never
 
         view.addSubview(collectionView)
@@ -222,7 +219,7 @@ final class PageViewController: UIViewController {
             ),
             subitems: rowGroups
         )
-        group.interItemSpacing = .fixed(Constants.itemSpacing)
+        group.interItemSpacing = .fixed(DesignTokens.Spacing.xs)
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsetsReference = .layoutMargins
@@ -307,7 +304,7 @@ final class PageViewController: UIViewController {
             subitem: item,
             count: perRow
         )
-        group.interItemSpacing = .fixed(Constants.itemSpacing)
+        group.interItemSpacing = .fixed(DesignTokens.Spacing.xs)
         return (group, perRow)
     }
 
@@ -317,7 +314,7 @@ final class PageViewController: UIViewController {
         itemHeight: CGFloat,
         contentWidth: CGFloat
     ) -> (NSCollectionLayoutGroup, Int) {
-        let spacing = Constants.itemSpacing
+        let spacing = DesignTokens.Spacing.xs
         let columns = min(maxColumns, max(1, Int((contentWidth + spacing) / (minItemWidth + spacing))))
 
         let item = NSCollectionLayoutItem(

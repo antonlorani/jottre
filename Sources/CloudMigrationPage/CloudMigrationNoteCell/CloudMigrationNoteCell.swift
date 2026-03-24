@@ -5,7 +5,11 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
 
     private enum Constants {
 
-        struct Checbox {
+        enum Preview {
+            static let width = CGFloat(70)
+        }
+
+        enum Checbox {
             static let size = CGFloat(30)
 
             static func image(isOn: Bool) -> UIImage? {
@@ -69,13 +73,13 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
 
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 20
+        contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
         contentView.clipsToBounds = true
         contentView.layoutMargins = UIEdgeInsets(
-            top: 8,
-            left: 8,
-            bottom: 8,
-            right: 16
+            top: DesignTokens.Spacing.xs,
+            left: DesignTokens.Spacing.xs,
+            bottom: DesignTokens.Spacing.xs,
+            right: DesignTokens.Spacing.md
         )
 
         contentView.addSubview(previewImageView)
@@ -89,19 +93,19 @@ final class CloudMigrationNoteCell: UICollectionViewCell, PageCell {
             previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-            previewImageView.widthAnchor.constraint(equalToConstant: 70),
+            previewImageView.widthAnchor.constraint(equalToConstant: Constants.Preview.width),
 
             separatorLine.leadingAnchor.constraint(equalTo: previewImageView.trailingAnchor),
             separatorLine.topAnchor.constraint(equalTo: contentView.topAnchor),
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            separatorLine.widthAnchor.constraint(equalToConstant: 1),
+            separatorLine.widthAnchor.constraint(equalToConstant: DesignTokens.Length.separator),
 
             labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
-            labelContainer.leadingAnchor.constraint(equalTo: separatorLine.trailingAnchor, constant: 16),
+            labelContainer.leadingAnchor.constraint(equalTo: separatorLine.trailingAnchor, constant: DesignTokens.Spacing.md),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelContainer.bottomAnchor
                 .constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor),
-            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: checkboxImageView.leadingAnchor, constant: -8),
+            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: checkboxImageView.leadingAnchor, constant: -DesignTokens.Spacing.xs),
 
             nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),

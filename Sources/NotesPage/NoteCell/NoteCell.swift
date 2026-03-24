@@ -58,13 +58,13 @@ final class NoteCell: UICollectionViewCell, PageCell {
 
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 20
+        contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
         contentView.clipsToBounds = true
         contentView.layoutMargins = UIEdgeInsets(
-            top: 8,
-            left: 8,
-            bottom: 12,
-            right: 8
+            top: DesignTokens.Spacing.xs,
+            left: DesignTokens.Spacing.xs,
+            bottom: DesignTokens.Spacing.sm,
+            right: DesignTokens.Spacing.xs
         )
 
         contentView.addSubview(previewImageView)
@@ -79,9 +79,9 @@ final class NoteCell: UICollectionViewCell, PageCell {
 
             separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            separatorLine.heightAnchor.constraint(equalToConstant: 1),
+            separatorLine.heightAnchor.constraint(equalToConstant: DesignTokens.Length.separator),
 
-            nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: 12),
+            nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: DesignTokens.Spacing.sm),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
         ] + withoutInfoLabelConstraints)

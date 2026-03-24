@@ -4,9 +4,10 @@ final class FeatureRowCell: UICollectionViewCell, PageCell {
     static let reuseIdentifier = "FeatureRowCell"
 
     private enum Constants {
-        static let iconSize = CGFloat(28)
-        static let padding = CGFloat(16)
-        static let cornerRadius = CGFloat(20)
+
+        enum Icon {
+            static let size = CGFloat(28)
+        }
     }
 
     private let iconImageView: UIImageView = {
@@ -37,7 +38,7 @@ final class FeatureRowCell: UICollectionViewCell, PageCell {
 
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = Constants.cornerRadius
+        contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
         contentView.clipsToBounds = true
 
         contentView.addSubview(iconImageView)
@@ -46,27 +47,27 @@ final class FeatureRowCell: UICollectionViewCell, PageCell {
         NSLayoutConstraint.activate([
             iconImageView.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
-                constant: Constants.padding
+                constant: DesignTokens.Spacing.md
             ),
             iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: Constants.iconSize),
-            iconImageView.heightAnchor.constraint(equalToConstant: Constants.iconSize),
+            iconImageView.widthAnchor.constraint(equalToConstant: Constants.Icon.size),
+            iconImageView.heightAnchor.constraint(equalToConstant: Constants.Icon.size),
 
             textLabel.leadingAnchor.constraint(
                 equalTo: iconImageView.trailingAnchor,
-                constant: Constants.padding
+                constant: DesignTokens.Spacing.md
             ),
             textLabel.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor,
-                constant: -Constants.padding
+                constant: -DesignTokens.Spacing.md
             ),
             textLabel.topAnchor.constraint(
                 equalTo: contentView.topAnchor,
-                constant: Constants.padding
+                constant: DesignTokens.Spacing.md
             ),
             textLabel.bottomAnchor.constraint(
                 equalTo: contentView.bottomAnchor,
-                constant: -Constants.padding
+                constant: -DesignTokens.Spacing.md
             ),
         ])
     }

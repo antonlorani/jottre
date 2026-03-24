@@ -48,7 +48,7 @@ final class PageHeaderCell: UICollectionViewCell, PageCell {
             headlineLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             headlineLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
 
-            subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 8),
+            subheadlineLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: DesignTokens.Spacing.xs),
             subheadlineLabel.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.leadingAnchor),
             subheadlineLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).withPriority(.defaultHigh),
             subheadlineLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.Subheadline.maxWidth),

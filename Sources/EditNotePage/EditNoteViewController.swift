@@ -5,7 +5,7 @@ final class EditNoteViewController: UIViewController {
 
     private enum Constants {
 
-        struct CanvasView {
+        enum CanvasView {
             static let maximumZoomScale = CGFloat(3)
         }
     }

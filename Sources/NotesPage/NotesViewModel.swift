@@ -83,9 +83,9 @@ final class NotesViewModel: PageViewModel {
                 }
             )
         })
-        itemsContinuation.yield([
-            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
-        ])
+//        itemsContinuation.yield([
+//            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+//        ])
 
         (leftNavigationItems, leftNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
