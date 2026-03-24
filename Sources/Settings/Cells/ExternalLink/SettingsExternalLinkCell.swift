@@ -1,6 +1,6 @@
 import UIKit
 
-final class SettingsExternalLinkCell: UICollectionViewCell {
+final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
 
     private enum Constants {
 
@@ -88,13 +88,13 @@ final class SettingsExternalLinkCell: UICollectionViewCell {
         ] + withoutInfoLabelConstraints)
     }
 
-    func configure(businessModel: SettingsExternalLinkBusinessModel) {
-        nameLabel.text = businessModel.name
+    func configure(viewModel: SettingsExternalLinkCellViewModel) {
+        nameLabel.text = viewModel.name
 
         infoLabel.removeFromSuperview()
         NSLayoutConstraint.deactivate(withoutInfoLabelConstraints + withInfoLabelConstraints)
 
-        if let info = businessModel.info {
+        if let info = viewModel.info {
             infoLabel.text = info
             labelContainer.addSubview(infoLabel)
             NSLayoutConstraint.activate(withInfoLabelConstraints)

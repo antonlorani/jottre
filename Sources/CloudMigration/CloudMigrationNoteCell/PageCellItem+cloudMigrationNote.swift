@@ -7,7 +7,7 @@ extension PageCellItem {
         PageCellItem(
             id: note,
             cellType: CloudMigrationNoteCell.self,
-            sizing: .fullWidth(estimatedHeight: 44),
+            sizing: .fullWidth(estimatedHeight: 56),
             viewModel: CloudMigrationNoteCellViewModel(
                 note: note
             )

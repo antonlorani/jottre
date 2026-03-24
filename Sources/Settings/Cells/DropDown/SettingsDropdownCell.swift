@@ -1,6 +1,6 @@
 import UIKit
 
-final class SettingsDropdownCell: UICollectionViewCell {
+final class SettingsDropdownCell: UICollectionViewCell, PageCell {
 
     static let reuseIdentifier = "SettingsDropdownCell"
 
@@ -49,16 +49,16 @@ final class SettingsDropdownCell: UICollectionViewCell {
         ])
     }
 
-    func configure(businessModel: SettingsDropdownBusinessModel) {
-        nameLabel.text = businessModel.name
-        dropdownButton.setTitle(businessModel.current.label, for: .normal)
+    func configure(viewModel: SettingsDropdownCellViewModel) {
+        nameLabel.text = viewModel.name
+        dropdownButton.setTitle(viewModel.current.label, for: .normal)
         dropdownButton.menu = UIMenu(
-            children: businessModel.options.map { option in
+            children: viewModel.options.map { option in
                 UIAction(
                     title: option.label,
-                    state: AnyHashable(option.value.hashValue) == AnyHashable(businessModel.current.value) ? .on : .off
+                    state: AnyHashable(option.value.hashValue) == AnyHashable(viewModel.current.value) ? .on : .off
                 ) { _ in
-                    businessModel.onAction(option)
+                    viewModel.onAction(option)
                 }
             }
         )

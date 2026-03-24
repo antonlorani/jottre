@@ -1,6 +1,6 @@
 import UIKit
 
-final class SettingsInfoCell: UICollectionViewCell {
+final class SettingsInfoCell: UICollectionViewCell, PageCell {
 
     static let reuseIdentifier = "SettingsInfoCell"
 
@@ -49,8 +49,8 @@ final class SettingsInfoCell: UICollectionViewCell {
         ])
     }
 
-    func configure(businessModel: SettingsInfoBusinessModel) {
-        nameLabel.text = businessModel.name
-        valueLabel.text = businessModel.value
+    func configure(viewModel: SettingsInfoCellViewModel) {
+        nameLabel.text = viewModel.name
+        valueLabel.text = viewModel.value
     }
 }

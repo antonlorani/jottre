@@ -9,10 +9,13 @@ protocol SettingsViewControllerFactory: Sendable {
 struct IOS18SettingsViewControllerFactory: SettingsViewControllerFactory {
 
     func make(coordinator: SettingsCoordinator) -> UIViewController {
-        SettingsViewController(
+        let viewController = PageViewController(
             viewModel: SettingsViewModel(coordinator: coordinator),
+            textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
             symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
         )
+        viewController.navigationItem.largeTitleDisplayMode = .always
+        return viewController
     }
 }
 
@@ -20,9 +23,12 @@ struct IOS18SettingsViewControllerFactory: SettingsViewControllerFactory {
 struct IOS26SettingsViewControllerFactory: SettingsViewControllerFactory {
 
     func make(coordinator: SettingsCoordinator) -> UIViewController {
-        SettingsViewController(
+        let viewController = PageViewController(
             viewModel: SettingsViewModel(coordinator: coordinator),
+            textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),
             symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
         )
+        viewController.navigationItem.largeTitleDisplayMode = .always
+        return viewController
     }
 }

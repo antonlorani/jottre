@@ -1,6 +1,6 @@
 import UIKit
 
-final class SettingsToggleCell: UICollectionViewCell {
+final class SettingsToggleCell: UICollectionViewCell, PageCell {
 
     static let reuseIdentifier = "SettingsToggleCell"
 
@@ -46,8 +46,8 @@ final class SettingsToggleCell: UICollectionViewCell {
         ])
     }
 
-    func configure(businessModel: SettingsToggleBusinessModel) {
-        nameLabel.text = businessModel.name
-        toggle.isOn = businessModel.isOn
+    func configure(viewModel: SettingsToggleCellViewModel) {
+        nameLabel.text = viewModel.name
+        toggle.isOn = viewModel.isOn
     }
 }
