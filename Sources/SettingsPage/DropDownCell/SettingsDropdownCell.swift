@@ -1,64 +1,18 @@
 import UIKit
 
-final class SettingsDropdownCell: UICollectionViewCell, PageCell {
-
-    static let reuseIdentifier = "SettingsDropdownCell"
-
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
-    }()
-
-    private let dropdownButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.showsMenuAsPrimaryAction = true
-        button.titleLabel?.font = .preferredFont(forTextStyle: .body, weight: .semibold)
-        button.setTitleColor(.label, for: .normal)
-        return button
-    }()
+final class SettingsDropdownCell: SettingsCell<UIButton>, PageCell {
 
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        setUpViews()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        assertionFailure("\(#function) has not been implemented")
-        return nil
-    }
-
-    private func setUpViews() {
-        contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
-        contentView.layoutMargins = UIEdgeInsets(
-            top: .zero,
-            left: 16,
-            bottom: .zero,
-            right: 16
-        )
-
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(dropdownButton)
-
-        NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: dropdownButton.leadingAnchor, constant: -8),
-
-            dropdownButton.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            dropdownButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        ])
+        super.init(frame: frame, accessoryView: UIButton(type: .system))
+        accessoryView.showsMenuAsPrimaryAction = true
+        accessoryView.titleLabel?.font = .preferredFont(forTextStyle: .body, weight: .semibold)
+        accessoryView.setTitleColor(.label, for: .normal)
     }
 
     func configure(viewModel: SettingsDropdownCellViewModel) {
         nameLabel.text = viewModel.name
-        dropdownButton.setTitle(viewModel.current.label, for: .normal)
-        dropdownButton.menu = UIMenu(
+        accessoryView.setTitle(viewModel.current.label, for: .normal)
+        accessoryView.menu = UIMenu(
             children: viewModel.options.map { option in
                 UIAction(
                     title: option.label,

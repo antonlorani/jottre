@@ -1,28 +1,10 @@
 import UIKit
 
-final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
+final class SettingsExternalLinkCell: SettingsCell<UIImageView>, PageCell {
 
     private enum Constants {
-
-        struct ArrowImage {
-            static let size = CGFloat(20)
-        }
+        static let arrowSize = CGFloat(20)
     }
-
-    static let reuseIdentifier = "SettingsExternalLinkCell"
-
-    private let labelContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
-    }()
 
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
@@ -32,15 +14,6 @@ final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
         return label
     }()
 
-    private let arrowImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "arrow.up.forward")
-        imageView.tintColor = .label
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-
     private lazy var withInfoLabelConstraints = [
         infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
         infoLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
@@ -48,64 +21,29 @@ final class SettingsExternalLinkCell: UICollectionViewCell, PageCell {
         infoLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
     ]
 
-    private lazy var withoutInfoLabelConstraints = [
-        nameLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor)
-    ]
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpViews()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        assertionFailure("\(#function) has not been implemented")
-        return nil
-    }
-
-    private func setUpViews() {
-        contentView.backgroundColor = .secondarySystemGroupedBackground
-        contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
-        contentView.layoutMargins = UIEdgeInsets(
-            top: .zero,
-            left: 16,
-            bottom: .zero,
-            right: 16
-        )
-
-        contentView.addSubview(labelContainer)
-        labelContainer.addSubview(nameLabel)
-        contentView.addSubview(arrowImageView)
+        accessoryView.image = UIImage(systemName: "arrow.up.forward")
+        accessoryView.tintColor = .label
+        accessoryView.contentMode = .scaleAspectFit
 
         NSLayoutConstraint.activate([
-            labelContainer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: arrowImageView.leadingAnchor, constant: -8),
-
-            nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
-
-            arrowImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            arrowImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            arrowImageView.widthAnchor.constraint(equalToConstant: Constants.ArrowImage.size),
-            arrowImageView.heightAnchor.constraint(equalToConstant: Constants.ArrowImage.size),
-        ] + withoutInfoLabelConstraints)
+            accessoryView.widthAnchor.constraint(equalToConstant: Constants.arrowSize),
+            accessoryView.heightAnchor.constraint(equalToConstant: Constants.arrowSize),
+        ])
     }
 
     func configure(viewModel: SettingsExternalLinkCellViewModel) {
         nameLabel.text = viewModel.name
-
         infoLabel.removeFromSuperview()
-        NSLayoutConstraint.deactivate(withoutInfoLabelConstraints + withInfoLabelConstraints)
+        NSLayoutConstraint.deactivate([nameLabelBottomConstraint] + withInfoLabelConstraints)
 
         if let info = viewModel.info {
             infoLabel.text = info
             labelContainer.addSubview(infoLabel)
             NSLayoutConstraint.activate(withInfoLabelConstraints)
         } else {
-            NSLayoutConstraint.activate(withoutInfoLabelConstraints)
+            NSLayoutConstraint.activate([nameLabelBottomConstraint])
         }
     }
 }
