@@ -5,6 +5,7 @@ enum PrimaryBarButtonAction: Sendable {
     case menu(UIMenu)
 }
 
+@MainActor
 protocol SymbolBarButtonItemFactory: Sendable {
 
     func make(

@@ -9,7 +9,7 @@ struct PageCellItem: Sendable, Hashable {
     let id: any Hashable & Sendable
     let cellType: any PageCell.Type
     let sizing: PageCellSizingStrategy
-    let configure: @Sendable (_ cell: Any) -> Void
+    let configure: @Sendable @MainActor (_ cell: Any) -> Void
     let handleAction: @Sendable @MainActor (_ action: PageCellAction) -> Void
     let contextMenuConfiguration: @Sendable @MainActor () -> UIContextMenuConfiguration?
 

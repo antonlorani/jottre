@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 protocol TextBarButtonItemFactory: Sendable {
 
     func make(
