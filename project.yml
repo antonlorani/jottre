@@ -52,6 +52,10 @@ targets:
                 UISceneDelegateClassName: "$(PRODUCT_MODULE_NAME).SceneDelegate"
     entitlements:
       path: Jottre.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.files.downloads.read-write: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
