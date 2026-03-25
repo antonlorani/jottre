@@ -3,6 +3,29 @@ options:
   bundleIdPrefix: com.antonlorani
   deploymentTarget:
     iOS: "15.0"
+  knownRegions:
+    - en
+    - de
+    - af
+    - ar
+    - es
+    - fr
+    - hi
+    - id
+    - it
+    - ja
+    - ko
+    - ms
+    - nl
+    - pl
+    - pt-BR
+    - pt-PT
+    - ru
+    - sv
+    - th
+    - tr
+    - uk
+    - vi
 
 targets:
   Jottre:
@@ -12,17 +35,29 @@ targets:
     sources:
       - Sources
       - path: Resources/Assets.xcassets
+      - path: Resources/Localizable.xcstrings
       - path: Resources/Info.plist
         buildPhase: none
     info:
       path: Resources/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: "Default Configuration"
+                UISceneDelegateClassName: "$(PRODUCT_MODULE_NAME).SceneDelegate"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
         PRODUCT_NAME: Jottre
-        SWIFT_VERSION: "5.10"
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SUPPORTS_MACCATALYST: YES
+        MACCATALYST_UI_IDIOM: mac
         DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
         BUNDLE_IDENTIFIER_MACCATALYST: com.antonlorani.jottre
+        SWIFT_EMIT_LOC_STRINGS: YES
     packages: []
