@@ -1,16 +1,35 @@
 #!/bin/bash
 
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.rb$')
-if [ -z "$STAGED_FILES" ]; then
-  exit 0
+STAGED_RUBY_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.rb$')
+if [ -n "$STAGED_RUBY_FILES" ]; then
+  bundle exec rubocop --autocorrect-all $STAGED_RUBY_FILES
+
+  MODIFIED=$(git diff --name-only $STAGED_RUBY_FILES)
+  if [ -n "$MODIFIED" ]; then
+    echo -e "\033[0;31mFormatting applied. Restage affected files.\033[0m"
+    exit 1
+  fi
 fi
 
-bundle exec rubocop --autocorrect-all $STAGED_FILES
+STAGED_SWIFT_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.swift$')
+if [ -n "$STAGED_SWIFT_FILES" ]; then
+  NEEDS_FORMATTING=0
 
-MODIFIED=$(git diff --name-only $STAGED_FILES)
-if [ -n "$MODIFIED" ]; then
-  echo -e "\033[0;31mFormatting applied. Restage affected files.\033[0m"
-  exit 1
+  for FILE in $STAGED_SWIFT_FILES; do
+    BEFORE=$(git show ":$FILE")
+    AFTER=$(swift format - <<< "$BEFORE")
+
+    if ! diff -q <(echo "$BEFORE") <(echo "$AFTER") > /dev/null; then
+      NEEDS_FORMATTING=1
+    fi
+  done
+
+  if [ $NEEDS_FORMATTING -eq 1 ]; then
+    echo "Running swift format..."
+    swift format $STAGED_SWIFT_FILES --in-place --parallel
+    echo -e "\033[0;31mFormatting applied. Restage affected files.\033[0m"
+    exit 1
+  fi
 fi
 
 exit 0
