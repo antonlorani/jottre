@@ -52,7 +52,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
         PRODUCT_NAME: Jottre
-        SWIFT_VERSION: "5.10"
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SUPPORTS_MACCATALYST: YES
         MACCATALYST_UI_IDIOM: mac
