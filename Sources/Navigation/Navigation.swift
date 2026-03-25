@@ -31,10 +31,11 @@ struct Navigation: Sendable {
 
     init(
         openURLProvider: @Sendable @escaping (_ url: URL) -> Void,
-        presentViewControllerProvider: @Sendable @escaping (
-            _ viewController: UIViewController,
-            _ animated: Bool
-        ) -> Void,
+        presentViewControllerProvider:
+            @Sendable @escaping (
+                _ viewController: UIViewController,
+                _ animated: Bool
+            ) -> Void,
         dismissViewControllerProvider: @Sendable @escaping (_ animated: Bool) -> Void
     ) {
         self.openURLProvider = openURLProvider
