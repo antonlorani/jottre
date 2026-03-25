@@ -1,6 +1,6 @@
 <p style="text-align: center; max-width: 500px; height: auto;">
 <p align="center" >
-  <img src="images/app_icon.png" style="border-radius: 50px; overflow: hidden;" width=300 height=auto>
+  <img src="Resources/Assets.xcassets/AppIcon.app/icon_1024x1024.png" style="border-radius: 50px; overflow: hidden;" width=300 height=auto>
 </p>
 
 # Jottre
