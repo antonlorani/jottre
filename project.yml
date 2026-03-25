@@ -38,6 +38,8 @@ targets:
       - path: Resources/Localizable.xcstrings
       - path: Resources/Info.plist
         buildPhase: none
+      - path: Jottre.entitlements
+        buildPhase: none
     info:
       path: Resources/Info.plist
       properties:
@@ -48,6 +50,8 @@ targets:
             UIWindowSceneSessionRoleApplication:
               - UISceneConfigurationName: "Default Configuration"
                 UISceneDelegateClassName: "$(PRODUCT_MODULE_NAME).SceneDelegate"
+    entitlements:
+      path: Jottre.entitlements
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
