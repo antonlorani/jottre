@@ -19,12 +19,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #endif
 
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
+        appearance.configureWithTransparentBackground()
 
         let navigationController = UINavigationController()
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.navigationBar.standardAppearance = appearance
         navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.tintColor = .label
 
         let navigation = Navigation(
             openURLProvider: { [weak self] url in
