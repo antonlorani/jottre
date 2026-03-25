@@ -14,3 +14,4 @@ Gemfile
 Gemfile.lock
 Brewfile
 LICENSE
+.ruby-version
