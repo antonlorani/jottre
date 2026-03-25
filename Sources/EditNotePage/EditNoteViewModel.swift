@@ -45,7 +45,7 @@ final class EditNoteViewModel: Sendable {
             of: Bool?.self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        
+
 #if targetEnvironment(macCatalyst)
         isEditingContinuation.yield(nil)
 #else

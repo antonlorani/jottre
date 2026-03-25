@@ -6,6 +6,26 @@ options:
   knownRegions:
     - en
     - de
+    - af
+    - ar
+    - es
+    - fr
+    - hi
+    - id
+    - it
+    - ja
+    - ko
+    - ms
+    - nl
+    - pl
+    - pt-BR
+    - pt-PT
+    - ru
+    - sv
+    - th
+    - tr
+    - uk
+    - vi
 
 targets:
   Jottre:
