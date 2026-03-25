@@ -1,3 +1,21 @@
+/*
+ Jottre: Minimalistic jotting for iPhone, iPad and Mac.
+ Copyright (C) 2021-2026 Anton Lorani
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import Foundation
 
 @MainActor
@@ -31,24 +49,30 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     headline: L10n.CloudMigration.title,
                     subheadline: L10n.CloudMigration.subtitle
                 ),
-                .cloudMigrationNote(note: NoteBusinessModel(
-                    previewImage: nil,
-                    name: "Project Brainstorm",
-                    lastEditedDateString: "February 15 2026",
-                    isCloudSynchronized: false
-                )),
-                .cloudMigrationNote(note: NoteBusinessModel(
-                    previewImage: nil,
-                    name: "Sketch Ideas",
-                    lastEditedDateString: "May 11 2023",
-                    isCloudSynchronized: false
-                )),
-                .cloudMigrationNote(note: NoteBusinessModel(
-                    previewImage: nil,
-                    name: "Calculator Pro",
-                    lastEditedDateString: "April 25 2021",
-                    isCloudSynchronized: true
-                ))
+                .cloudMigrationNote(
+                    note: NoteBusinessModel(
+                        previewImage: nil,
+                        name: "Project Brainstorm",
+                        lastEditedDateString: "February 15 2026",
+                        isCloudSynchronized: false
+                    )
+                ),
+                .cloudMigrationNote(
+                    note: NoteBusinessModel(
+                        previewImage: nil,
+                        name: "Sketch Ideas",
+                        lastEditedDateString: "May 11 2023",
+                        isCloudSynchronized: false
+                    )
+                ),
+                .cloudMigrationNote(
+                    note: NoteBusinessModel(
+                        previewImage: nil,
+                        name: "Calculator Pro",
+                        lastEditedDateString: "April 25 2021",
+                        isCloudSynchronized: true
+                    )
+                ),
             ]
         )
     }

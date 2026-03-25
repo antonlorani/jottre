@@ -1,14 +1,32 @@
+/*
+ Jottre: Minimalistic jotting for iPhone, iPad and Mac.
+ Copyright (C) 2021-2026 Anton Lorani
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import UIKit
 
 @MainActor
 final class NotesViewModel: PageViewModel {
 
     var title: String? {
-#if targetEnvironment(macCatalyst)
+        #if targetEnvironment(macCatalyst)
         nil
-#else
+        #else
         L10n.App.title
-#endif
+        #endif
     }
 
     let leftNavigationItems: AsyncStream<[PageNavigationItem]>
@@ -43,49 +61,51 @@ final class NotesViewModel: PageViewModel {
                 name: "Project Sketch",
                 lastEditedDateString: "",
                 isCloudSynchronized: false
-            )
+            ),
         ]
 
-        itemsContinuation.yield(notes.map { note in
-            PageCellItem.note(
-                note: note,
-                infoText: nil,
-                noteMenuConfigurations: menuConfigurationFactory.make(
-                    onShare: { [weak coordinator] format in
-                        Task { @MainActor in
-                            coordinator?.showShareNote(format: format)
+        itemsContinuation.yield(
+            notes.map { note in
+                PageCellItem.note(
+                    note: note,
+                    infoText: nil,
+                    noteMenuConfigurations: menuConfigurationFactory.make(
+                        onShare: { [weak coordinator] format in
+                            Task { @MainActor in
+                                coordinator?.showShareNote(format: format)
+                            }
+                        },
+                        onRename: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showRenameAlert()
+                            }
+                        },
+                        onDuplicate: {
+                            /* no-op */
+                        },
+                        onDelete: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showDeleteConfirmationAlert()
+                            }
+                        },
+                        onShowInFiles: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showInFiles()
+                            }
                         }
-                    },
-                    onRename: { [weak coordinator] in
+                    ),
+                    sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
+                    onAction: { [weak coordinator] in
                         Task { @MainActor in
-                            coordinator?.showRenameAlert()
-                        }
-                    },
-                    onDuplicate: {
-                        /* no-op */
-                    },
-                    onDelete: { [weak coordinator] in
-                        Task { @MainActor in
-                            coordinator?.showDeleteConfirmationAlert()
-                        }
-                    },
-                    onShowInFiles: { [weak coordinator] in
-                        Task { @MainActor in
-                            coordinator?.showInFiles()
+                            coordinator?.openNote(note)
                         }
                     }
-                ),
-                sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
-                onAction: { [weak coordinator] in
-                    Task { @MainActor in
-                        coordinator?.openNote(note)
-                    }
-                }
-            )
-        })
-//        itemsContinuation.yield([
-//            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
-//        ])
+                )
+            }
+        )
+        //        itemsContinuation.yield([
+        //            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+        //        ])
 
         (leftNavigationItems, leftNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
@@ -105,7 +125,7 @@ final class NotesViewModel: PageViewModel {
                 Task { @MainActor in
                     coordinator?.openEnableCloudPage()
                 }
-            }
+            },
         ])
 
         (rightNavigationItems, rightNavigationItemsContinuation) = AsyncStream.makeStream(

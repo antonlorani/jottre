@@ -1,3 +1,21 @@
+/*
+ Jottre: Minimalistic jotting for iPhone, iPad and Mac.
+ Copyright (C) 2021-2026 Anton Lorani
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import UIKit
 
 class SettingsCell<T: UIView>: UICollectionViewCell {
@@ -21,7 +39,9 @@ class SettingsCell<T: UIView>: UICollectionViewCell {
 
     let accessoryView: T
 
-    private(set) lazy var nameLabelBottomConstraint = nameLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor)
+    private(set) lazy var nameLabelBottomConstraint = nameLabel.bottomAnchor.constraint(
+        equalTo: labelContainer.bottomAnchor
+    )
 
     override init(frame: CGRect) {
         self.accessoryView = T(frame: .zero)
@@ -45,7 +65,12 @@ class SettingsCell<T: UIView>: UICollectionViewCell {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
         contentView.clipsToBounds = true
-        contentView.layoutMargins = UIEdgeInsets(top: .zero, left: DesignTokens.Spacing.md, bottom: .zero, right: DesignTokens.Spacing.md)
+        contentView.layoutMargins = UIEdgeInsets(
+            top: .zero,
+            left: DesignTokens.Spacing.md,
+            bottom: .zero,
+            right: DesignTokens.Spacing.md
+        )
 
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -56,7 +81,10 @@ class SettingsCell<T: UIView>: UICollectionViewCell {
         NSLayoutConstraint.activate([
             labelContainer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.trailingAnchor.constraint(lessThanOrEqualTo: accessoryView.leadingAnchor, constant: -DesignTokens.Spacing.xs),
+            labelContainer.trailingAnchor.constraint(
+                lessThanOrEqualTo: accessoryView.leadingAnchor,
+                constant: -DesignTokens.Spacing.xs
+            ),
 
             nameLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
