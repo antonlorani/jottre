@@ -26,10 +26,13 @@ protocol NotesViewControllerFactory: Sendable {
 
 struct IOS18NotesViewControllerFactory: NotesViewControllerFactory {
 
+    let repository: NotesRepositoryProtocol
+
     func make(coordinator: NotesCoordinator) -> UIViewController {
         let viewController = PageViewController(
             viewModel: NotesViewModel(
                 coordinator: coordinator,
+                repository: repository,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
             textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
@@ -47,10 +50,13 @@ struct IOS18NotesViewControllerFactory: NotesViewControllerFactory {
 @available(iOS 26, *)
 struct IOS26NotesViewControllerFactory: NotesViewControllerFactory {
 
+    let repository: NotesRepositoryProtocol
+
     func make(coordinator: NotesCoordinator) -> UIViewController {
         let viewController = PageViewController(
             viewModel: NotesViewModel(
                 coordinator: coordinator,
+                repository: repository,
                 menuConfigurationFactory: NoteMenuConfigurationFactory()
             ),
             textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),

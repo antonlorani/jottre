@@ -40,73 +40,22 @@ final class NotesViewModel: PageViewModel {
 
     let actions = [PageCallToActionView.ActionConfiguration]()
 
+    private var notesTask: Task<Void, Never>?
+    private weak var coordinator: NotesCoordinator?
+    private let menuConfigurationFactory: NoteMenuConfigurationFactory
+
     init(
         coordinator: NotesCoordinator,
+        repository: NotesRepositoryProtocol,
         menuConfigurationFactory: NoteMenuConfigurationFactory
     ) {
+        self.coordinator = coordinator
+        self.menuConfigurationFactory = menuConfigurationFactory
+
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-
-        let notes = [
-            NoteBusinessModel(
-                previewImage: nil,
-                name: "Calculator Pro",
-                lastEditedDateString: "",
-                isCloudSynchronized: false
-            ),
-            NoteBusinessModel(
-                previewImage: nil,
-                name: "Project Sketch",
-                lastEditedDateString: "",
-                isCloudSynchronized: false
-            ),
-        ]
-
-        itemsContinuation.yield(
-            notes.map { note in
-                PageCellItem.note(
-                    note: note,
-                    infoText: nil,
-                    noteMenuConfigurations: menuConfigurationFactory.make(
-                        onShare: { [weak coordinator] format in
-                            Task { @MainActor in
-                                coordinator?.showShareNote(format: format)
-                            }
-                        },
-                        onRename: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.showRenameAlert()
-                            }
-                        },
-                        onDuplicate: {
-                            /* no-op */
-                        },
-                        onDelete: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.showDeleteConfirmationAlert()
-                            }
-                        },
-                        onShowInFiles: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.showInFiles()
-                            }
-                        }
-                    ),
-                    sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
-                    onAction: { [weak coordinator] in
-                        Task { @MainActor in
-                            coordinator?.openNote(note)
-                        }
-                    }
-                )
-            }
-        )
-        //        itemsContinuation.yield([
-        //            .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
-        //        ])
-
         (leftNavigationItems, leftNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
             bufferingPolicy: .bufferingNewest(1)
@@ -141,5 +90,73 @@ final class NotesViewModel: PageViewModel {
                 }
             }
         ])
+
+        notesTask = Task { [weak self] in
+            do {
+                for try await jotFiles in try repository.getJotFiles() {
+                    self?.handleJots(jotFiles: jotFiles)
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+    private func handleJots(jotFiles: [JotFileBusinessModel]) {
+        guard !jotFiles.isEmpty else {
+            itemsContinuation.yield([
+                .notesEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+            ])
+            return
+        }
+        itemsContinuation.yield(
+            jotFiles.map { jotFile in
+                let note = NoteBusinessModel(
+                    previewImage: nil,
+                    name: jotFile.name,
+                    lastEditedDateString: "",
+                    isCloudSynchronized: false
+                )
+                return .note(
+                    note: note,
+                    infoText: nil,
+                    noteMenuConfigurations: menuConfigurationFactory.make(
+                        onShare: { [weak coordinator] format in
+                            Task { @MainActor in
+                                coordinator?.showShareNote(format: format)
+                            }
+                        },
+                        onRename: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showRenameAlert()
+                            }
+                        },
+                        onDuplicate: {
+                            /* no-op */
+                        },
+                        onDelete: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showDeleteConfirmationAlert()
+                            }
+                        },
+                        onShowInFiles: { [weak coordinator] in
+                            Task { @MainActor in
+                                coordinator?.showInFiles()
+                            }
+                        }
+                    ),
+                    sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
+                    onAction: { [weak coordinator] in
+                        Task { @MainActor in
+                            coordinator?.openJot(jotFile)
+                        }
+                    }
+                )
+            }
+        )
+    }
+
+    deinit {
+        notesTask?.cancel()
     }
 }

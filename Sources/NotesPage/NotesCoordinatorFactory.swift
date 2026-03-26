@@ -26,10 +26,14 @@ protocol NotesCoordinatorFactory: Sendable {
 
 struct IOS18NotesCoordinatorFactory: NotesCoordinatorFactory {
 
+    let notesRepository: NotesRepositoryProtocol
+
     func make(navigation: Navigation) -> NavigationCoordinator {
         NotesCoordinator(
             navigation: navigation,
-            notesViewControllerFactory: IOS18NotesViewControllerFactory(),
+            notesViewControllerFactory: IOS18NotesViewControllerFactory(
+                repository: notesRepository
+            ),
             settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS18EnableCloudCoordinatorFactory(),
             editNoteCoordinatorFactory: IOS18EditNoteCoordinatorFactory(),
@@ -41,10 +45,14 @@ struct IOS18NotesCoordinatorFactory: NotesCoordinatorFactory {
 @available(iOS 26, *)
 struct IOS26NotesCoordinatorFactory: NotesCoordinatorFactory {
 
+    let notesRepository: NotesRepositoryProtocol
+
     func make(navigation: Navigation) -> NavigationCoordinator {
         NotesCoordinator(
             navigation: navigation,
-            notesViewControllerFactory: IOS26NotesViewControllerFactory(),
+            notesViewControllerFactory: IOS26NotesViewControllerFactory(
+                repository: notesRepository
+            ),
             settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS26EnableCloudCoordinatorFactory(),
             editNoteCoordinatorFactory: IOS26EditNoteCoordinatorFactory(),

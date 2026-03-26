@@ -73,11 +73,21 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CloudMigrationURL().toURL()
             }
 
+        let fileService = FileService(fileManager: .default)
+        let notesRepository = NotesRepository(
+            jotFileService: JotFileService(fileService: fileService),
+            fileService: fileService
+        )
+
         let notesCoordinatorFactory: NotesCoordinatorFactory =
             if #available(iOS 26, *) {
-                IOS26NotesCoordinatorFactory()
+                IOS26NotesCoordinatorFactory(
+                    notesRepository: notesRepository
+                )
             } else {
-                IOS18NotesCoordinatorFactory()
+                IOS18NotesCoordinatorFactory(
+                    notesRepository: notesRepository
+                )
             }
 
         let rootCoordinator = RootCoordinator(
