@@ -64,9 +64,9 @@ final class EditJotViewController: UIViewController {
             }
         }
         drawingTask = Task { @MainActor [weak self] in
-            for await (drawing, width) in viewModel.drawing {
-                self?.drawingWidth = width
-                self?.canvasView.drawing = drawing
+            for await drawing in viewModel.drawing {
+                self?.drawingWidth = drawing.width
+                self?.canvasView.drawing = drawing.value
                 self?.layoutDrawing()
             }
         }

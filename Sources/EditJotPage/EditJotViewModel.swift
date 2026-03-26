@@ -21,6 +21,11 @@ import PencilKit
 @MainActor
 final class EditJotViewModel: Sendable {
 
+    struct Drawing: Sendable {
+        let value: PKDrawing
+        let width: CGFloat
+    }
+
     private(set) lazy var menuConfigurations = menuConfigurationFactory.make(
         onShare: { [weak self] format in
             Task { @MainActor in
@@ -56,8 +61,8 @@ final class EditJotViewModel: Sendable {
         jotFileInfo.name
     }
 
-    let drawing: AsyncStream<(value: PKDrawing, width: CGFloat)>
-    private let drawingContinuation: AsyncStream<(value: PKDrawing, width: CGFloat)>.Continuation
+    let drawing: AsyncStream<Drawing>
+    private let drawingContinuation: AsyncStream<Drawing>.Continuation
 
     let isEditing: AsyncStream<Bool?>
     private let isEditingContinuation: AsyncStream<Bool?>.Continuation
@@ -82,7 +87,7 @@ final class EditJotViewModel: Sendable {
             bufferingPolicy: .bufferingNewest(1)
         )
         (drawing, drawingContinuation) = AsyncStream.makeStream(
-            of: (value: PKDrawing, width: CGFloat).self,
+            of: Drawing.self,
             bufferingPolicy: .bufferingNewest(1)
         )
 
@@ -99,7 +104,7 @@ final class EditJotViewModel: Sendable {
                 coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
             } else {
                 let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
-                drawingContinuation.yield((value: drawing, width: width))
+                drawingContinuation.yield(Drawing(value: drawing, width: width))
             }
         } catch {
             print(error)
