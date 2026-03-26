@@ -74,25 +74,25 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
 
         let fileService = FileService(fileManager: .default)
-        let notesRepository = NotesRepository(
+        let jotsRepository = JotsRepository(
             jotFileService: JotFileService(fileService: fileService),
             fileService: fileService
         )
 
-        let notesCoordinatorFactory: NotesCoordinatorFactory =
+        let jotsCoordinatorFactory: JotsCoordinatorFactory =
             if #available(iOS 26, *) {
-                IOS26NotesCoordinatorFactory(
-                    notesRepository: notesRepository
+                IOS26JotsCoordinatorFactory(
+                    jotsRepository: jotsRepository
                 )
             } else {
-                IOS18NotesCoordinatorFactory(
-                    notesRepository: notesRepository
+                IOS18JotsCoordinatorFactory(
+                    jotsRepository: jotsRepository
                 )
             }
 
         let rootCoordinator = RootCoordinator(
             navigation: navigation,
-            notesCoordinatorFactory: notesCoordinatorFactory
+            jotsCoordinatorFactory: jotsCoordinatorFactory
         )
         self.rootCoordinator = rootCoordinator
         navigationController.viewControllers = rootCoordinator.handle(url: url)

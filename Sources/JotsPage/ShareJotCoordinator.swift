@@ -18,34 +18,30 @@
 
 import UIKit
 
-final class RootCoordinator: NavigationCoordinator {
+enum ShareFormat {
+    case pdf, jpg, png
+}
 
-    private lazy var externalLinkNavigationCoordinator = ExternalLinkNavigationCoordinator()
-    private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
+final class ShareJotCoordinator: Coordinator {
+
+    var onEnd: (() -> Void)?
 
     private let navigation: Navigation
-    private let jotsCoordinatorFactory: JotsCoordinatorFactory
+    private let format: ShareFormat
 
     init(
         navigation: Navigation,
-        jotsCoordinatorFactory: JotsCoordinatorFactory
+        format: ShareFormat
     ) {
         self.navigation = navigation
-        self.jotsCoordinatorFactory = jotsCoordinatorFactory
+        self.format = format
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        true
-    }
-
-    func handle(url: URL) -> [UIViewController] {
-        var viewControllers = [UIViewController]()
-        viewControllers.append(contentsOf: jotsCoordinator.handle(url: url))
-
-        if externalLinkNavigationCoordinator.shouldHandle(url: url) {
-            viewControllers.append(contentsOf: externalLinkNavigationCoordinator.handle(url: url))
-        }
-
-        return viewControllers
+    func start() {
+        let activityViewController = UIActivityViewController(
+            activityItems: [],
+            applicationActivities: nil
+        )
+        navigation.present(activityViewController, animated: true)
     }
 }
