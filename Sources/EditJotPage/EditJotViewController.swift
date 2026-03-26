@@ -123,7 +123,16 @@ final class EditJotViewController: UIViewController {
 
     private func setUpNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "Project Brainstorming"
+        navigationItem.title = viewModel.title
+
+        navigationItem.leftBarButtonItem = symbolBarButtonItemFactory.make(
+            symbolName: "chevron.left",
+            primaryAction: .action(
+                UIAction { [weak self] _ in
+                    self?.viewModel.didTapBackButton()
+                }
+            )
+        )
     }
 
     private func setUpViews() {

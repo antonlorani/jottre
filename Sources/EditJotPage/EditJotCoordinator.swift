@@ -50,11 +50,6 @@ final class EditJotCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
-        //        retainedJotConflictCoordinator =
-        //            jotConflictCoordinatorFactory
-        //            .make(navigation: navigation)
-        //        retainedJotConflictCoordinator?.start()
-
         guard let fileURL = getFileURLQueryItem(url: url),
             let jotFile = JotFileBusinessModel(url: fileURL, modificationDate: nil)
         else {
@@ -101,6 +96,15 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     func showInFiles() {
 
+    }
+
+    func showJotConflictPage(jotFileVersions: [JotFileVersion]) {
+        retainedJotConflictCoordinator = jotConflictCoordinatorFactory.make(navigation: navigation)
+        retainedJotConflictCoordinator?.start()
+    }
+
+    func goBack() {
+        navigation.popViewController(animated: true)
     }
 
     private func getFileURLQueryItem(url: URL) -> URL? {

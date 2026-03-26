@@ -49,6 +49,10 @@ final class EditJotViewModel: Sendable {
         }
     )
 
+    var title: String {
+        jotFile.name
+    }
+
     let drawing: AsyncStream<(value: PKDrawing, width: CGFloat)>
     private let drawingContinuation: AsyncStream<(value: PKDrawing, width: CGFloat)>.Continuation
 
@@ -88,8 +92,12 @@ final class EditJotViewModel: Sendable {
 
     func didLoad() {
         do {
-            let (drawing, width) = try repository.readDrawing(jotFile: jotFile)
-            drawingContinuation.yield((value: drawing, width: width))
+            if let jotFileVersions = repository.getUnresolvedConflicts(jotFile: jotFile) {
+                coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
+            } else {
+                let (drawing, width) = try repository.readDrawing(jotFile: jotFile)
+                drawingContinuation.yield((value: drawing, width: width))
+            }
         } catch {
             print(error)
         }
@@ -97,6 +105,14 @@ final class EditJotViewModel: Sendable {
 
     func didTapToggleEditingButton(isEditing: Bool) {
         isEditingContinuation.yield(!isEditing)
+    }
+
+    func didTapBackButton() {
+        if let jotFileVersions = repository.getUnresolvedConflicts(jotFile: jotFile) {
+            coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
+        } else {
+            coordinator?.goBack()
+        }
     }
 
     private func didTapDuplicateJot() {

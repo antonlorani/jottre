@@ -3,6 +3,7 @@ import PencilKit
 protocol EditJotRepositoryProtocol {
 
     func readDrawing(jotFile: JotFileBusinessModel) throws -> (drawing: PKDrawing, width: CGFloat)
+    func getUnresolvedConflicts(jotFile: JotFileBusinessModel) -> [JotFileVersion]?
 }
 
 struct EditJotRepository: EditJotRepositoryProtocol {
@@ -20,5 +21,9 @@ struct EditJotRepository: EditJotRepositoryProtocol {
             drawing: drawing,
             width: file.jot.width
         )
+    }
+
+    func getUnresolvedConflicts(jotFile: JotFileBusinessModel) -> [JotFileVersion]? {
+        jotFileService.getUnresolvedConflicts(info: jotFile.toFileInfo())
     }
 }
