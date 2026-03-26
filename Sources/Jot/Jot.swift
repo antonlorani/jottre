@@ -17,7 +17,7 @@
 */
 
 import Foundation
-import PencilKit
+@preconcurrency import PencilKit
 
 struct Jot: Codable, Sendable {
 

@@ -16,7 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import PencilKit
+@preconcurrency import PencilKit
 import UIKit
 
 final class EditJotViewController: UIViewController {
