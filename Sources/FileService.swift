@@ -61,7 +61,9 @@ struct FileService: FileServiceProtocol {
     }
 
     func cloudDocumentsDirectory() async throws -> URL? {
-        guard let directory = fileManager.url(forUbiquityContainerIdentifier: nil) else {
+        guard
+            let directory = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+        else {
             return nil
         }
 
