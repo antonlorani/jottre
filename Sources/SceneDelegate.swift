@@ -79,23 +79,37 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
 
         let fileService = FileService(fileManager: .default)
+        let fileConflictService = FileConflictService(fileManager: .default)
         let jotFileService = JotFileService(fileService: fileService)
+        let jotFileConflictService = JotFileConflictService(
+            fileService: fileService,
+            fileConflictService: fileConflictService
+        )
         let jotsRepository = JotsRepository(
             jotFileService: jotFileService,
             fileService: fileService
         )
-        let editJotRepository = EditJotRepository(jotFileService: jotFileService)
+        let editJotRepository = EditJotRepository(
+            jotFileService: jotFileService,
+            jotFileConflictService: jotFileConflictService
+        )
+        let createJotRepository = CreateJotRepository(
+            fileService: fileService,
+            jotFileService: jotFileService
+        )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactory =
             if #available(iOS 26, *) {
                 IOS26JotsCoordinatorFactory(
                     jotsRepository: jotsRepository,
-                    editJotRepository: editJotRepository
+                    editJotRepository: editJotRepository,
+                    createJotRepository: createJotRepository
                 )
             } else {
                 IOS18JotsCoordinatorFactory(
                     jotsRepository: jotsRepository,
-                    editJotRepository: editJotRepository
+                    editJotRepository: editJotRepository,
+                    createJotRepository: createJotRepository
                 )
             }
 

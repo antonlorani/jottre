@@ -21,7 +21,6 @@ import UIKit
 @MainActor
 final class JotsCoordinator: NavigationCoordinator {
 
-    private var retainedCreateJotCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
@@ -33,6 +32,7 @@ final class JotsCoordinator: NavigationCoordinator {
         enableCloudCoordinatorFactory.make(navigation: navigation),
         editJotCoordinatorFactory.make(navigation: navigation),
         cloudMigrationCoordinatorFactory.make(navigation: navigation),
+        createJotCoordinatorFactory.make(navigation: navigation),
     ]
 
     private let navigation: Navigation
@@ -41,6 +41,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory
     private let editJotCoordinatorFactory: EditJotCoordinatorFactory
     private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
+    private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
@@ -48,7 +49,8 @@ final class JotsCoordinator: NavigationCoordinator {
         settingsCoordinatorFactory: SettingsCoordinatorFactory,
         enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory,
         editJotCoordinatorFactory: EditJotCoordinatorFactory,
-        cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
+        cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory,
+        createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotsViewControllerFactory = jotsViewControllerFactory
@@ -56,6 +58,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.enableCloudCoordinatorFactory = enableCloudCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.cloudMigrationCoordinatorFactory = cloudMigrationCoordinatorFactory
+        self.createJotCoordinatorFactory = createJotCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -85,11 +88,7 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openCreateJot() {
-        retainedCreateJotCoordinator = CreateJotCoordinator(navigation: navigation)
-        retainedCreateJotCoordinator?.onEnd = { [weak self] in
-            self?.retainedCreateJotCoordinator = nil
-        }
-        retainedCreateJotCoordinator?.start()
+        navigation.open(url: CreateJotURL())
     }
 
     func openJot(_ jotFile: JotFileBusinessModel) {

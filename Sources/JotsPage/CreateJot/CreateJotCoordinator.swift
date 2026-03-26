@@ -18,17 +18,27 @@
 
 import UIKit
 
-final class CreateJotCoordinator: Coordinator {
+@MainActor
+final class CreateJotCoordinator: NavigationCoordinator {
 
-    var onEnd: (() -> Void)?
+    private var retainedInfoAlertCoordinator: Coordinator?
 
     private let navigation: Navigation
+    private let repository: CreateJotRepositoryProtocol
 
-    init(navigation: Navigation) {
+    init(
+        navigation: Navigation,
+        repository: CreateJotRepositoryProtocol
+    ) {
         self.navigation = navigation
+        self.repository = repository
     }
 
-    func start() {
+    func shouldHandle(url: URL) -> Bool {
+        url.path.hasPrefix(CreateJotURL().path)
+    }
+
+    func handle(url: URL) -> [UIViewController] {
         let alertController = UIAlertController(
             title: L10n.Jots.Create.title,
             message: nil,
@@ -46,12 +56,13 @@ final class CreateJotCoordinator: Coordinator {
         ) { [weak self] _ in
             guard
                 let self,
-                let title = alertController.textFields?.first?.text,
-                !title.isEmpty
+                let name = alertController.textFields?.first?.text,
+                !name.isEmpty
             else {
                 return
             }
-            navigation.open(url: EditJotURL().toURL())
+
+            handleCreateJot(name: name)
         }
         alertController.addAction(createAction)
 
@@ -62,5 +73,40 @@ final class CreateJotCoordinator: Coordinator {
         alertController.addAction(cancelAction)
 
         navigation.present(alertController, animated: true)
+        return []
+    }
+
+    private func handleCreateJot(name: String) {
+        Task.detached { [weak self] in
+            do {
+                try await self?.repository.createJot(name: name)
+            } catch CreateJotRepository.Failure.fileExists {
+                await self?.showInfoAlert(
+                    title: "'\(name)' already exists",
+                    message: nil
+                )
+            } catch {
+                await self?.showInfoAlert(
+                    title: "Something went wrong",
+                    message: error.localizedDescription
+                )
+            }
+        }
+    }
+
+    private func showInfoAlert(
+        title: String,
+        message: String?
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        infoAlertCoordinator.start()
     }
 }

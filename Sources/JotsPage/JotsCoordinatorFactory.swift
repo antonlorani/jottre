@@ -28,6 +28,7 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
 
     let jotsRepository: JotsRepositoryProtocol
     let editJotRepository: EditJotRepositoryProtocol
+    let createJotRepository: CreateJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -40,7 +41,8 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
             editJotCoordinatorFactory: IOS18EditJotCoordinatorFactory(
                 repository: editJotRepository
             ),
-            cloudMigrationCoordinatorFactory: IOS18CloudMigrationCoordinatorFactory()
+            cloudMigrationCoordinatorFactory: IOS18CloudMigrationCoordinatorFactory(),
+            createJotCoordinatorFactory: CreateJotCoordinatorFactory(repository: createJotRepository)
         )
     }
 }
@@ -50,6 +52,7 @@ struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
 
     let jotsRepository: JotsRepositoryProtocol
     let editJotRepository: EditJotRepositoryProtocol
+    let createJotRepository: CreateJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -62,7 +65,8 @@ struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
             editJotCoordinatorFactory: IOS26EditJotCoordinatorFactory(
                 repository: editJotRepository
             ),
-            cloudMigrationCoordinatorFactory: IOS26CloudMigrationCoordinatorFactory()
+            cloudMigrationCoordinatorFactory: IOS26CloudMigrationCoordinatorFactory(),
+            createJotCoordinatorFactory: CreateJotCoordinatorFactory(repository: createJotRepository)
         )
     }
 }
