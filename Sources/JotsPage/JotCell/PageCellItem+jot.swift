@@ -16,7 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-private struct JotID: Sendable, Hashable {
+private struct JotCellItemID: Sendable, Hashable {
     let jot: JotBusinessModel
     let infoText: String?
 }
@@ -32,7 +32,7 @@ extension PageCellItem {
         onAction: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
-            id: JotID(
+            id: JotCellItemID(
                 jot: jot,
                 infoText: infoText
             ),
