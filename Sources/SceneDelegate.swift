@@ -97,19 +97,24 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileService: fileService,
             jotFileService: jotFileService
         )
+        let deleteJotRepository = DeleteJotRepository(
+            fileService: fileService
+        )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactory =
             if #available(iOS 26, *) {
                 IOS26JotsCoordinatorFactory(
                     jotsRepository: jotsRepository,
                     editJotRepository: editJotRepository,
-                    createJotRepository: createJotRepository
+                    createJotRepository: createJotRepository,
+                    deleteJotRepository: deleteJotRepository
                 )
             } else {
                 IOS18JotsCoordinatorFactory(
                     jotsRepository: jotsRepository,
                     editJotRepository: editJotRepository,
-                    createJotRepository: createJotRepository
+                    createJotRepository: createJotRepository,
+                    deleteJotRepository: deleteJotRepository
                 )
             }
 

@@ -36,6 +36,8 @@ protocol FileServiceProtocol: Sendable {
     func writeFile(fileURL: URL, data: Data) throws
 
     func fileExists(fileURL: URL) -> Bool
+
+    func removeFile(fileURL: URL) throws
 }
 
 struct FileService: FileServiceProtocol {
@@ -123,5 +125,9 @@ struct FileService: FileServiceProtocol {
     func fileExists(fileURL: URL) -> Bool {
         var isDirectory = ObjCBool(false)
         return fileManager.fileExists(atPath: fileURL.path, isDirectory: &isDirectory)
+    }
+
+    func removeFile(fileURL: URL) throws {
+        try fileManager.removeItem(at: fileURL)
     }
 }

@@ -1,6 +1,6 @@
 protocol JotsRepositoryProtocol {
 
-    func getJotFiles() throws -> AsyncThrowingStream<[JotFileBusinessModel], Error>
+    func getJotFiles() throws -> AsyncThrowingStream<[JotFile.Info], Error>
 }
 
 struct JotsRepository: JotsRepositoryProtocol {
@@ -16,7 +16,7 @@ struct JotsRepository: JotsRepositoryProtocol {
         self.fileService = fileService
     }
 
-    func getJotFiles() throws -> AsyncThrowingStream<[JotFileBusinessModel], Error> {
+    func getJotFiles() throws -> AsyncThrowingStream<[JotFile.Info], Error> {
         guard let directory = try fileService.localDocumentsDirectory() else {
             return AsyncThrowingStream { continuation in
                 continuation.yield([])
@@ -31,7 +31,6 @@ struct JotsRepository: JotsRepositoryProtocol {
                         let jotFiles =
                             try jotFileService
                             .listContents(directory: directory)
-                            .map { JotFileBusinessModel(jotFileInfo: $0) }
                         continuation.yield(jotFiles)
                     }
                     continuation.finish()

@@ -93,8 +93,8 @@ final class JotsViewModel: PageViewModel {
 
         jotsTask = Task { [weak self] in
             do {
-                for try await jotFiles in try repository.getJotFiles() {
-                    self?.handleJots(jotFiles: jotFiles)
+                for try await jotFileInfos in try repository.getJotFiles() {
+                    self?.handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {
                 print(error)
@@ -102,18 +102,18 @@ final class JotsViewModel: PageViewModel {
         }
     }
 
-    private func handleJots(jotFiles: [JotFileBusinessModel]) {
-        guard !jotFiles.isEmpty else {
+    private func handleJots(jotFileInfos: [JotFile.Info]) {
+        guard !jotFileInfos.isEmpty else {
             itemsContinuation.yield([
                 .jotsEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
             ])
             return
         }
         itemsContinuation.yield(
-            jotFiles.map { jotFile in
+            jotFileInfos.map { jotFileInfo in
                 let jot = JotBusinessModel(
                     previewImage: nil,
-                    name: jotFile.name,
+                    name: jotFileInfo.name,
                     lastEditedDateString: "",
                     isCloudSynchronized: false
                 )
@@ -136,7 +136,7 @@ final class JotsViewModel: PageViewModel {
                         },
                         onDelete: { [weak coordinator] in
                             Task { @MainActor in
-                                coordinator?.showDeleteConfirmationAlert()
+                                coordinator?.openDeleteJot(jotFileInfo: jotFileInfo)
                             }
                         },
                         onShowInFiles: { [weak coordinator] in
@@ -148,7 +148,7 @@ final class JotsViewModel: PageViewModel {
                     sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
                     onAction: { [weak coordinator] in
                         Task { @MainActor in
-                            coordinator?.openJot(jotFile)
+                            coordinator?.openJot(jotFileInfo: jotFileInfo)
                         }
                     }
                 )

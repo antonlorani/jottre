@@ -21,7 +21,7 @@ import Foundation
 protocol JotFileServiceProtocol: Sendable {
     func listContents(directory: URL) throws -> [JotFile.Info]
 
-    func readJotFile(info: JotFile.Info) throws -> JotFile
+    func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile
 
     func write(jotFile: JotFile) throws
 }
@@ -76,11 +76,11 @@ struct JotFileService: JotFileServiceProtocol {
             }
     }
 
-    func readJotFile(info: JotFile.Info) throws -> JotFile {
-        let data = try fileService.readFile(fileURL: info.url)
+    func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile {
+        let data = try fileService.readFile(fileURL: jotFileInfo.url)
         let jot = try propertyListDecoder.decode(Jot.self, from: data)
         return JotFile(
-            info: info,
+            info: jotFileInfo,
             jot: jot
         )
     }

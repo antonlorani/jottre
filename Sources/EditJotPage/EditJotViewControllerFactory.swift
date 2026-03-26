@@ -22,7 +22,7 @@ import UIKit
 protocol EditJotViewControllerFactory: Sendable {
 
     func make(
-        jotFile: JotFileBusinessModel,
+        jotFileInfo: JotFile.Info,
         coordinator: EditJotCoordinator
     ) -> UIViewController
 }
@@ -32,12 +32,12 @@ struct IOS18EditJotViewControllerFactory: EditJotViewControllerFactory {
     let repository: EditJotRepositoryProtocol
 
     func make(
-        jotFile: JotFileBusinessModel,
+        jotFileInfo: JotFile.Info,
         coordinator: EditJotCoordinator
     ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(
-                jotFile: jotFile,
+                jotFileInfo: jotFileInfo,
                 repository: repository,
                 coordinator: coordinator,
                 menuConfigurationFactory: JotMenuConfigurationFactory()
@@ -53,12 +53,12 @@ struct IOS26EditJotViewControllerFactory: EditJotViewControllerFactory {
     let repository: EditJotRepositoryProtocol
 
     func make(
-        jotFile: JotFileBusinessModel,
+        jotFileInfo: JotFile.Info,
         coordinator: EditJotCoordinator
     ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(
-                jotFile: jotFile,
+                jotFileInfo: jotFileInfo,
                 repository: repository,
                 coordinator: coordinator,
                 menuConfigurationFactory: JotMenuConfigurationFactory()

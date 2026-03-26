@@ -1,9 +1,9 @@
 protocol JotFileConflictServiceProtocol: Sendable {
 
-    func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]?
+    func getUnresolvedConflicts(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
 
     func resolveConflicts(
-        info: JotFile.Info,
+        jotFileInfo: JotFile.Info,
         resolvedVersion: JotFileVersion?
     ) throws
 }
@@ -21,8 +21,8 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
         self.fileConflictService = fileConflictService
     }
 
-    func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]? {
-        guard let fileVersions = fileConflictService.getUnresolvedConflicts(fileURL: info.url),
+    func getUnresolvedConflicts(jotFileInfo: JotFile.Info) -> [JotFileVersion]? {
+        guard let fileVersions = fileConflictService.getUnresolvedConflicts(fileURL: jotFileInfo.url),
             !fileVersions.isEmpty
         else {
             return nil
@@ -42,11 +42,11 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
     }
 
     func resolveConflicts(
-        info: JotFile.Info,
+        jotFileInfo: JotFile.Info,
         resolvedVersion: JotFileVersion?
     ) throws {
         try fileConflictService.resolveConflicts(
-            fileURL: info.url,
+            fileURL: jotFileInfo.url,
             resolvedVersion: resolvedVersion?.info.url
         )
     }

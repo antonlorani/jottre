@@ -18,8 +18,8 @@
 
 import Foundation
 
-struct EditJotURL: URLConvertible {
-    let path = "/jots/edit"
+struct DeleteJotURL: URLConvertible {
+    let path = "/jots/delete"
     let queryItems: [URLQueryItem]
 
     init(jotFileInfo: JotFile.Info) {

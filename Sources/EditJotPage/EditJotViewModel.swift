@@ -38,8 +38,11 @@ final class EditJotViewModel: Sendable {
             }
         },
         onDelete: { [weak self] in
-            Task { @MainActor in
-                self?.coordinator?.showDeleteConfirmationAlert()
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+                self.coordinator?.openDeleteJot(jotFileInfo: self.jotFileInfo)
             }
         },
         onShowInFiles: { [weak self] in
@@ -50,7 +53,7 @@ final class EditJotViewModel: Sendable {
     )
 
     var title: String {
-        jotFile.name
+        jotFileInfo.name
     }
 
     let drawing: AsyncStream<(value: PKDrawing, width: CGFloat)>
@@ -59,18 +62,18 @@ final class EditJotViewModel: Sendable {
     let isEditing: AsyncStream<Bool?>
     private let isEditingContinuation: AsyncStream<Bool?>.Continuation
 
-    private let jotFile: JotFileBusinessModel
+    private let jotFileInfo: JotFile.Info
     private let repository: EditJotRepositoryProtocol
     private weak var coordinator: EditJotCoordinator?
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
-        jotFile: JotFileBusinessModel,
+        jotFileInfo: JotFile.Info,
         repository: EditJotRepositoryProtocol,
         coordinator: EditJotCoordinator,
         menuConfigurationFactory: JotMenuConfigurationFactory
     ) {
-        self.jotFile = jotFile
+        self.jotFileInfo = jotFileInfo
         self.coordinator = coordinator
         self.repository = repository
         self.menuConfigurationFactory = menuConfigurationFactory
@@ -92,10 +95,10 @@ final class EditJotViewModel: Sendable {
 
     func didLoad() {
         do {
-            if let jotFileVersions = repository.getUnresolvedConflicts(jotFile: jotFile) {
+            if let jotFileVersions = repository.getUnresolvedConflicts(jotFileInfo: jotFileInfo) {
                 coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
             } else {
-                let (drawing, width) = try repository.readDrawing(jotFile: jotFile)
+                let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
                 drawingContinuation.yield((value: drawing, width: width))
             }
         } catch {
@@ -108,7 +111,7 @@ final class EditJotViewModel: Sendable {
     }
 
     func didTapBackButton() {
-        if let jotFileVersions = repository.getUnresolvedConflicts(jotFile: jotFile) {
+        if let jotFileVersions = repository.getUnresolvedConflicts(jotFileInfo: jotFileInfo) {
             coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
         } else {
             coordinator?.goBack()

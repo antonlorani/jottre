@@ -16,22 +16,22 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Foundation
+import UIKit
 
-struct EditJotURL: URLConvertible {
-    let path = "/jots/edit"
-    let queryItems: [URLQueryItem]
+protocol DeleteJotRepositoryProtocol: Sendable {
 
-    init(jotFileInfo: JotFile.Info) {
-        queryItems = [
-            URLQueryItem(
-                name: "fileURL",
-                value: jotFileInfo.url.absoluteString
-            )
-        ]
+    func deleteJot(jotFileInfo: JotFile.Info) throws
+}
+
+struct DeleteJotRepository: DeleteJotRepositoryProtocol {
+
+    private let fileService: FileServiceProtocol
+
+    init(fileService: FileServiceProtocol) {
+        self.fileService = fileService
     }
 
-    init() {
-        queryItems = []
+    func deleteJot(jotFileInfo: JotFile.Info) throws {
+        try fileService.removeFile(fileURL: jotFileInfo.url)
     }
 }

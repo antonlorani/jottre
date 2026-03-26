@@ -22,7 +22,6 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     private var retainedJotConflictCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
-    private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
 
     private let navigation: Navigation
@@ -51,14 +50,14 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     func handle(url: URL) -> [UIViewController] {
         guard let fileURL = getFileURLQueryItem(url: url),
-            let jotFile = JotFileBusinessModel(url: fileURL, modificationDate: nil)
+            let jotFileInfo = JotFile.Info(url: fileURL, modificationDate: nil)
         else {
             return []
         }
 
         return [
             editJotViewControllerFactory.make(
-                jotFile: jotFile,
+                jotFileInfo: jotFileInfo,
                 coordinator: self
             )
         ]
@@ -85,13 +84,8 @@ final class EditJotCoordinator: NavigationCoordinator {
         coordinator.start()
     }
 
-    func showDeleteConfirmationAlert() {
-        let coordinator = DeleteJotCoordinator(navigation: navigation)
-        retainedShareJotCoordinator = coordinator
-        coordinator.onEnd = { [weak self] in
-            self?.retainedShareJotCoordinator = nil
-        }
-        coordinator.start()
+    func openDeleteJot(jotFileInfo: JotFile.Info) {
+        navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
     }
 
     func showInFiles() {

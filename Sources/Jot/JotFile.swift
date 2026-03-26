@@ -24,6 +24,30 @@ struct JotFile: Sendable {
         let url: URL
         let name: String
         let modificationDate: Date?
+
+        init(
+            url: URL,
+            name: String,
+            modificationDate: Date?
+        ) {
+            self.url = url
+            self.name = name
+            self.modificationDate = modificationDate
+        }
+
+        init?(
+            url: URL,
+            modificationDate: Date?
+        ) {
+            guard url.pathExtension == "jot" else {
+                return nil
+            }
+            self.init(
+                url: url,
+                name: url.deletingPathExtension().lastPathComponent,
+                modificationDate: modificationDate
+            )
+        }
     }
 
     let info: Info

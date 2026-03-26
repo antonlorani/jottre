@@ -22,7 +22,6 @@ import UIKit
 final class JotsCoordinator: NavigationCoordinator {
 
     private var retainedShareJotCoordinator: Coordinator?
-    private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
@@ -33,6 +32,7 @@ final class JotsCoordinator: NavigationCoordinator {
         editJotCoordinatorFactory.make(navigation: navigation),
         cloudMigrationCoordinatorFactory.make(navigation: navigation),
         createJotCoordinatorFactory.make(navigation: navigation),
+        deleteJotCoordinatorFactory.make(navigation: navigation),
     ]
 
     private let navigation: Navigation
@@ -42,6 +42,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let editJotCoordinatorFactory: EditJotCoordinatorFactory
     private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
+    private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
@@ -50,7 +51,8 @@ final class JotsCoordinator: NavigationCoordinator {
         enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory,
         editJotCoordinatorFactory: EditJotCoordinatorFactory,
         cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory,
-        createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
+        createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
+        deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotsViewControllerFactory = jotsViewControllerFactory
@@ -59,6 +61,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.cloudMigrationCoordinatorFactory = cloudMigrationCoordinatorFactory
         self.createJotCoordinatorFactory = createJotCoordinatorFactory
+        self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -91,8 +94,8 @@ final class JotsCoordinator: NavigationCoordinator {
         navigation.open(url: CreateJotURL())
     }
 
-    func openJot(_ jotFile: JotFileBusinessModel) {
-        navigation.open(url: EditJotURL(jotFile: jotFile))
+    func openJot(jotFileInfo: JotFile.Info) {
+        navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
     }
 
     func openEnableCloudPage() {
@@ -120,13 +123,8 @@ final class JotsCoordinator: NavigationCoordinator {
         coordinator.start()
     }
 
-    func showDeleteConfirmationAlert() {
-        let coordinator = DeleteJotCoordinator(navigation: navigation)
-        retainedShareJotCoordinator = coordinator
-        coordinator.onEnd = { [weak self] in
-            self?.retainedShareJotCoordinator = nil
-        }
-        coordinator.start()
+    func openDeleteJot(jotFileInfo: JotFile.Info) {
+        navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
     }
 
     func showInFiles() {
