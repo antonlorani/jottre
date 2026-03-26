@@ -53,39 +53,39 @@ enum L10n {
         }
     }
 
-    enum NoteConflict {
-        static let title = String(localized: "noteConflict.title")
+    enum JotConflict {
+        static let title = String(localized: "jotConflict.title")
 
-        static func subtitle(_ noteName: String) -> String {
-            String(format: String(localized: "noteConflict.subtitle"), noteName)
+        static func subtitle(_ jotName: String) -> String {
+            String(format: String(localized: "jotConflict.subtitle"), jotName)
         }
 
         enum Action {
-            static let keepBoth = String(localized: "noteConflict.action.keepBoth")
-            static let keepVersionA = String(localized: "noteConflict.action.keepVersionA")
-            static let keepVersionB = String(localized: "noteConflict.action.keepVersionB")
+            static let keepBoth = String(localized: "jotConflict.action.keepBoth")
+            static let keepVersionA = String(localized: "jotConflict.action.keepVersionA")
+            static let keepVersionB = String(localized: "jotConflict.action.keepVersionB")
         }
     }
 
-    enum Notes {
+    enum Jots {
 
         enum Create {
-            static let namePlaceholder = String(localized: "notes.create.namePlaceholder")
-            static let title = String(localized: "notes.create.title")
+            static let namePlaceholder = String(localized: "jots.create.namePlaceholder")
+            static let title = String(localized: "jots.create.title")
         }
 
         enum Delete {
-            static let message = String(localized: "notes.delete.message")
-            static let title = String(localized: "notes.delete.title")
+            static let message = String(localized: "jots.delete.message")
+            static let title = String(localized: "jots.delete.title")
         }
 
         enum Menu {
-            static let showInFiles = String(localized: "notes.menu.showInFiles")
-            static let showInFinder = String(localized: "notes.menu.showInFinder")
+            static let showInFiles = String(localized: "jots.menu.showInFiles")
+            static let showInFinder = String(localized: "jots.menu.showInFinder")
         }
 
         enum Rename {
-            static let title = String(localized: "notes.rename.title")
+            static let title = String(localized: "jots.rename.title")
         }
     }
 

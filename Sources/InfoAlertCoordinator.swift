@@ -18,34 +18,36 @@
 
 import UIKit
 
-final class RootCoordinator: NavigationCoordinator {
+final class InfoAlertCoordinator: Coordinator {
 
-    private lazy var externalLinkNavigationCoordinator = ExternalLinkNavigationCoordinator()
-    private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
+    var onEnd: (() -> Void)?
 
     private let navigation: Navigation
-    private let jotsCoordinatorFactory: JotsCoordinatorFactory
+    private let title: String
+    private let message: String?
 
     init(
         navigation: Navigation,
-        jotsCoordinatorFactory: JotsCoordinatorFactory
+        title: String,
+        message: String?
     ) {
         self.navigation = navigation
-        self.jotsCoordinatorFactory = jotsCoordinatorFactory
+        self.title = title
+        self.message = message
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        true
-    }
+    func start() {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
 
-    func handle(url: URL) -> [UIViewController] {
-        var viewControllers = [UIViewController]()
-        viewControllers.append(contentsOf: jotsCoordinator.handle(url: url))
-
-        if externalLinkNavigationCoordinator.shouldHandle(url: url) {
-            viewControllers.append(contentsOf: externalLinkNavigationCoordinator.handle(url: url))
-        }
-
-        return viewControllers
+        let okAction = UIAlertAction(
+            title: "ok",
+            style: .cancel
+        )
+        alertController.addAction(okAction)
+        navigation.present(alertController, animated: true)
     }
 }

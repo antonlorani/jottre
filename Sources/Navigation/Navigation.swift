@@ -28,6 +28,7 @@ struct Navigation: Sendable {
             _ animated: Bool
         ) -> Void
     private let dismissViewControllerProvider: @Sendable (_ animated: Bool) -> Void
+    private let popViewControllerProvider: @Sendable (_ animated: Bool) -> Void
 
     init(
         openURLProvider: @Sendable @escaping (_ url: URL) -> Void,
@@ -36,11 +37,13 @@ struct Navigation: Sendable {
                 _ viewController: UIViewController,
                 _ animated: Bool
             ) -> Void,
-        dismissViewControllerProvider: @Sendable @escaping (_ animated: Bool) -> Void
+        dismissViewControllerProvider: @Sendable @escaping (_ animated: Bool) -> Void,
+        popViewControllerProvider: @Sendable @escaping (_ animated: Bool) -> Void
     ) {
         self.openURLProvider = openURLProvider
         self.presentViewControllerProvider = presentViewControllerProvider
         self.dismissViewControllerProvider = dismissViewControllerProvider
+        self.popViewControllerProvider = popViewControllerProvider
     }
 
     func open(url: URL) {
@@ -57,5 +60,9 @@ struct Navigation: Sendable {
 
     func dismiss(animated: Bool) {
         dismissViewControllerProvider(animated)
+    }
+
+    func popViewController(animated: Bool) {
+        popViewControllerProvider(animated)
     }
 }

@@ -18,34 +18,33 @@
 
 import UIKit
 
-final class RootCoordinator: NavigationCoordinator {
+final class JotConflictCoordinator: Coordinator {
 
-    private lazy var externalLinkNavigationCoordinator = ExternalLinkNavigationCoordinator()
-    private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
+    var onEnd: (() -> Void)?
 
     private let navigation: Navigation
-    private let jotsCoordinatorFactory: JotsCoordinatorFactory
+    private let jotConflictViewControllerFactory: JotConflictViewControllerFactory
 
     init(
         navigation: Navigation,
-        jotsCoordinatorFactory: JotsCoordinatorFactory
+        jotConflictViewControllerFactory: JotConflictViewControllerFactory
     ) {
         self.navigation = navigation
-        self.jotsCoordinatorFactory = jotsCoordinatorFactory
+        self.jotConflictViewControllerFactory = jotConflictViewControllerFactory
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        true
+    func start() {
+        let viewController = jotConflictViewControllerFactory.make(coordinator: self)
+        viewController.isModalInPresentation = true
+
+        let navigationController = UINavigationController(
+            rootViewController: viewController
+        )
+        navigationController.navigationBar.prefersLargeTitles = false
+        navigation.present(navigationController, animated: true)
     }
 
-    func handle(url: URL) -> [UIViewController] {
-        var viewControllers = [UIViewController]()
-        viewControllers.append(contentsOf: jotsCoordinator.handle(url: url))
-
-        if externalLinkNavigationCoordinator.shouldHandle(url: url) {
-            viewControllers.append(contentsOf: externalLinkNavigationCoordinator.handle(url: url))
-        }
-
-        return viewControllers
+    func dismiss() {
+        navigation.dismiss(animated: true)
     }
 }

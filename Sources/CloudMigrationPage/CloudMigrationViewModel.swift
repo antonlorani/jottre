@@ -49,24 +49,24 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     headline: L10n.CloudMigration.title,
                     subheadline: L10n.CloudMigration.subtitle
                 ),
-                .cloudMigrationNote(
-                    note: NoteBusinessModel(
+                .cloudMigrationJot(
+                    jot: JotBusinessModel(
                         previewImage: nil,
                         name: "Project Brainstorm",
                         lastEditedDateString: "February 15 2026",
                         isCloudSynchronized: false
                     )
                 ),
-                .cloudMigrationNote(
-                    note: NoteBusinessModel(
+                .cloudMigrationJot(
+                    jot: JotBusinessModel(
                         previewImage: nil,
                         name: "Sketch Ideas",
                         lastEditedDateString: "May 11 2023",
                         isCloudSynchronized: false
                     )
                 ),
-                .cloudMigrationNote(
-                    note: NoteBusinessModel(
+                .cloudMigrationJot(
+                    jot: JotBusinessModel(
                         previewImage: nil,
                         name: "Calculator Pro",
                         lastEditedDateString: "April 25 2021",

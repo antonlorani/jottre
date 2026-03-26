@@ -63,6 +63,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 Task { @MainActor in
                     navigationController?.dismiss(animated: animated)
                 }
+            },
+            popViewControllerProvider: { [weak navigationController] animated in
+                Task { @MainActor in
+                    navigationController?.popViewController(animated: animated)
+                }
             }
         )
 
@@ -73,16 +78,49 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CloudMigrationURL().toURL()
             }
 
-        let notesCoordinatorFactory: NotesCoordinatorFactory =
+        let fileService = FileService(fileManager: .default)
+        let fileConflictService = FileConflictService(fileManager: .default)
+        let jotFileService = JotFileService(fileService: fileService)
+        let jotFileConflictService = JotFileConflictService(
+            fileService: fileService,
+            fileConflictService: fileConflictService
+        )
+        let jotsRepository = JotsRepository(
+            jotFileService: jotFileService,
+            fileService: fileService
+        )
+        let editJotRepository = EditJotRepository(
+            jotFileService: jotFileService,
+            jotFileConflictService: jotFileConflictService
+        )
+        let createJotRepository = CreateJotRepository(
+            fileService: fileService,
+            jotFileService: jotFileService
+        )
+        let deleteJotRepository = DeleteJotRepository(
+            fileService: fileService
+        )
+
+        let jotsCoordinatorFactory: JotsCoordinatorFactory =
             if #available(iOS 26, *) {
-                IOS26NotesCoordinatorFactory()
+                IOS26JotsCoordinatorFactory(
+                    jotsRepository: jotsRepository,
+                    editJotRepository: editJotRepository,
+                    createJotRepository: createJotRepository,
+                    deleteJotRepository: deleteJotRepository
+                )
             } else {
-                IOS18NotesCoordinatorFactory()
+                IOS18JotsCoordinatorFactory(
+                    jotsRepository: jotsRepository,
+                    editJotRepository: editJotRepository,
+                    createJotRepository: createJotRepository,
+                    deleteJotRepository: deleteJotRepository
+                )
             }
 
         let rootCoordinator = RootCoordinator(
             navigation: navigation,
-            notesCoordinatorFactory: notesCoordinatorFactory
+            jotsCoordinatorFactory: jotsCoordinatorFactory
         )
         self.rootCoordinator = rootCoordinator
         navigationController.viewControllers = rootCoordinator.handle(url: url)

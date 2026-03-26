@@ -66,6 +66,18 @@ final class PageViewController: UIViewController {
         return view
     }()
 
+    private lazy var withCallToActionViewConstraints = [
+        collectionView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
+
+        callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+        callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+        callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+    ]
+
+    private lazy var withoutCallToActionViewConstraints = [
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ]
+
     private var registeredReuseIdentifiers = Set<String>()
 
     private var leftNavigationItemsTask: Task<Void, Never>?
@@ -118,11 +130,6 @@ final class PageViewController: UIViewController {
         rightNavigationItemsTask?.cancel()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-
     private func setUpViews() {
         navigationItem.title = viewModel.title
         view.backgroundColor = .systemGroupedBackground
@@ -130,18 +137,21 @@ final class PageViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
 
         view.addSubview(collectionView)
-        view.addSubview(callToActionView)
 
-        NSLayoutConstraint.activate([
+        var constraints = [
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: callToActionView.topAnchor),
+        ]
 
-            callToActionView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            callToActionView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            callToActionView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-        ])
+        if viewModel.actions.isEmpty {
+            constraints.append(contentsOf: withoutCallToActionViewConstraints)
+        } else {
+            view.addSubview(callToActionView)
+            constraints.append(contentsOf: withCallToActionViewConstraints)
+        }
+
+        NSLayoutConstraint.activate(constraints)
     }
 
     private func registerIfNeeded(_ cellType: any PageCell.Type) {

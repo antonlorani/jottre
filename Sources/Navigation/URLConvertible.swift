@@ -24,6 +24,7 @@ protocol URLConvertible: Sendable {
     var scheme: String? { get }
     var host: String? { get }
     var path: String { get }
+    var queryItems: [URLQueryItem] { get }
 
     func toURL() -> URL
 }
@@ -38,12 +39,17 @@ extension URLConvertible {
         nil
     }
 
+    var queryItems: [URLQueryItem] {
+        []
+    }
+
     func toURL() -> URL {
         assert(path.starts(with: "/"))
         var components = URLComponents()
         components.scheme = scheme
         components.host = host
         components.path = path
+        components.queryItems = queryItems
         guard let url = components.url else {
             preconditionFailure()
         }
