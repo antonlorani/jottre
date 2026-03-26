@@ -9,9 +9,14 @@ protocol EditJotRepositoryProtocol {
 struct EditJotRepository: EditJotRepositoryProtocol {
 
     private let jotFileService: JotFileServiceProtocol
+    private let jotFileConflictService: JotFileConflictServiceProtocol
 
-    init(jotFileService: JotFileServiceProtocol) {
+    init(
+        jotFileService: JotFileServiceProtocol,
+        jotFileConflictService: JotFileConflictServiceProtocol
+    ) {
         self.jotFileService = jotFileService
+        self.jotFileConflictService = jotFileConflictService
     }
 
     func readDrawing(jotFile: JotFileBusinessModel) throws -> (drawing: PKDrawing, width: CGFloat) {
@@ -24,6 +29,6 @@ struct EditJotRepository: EditJotRepositoryProtocol {
     }
 
     func getUnresolvedConflicts(jotFile: JotFileBusinessModel) -> [JotFileVersion]? {
-        jotFileService.getUnresolvedConflicts(info: jotFile.toFileInfo())
+        jotFileConflictService.getUnresolvedConflicts(info: jotFile.toFileInfo())
     }
 }

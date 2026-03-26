@@ -17,12 +17,7 @@ protocol FileServiceProtocol: Sendable {
 
     func writeFile(fileURL: URL, data: Data) throws
 
-    func getUnresolvedConflicts(fileURL: URL) -> [NSFileVersion]?
-
-    func resolveConflicts(
-        fileURL: URL,
-        resolvedVersion: URL?
-    ) throws
+    func fileExists(fileURL: URL) -> Bool
 }
 
 struct FileService: FileServiceProtocol {
@@ -107,29 +102,8 @@ struct FileService: FileServiceProtocol {
         try data.write(to: fileURL, options: .atomic)
     }
 
-    func getUnresolvedConflicts(fileURL: URL) -> [NSFileVersion]? {
-        NSFileVersion.unresolvedConflictVersionsOfItem(at: fileURL)
-    }
-
-    func resolveConflicts(
-        fileURL: URL,
-        resolvedVersion: URL?
-    ) throws {
-        guard let unresolvedConflicts = getUnresolvedConflicts(fileURL: fileURL) else {
-            return
-        }
-
-        if let resolvedVersion {
-            _ = try fileManager.replaceItemAt(
-                fileURL,
-                withItemAt: resolvedVersion
-            )
-        }
-
-        for conflictingVersion in unresolvedConflicts {
-            conflictingVersion.isResolved = true
-        }
-
-        try NSFileVersion.removeOtherVersionsOfItem(at: fileURL)
+    func fileExists(fileURL: URL) -> Bool {
+        var isDirectory = ObjCBool(false)
+        return fileManager.fileExists(atPath: fileURL.path, isDirectory: &isDirectory)
     }
 }

@@ -1,3 +1,21 @@
+/*
+ Jottre: Minimalistic jotting for iPhone, iPad and Mac.
+ Copyright (C) 2021-2026 Anton Lorani
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import Foundation
 
 protocol JotFileServiceProtocol: Sendable {
@@ -6,13 +24,6 @@ protocol JotFileServiceProtocol: Sendable {
     func readJotFile(info: JotFile.Info) throws -> JotFile
 
     func write(jotFile: JotFile) throws
-
-    func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]?
-
-    func resolveConflicts(
-        info: JotFile.Info,
-        resolvedVersion: JotFileVersion?
-    ) throws
 }
 
 struct JotFileService: JotFileServiceProtocol {
@@ -79,36 +90,6 @@ struct JotFileService: JotFileServiceProtocol {
         try fileService.writeFile(
             fileURL: jotFile.info.url,
             data: data
-        )
-    }
-
-    func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]? {
-        guard let fileVersions = fileService.getUnresolvedConflicts(fileURL: info.url),
-            !fileVersions.isEmpty
-        else {
-            return nil
-        }
-        return
-            fileVersions
-            .map { fileVersion in
-                JotFileVersion(
-                    localizedNameOfSavingComputer: fileVersion.localizedNameOfSavingComputer,
-                    info: JotFile.Info(
-                        url: fileVersion.url,
-                        name: fileVersion.localizedName ?? fileVersion.url.deletingPathExtension().lastPathComponent,
-                        modificationDate: fileVersion.modificationDate
-                    )
-                )
-            }
-    }
-
-    func resolveConflicts(
-        info: JotFile.Info,
-        resolvedVersion: JotFileVersion?
-    ) throws {
-        try fileService.resolveConflicts(
-            fileURL: info.url,
-            resolvedVersion: resolvedVersion?.info.url
         )
     }
 }
