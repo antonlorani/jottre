@@ -78,15 +78,19 @@ final class CreateJotCoordinator: NavigationCoordinator {
 
     private func handleCreateJot(name: String) {
         Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
             do {
-                try await self?.repository.createJot(name: name)
+                let jotFileInfo = try await repository.createJot(name: name)
+                navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo).toURL())
             } catch CreateJotRepository.Failure.fileExists {
-                await self?.showInfoAlert(
+                await showInfoAlert(
                     title: "'\(name)' already exists",
                     message: nil
                 )
             } catch {
-                await self?.showInfoAlert(
+                await showInfoAlert(
                     title: "Something went wrong",
                     message: error.localizedDescription
                 )

@@ -20,7 +20,7 @@ import UIKit
 
 protocol CreateJotRepositoryProtocol: Sendable {
 
-    func createJot(name: String) async throws
+    func createJot(name: String) async throws -> JotFile.Info
 }
 
 struct CreateJotRepository: CreateJotRepositoryProtocol {
@@ -41,7 +41,7 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
         self.jotFileService = jotFileService
     }
 
-    func createJot(name: String) async throws {
+    func createJot(name: String) async throws -> JotFile.Info {
         let cloudDirectory = try await fileService.cloudDocumentsDirectory()
         let localDirectory = try fileService.localDocumentsDirectory()
 
@@ -67,5 +67,6 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
             jot: .makeEmpty()
         )
         try jotFileService.write(jotFile: jotFile)
+        return jotFile.info
     }
 }
