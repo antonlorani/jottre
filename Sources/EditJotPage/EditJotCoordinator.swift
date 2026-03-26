@@ -101,6 +101,9 @@ final class EditJotCoordinator: NavigationCoordinator {
     func showJotConflictPage(jotFileVersions: [JotFileVersion]) {
         retainedJotConflictCoordinator = jotConflictCoordinatorFactory.make(navigation: navigation)
         retainedJotConflictCoordinator?.start()
+        retainedJotConflictCoordinator?.onEnd = { [weak self] in
+            self?.retainedJotConflictCoordinator = nil
+        }
     }
 
     func goBack() {
