@@ -16,6 +16,8 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import PencilKit
+
 @MainActor
 final class EditJotViewModel: Sendable {
 
@@ -47,20 +49,33 @@ final class EditJotViewModel: Sendable {
         }
     )
 
+    let drawing: AsyncStream<(value: PKDrawing, width: CGFloat)>
+    private let drawingContinuation: AsyncStream<(value: PKDrawing, width: CGFloat)>.Continuation
+
     let isEditing: AsyncStream<Bool?>
     private let isEditingContinuation: AsyncStream<Bool?>.Continuation
 
+    private let jotFile: JotFileBusinessModel
+    private let repository: EditJotRepositoryProtocol
     private weak var coordinator: EditJotCoordinator?
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
+        jotFile: JotFileBusinessModel,
+        repository: EditJotRepositoryProtocol,
         coordinator: EditJotCoordinator,
         menuConfigurationFactory: JotMenuConfigurationFactory
     ) {
+        self.jotFile = jotFile
         self.coordinator = coordinator
+        self.repository = repository
         self.menuConfigurationFactory = menuConfigurationFactory
         (isEditing, isEditingContinuation) = AsyncStream.makeStream(
             of: Bool?.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        (drawing, drawingContinuation) = AsyncStream.makeStream(
+            of: (value: PKDrawing, width: CGFloat).self,
             bufferingPolicy: .bufferingNewest(1)
         )
 
@@ -69,6 +84,15 @@ final class EditJotViewModel: Sendable {
         #else
         isEditingContinuation.yield(false)
         #endif
+    }
+
+    func didLoad() {
+        do {
+            let (drawing, width) = try repository.readDrawing(jotFile: jotFile)
+            drawingContinuation.yield((value: drawing, width: width))
+        } catch {
+            print(error)
+        }
     }
 
     func didTapToggleEditingButton(isEditing: Bool) {

@@ -21,14 +21,24 @@ import UIKit
 @MainActor
 protocol EditJotViewControllerFactory: Sendable {
 
-    func make(coordinator: EditJotCoordinator) -> UIViewController
+    func make(
+        jotFile: JotFileBusinessModel,
+        coordinator: EditJotCoordinator
+    ) -> UIViewController
 }
 
 struct IOS18EditJotViewControllerFactory: EditJotViewControllerFactory {
 
-    func make(coordinator: EditJotCoordinator) -> UIViewController {
+    let repository: EditJotRepositoryProtocol
+
+    func make(
+        jotFile: JotFileBusinessModel,
+        coordinator: EditJotCoordinator
+    ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(
+                jotFile: jotFile,
+                repository: repository,
                 coordinator: coordinator,
                 menuConfigurationFactory: JotMenuConfigurationFactory()
             ),
@@ -40,9 +50,16 @@ struct IOS18EditJotViewControllerFactory: EditJotViewControllerFactory {
 @available(iOS 26, *)
 struct IOS26EditJotViewControllerFactory: EditJotViewControllerFactory {
 
-    func make(coordinator: EditJotCoordinator) -> UIViewController {
+    let repository: EditJotRepositoryProtocol
+
+    func make(
+        jotFile: JotFileBusinessModel,
+        coordinator: EditJotCoordinator
+    ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(
+                jotFile: jotFile,
+                repository: repository,
                 coordinator: coordinator,
                 menuConfigurationFactory: JotMenuConfigurationFactory()
             ),

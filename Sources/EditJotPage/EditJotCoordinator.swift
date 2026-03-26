@@ -42,8 +42,7 @@ final class EditJotCoordinator: NavigationCoordinator {
     func shouldHandle(url: URL) -> Bool {
         guard
             url.path.hasPrefix(EditJotURL().path),
-            let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
-            queryItems.contains(where: { $0.name == "fileURL" })
+            getFileURLQueryItem(url: url) != nil
         else {
             return false
         }
@@ -51,14 +50,22 @@ final class EditJotCoordinator: NavigationCoordinator {
     }
 
     func handle(url: URL) -> [UIViewController] {
+        //        retainedJotConflictCoordinator =
+        //            jotConflictCoordinatorFactory
+        //            .make(navigation: navigation)
+        //        retainedJotConflictCoordinator?.start()
 
-        retainedJotConflictCoordinator =
-            jotConflictCoordinatorFactory
-            .make(navigation: navigation)
-        retainedJotConflictCoordinator?.start()
+        guard let fileURL = getFileURLQueryItem(url: url),
+            let jotFile = JotFileBusinessModel(url: fileURL, modificationDate: nil)
+        else {
+            return []
+        }
 
         return [
-            editJotViewControllerFactory.make(coordinator: self)
+            editJotViewControllerFactory.make(
+                jotFile: jotFile,
+                coordinator: self
+            )
         ]
     }
 
@@ -94,5 +101,15 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     func showInFiles() {
 
+    }
+
+    private func getFileURLQueryItem(url: URL) -> URL? {
+        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
+            let fileURLValue = queryItems.first(where: { $0.name == "fileURL" })?.value,
+            let fileURL = URL(string: fileURLValue)
+        else {
+            return nil
+        }
+        return fileURL
     }
 }

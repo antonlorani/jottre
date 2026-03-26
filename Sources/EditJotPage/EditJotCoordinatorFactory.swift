@@ -24,10 +24,14 @@ protocol EditJotCoordinatorFactory {
 
 struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 
+    let repository: EditJotRepositoryProtocol
+
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
             navigation: navigation,
-            editJotViewControllerFactory: IOS18EditJotViewControllerFactory(),
+            editJotViewControllerFactory: IOS18EditJotViewControllerFactory(
+                repository: repository
+            ),
             jotConflictCoordinatorFactory: IOS18JotConflictCoordinatorFactory()
         )
     }
@@ -36,10 +40,14 @@ struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 @available(iOS 26, *)
 struct IOS26EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 
+    let repository: EditJotRepositoryProtocol
+
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
             navigation: navigation,
-            editJotViewControllerFactory: IOS26EditJotViewControllerFactory(),
+            editJotViewControllerFactory: IOS26EditJotViewControllerFactory(
+                repository: repository
+            ),
             jotConflictCoordinatorFactory: IOS26JotConflictCoordinatorFactory()
         )
     }

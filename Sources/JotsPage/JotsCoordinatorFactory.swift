@@ -27,6 +27,7 @@ protocol JotsCoordinatorFactory: Sendable {
 struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
 
     let jotsRepository: JotsRepositoryProtocol
+    let editJotRepository: EditJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -36,7 +37,9 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
             ),
             settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS18EnableCloudCoordinatorFactory(),
-            editJotCoordinatorFactory: IOS18EditJotCoordinatorFactory(),
+            editJotCoordinatorFactory: IOS18EditJotCoordinatorFactory(
+                repository: editJotRepository
+            ),
             cloudMigrationCoordinatorFactory: IOS18CloudMigrationCoordinatorFactory()
         )
     }
@@ -46,6 +49,7 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
 struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
 
     let jotsRepository: JotsRepositoryProtocol
+    let editJotRepository: EditJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -55,7 +59,9 @@ struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
             ),
             settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS26EnableCloudCoordinatorFactory(),
-            editJotCoordinatorFactory: IOS26EditJotCoordinatorFactory(),
+            editJotCoordinatorFactory: IOS26EditJotCoordinatorFactory(
+                repository: editJotRepository
+            ),
             cloudMigrationCoordinatorFactory: IOS26CloudMigrationCoordinatorFactory()
         )
     }

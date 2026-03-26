@@ -2,9 +2,13 @@ import Foundation
 
 protocol JotFileServiceProtocol: Sendable {
     func listContents(directory: URL) throws -> [JotFile.Info]
+
     func readJotFile(info: JotFile.Info) throws -> JotFile
+
     func write(jotFile: JotFile) throws
+
     func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]?
+
     func resolveConflicts(
         info: JotFile.Info,
         resolvedVersion: JotFileVersion?

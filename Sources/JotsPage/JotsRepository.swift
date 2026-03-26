@@ -1,18 +1,3 @@
-struct JotFileBusinessModel: Sendable {
-    let name: String
-
-    private let jotFileInfo: JotFile.Info
-
-    init(jotFileInfo: JotFile.Info) {
-        name = jotFileInfo.name
-        self.jotFileInfo = jotFileInfo
-    }
-
-    func toFileInfo() -> JotFile.Info {
-        jotFileInfo
-    }
-}
-
 protocol JotsRepositoryProtocol {
 
     func getJotFiles() throws -> AsyncThrowingStream<[JotFileBusinessModel], Error>

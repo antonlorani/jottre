@@ -25,6 +25,7 @@ final class EditJotViewController: UIViewController {
 
         enum CanvasView {
             static let maximumZoomScale = CGFloat(3)
+            static let bottomFreespace = CGFloat(500)
         }
     }
 
@@ -40,7 +41,10 @@ final class EditJotViewController: UIViewController {
         return canvasView
     }()
 
+    private var drawingWidth = CGFloat.zero
+
     private var isEditingTask: Task<Void, Never>?
+    private var drawingTask: Task<Void, Never>?
 
     private let viewModel: EditJotViewModel
     private let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
@@ -56,6 +60,13 @@ final class EditJotViewController: UIViewController {
         isEditingTask = Task { @MainActor in
             for await isEditing in viewModel.isEditing {
                 handleEditing(isEditing: isEditing)
+            }
+        }
+        drawingTask = Task { @MainActor [weak self] in
+            for await (drawing, width) in viewModel.drawing {
+                self?.drawingWidth = width
+                self?.canvasView.drawing = drawing
+                self?.layoutDrawing()
             }
         }
     }
@@ -75,6 +86,38 @@ final class EditJotViewController: UIViewController {
         setUpViews()
 
         super.viewDidLoad()
+
+        viewModel.didLoad()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let canvasScale = canvasView.bounds.width / drawingWidth
+        canvasView.minimumZoomScale = canvasScale
+        canvasView.zoomScale = canvasScale
+
+        layoutDrawing()
+        canvasView.contentOffset = CGPoint(
+            x: .zero,
+            y: -canvasView.adjustedContentInset.top
+        )
+    }
+
+    private func layoutDrawing() {
+        let contentHeight =
+            if canvasView.drawing.bounds.isNull {
+                canvasView.bounds.height
+            } else {
+                max(
+                    canvasView.bounds.height,
+                    (canvasView.drawing.bounds.maxY + Constants.CanvasView.bottomFreespace) * canvasView.zoomScale
+                )
+            }
+        canvasView.contentSize = CGSize(
+            width: drawingWidth * canvasView.zoomScale,
+            height: contentHeight
+        )
     }
 
     private func setUpNavigationBar() {
