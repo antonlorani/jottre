@@ -16,6 +16,22 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import Foundation
+
 struct EditNoteURL: URLConvertible {
     let path = "/notes/edit"
+    let queryItems: [URLQueryItem]
+
+    init(jotFile: JotFileBusinessModel) {
+        queryItems = [
+            URLQueryItem(
+                name: "fileURL",
+                value: jotFile.toFileInfo().url.absoluteString
+            )
+        ]
+    }
+
+    init() {
+        queryItems = []
+    }
 }

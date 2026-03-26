@@ -40,7 +40,14 @@ final class EditNoteCoordinator: NavigationCoordinator {
     }
 
     func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(EditNoteURL().path)
+        guard
+            url.path.hasPrefix(EditNoteURL().path),
+            let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
+            queryItems.contains(where: { $0.name == "fileURL" })
+        else {
+            return false
+        }
+        return true
     }
 
     func handle(url: URL) -> [UIViewController] {

@@ -92,8 +92,8 @@ final class NotesCoordinator: NavigationCoordinator {
         retainedCreateNoteCoordinator?.start()
     }
 
-    func openNote(_ note: NoteBusinessModel) {
-        navigation.open(url: EditNoteURL())
+    func openJot(_ jotFile: JotFileBusinessModel) {
+        navigation.open(url: EditNoteURL(jotFile: jotFile))
     }
 
     func openEnableCloudPage() {
