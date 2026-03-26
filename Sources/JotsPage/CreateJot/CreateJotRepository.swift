@@ -45,7 +45,7 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
         let cloudDirectory = try await fileService.cloudDocumentsDirectory()
         let localDirectory = try fileService.localDocumentsDirectory()
 
-        guard let directory = localDirectory else {
+        guard let directory = cloudDirectory ?? localDirectory else {
             throw Failure.couldNotCreateFile
         }
 
