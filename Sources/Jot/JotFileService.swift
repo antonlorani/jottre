@@ -83,13 +83,16 @@ struct JotFileService: JotFileServiceProtocol {
     }
 
     func getUnresolvedConflicts(info: JotFile.Info) -> [JotFileVersion]? {
-        guard let fileVersions = fileService.getUnresolvedConflicts(fileURL: info.url) else {
+        guard let fileVersions = fileService.getUnresolvedConflicts(fileURL: info.url),
+            !fileVersions.isEmpty
+        else {
             return nil
         }
         return
             fileVersions
             .map { fileVersion in
                 JotFileVersion(
+                    localizedNameOfSavingComputer: fileVersion.localizedNameOfSavingComputer,
                     info: JotFile.Info(
                         url: fileVersion.url,
                         name: fileVersion.localizedName ?? fileVersion.url.deletingPathExtension().lastPathComponent,

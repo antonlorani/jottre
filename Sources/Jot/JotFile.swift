@@ -13,5 +13,6 @@ struct JotFile: Sendable {
 }
 
 struct JotFileVersion: Sendable {
+    let localizedNameOfSavingComputer: String?
     let info: JotFile.Info
 }
