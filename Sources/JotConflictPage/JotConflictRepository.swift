@@ -16,19 +16,29 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extension PageCellItem {
+protocol JotConflictRepositoryProtocol: Sendable {
 
-    @MainActor
-    static func cloudMigrationJot(
-        cloudMigrationJot: CloudMigrationJotBusinessModel
-    ) -> PageCellItem {
-        PageCellItem(
-            id: cloudMigrationJot,
-            cellType: CloudMigrationJotCell.self,
-            sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: CloudMigrationJotCellViewModel(
-                cloudMigrationJot: cloudMigrationJot
-            )
+    func resolveVersionConflicts(
+        jotFileInfo: JotFile.Info,
+        resolvedVersions: [JotFileVersion]
+    ) throws
+}
+
+struct JotConflictRepository: JotConflictRepositoryProtocol {
+
+    private let jotFileConflictService: JotFileConflictServiceProtocol
+
+    init(jotFileConflictService: JotFileConflictServiceProtocol) {
+        self.jotFileConflictService = jotFileConflictService
+    }
+
+    func resolveVersionConflicts(
+        jotFileInfo: JotFile.Info,
+        resolvedVersions: [JotFileVersion]
+    ) throws {
+        try jotFileConflictService.resolveVersionConflicts(
+            jotFileInfo: jotFileInfo,
+            resolvedVersions: resolvedVersions
         )
     }
 }

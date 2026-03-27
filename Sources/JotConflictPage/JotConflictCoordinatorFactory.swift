@@ -19,17 +19,32 @@
 @MainActor
 protocol JotConflictCoordinatorFactoryProtocol: Sendable {
 
-    func make(navigation: Navigation) -> Coordinator
+    func make(
+        jotFileInfo: JotFile.Info,
+        jotFileVersions: [JotFileVersion],
+        navigation: Navigation,
+        onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
+    ) -> Coordinator
 }
 
 struct JotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol {
 
     let jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
+    let repository: JotConflictRepositoryProtocol
 
-    func make(navigation: Navigation) -> Coordinator {
+    func make(
+        jotFileInfo: JotFile.Info,
+        jotFileVersions: [JotFileVersion],
+        navigation: Navigation,
+        onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
+    ) -> Coordinator {
         JotConflictCoordinator(
+            jotFileInfo: jotFileInfo,
+            jotFileVersions: jotFileVersions,
+            repository: repository,
             navigation: navigation,
-            jotConflictViewControllerFactory: jotConflictViewControllerFactory
+            jotConflictViewControllerFactory: jotConflictViewControllerFactory,
+            onResult: onResult
         )
     }
 }

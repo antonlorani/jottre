@@ -21,7 +21,9 @@ import UIKit
 @MainActor
 protocol JotConflictViewControllerFactoryProtocol: Sendable {
 
-    func make(coordinator: JotConflictCoordinator) -> UIViewController
+    func make(
+        viewModel: JotConflictViewModel
+    ) -> UIViewController
 }
 
 struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
@@ -29,11 +31,11 @@ struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtoco
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
-    func make(coordinator: JotConflictCoordinator) -> UIViewController {
+    func make(
+        viewModel: JotConflictViewModel
+    ) -> UIViewController {
         PageViewController(
-            viewModel: JotConflictViewModel(
-                coordinator: coordinator
-            ),
+            viewModel: viewModel,
             textBarButtonItemFactory: textBarButtonItemFactory,
             symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )

@@ -19,16 +19,15 @@
 extension PageCellItem {
 
     @MainActor
-    static func cloudMigrationJot(
-        cloudMigrationJot: CloudMigrationJotBusinessModel
+    static func jotConflict(
+        jotConflict: JotConflictBusinessModel,
+        sizing: PageCellSizingStrategy
     ) -> PageCellItem {
         PageCellItem(
-            id: cloudMigrationJot,
-            cellType: CloudMigrationJotCell.self,
-            sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: CloudMigrationJotCellViewModel(
-                cloudMigrationJot: cloudMigrationJot
-            )
+            id: jotConflict,
+            cellType: JotConflictCell.self,
+            sizing: sizing,
+            viewModel: JotConflictCellViewModel(jotConflict: jotConflict)
         )
     }
 }

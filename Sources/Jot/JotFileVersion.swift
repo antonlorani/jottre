@@ -16,19 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extension PageCellItem {
-
-    @MainActor
-    static func cloudMigrationJot(
-        cloudMigrationJot: CloudMigrationJotBusinessModel
-    ) -> PageCellItem {
-        PageCellItem(
-            id: cloudMigrationJot,
-            cellType: CloudMigrationJotCell.self,
-            sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: CloudMigrationJotCellViewModel(
-                cloudMigrationJot: cloudMigrationJot
-            )
-        )
-    }
+struct JotFileVersion: Sendable {
+    let localizedNameOfSavingComputer: String?
+    let info: JotFile.Info
 }

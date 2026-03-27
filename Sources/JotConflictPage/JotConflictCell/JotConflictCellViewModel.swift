@@ -16,19 +16,23 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extension PageCellItem {
+import UIKit
 
-    @MainActor
-    static func cloudMigrationJot(
-        cloudMigrationJot: CloudMigrationJotBusinessModel
-    ) -> PageCellItem {
-        PageCellItem(
-            id: cloudMigrationJot,
-            cellType: CloudMigrationJotCell.self,
-            sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: CloudMigrationJotCellViewModel(
-                cloudMigrationJot: cloudMigrationJot
-            )
-        )
+final class JotConflictCellViewModel: PageCellViewModel {
+
+    let previewImage: UIImage?
+    let title: String
+    let infoText: String
+
+    init(
+        jotConflict: JotConflictBusinessModel
+    ) {
+        previewImage = jotConflict.previewImage
+        title = jotConflict.name
+        infoText = jotConflict.lastEditedDateString
+    }
+
+    func handle(action: PageCellAction) {
+        /* no-op */
     }
 }

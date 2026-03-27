@@ -117,9 +117,7 @@ final class JotsViewModel: PageViewModel {
             jotFileInfos.map { jotFileInfo in
                 let jot = JotBusinessModel(
                     previewImage: nil,
-                    name: jotFileInfo.name,
-                    lastEditedDateString: "",
-                    isCloudSynchronized: false
+                    name: jotFileInfo.name
                 )
                 return .jot(
                     jot: jot,

@@ -18,8 +18,8 @@
 
 import UIKit
 
-final class JotCell: UICollectionViewCell, PageCell {
-    static let reuseIdentifier = "JotCell"
+final class JotConflictCell: UICollectionViewCell, PageCell {
+    static let reuseIdentifier = "JotConflictCell"
 
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
@@ -40,6 +40,14 @@ final class JotCell: UICollectionViewCell, PageCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body, weight: .semibold)
+        return label
+    }()
+
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .caption1, weight: .semibold)
+        label.textColor = .secondaryLabel
         return label
     }()
 
@@ -84,15 +92,20 @@ final class JotCell: UICollectionViewCell, PageCell {
                 nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: DesignTokens.Spacing.sm),
                 nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
                 nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-                nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+
+                infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+                infoLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                infoLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+                infoLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             ]
         )
     }
 
     func configure(
-        viewModel: JotCellViewModel
+        viewModel: JotConflictCellViewModel
     ) {
-        previewImageView.image = viewModel.jot.previewImage
-        nameLabel.text = viewModel.jot.name
+        previewImageView.image = viewModel.previewImage
+        nameLabel.text = viewModel.title
+        infoLabel.text = viewModel.infoText
     }
 }

@@ -21,7 +21,7 @@
 protocol EditJotRepositoryProtocol {
 
     func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat)
-    func getUnresolvedConflicts(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
+    func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
 
@@ -47,8 +47,8 @@ struct EditJotRepository: EditJotRepositoryProtocol {
         )
     }
 
-    func getUnresolvedConflicts(jotFileInfo: JotFile.Info) -> [JotFileVersion]? {
-        jotFileConflictService.getUnresolvedConflicts(jotFileInfo: jotFileInfo)
+    func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]? {
+        jotFileConflictService.getConfictingVersions(jotFileInfo: jotFileInfo)
     }
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {

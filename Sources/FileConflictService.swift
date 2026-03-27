@@ -20,11 +20,11 @@ import Foundation
 
 protocol FileConflictServiceProtocol: Sendable {
 
-    func getUnresolvedConflicts(fileURL: URL) -> [NSFileVersion]?
+    func getConflictingVersions(fileURL: URL) -> [NSFileVersion]?
 
-    func resolveConflicts(
+    func resolveVersionConflicts(
         fileURL: URL,
-        resolvedVersion: URL?
+        resolvedVersions: [URL]
     ) throws
 }
 
@@ -36,23 +36,33 @@ struct FileConflictService: FileConflictServiceProtocol {
         self.fileManager = fileManager
     }
 
-    func getUnresolvedConflicts(fileURL: URL) -> [NSFileVersion]? {
+    func getConflictingVersions(fileURL: URL) -> [NSFileVersion]? {
         NSFileVersion.unresolvedConflictVersionsOfItem(at: fileURL)
     }
 
-    func resolveConflicts(
+    func resolveVersionConflicts(
         fileURL: URL,
-        resolvedVersion: URL?
+        resolvedVersions: [URL]
     ) throws {
-        guard let unresolvedConflicts = getUnresolvedConflicts(fileURL: fileURL) else {
+        guard let unresolvedConflicts = getConflictingVersions(fileURL: fileURL) else {
             return
         }
 
-        if let resolvedVersion {
+        if let first = resolvedVersions.first {
             _ = try fileManager.replaceItemAt(
                 fileURL,
-                withItemAt: resolvedVersion
+                withItemAt: first
             )
+        }
+
+        let directory = fileURL.deletingLastPathComponent()
+        let name = fileURL.deletingPathExtension().lastPathComponent
+        let ext = fileURL.pathExtension
+
+        for (index, version) in resolvedVersions.dropFirst().enumerated() {
+            let copyName = "\(name) (\(index + 2)).\(ext)"
+            let copyURL = directory.appendingPathComponent(copyName)
+            try fileManager.copyItem(at: version, to: copyURL)
         }
 
         for conflictingVersion in unresolvedConflicts {
