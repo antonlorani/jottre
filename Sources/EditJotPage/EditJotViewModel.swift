@@ -37,12 +37,15 @@ final class EditJotViewModel: Sendable {
                 guard let self else {
                     return
                 }
-                coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
+                self.coordinator?.showRenameAlert(jotFileInfo: self.jotFileInfo)
             }
         },
         onDuplicate: { [weak self] in
-            Task { @MainActor in
-                self?.didTapDuplicateJot()
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+                self.didTapDuplicateJot(jotFileInfo: self.jotFileInfo)
             }
         },
         onDelete: { [weak self] in
@@ -126,7 +129,15 @@ final class EditJotViewModel: Sendable {
         }
     }
 
-    private func didTapDuplicateJot() {
-
+    private func didTapDuplicateJot(jotFileInfo: JotFile.Info) {
+        do {
+            let duplicatedJotFileInfo = try repository.duplicate(jotFileInfo: jotFileInfo)
+            coordinator?.openJot(jotFileInfo: duplicatedJotFileInfo)
+        } catch {
+            coordinator?.showInfoAlert(
+                title: L10n.Jots.Duplicate.Error.generic(jotFileInfo.name),
+                message: error.localizedDescription
+            )
+        }
     }
 }

@@ -21,6 +21,7 @@ import UIKit
 @MainActor
 final class JotsCoordinator: NavigationCoordinator {
 
+    private var retainedInfoAlertCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
 
@@ -133,6 +134,22 @@ final class JotsCoordinator: NavigationCoordinator {
 
     func openDeleteJot(jotFileInfo: JotFile.Info) {
         navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
+    }
+
+    func showInfoAlert(
+        title: String,
+        message: String
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        infoAlertCoordinator.start()
     }
 
     func showInFiles() {

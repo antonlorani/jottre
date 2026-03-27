@@ -40,6 +40,8 @@ protocol FileServiceProtocol: Sendable {
     func removeFile(fileURL: URL) throws
 
     func moveFile(fileURL: URL, newFileURL: URL) throws
+
+    func duplicateFile(fileURL: URL) throws -> URL
 }
 
 struct FileService: FileServiceProtocol {
@@ -137,5 +139,34 @@ struct FileService: FileServiceProtocol {
 
     func moveFile(fileURL: URL, newFileURL: URL) throws {
         try fileManager.moveItem(at: fileURL, to: newFileURL)
+    }
+
+    func duplicateFile(fileURL: URL) throws -> URL {
+        var duplicateCount = 0
+        let fileName = fileURL.deletingPathExtension().lastPathComponent
+
+        while true {
+            let destinationFileName =
+                if duplicateCount == 0 {
+                    L10n.FileSystem.Duplicate.FileName.plain(fileName)
+                } else {
+                    L10n.FileSystem.Duplicate.FileName.multi(fileName, duplicateCount)
+                }
+            duplicateCount += 1
+
+            let destinationFileURL =
+                fileURL
+                .deletingPathExtension()
+                .deletingLastPathComponent()
+                .appendingPathComponent(destinationFileName)
+                .appendingPathExtension(fileURL.pathExtension)
+
+            do {
+                try fileManager.copyItem(at: fileURL, to: destinationFileURL)
+                return destinationFileURL
+            } catch CocoaError.fileWriteFileExists {
+                continue
+            }
+        }
     }
 }
