@@ -53,7 +53,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
                         name: "Project Brainstorm",
-                        lastModifiedText: "",
+                        lastModifiedText: "May 23 2025",
                         isCloudSynchronized: false
                     )
                 ),
@@ -61,7 +61,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
                         name: "Final Sketch",
-                        lastModifiedText: "",
+                        lastModifiedText: "June 15 2024",
                         isCloudSynchronized: false
                     )
                 ),
@@ -69,7 +69,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
                         name: "Calculator Pro",
-                        lastModifiedText: "",
+                        lastModifiedText: "December 3 2023",
                         isCloudSynchronized: true
                     )
                 ),
