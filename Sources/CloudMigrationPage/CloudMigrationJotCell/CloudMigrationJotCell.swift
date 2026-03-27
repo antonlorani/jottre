@@ -62,7 +62,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         return label
     }()
 
-    private let lastEditedDateLabel: UILabel = {
+    private let infoTextLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .caption1)
@@ -104,7 +104,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         contentView.addSubview(separatorLine)
         contentView.addSubview(labelContainer)
         labelContainer.addSubview(nameLabel)
-        labelContainer.addSubview(lastEditedDateLabel)
+        labelContainer.addSubview(infoTextLabel)
         contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
@@ -135,10 +135,10 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             nameLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
 
-            lastEditedDateLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
-            lastEditedDateLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
-            lastEditedDateLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
-            lastEditedDateLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
+            infoTextLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+            infoTextLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
+            infoTextLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
+            infoTextLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
 
             checkboxImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             checkboxImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -148,9 +148,9 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
     }
 
     func configure(viewModel: CloudMigrationJotCellViewModel) {
-        previewImageView.image = viewModel.jot.previewImage
-        nameLabel.text = viewModel.jot.name
-        lastEditedDateLabel.text = viewModel.jot.lastEditedDateString
-        checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.jot.isCloudSynchronized)
+        previewImageView.image = nil
+        nameLabel.text = viewModel.name
+        infoTextLabel.text = viewModel.infoText
+        checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.isCloudCheckboxOn)
     }
 }

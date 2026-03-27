@@ -18,12 +18,17 @@
 
 import UIKit
 
+@MainActor
 final class CloudMigrationJotCellViewModel: PageCellViewModel {
 
-    let jot: JotBusinessModel
+    let name: String
+    let infoText: String
+    let isCloudCheckboxOn: Bool
 
-    init(jot: JotBusinessModel) {
-        self.jot = jot
+    init(cloudMigrationJot: CloudMigrationJotBusinessModel) {
+        name = cloudMigrationJot.name
+        infoText = cloudMigrationJot.lastModifiedText
+        isCloudCheckboxOn = cloudMigrationJot.isCloudSynchronized
     }
 
     func handle(action: PageCellAction) {

@@ -43,25 +43,6 @@ final class JotCell: UICollectionViewCell, PageCell {
         return label
     }()
 
-    private lazy var infoLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .caption1, weight: .semibold)
-        label.textColor = .secondaryLabel
-        return label
-    }()
-
-    private lazy var withInfoLabelConstraints = [
-        infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
-        infoLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        infoLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-        infoLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-    ]
-
-    private lazy var withoutInfoLabelConstraints = [
-        nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
-    ]
-
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -103,7 +84,8 @@ final class JotCell: UICollectionViewCell, PageCell {
                 nameLabel.topAnchor.constraint(equalTo: separatorLine.bottomAnchor, constant: DesignTokens.Spacing.sm),
                 nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
                 nameLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            ] + withoutInfoLabelConstraints
+                nameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+            ]
         )
     }
 
@@ -112,16 +94,5 @@ final class JotCell: UICollectionViewCell, PageCell {
     ) {
         previewImageView.image = viewModel.jot.previewImage
         nameLabel.text = viewModel.jot.name
-
-        infoLabel.removeFromSuperview()
-        NSLayoutConstraint.deactivate(withInfoLabelConstraints + withoutInfoLabelConstraints)
-
-        if let infoText = viewModel.infoText {
-            infoLabel.text = infoText
-            contentView.addSubview(infoLabel)
-            NSLayoutConstraint.activate(withInfoLabelConstraints)
-        } else {
-            NSLayoutConstraint.activate(withoutInfoLabelConstraints)
-        }
     }
 }

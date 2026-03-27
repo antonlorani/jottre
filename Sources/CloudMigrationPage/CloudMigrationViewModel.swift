@@ -50,26 +50,26 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     subheadline: L10n.CloudMigration.subtitle
                 ),
                 .cloudMigrationJot(
-                    jot: JotBusinessModel(
+                    cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
                         name: "Project Brainstorm",
-                        lastEditedDateString: "February 15 2026",
+                        lastModifiedText: "",
                         isCloudSynchronized: false
                     )
                 ),
                 .cloudMigrationJot(
-                    jot: JotBusinessModel(
+                    cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
-                        name: "Sketch Ideas",
-                        lastEditedDateString: "May 11 2023",
+                        name: "Final Sketch",
+                        lastModifiedText: "",
                         isCloudSynchronized: false
                     )
                 ),
                 .cloudMigrationJot(
-                    jot: JotBusinessModel(
+                    cloudMigrationJot: CloudMigrationJotBusinessModel(
                         previewImage: nil,
                         name: "Calculator Pro",
-                        lastEditedDateString: "April 25 2021",
+                        lastModifiedText: "",
                         isCloudSynchronized: true
                     )
                 ),
