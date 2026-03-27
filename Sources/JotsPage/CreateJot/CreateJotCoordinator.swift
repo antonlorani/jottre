@@ -83,7 +83,7 @@ final class CreateJotCoordinator: NavigationCoordinator {
             }
             do {
                 let jotFileInfo = try await repository.createJot(name: name)
-                navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo).toURL())
+                navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
             } catch CreateJotRepository.Failure.fileExists {
                 await showInfoAlert(
                     title: L10n.Jots.Create.Error.fileExists(name),

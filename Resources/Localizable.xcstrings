@@ -3002,7 +3002,7 @@
       }
     },
     "jots.create.error.fileExists" : {
-      "comment" : "The error message when a jot already exists.",
+      "comment" : "The error message when a Jot already exists.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3013,7 +3013,7 @@
       }
     },
     "jots.create.error.generic" : {
-      "comment" : "A generic error message during jot creation.",
+      "comment" : "A generic error message during Jot creation.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3324,7 +3324,7 @@
       }
     },
     "jots.delete.error.generic" : {
-      "comment" : "The error message when a jot couldn’t be deleted.",
+      "comment" : "The error message when a Jot couldn’t be deleted.",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -3931,6 +3931,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Finder 中顯示"
+          }
+        }
+      }
+    },
+    "jots.rename.error.generic" : {
+      "comment" : "The error message displayed when a Jot couldn’t be renamed.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not rename “%@”"
           }
         }
       }

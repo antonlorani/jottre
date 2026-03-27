@@ -19,23 +19,29 @@
 import UIKit
 
 @MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
+protocol RenameJotCoordinatorFactoryProtocol: Sendable {
 
-    func make(coordinator: JotConflictCoordinator) -> UIViewController
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation,
+        onRename: @Sendable @escaping (_ renameJotFileInfo: JotFile.Info) -> Void
+    ) -> Coordinator
 }
 
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
+struct RenameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol {
 
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+    let repository: RenameJotRepositoryProtocol
 
-    func make(coordinator: JotConflictCoordinator) -> UIViewController {
-        PageViewController(
-            viewModel: JotConflictViewModel(
-                coordinator: coordinator
-            ),
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation,
+        onRename: @Sendable @escaping (_ renameJotFileInfo: JotFile.Info) -> Void
+    ) -> Coordinator {
+        RenameJotCoordinator(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation,
+            repository: repository,
+            onRename: onRename
         )
     }
 }

@@ -21,11 +21,11 @@ import UIKit
 final class SettingsCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
-    private let settingsViewControllerFactory: SettingsViewControllerFactory
+    private let settingsViewControllerFactory: SettingsViewControllerFactoryProtocol
 
     init(
         navigation: Navigation,
-        settingsViewControllerFactory: SettingsViewControllerFactory
+        settingsViewControllerFactory: SettingsViewControllerFactoryProtocol
     ) {
         self.navigation = navigation
         self.settingsViewControllerFactory = settingsViewControllerFactory

@@ -21,9 +21,12 @@ import UIKit
 final class EnableCloudCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
-    private let enableCloudViewControllerFactory: EnableCloudViewControllerFactory
+    private let enableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol
 
-    init(navigation: Navigation, enableCloudViewControllerFactory: EnableCloudViewControllerFactory) {
+    init(
+        navigation: Navigation,
+        enableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol
+    ) {
         self.navigation = navigation
         self.enableCloudViewControllerFactory = enableCloudViewControllerFactory
     }
@@ -41,7 +44,7 @@ final class EnableCloudCoordinator: NavigationCoordinator {
     }
 
     func openLearnHowToEnable() {
-        navigation.open(url: EnableICloudSupportURL().toURL())
+        navigation.open(url: EnableICloudSupportURL())
     }
 
     func dismiss() {

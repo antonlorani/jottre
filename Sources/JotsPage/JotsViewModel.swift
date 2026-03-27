@@ -128,7 +128,7 @@ final class JotsViewModel: PageViewModel {
                         },
                         onRename: { [weak coordinator] in
                             Task { @MainActor in
-                                coordinator?.showRenameAlert()
+                                coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
                             }
                         },
                         onDuplicate: {

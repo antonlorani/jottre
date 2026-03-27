@@ -19,30 +19,21 @@
 import UIKit
 
 @MainActor
-protocol CloudMigrationViewControllerFactory: Sendable {
+protocol CloudMigrationViewControllerFactoryProtocol: Sendable {
 
     func make(coordinator: CloudMigrationCoordinator) -> UIViewController
 }
 
-struct IOS18CloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory {
+struct CloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol {
+
+    let textBarButtonItemFactory: TextBarButtonItemFactory
+    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     func make(coordinator: CloudMigrationCoordinator) -> UIViewController {
         PageViewController(
             viewModel: CloudMigrationViewModel(coordinator: coordinator),
-            textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26CloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory {
-
-    func make(coordinator: CloudMigrationCoordinator) -> UIViewController {
-        PageViewController(
-            viewModel: CloudMigrationViewModel(coordinator: coordinator),
-            textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
+            textBarButtonItemFactory: textBarButtonItemFactory,
+            symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )
     }
 }

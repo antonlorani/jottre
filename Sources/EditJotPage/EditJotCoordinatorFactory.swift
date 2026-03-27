@@ -17,38 +17,23 @@
 */
 
 @MainActor
-protocol EditJotCoordinatorFactory {
+protocol EditJotCoordinatorFactoryProtocol {
 
     func make(navigation: Navigation) -> NavigationCoordinator
 }
 
-struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
+struct EditJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol {
 
-    let repository: EditJotRepositoryProtocol
-
-    func make(navigation: Navigation) -> NavigationCoordinator {
-        EditJotCoordinator(
-            navigation: navigation,
-            editJotViewControllerFactory: IOS18EditJotViewControllerFactory(
-                repository: repository
-            ),
-            jotConflictCoordinatorFactory: IOS18JotConflictCoordinatorFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26EditJotCoordinatorFactory: EditJotCoordinatorFactory {
-
-    let repository: EditJotRepositoryProtocol
+    let editJotViewControllerFactory: EditJotViewControllerFactoryProtocol
+    let jotConflictCoordinatorFactory: JotConflictCoordinatorFactory
+    let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
             navigation: navigation,
-            editJotViewControllerFactory: IOS26EditJotViewControllerFactory(
-                repository: repository
-            ),
-            jotConflictCoordinatorFactory: IOS26JotConflictCoordinatorFactory()
+            editJotViewControllerFactory: editJotViewControllerFactory,
+            jotConflictCoordinatorFactory: jotConflictCoordinatorFactory,
+            renameJotCoordinatorFactory: renameJotCoordinatorFactory
         )
     }
 }

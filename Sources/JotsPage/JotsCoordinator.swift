@@ -43,6 +43,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
+    private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
@@ -52,7 +53,8 @@ final class JotsCoordinator: NavigationCoordinator {
         editJotCoordinatorFactory: EditJotCoordinatorFactory,
         cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory,
         createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
-        deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
+        deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
+        renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
     ) {
         self.navigation = navigation
         self.jotsViewControllerFactory = jotsViewControllerFactory
@@ -62,6 +64,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.cloudMigrationCoordinatorFactory = cloudMigrationCoordinatorFactory
         self.createJotCoordinatorFactory = createJotCoordinatorFactory
         self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
+        self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -114,8 +117,13 @@ final class JotsCoordinator: NavigationCoordinator {
         coordinator.start()
     }
 
-    func showRenameAlert() {
-        let coordinator = RenameJotCoordinator(navigation: navigation)
+    func showRenameAlert(jotFileInfo: JotFile.Info) {
+        let coordinator = renameJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        ) { _ in
+            /* no-op */
+        }
         retainedRenameJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in
             self?.retainedRenameJotCoordinator = nil

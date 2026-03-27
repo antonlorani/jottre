@@ -23,11 +23,11 @@ final class JotConflictCoordinator: Coordinator {
     var onEnd: (() -> Void)?
 
     private let navigation: Navigation
-    private let jotConflictViewControllerFactory: JotConflictViewControllerFactory
+    private let jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
 
     init(
         navigation: Navigation,
-        jotConflictViewControllerFactory: JotConflictViewControllerFactory
+        jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotConflictViewControllerFactory = jotConflictViewControllerFactory

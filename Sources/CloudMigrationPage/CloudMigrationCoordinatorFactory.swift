@@ -17,28 +17,19 @@
 */
 
 @MainActor
-protocol CloudMigrationCoordinatorFactory: Sendable {
+protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
 
     func make(navigation: Navigation) -> NavigationCoordinator
 }
 
-struct IOS18CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory {
+struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
+
+    let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         CloudMigrationCoordinator(
             navigation: navigation,
-            cloudMigrationViewControllerFactory: IOS18CloudMigrationViewControllerFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory {
-
-    func make(navigation: Navigation) -> NavigationCoordinator {
-        CloudMigrationCoordinator(
-            navigation: navigation,
-            cloudMigrationViewControllerFactory: IOS26CloudMigrationViewControllerFactory()
+            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
         )
     }
 }
