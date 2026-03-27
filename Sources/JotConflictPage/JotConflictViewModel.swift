@@ -97,7 +97,7 @@ final class JotConflictViewModel: PageViewModel, Sendable {
             coordinator?.dismiss()
         } catch {
             coordinator?.showInfoAlert(
-                title: "Unable to resolve conflict.",
+                title: L10n.JotConflict.Error.generic,
                 message: error.localizedDescription
             )
         }
@@ -112,7 +112,7 @@ final class JotConflictViewModel: PageViewModel, Sendable {
             coordinator?.dismiss()
         } catch {
             coordinator?.showInfoAlert(
-                title: "Unable to resolve conflict.",
+                title: L10n.JotConflict.Error.generic,
                 message: error.localizedDescription
             )
         }
