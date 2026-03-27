@@ -65,10 +65,16 @@ final class EditJotViewController: UIViewController {
             }
         }
         drawingTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             for await drawing in viewModel.drawing {
-                self?.drawingWidth = drawing.width
-                self?.canvasView.drawing = drawing.value
-                self?.layoutDrawing()
+                drawingWidth = drawing.width
+                canvasView.drawing = drawing.value
+
+                if canvasView.superview == nil {
+                    setUpCanvasView()
+                }
             }
         }
     }
@@ -95,30 +101,24 @@ final class EditJotViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let canvasScale = canvasView.bounds.width / drawingWidth
-        canvasView.minimumZoomScale = canvasScale
-        canvasView.zoomScale = canvasScale
+        let scale = canvasView.bounds.width / drawingWidth
+        canvasView.minimumZoomScale = scale
+        canvasView.zoomScale = scale
 
-        layoutDrawing()
-        canvasView.contentOffset = CGPoint(
-            x: .zero,
-            y: -canvasView.adjustedContentInset.top
-        )
-    }
-
-    private func layoutDrawing() {
-        let contentHeight =
+        let drawingMaxY =
             if canvasView.drawing.bounds.isNull {
-                canvasView.bounds.height
+                CGFloat.zero
             } else {
-                max(
-                    canvasView.bounds.height,
-                    (canvasView.drawing.bounds.maxY + Constants.CanvasView.bottomFreespace) * canvasView.zoomScale
-                )
+                canvasView.drawing.bounds.maxY + Constants.CanvasView.bottomFreespace
             }
+
         canvasView.contentSize = CGSize(
-            width: drawingWidth * canvasView.zoomScale,
-            height: contentHeight
+            width: canvasView.bounds.width,
+            height: max(canvasView.bounds.height, drawingMaxY * scale)
+        )
+        canvasView.contentOffset = CGPoint(
+            x: 0,
+            y: -canvasView.adjustedContentInset.top
         )
     }
 
@@ -138,13 +138,15 @@ final class EditJotViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .systemBackground
-        view.addSubview(canvasView)
 
         #if !targetEnvironment(macCatalyst)
         toolPicker.addObserver(canvasView)
         toolPicker.setVisible(true, forFirstResponder: canvasView)
         #endif
+    }
 
+    private func setUpCanvasView() {
+        view.addSubview(canvasView)
         NSLayoutConstraint.activate([
             canvasView.topAnchor.constraint(equalTo: view.topAnchor),
             canvasView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
