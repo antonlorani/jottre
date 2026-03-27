@@ -17,28 +17,19 @@
 */
 
 @MainActor
-protocol JotConflictCoordinatorFactory: Sendable {
+protocol JotConflictCoordinatorFactoryProtocol: Sendable {
 
     func make(navigation: Navigation) -> Coordinator
 }
 
-struct IOS18JotConflictCoordinatorFactory: JotConflictCoordinatorFactory {
+struct JotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol {
+
+    let jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
 
     func make(navigation: Navigation) -> Coordinator {
         JotConflictCoordinator(
             navigation: navigation,
-            jotConflictViewControllerFactory: IOS18JotConflictViewControllerFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26JotConflictCoordinatorFactory: JotConflictCoordinatorFactory {
-
-    func make(navigation: Navigation) -> Coordinator {
-        JotConflictCoordinator(
-            navigation: navigation,
-            jotConflictViewControllerFactory: IOS26JotConflictViewControllerFactory()
+            jotConflictViewControllerFactory: jotConflictViewControllerFactory
         )
     }
 }

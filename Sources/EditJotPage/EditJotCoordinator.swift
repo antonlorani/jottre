@@ -25,14 +25,14 @@ final class EditJotCoordinator: NavigationCoordinator {
     private var retainedRenameJotCoordinator: Coordinator?
 
     private let navigation: Navigation
-    private let editJotViewControllerFactory: EditJotViewControllerFactory
-    private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactory
+    private let editJotViewControllerFactory: EditJotViewControllerFactoryProtocol
+    private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
-        editJotViewControllerFactory: EditJotViewControllerFactory,
-        jotConflictCoordinatorFactory: JotConflictCoordinatorFactory,
+        editJotViewControllerFactory: EditJotViewControllerFactoryProtocol,
+        jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation

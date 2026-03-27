@@ -19,48 +19,27 @@
 import UIKit
 
 @MainActor
-protocol JotsViewControllerFactory: Sendable {
+protocol JotsViewControllerFactoryProtocol: Sendable {
 
     func make(coordinator: JotsCoordinator) -> UIViewController
 }
 
-struct IOS18JotsViewControllerFactory: JotsViewControllerFactory {
+struct JotsViewControllerFactory: JotsViewControllerFactoryProtocol {
 
     let repository: JotsRepositoryProtocol
+    let menuConfigurationFactory: JotMenuConfigurationFactory
+    let textBarButtonItemFactory: TextBarButtonItemFactory
+    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     func make(coordinator: JotsCoordinator) -> UIViewController {
         let viewController = PageViewController(
             viewModel: JotsViewModel(
                 coordinator: coordinator,
                 repository: repository,
-                menuConfigurationFactory: JotMenuConfigurationFactory()
+                menuConfigurationFactory: menuConfigurationFactory
             ),
-            textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
-        )
-        #if targetEnvironment(macCatalyst)
-        viewController.navigationItem.largeTitleDisplayMode = .never
-        #else
-        viewController.navigationItem.largeTitleDisplayMode = .always
-        #endif
-        return viewController
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26JotsViewControllerFactory: JotsViewControllerFactory {
-
-    let repository: JotsRepositoryProtocol
-
-    func make(coordinator: JotsCoordinator) -> UIViewController {
-        let viewController = PageViewController(
-            viewModel: JotsViewModel(
-                coordinator: coordinator,
-                repository: repository,
-                menuConfigurationFactory: JotMenuConfigurationFactory()
-            ),
-            textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
+            textBarButtonItemFactory: textBarButtonItemFactory,
+            symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )
         #if targetEnvironment(macCatalyst)
         viewController.navigationItem.largeTitleDisplayMode = .never

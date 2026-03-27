@@ -24,11 +24,11 @@ final class RootCoordinator: NavigationCoordinator {
     private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
 
     private let navigation: Navigation
-    private let jotsCoordinatorFactory: JotsCoordinatorFactory
+    private let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
-        jotsCoordinatorFactory: JotsCoordinatorFactory
+        jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotsCoordinatorFactory = jotsCoordinatorFactory

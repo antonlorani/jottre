@@ -85,43 +85,86 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileService: fileService,
             fileConflictService: fileConflictService
         )
-        let jotsRepository = JotsRepository(
-            jotFileService: jotFileService,
-            fileService: fileService
-        )
-        let editJotRepository = EditJotRepository(
-            jotFileService: jotFileService,
-            jotFileConflictService: jotFileConflictService
-        )
-        let createJotRepository = CreateJotRepository(
-            fileService: fileService,
-            jotFileService: jotFileService
-        )
-        let deleteJotRepository = DeleteJotRepository(
-            fileService: fileService
-        )
-        let renameJotRepository = RenameJotRepository(
-            fileService: fileService
-        )
 
-        let jotsCoordinatorFactory: JotsCoordinatorFactory =
-            if #available(iOS 26, *) {
-                IOS26JotsCoordinatorFactory(
-                    jotsRepository: jotsRepository,
-                    editJotRepository: editJotRepository,
-                    createJotRepository: createJotRepository,
-                    deleteJotRepository: deleteJotRepository,
-                    renameJotRepository: renameJotRepository
+        let textBarButtonItemFactory: TextBarButtonItemFactory
+        let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+
+        if #available(iOS 26, *) {
+            textBarButtonItemFactory = IOS26TextBarButtonItemFactory()
+            symbolBarButtonItemFactory = IOS26SymbolBarButtonItemFactory()
+        } else {
+            textBarButtonItemFactory = IOS18TextBarButtonItemFactory()
+            symbolBarButtonItemFactory = IOS18SymbolBarButtonItemFactory()
+        }
+
+        let menuConfigurationFactory = JotMenuConfigurationFactory()
+
+        let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
+            jotsViewControllerFactory: JotsViewControllerFactory(
+                repository: JotsRepository(
+                    jotFileService: jotFileService,
+                    fileService: fileService
+                ),
+                menuConfigurationFactory: menuConfigurationFactory,
+                textBarButtonItemFactory: textBarButtonItemFactory,
+                symbolBarButtonItemFactory: symbolBarButtonItemFactory
+            ),
+            settingsCoordinatorFactory: SettingsCoordinatorFactory(
+                settingsViewControllerFactory: SettingsViewControllerFactory(
+                    textBarButtonItemFactory: textBarButtonItemFactory,
+                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )
-            } else {
-                IOS18JotsCoordinatorFactory(
-                    jotsRepository: jotsRepository,
-                    editJotRepository: editJotRepository,
-                    createJotRepository: createJotRepository,
-                    deleteJotRepository: deleteJotRepository,
-                    renameJotRepository: renameJotRepository
+            ),
+            enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory(
+                enableCloudViewControllerFactory: EnableCloudViewControllerFactory(
+                    textBarButtonItemFactory: textBarButtonItemFactory,
+                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )
-            }
+            ),
+            editJotCoordinatorFactory: EditJotCoordinatorFactory(
+                editJotViewControllerFactory: EditJotViewControllerFactory(
+                    repository: EditJotRepository(
+                        jotFileService: jotFileService,
+                        jotFileConflictService: jotFileConflictService
+                    ),
+                    menuConfigurationFactory: menuConfigurationFactory,
+                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                ),
+                jotConflictCoordinatorFactory: JotConflictCoordinatorFactory(
+                    jotConflictViewControllerFactory: JotConflictViewControllerFactory(
+                        textBarButtonItemFactory: textBarButtonItemFactory,
+                        symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                    )
+                ),
+                renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
+                    repository: RenameJotRepository(
+                        fileService: fileService
+                    )
+                )
+            ),
+            cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
+                cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
+                    textBarButtonItemFactory: textBarButtonItemFactory,
+                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                )
+            ),
+            createJotCoordinatorFactory: CreateJotCoordinatorFactory(
+                repository: CreateJotRepository(
+                    fileService: fileService,
+                    jotFileService: jotFileService
+                )
+            ),
+            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(
+                repository: DeleteJotRepository(
+                    fileService: fileService
+                )
+            ),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
+                repository: RenameJotRepository(
+                    fileService: fileService
+                )
+            )
+        )
 
         let rootCoordinator = RootCoordinator(
             navigation: navigation,

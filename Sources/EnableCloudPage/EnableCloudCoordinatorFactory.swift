@@ -17,28 +17,19 @@
 */
 
 @MainActor
-protocol EnableCloudCoordinatorFactory: Sendable {
+protocol EnableCloudCoordinatorFactoryProtocol: Sendable {
 
     func make(navigation: Navigation) -> NavigationCoordinator
 }
 
-struct IOS18EnableCloudCoordinatorFactory: EnableCloudCoordinatorFactory {
+struct EnableCloudCoordinatorFactory: EnableCloudCoordinatorFactoryProtocol {
+
+    let enableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         EnableCloudCoordinator(
             navigation: navigation,
-            enableCloudViewControllerFactory: IOS18EnableCloudViewControllerFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26EnableCloudCoordinatorFactory: EnableCloudCoordinatorFactory {
-
-    func make(navigation: Navigation) -> NavigationCoordinator {
-        EnableCloudCoordinator(
-            navigation: navigation,
-            enableCloudViewControllerFactory: IOS26EnableCloudViewControllerFactory()
+            enableCloudViewControllerFactory: enableCloudViewControllerFactory
         )
     }
 }

@@ -19,34 +19,23 @@
 import UIKit
 
 @MainActor
-protocol JotConflictViewControllerFactory: Sendable {
+protocol JotConflictViewControllerFactoryProtocol: Sendable {
 
     func make(coordinator: JotConflictCoordinator) -> UIViewController
 }
 
-struct IOS18JotConflictViewControllerFactory: JotConflictViewControllerFactory {
+struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
+
+    let textBarButtonItemFactory: TextBarButtonItemFactory
+    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     func make(coordinator: JotConflictCoordinator) -> UIViewController {
         PageViewController(
             viewModel: JotConflictViewModel(
                 coordinator: coordinator
             ),
-            textBarButtonItemFactory: IOS18TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26JotConflictViewControllerFactory: JotConflictViewControllerFactory {
-
-    func make(coordinator: JotConflictCoordinator) -> UIViewController {
-        PageViewController(
-            viewModel: JotConflictViewModel(
-                coordinator: coordinator
-            ),
-            textBarButtonItemFactory: IOS26TextBarButtonItemFactory(),
-            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
+            textBarButtonItemFactory: textBarButtonItemFactory,
+            symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )
     }
 }

@@ -19,7 +19,7 @@
 import UIKit
 
 @MainActor
-protocol EditJotViewControllerFactory: Sendable {
+protocol EditJotViewControllerFactoryProtocol: Sendable {
 
     func make(
         jotFileInfo: JotFile.Info,
@@ -27,9 +27,11 @@ protocol EditJotViewControllerFactory: Sendable {
     ) -> UIViewController
 }
 
-struct IOS18EditJotViewControllerFactory: EditJotViewControllerFactory {
+struct EditJotViewControllerFactory: EditJotViewControllerFactoryProtocol {
 
     let repository: EditJotRepositoryProtocol
+    let menuConfigurationFactory: JotMenuConfigurationFactory
+    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     func make(
         jotFileInfo: JotFile.Info,
@@ -40,30 +42,9 @@ struct IOS18EditJotViewControllerFactory: EditJotViewControllerFactory {
                 jotFileInfo: jotFileInfo,
                 repository: repository,
                 coordinator: coordinator,
-                menuConfigurationFactory: JotMenuConfigurationFactory()
+                menuConfigurationFactory: menuConfigurationFactory
             ),
-            symbolBarButtonItemFactory: IOS18SymbolBarButtonItemFactory()
-        )
-    }
-}
-
-@available(iOS 26, *)
-struct IOS26EditJotViewControllerFactory: EditJotViewControllerFactory {
-
-    let repository: EditJotRepositoryProtocol
-
-    func make(
-        jotFileInfo: JotFile.Info,
-        coordinator: EditJotCoordinator
-    ) -> UIViewController {
-        EditJotViewController(
-            viewModel: EditJotViewModel(
-                jotFileInfo: jotFileInfo,
-                repository: repository,
-                coordinator: coordinator,
-                menuConfigurationFactory: JotMenuConfigurationFactory()
-            ),
-            symbolBarButtonItemFactory: IOS26SymbolBarButtonItemFactory()
+            symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )
     }
 }

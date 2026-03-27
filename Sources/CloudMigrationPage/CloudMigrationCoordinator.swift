@@ -21,11 +21,11 @@ import UIKit
 final class CloudMigrationCoordinator: NavigationCoordinator {
 
     private let navigation: Navigation
-    private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory
+    private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
 
     init(
         navigation: Navigation,
-        cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory
+        cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
     ) {
         self.navigation = navigation
         self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
