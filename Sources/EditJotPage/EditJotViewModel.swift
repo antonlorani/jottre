@@ -113,7 +113,7 @@ final class EditJotViewModel: Sendable {
         self.drawingUpdateContinuation = drawingUpdateContinuation
 
         drawingUpdateTask = Task.detached {
-            for await drawing in drawingUpdate.debounce(for: 0.3) {
+            for await drawing in drawingUpdate.dropFirst().debounce(for: 0.3) {
                 do {
                     let jot = Jot.makeEmpty()
                     let jotFile = JotFile(
