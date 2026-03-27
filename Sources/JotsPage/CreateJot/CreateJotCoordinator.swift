@@ -86,12 +86,12 @@ final class CreateJotCoordinator: NavigationCoordinator {
                 navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo).toURL())
             } catch CreateJotRepository.Failure.fileExists {
                 await showInfoAlert(
-                    title: "'\(name)' already exists",
+                    title: L10n.Jots.Create.Error.fileExists(name),
                     message: nil
                 )
             } catch {
                 await showInfoAlert(
-                    title: "Something went wrong",
+                    title: L10n.Jots.Create.Error.generic,
                     message: error.localizedDescription
                 )
             }

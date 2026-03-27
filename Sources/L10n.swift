@@ -72,11 +72,25 @@ enum L10n {
         enum Create {
             static let namePlaceholder = String(localized: "jots.create.namePlaceholder")
             static let title = String(localized: "jots.create.title")
+
+            enum Error {
+                static let generic = String(localized: "jots.create.error.generic")
+
+                static func fileExists(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.create.error.fileExists"), jotName)
+                }
+            }
         }
 
         enum Delete {
             static let message = String(localized: "jots.delete.message")
             static let title = String(localized: "jots.delete.title")
+
+            enum Error {
+                static func generic(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.delete.error.generic"), jotName)
+                }
+            }
         }
 
         enum Menu {
