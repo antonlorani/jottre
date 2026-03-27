@@ -78,8 +78,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CloudMigrationURL().toURL()
             }
 
-        let fileService = FileService(fileManager: .default)
-        let fileConflictService = FileConflictService(fileManager: .default)
+        let fileManager = FileManager.default
+        let fileService = FileService(fileManager: fileManager)
+        let fileConflictService = FileConflictService(fileManager: fileManager)
         let jotFileService = JotFileService(fileService: fileService)
         let jotFileConflictService = JotFileConflictService(
             fileService: fileService,
