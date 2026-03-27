@@ -38,6 +38,8 @@ protocol FileServiceProtocol: Sendable {
     func fileExists(fileURL: URL) -> Bool
 
     func removeFile(fileURL: URL) throws
+
+    func moveFile(fileURL: URL, newFileURL: URL) throws
 }
 
 struct FileService: FileServiceProtocol {
@@ -131,5 +133,9 @@ struct FileService: FileServiceProtocol {
 
     func removeFile(fileURL: URL) throws {
         try fileManager.removeItem(at: fileURL)
+    }
+
+    func moveFile(fileURL: URL, newFileURL: URL) throws {
+        try fileManager.moveItem(at: fileURL, to: newFileURL)
     }
 }

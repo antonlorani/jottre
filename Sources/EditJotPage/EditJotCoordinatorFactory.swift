@@ -25,6 +25,7 @@ protocol EditJotCoordinatorFactory {
 struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 
     let repository: EditJotRepositoryProtocol
+    let renameJotRepository: RenameJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
@@ -32,7 +33,8 @@ struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
             editJotViewControllerFactory: IOS18EditJotViewControllerFactory(
                 repository: repository
             ),
-            jotConflictCoordinatorFactory: IOS18JotConflictCoordinatorFactory()
+            jotConflictCoordinatorFactory: IOS18JotConflictCoordinatorFactory(),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(repository: renameJotRepository)
         )
     }
 }
@@ -41,6 +43,7 @@ struct IOS18EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 struct IOS26EditJotCoordinatorFactory: EditJotCoordinatorFactory {
 
     let repository: EditJotRepositoryProtocol
+    let renameJotRepository: RenameJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
@@ -48,7 +51,8 @@ struct IOS26EditJotCoordinatorFactory: EditJotCoordinatorFactory {
             editJotViewControllerFactory: IOS26EditJotViewControllerFactory(
                 repository: repository
             ),
-            jotConflictCoordinatorFactory: IOS26JotConflictCoordinatorFactory()
+            jotConflictCoordinatorFactory: IOS26JotConflictCoordinatorFactory(),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(repository: renameJotRepository)
         )
     }
 }

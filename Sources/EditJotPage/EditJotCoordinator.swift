@@ -27,15 +27,18 @@ final class EditJotCoordinator: NavigationCoordinator {
     private let navigation: Navigation
     private let editJotViewControllerFactory: EditJotViewControllerFactory
     private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactory
+    private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
         editJotViewControllerFactory: EditJotViewControllerFactory,
-        jotConflictCoordinatorFactory: JotConflictCoordinatorFactory
+        jotConflictCoordinatorFactory: JotConflictCoordinatorFactory,
+        renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.editJotViewControllerFactory = editJotViewControllerFactory
         self.jotConflictCoordinatorFactory = jotConflictCoordinatorFactory
+        self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -75,8 +78,13 @@ final class EditJotCoordinator: NavigationCoordinator {
         coordinator.start()
     }
 
-    func showRenameAlert() {
-        let coordinator = RenameJotCoordinator(navigation: navigation)
+    func showRenameAlert(jotFileInfo: JotFile.Info) {
+        let coordinator = renameJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        ) { [weak self] renameJotFileInfo in
+            self?.navigation.open(url: EditJotURL(jotFileInfo: renameJotFileInfo))
+        }
         retainedRenameJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in
             self?.retainedRenameJotCoordinator = nil

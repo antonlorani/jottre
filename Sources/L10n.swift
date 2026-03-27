@@ -100,6 +100,12 @@ enum L10n {
 
         enum Rename {
             static let title = String(localized: "jots.rename.title")
+
+            enum Error {
+                static func generic(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.rename.error.generic"), jotName)
+                }
+            }
         }
     }
 

@@ -33,8 +33,11 @@ final class EditJotViewModel: Sendable {
             }
         },
         onRename: { [weak self] in
-            Task { @MainActor in
-                self?.coordinator?.showRenameAlert()
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+                coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
             }
         },
         onDuplicate: { [weak self] in

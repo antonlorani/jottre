@@ -30,6 +30,7 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
     let editJotRepository: EditJotRepositoryProtocol
     let createJotRepository: CreateJotRepositoryProtocol
     let deleteJotRepository: DeleteJotRepositoryProtocol
+    let renameJotRepository: RenameJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -40,11 +41,13 @@ struct IOS18JotsCoordinatorFactory: JotsCoordinatorFactory {
             settingsCoordinatorFactory: IOS18SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS18EnableCloudCoordinatorFactory(),
             editJotCoordinatorFactory: IOS18EditJotCoordinatorFactory(
-                repository: editJotRepository
+                repository: editJotRepository,
+                renameJotRepository: renameJotRepository
             ),
             cloudMigrationCoordinatorFactory: IOS18CloudMigrationCoordinatorFactory(),
             createJotCoordinatorFactory: CreateJotCoordinatorFactory(repository: createJotRepository),
-            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(repository: deleteJotRepository)
+            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(repository: deleteJotRepository),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(repository: renameJotRepository)
         )
     }
 }
@@ -56,6 +59,7 @@ struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
     let editJotRepository: EditJotRepositoryProtocol
     let createJotRepository: CreateJotRepositoryProtocol
     let deleteJotRepository: DeleteJotRepositoryProtocol
+    let renameJotRepository: RenameJotRepositoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
         JotsCoordinator(
@@ -66,11 +70,13 @@ struct IOS26JotsCoordinatorFactory: JotsCoordinatorFactory {
             settingsCoordinatorFactory: IOS26SettingsCoordinatorFactory(),
             enableCloudCoordinatorFactory: IOS26EnableCloudCoordinatorFactory(),
             editJotCoordinatorFactory: IOS26EditJotCoordinatorFactory(
-                repository: editJotRepository
+                repository: editJotRepository,
+                renameJotRepository: renameJotRepository
             ),
             cloudMigrationCoordinatorFactory: IOS26CloudMigrationCoordinatorFactory(),
             createJotCoordinatorFactory: CreateJotCoordinatorFactory(repository: createJotRepository),
-            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(repository: deleteJotRepository)
+            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(repository: deleteJotRepository),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(repository: renameJotRepository)
         )
     }
 }
