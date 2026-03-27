@@ -16,28 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
-
-@MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController
-}
-
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
-
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController {
-        PageViewController(
-            viewModel: viewModel,
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
-        )
-    }
+enum JotConflictResult: Sendable {
+    case keepAll
+    case keep(JotFile.Info)
 }

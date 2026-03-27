@@ -18,26 +18,14 @@
 
 import UIKit
 
-@MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
+struct JotConflictBusinessModel: Sendable, Hashable {
+    let previewImage: UIImage?
+    let name: String
+    let lastEditedDateString: String
 
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController
-}
-
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
-
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController {
-        PageViewController(
-            viewModel: viewModel,
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
-        )
+    init(jotFileVersion: JotFileVersion) {
+        previewImage = nil
+        name = jotFileVersion.info.name
+        lastEditedDateString = jotFileVersion.localizedNameOfSavingComputer ?? "unknown"
     }
 }

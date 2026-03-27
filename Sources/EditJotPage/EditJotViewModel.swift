@@ -106,8 +106,20 @@ final class EditJotViewModel: Sendable {
 
     func didLoad() {
         do {
-            if let jotFileVersions = repository.getUnresolvedConflicts(jotFileInfo: jotFileInfo) {
-                coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
+            if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
+                coordinator?.showJotConflictPage(
+                    jotFileInfo: jotFileInfo,
+                    jotFileVersions: jotFileVersions
+                ) { [weak self] result in
+                    Task { @MainActor in
+                        switch result {
+                        case .keepAll:
+                            self?.coordinator?.goBack()
+                        case let .keep(jotFileInfo):
+                            self?.coordinator?.openJot(jotFileInfo: jotFileInfo)
+                        }
+                    }
+                }
             } else {
                 let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
                 drawingContinuation.yield(Drawing(value: drawing, width: width))
@@ -122,8 +134,15 @@ final class EditJotViewModel: Sendable {
     }
 
     func didTapBackButton() {
-        if let jotFileVersions = repository.getUnresolvedConflicts(jotFileInfo: jotFileInfo) {
-            coordinator?.showJotConflictPage(jotFileVersions: jotFileVersions)
+        if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
+            coordinator?.showJotConflictPage(
+                jotFileInfo: jotFileInfo,
+                jotFileVersions: jotFileVersions
+            ) { [weak self] result in
+                Task { @MainActor in
+                    self?.coordinator?.goBack()
+                }
+            }
         } else {
             coordinator?.goBack()
         }

@@ -135,6 +135,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     jotConflictViewControllerFactory: JotConflictViewControllerFactory(
                         textBarButtonItemFactory: textBarButtonItemFactory,
                         symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                    ),
+                    repository: JotConflictRepository(
+                        jotFileConflictService: jotFileConflictService
                     )
                 ),
                 renameJotCoordinatorFactory: RenameJotCoordinatorFactory(

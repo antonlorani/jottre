@@ -53,8 +53,3 @@ struct JotFile: Sendable {
     let info: Info
     let jot: Jot
 }
-
-struct JotFileVersion: Sendable {
-    let localizedNameOfSavingComputer: String?
-    let info: JotFile.Info
-}

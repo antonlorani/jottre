@@ -16,28 +16,29 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
+protocol JotConflictRepositoryProtocol: Sendable {
 
-@MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController
+    func resolveVersionConflicts(
+        jotFileInfo: JotFile.Info,
+        resolvedVersions: [JotFileVersion]
+    ) throws
 }
 
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
+struct JotConflictRepository: JotConflictRepositoryProtocol {
 
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+    private let jotFileConflictService: JotFileConflictServiceProtocol
 
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController {
-        PageViewController(
-            viewModel: viewModel,
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
+    init(jotFileConflictService: JotFileConflictServiceProtocol) {
+        self.jotFileConflictService = jotFileConflictService
+    }
+
+    func resolveVersionConflicts(
+        jotFileInfo: JotFile.Info,
+        resolvedVersions: [JotFileVersion]
+    ) throws {
+        try jotFileConflictService.resolveVersionConflicts(
+            jotFileInfo: jotFileInfo,
+            resolvedVersions: resolvedVersions
         )
     }
 }

@@ -56,14 +56,20 @@ enum L10n {
     enum JotConflict {
         static let title = String(localized: "jotConflict.title")
 
+        enum Error {
+            static let generic = String(localized: "static let  jotConflict.error.generic")
+        }
+
         static func subtitle(_ jotName: String) -> String {
             String(format: String(localized: "jotConflict.subtitle"), jotName)
         }
 
         enum Action {
-            static let keepBoth = String(localized: "jotConflict.action.keepBoth")
-            static let keepVersionA = String(localized: "jotConflict.action.keepVersionA")
-            static let keepVersionB = String(localized: "jotConflict.action.keepVersionB")
+            static let keepAll = String(localized: "jotConflict.action.keepAll")
+
+            static func keepVersion(_ version: String) -> String {
+                String(format: String(localized: "jotConflict.action.keepVersion"), version)
+            }
         }
     }
 

@@ -20,21 +20,43 @@ import UIKit
 
 final class JotConflictCoordinator: Coordinator {
 
+    private var retainedInfoAlertCoordinator: Coordinator?
+
     var onEnd: (() -> Void)?
 
+    private let jotFileInfo: JotFile.Info
+    private let jotFileVersions: [JotFileVersion]
+    private let repository: JotConflictRepositoryProtocol
     private let navigation: Navigation
     private let jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
+    private let onResult: @Sendable (_ result: JotConflictResult) -> Void
 
     init(
+        jotFileInfo: JotFile.Info,
+        jotFileVersions: [JotFileVersion],
+        repository: JotConflictRepositoryProtocol,
         navigation: Navigation,
-        jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol
+        jotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol,
+        onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
     ) {
+        self.jotFileInfo = jotFileInfo
+        self.jotFileVersions = jotFileVersions
+        self.repository = repository
         self.navigation = navigation
         self.jotConflictViewControllerFactory = jotConflictViewControllerFactory
+        self.onResult = onResult
     }
 
     func start() {
-        let viewController = jotConflictViewControllerFactory.make(coordinator: self)
+        let viewController = jotConflictViewControllerFactory.make(
+            viewModel: JotConflictViewModel(
+                jotFileInfo: jotFileInfo,
+                jotFileVersions: jotFileVersions,
+                repository: repository,
+                coordinator: self,
+                onResult: onResult
+            )
+        )
         viewController.isModalInPresentation = true
 
         let navigationController = UINavigationController(
@@ -42,6 +64,22 @@ final class JotConflictCoordinator: Coordinator {
         )
         navigationController.navigationBar.prefersLargeTitles = false
         navigation.present(navigationController, animated: true)
+    }
+
+    func showInfoAlert(
+        title: String,
+        message: String
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.start()
     }
 
     func dismiss() {

@@ -18,26 +18,21 @@
 
 import UIKit
 
-@MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
+final class JotConflictCellViewModel: PageCellViewModel {
 
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController
-}
+    let previewImage: UIImage?
+    let title: String
+    let infoText: String
 
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
+    init(
+        jotConflict: JotConflictBusinessModel
+    ) {
+        previewImage = jotConflict.previewImage
+        title = jotConflict.name
+        infoText = jotConflict.lastEditedDateString
+    }
 
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController {
-        PageViewController(
-            viewModel: viewModel,
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
-        )
+    func handle(action: PageCellAction) {
+        /* no-op */
     }
 }

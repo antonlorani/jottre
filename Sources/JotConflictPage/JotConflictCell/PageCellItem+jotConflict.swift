@@ -16,28 +16,18 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
+extension PageCellItem {
 
-@MainActor
-protocol JotConflictViewControllerFactoryProtocol: Sendable {
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController
-}
-
-struct JotConflictViewControllerFactory: JotConflictViewControllerFactoryProtocol {
-
-    let textBarButtonItemFactory: TextBarButtonItemFactory
-    let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
-
-    func make(
-        viewModel: JotConflictViewModel
-    ) -> UIViewController {
-        PageViewController(
-            viewModel: viewModel,
-            textBarButtonItemFactory: textBarButtonItemFactory,
-            symbolBarButtonItemFactory: symbolBarButtonItemFactory
+    @MainActor
+    static func jotConflict(
+        jotConflict: JotConflictBusinessModel,
+        sizing: PageCellSizingStrategy
+    ) -> PageCellItem {
+        PageCellItem(
+            id: jotConflict,
+            cellType: JotConflictCell.self,
+            sizing: sizing,
+            viewModel: JotConflictCellViewModel(jotConflict: jotConflict)
         )
     }
 }
