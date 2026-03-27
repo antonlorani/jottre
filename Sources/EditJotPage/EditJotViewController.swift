@@ -37,7 +37,7 @@ final class EditJotViewController: UIViewController {
         let canvasView = PKCanvasView()
         canvasView.delegate = self
         canvasView.translatesAutoresizingMaskIntoConstraints = false
-        canvasView.drawingPolicy = .anyInput
+        canvasView.drawingPolicy = .default
         canvasView.maximumZoomScale = Constants.CanvasView.maximumZoomScale
         canvasView.bounces = false
         return canvasView
