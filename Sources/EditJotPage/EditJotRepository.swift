@@ -18,9 +18,10 @@
 
 @preconcurrency import PencilKit
 
-protocol EditJotRepositoryProtocol {
+protocol EditJotRepositoryProtocol: Sendable {
 
     func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat)
+    func writeDrawing(jotFile: JotFile) throws
     func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
@@ -45,6 +46,10 @@ struct EditJotRepository: EditJotRepositoryProtocol {
             drawing: drawing,
             width: file.jot.width
         )
+    }
+
+    func writeDrawing(jotFile: JotFile) throws {
+        try jotFileService.write(jotFile: jotFile)
     }
 
     func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]? {
