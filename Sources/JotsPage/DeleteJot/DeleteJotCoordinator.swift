@@ -80,7 +80,7 @@ final class DeleteJotCoordinator: NavigationCoordinator {
             try repository.deleteJot(jotFileInfo: jotFileInfo)
         } catch {
             showInfoAlert(
-                title: "Could not delete '\(jotFileInfo.name)'",
+                title: L10n.Jots.Delete.Error.generic(jotFileInfo.name),
                 message: error.localizedDescription
             )
         }

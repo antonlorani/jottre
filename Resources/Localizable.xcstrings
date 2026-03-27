@@ -1676,7 +1676,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share jots with others"
+            "value" : "Share Jots with others"
           }
         },
         "es" : {
@@ -1826,7 +1826,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Synchronize jots across all your Apple devices"
+            "value" : "Synchronize Jots across all your Apple devices"
           }
         },
         "es" : {
@@ -2250,42 +2250,6 @@
           }
         }
       }
-    },
-    "jotConflict.action.keepBoth" : {
-
-    },
-    "jotConflict.action.keepVersionA" : {
-
-    },
-    "jotConflict.action.keepVersionB" : {
-
-    },
-    "jotConflict.subtitle" : {
-
-    },
-    "jotConflict.title" : {
-
-    },
-    "jots.create.namePlaceholder" : {
-
-    },
-    "jots.create.title" : {
-
-    },
-    "jots.delete.message" : {
-
-    },
-    "jots.delete.title" : {
-
-    },
-    "jots.menu.showInFiles" : {
-
-    },
-    "jots.menu.showInFinder" : {
-
-    },
-    "jots.rename.title" : {
-
     },
     "jotConflict.action.keepBoth" : {
       "comment" : "Action to keep both conflicting versions of a jot",
@@ -3037,6 +3001,28 @@
         }
       }
     },
+    "jots.create.error.fileExists" : {
+      "comment" : "The error message when a jot already exists.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” already exists"
+          }
+        }
+      }
+    },
+    "jots.create.error.generic" : {
+      "comment" : "A generic error message during jot creation.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        }
+      }
+    },
     "jots.create.namePlaceholder" : {
       "comment" : "Placeholder text in the name text field of the Create Jot alert",
       "extractionState" : "manual",
@@ -3337,6 +3323,18 @@
         }
       }
     },
+    "jots.delete.error.generic" : {
+      "comment" : "The error message when a jot couldn’t be deleted.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not delete “%@”"
+          }
+        }
+      }
+    },
     "jots.delete.message" : {
       "comment" : "Confirmation message in the Delete Jot alert",
       "extractionState" : "manual",
@@ -3344,145 +3342,145 @@
         "af" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Is jy seker jy wil hierdie nota verwyder? Hierdie aksie kan nie ongedaan gemaak word nie."
+            "value" : "Is jy seker jy wil hierdie Jot verwyder? Hierdie aksie kan nie ongedaan gemaak word nie."
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هل أنت متأكد من حذف هذه الملاحظة؟ لا يمكن التراجع عن هذا الإجراء."
+            "value" : "هل أنت متأكد من حذف هذا الـ Jot؟ لا يمكن التراجع عن هذا الإجراء."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Möchtest du diese Notiz wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+            "value" : "Möchtest du diesen Jot wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Are you sure you want to delete this jot? This action cannot be undone."
+            "value" : "Are you sure you want to delete this Jot? This action cannot be undone."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Seguro que quieres eliminar esta nota? Esta acción no se puede deshacer."
+            "value" : "¿Seguro que quieres eliminar este Jot? Esta acción no se puede deshacer."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voulez-vous vraiment supprimer cette jot ? Cette action est irréversible."
+            "value" : "Voulez-vous vraiment supprimer ce Jot ? Cette action est irréversible."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "क्या आप वाकई यह नोट हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।"
+            "value" : "क्या आप वाकई यह Jot हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yakin ingin menghapus catatan ini? Tindakan ini tidak dapat dibatalkan."
+            "value" : "Yakin ingin menghapus Jot ini? Tindakan ini tidak dapat dibatalkan."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sei sicuro di voler eliminare questa nota? Questa azione non può essere annullata."
+            "value" : "Sei sicuro di voler eliminare questo Jot? Questa azione non può essere annullata."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このノートを削除しますか？この操作は取り消せません。"
+            "value" : "この Jot を削除しますか？この操作は取り消せません。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 노트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+            "value" : "이 Jot를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adakah anda pasti mahu memadam nota ini? Tindakan ini tidak boleh dibuat asal."
+            "value" : "Adakah anda pasti mahu memadam Jot ini? Tindakan ini tidak boleh dibuat asal."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Weet je zeker dat je deze notitie wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
+            "value" : "Weet je zeker dat je deze Jot wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Czy na pewno chcesz usunąć tę notatkę? Tej czynności nie można cofnąć."
+            "value" : "Czy na pewno chcesz usunąć ten Jot? Tej czynności nie można cofnąć."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tem certeza de que deseja apagar esta nota? Esta ação não pode ser desfeita."
+            "value" : "Tem certeza de que deseja apagar este Jot? Esta ação não pode ser desfeita."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tens a certeza de que queres eliminar esta nota? Esta ação não pode ser revertida."
+            "value" : "Tens a certeza de que queres eliminar este Jot? Esta ação não pode ser revertida."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы уверены, что хотите удалить эту заметку? Это действие нельзя отменить."
+            "value" : "Вы уверены, что хотите удалить этот Jot? Это действие нельзя отменить."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Är du säker på att du vill radera den här anteckningen? Åtgärden kan inte ångras."
+            "value" : "Är du säker på att du vill radera den här Jot? Åtgärden kan inte ångras."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "คุณแน่ใจหรือไม่ว่าต้องการลบโน้ตนี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้"
+            "value" : "คุณแน่ใจหรือไม่ว่าต้องการลบ Jot นี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu notu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+            "value" : "Bu Jot'u silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ви впевнені, що хочете видалити цю нотатку? Цю дію не можна скасувати."
+            "value" : "Ви впевнені, що хочете видалити цей Jot? Цю дію не можна скасувати."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bạn có chắc muốn xóa ghi chú này không? Hành động này không thể hoàn tác."
+            "value" : "Bạn có chắc muốn xóa Jot này không? Hành động này không thể hoàn tác."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "确定要删除这条笔记吗？此操作无法撤销。"
+            "value" : "确定要删除这个 Jot吗？此操作无法撤销。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "確定要刪除這則筆記嗎？此操作無法復原。"
+            "value" : "確定要刪除這個 Jot嗎？此操作無法復原。"
           }
         }
       }
@@ -3494,19 +3492,19 @@
         "af" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verwyder nota"
+            "value" : "Verwyder Jot"
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حذف الملاحظة"
+            "value" : "حذف Jot"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notiz löschen"
+            "value" : "Jot löschen"
           }
         },
         "en" : {
@@ -3518,121 +3516,121 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar nota"
+            "value" : "Eliminar Jot"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimer la jot"
+            "value" : "Supprimer le Jot"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "नोट हटाएँ"
+            "value" : "Jot हटाएँ"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hapus catatan"
+            "value" : "Hapus Jot"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elimina nota"
+            "value" : "Elimina Jot"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ノートを削除"
+            "value" : "Jot を削除"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 삭제"
+            "value" : "Jot 삭제"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Padam nota"
+            "value" : "Padam Jot"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notitie verwijderen"
+            "value" : "Jot verwijderen"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usuń notatkę"
+            "value" : "Usuń Jot"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apagar nota"
+            "value" : "Apagar Jot"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar nota"
+            "value" : "Eliminar Jot"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Удалить заметку"
+            "value" : "Удалить Jot"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Radera anteckning"
+            "value" : "Radera Jot"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ลบโน้ต"
+            "value" : "ลบ Jot"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notu sil"
+            "value" : "Jot'u sil"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Видалити нотатку"
+            "value" : "Видалити Jot"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Xóa ghi chú"
+            "value" : "Xóa Jot"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "删除笔记"
+            "value" : "删除 Jot"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "刪除筆記"
+            "value" : "刪除 Jot"
           }
         }
       }
@@ -3944,19 +3942,19 @@
         "af" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hernoem nota"
+            "value" : "Hernoem Jot"
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "إعادة تسمية الملاحظة"
+            "value" : "إعادة تسمية Jot"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notiz umbenennen"
+            "value" : "Jot umbenennen"
           }
         },
         "en" : {
@@ -3968,121 +3966,121 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renombrar nota"
+            "value" : "Renombrar Jot"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renommer la jot"
+            "value" : "Renommer le Jot"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "नोट का नाम बदलें"
+            "value" : "Jot का नाम बदलें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ubah nama catatan"
+            "value" : "Ubah nama Jot"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rinomina nota"
+            "value" : "Rinomina Jot"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ノートの名前を変更"
+            "value" : "Jot の名前を変更"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 이름 변경"
+            "value" : "Jot 이름 변경"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Namakan semula nota"
+            "value" : "Namakan semula Jot"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notitie hernoemen"
+            "value" : "Jot hernoemen"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zmień nazwę notatki"
+            "value" : "Zmień nazwę Jot"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renomear nota"
+            "value" : "Renomear Jot"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renomear nota"
+            "value" : "Renomear Jot"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Переименовать заметку"
+            "value" : "Переименовать Jot"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Byt namn på anteckning"
+            "value" : "Byt namn på Jot"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "เปลี่ยนชื่อโน้ต"
+            "value" : "เปลี่ยนชื่อ Jot"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notu yeniden adlandır"
+            "value" : "Jot'u yeniden adlandır"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перейменувати нотатку"
+            "value" : "Перейменувати Jot"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đổi tên ghi chú"
+            "value" : "Đổi tên Jot"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重命名笔记"
+            "value" : "重命名 Jot"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重新命名筆記"
+            "value" : "重新命名 Jot"
           }
         }
       }
@@ -4694,13 +4692,13 @@
         "af" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gee 'n ster op Github"
+            "value" : "Gee 'n ster op GitHub"
           }
         },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أضف نجمة على Github"
+            "value" : "أضف نجمة على GitHub"
           }
         },
         "de" : {
@@ -4712,13 +4710,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stargaze on Github"
+            "value" : "Stargaze on GitHub"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destacar en Github"
+            "value" : "Destacar en GitHub"
           }
         },
         "fr" : {
@@ -4730,13 +4728,13 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Github पर स्टार करें"
+            "value" : "GitHub पर स्टार करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beri bintang di Github"
+            "value" : "Beri bintang di GitHub"
           }
         },
         "it" : {
@@ -4760,7 +4758,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beri bintang di Github"
+            "value" : "Beri bintang di GitHub"
           }
         },
         "nl" : {
@@ -4796,19 +4794,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ge en stjärna på Github"
+            "value" : "Ge en stjärna på GitHub"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ให้ดาวบน Github"
+            "value" : "ให้ดาวบน GitHub"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Github'da yıldız ver"
+            "value" : "GitHub'da yıldız ver"
           }
         },
         "uk" : {
@@ -4820,7 +4818,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gắn sao trên Github"
+            "value" : "Gắn sao trên GitHub"
           }
         },
         "zh-Hans" : {
