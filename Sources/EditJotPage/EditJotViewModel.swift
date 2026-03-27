@@ -37,7 +37,7 @@ final class EditJotViewModel: Sendable {
                 guard let self else {
                     return
                 }
-                coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
+                self.coordinator?.showRenameAlert(jotFileInfo: self.jotFileInfo)
             }
         },
         onDuplicate: { [weak self] in
@@ -45,7 +45,7 @@ final class EditJotViewModel: Sendable {
                 guard let self else {
                     return
                 }
-                didTapDuplicateJot(jotFileInfo: jotFileInfo)
+                self.didTapDuplicateJot(jotFileInfo: self.jotFileInfo)
             }
         },
         onDelete: { [weak self] in
