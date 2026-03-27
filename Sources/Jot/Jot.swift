@@ -23,17 +23,16 @@ struct Jot: Codable, Sendable {
 
     static func makeEmpty() -> Jot {
         Jot(
+            version: 3,
             drawing: PKDrawing().dataRepresentation(),
-            width: 1200,
-            lastModified: nil,
-            version: 3
+            width: 1200
         )
     }
 
-    let drawing: Data
-    let width: CGFloat
-    // NOTE: Kept for backwards compatibility, ``JotFile.Info.modificationDate`` should be used instead.
-    let lastModified: Double?
     // NOTE: Kept optional for backwards compatibility.
     let version: Int?
+    let drawing: Data
+    let width: CGFloat
+    // NOTE: Kept for backwards compatibility.
+    var lastModified: Double? = nil
 }

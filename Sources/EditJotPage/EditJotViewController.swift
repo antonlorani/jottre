@@ -35,6 +35,7 @@ final class EditJotViewController: UIViewController {
 
     private lazy var canvasView: PKCanvasView = {
         let canvasView = PKCanvasView()
+        canvasView.delegate = self
         canvasView.translatesAutoresizingMaskIntoConstraints = false
         canvasView.drawingPolicy = .anyInput
         canvasView.maximumZoomScale = Constants.CanvasView.maximumZoomScale
@@ -212,5 +213,13 @@ final class EditJotViewController: UIViewController {
         }
 
         return barButtonItems
+    }
+}
+
+extension EditJotViewController: PKCanvasViewDelegate {
+
+    func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
+        print("Drawing did change")
+        viewModel.didChangeDrawing(canvasView.drawing)
     }
 }

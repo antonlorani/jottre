@@ -73,6 +73,9 @@ final class EditJotViewModel: Sendable {
     let isEditing: AsyncStream<Bool?>
     private let isEditingContinuation: AsyncStream<Bool?>.Continuation
 
+    private var drawingUpdateTask: Task<Void, Never>?
+    private let drawingUpdateContinuation: AsyncStream<PKDrawing>.Continuation
+
     private let jotFileInfo: JotFile.Info
     private let repository: EditJotRepositoryProtocol
     private weak var coordinator: EditJotCoordinator?
@@ -102,6 +105,33 @@ final class EditJotViewModel: Sendable {
         #else
         isEditingContinuation.yield(false)
         #endif
+
+        isEditingContinuation.yield(true)
+
+        let (drawingUpdate, drawingUpdateContinuation) = AsyncStream.makeStream(
+            of: PKDrawing.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        self.drawingUpdateContinuation = drawingUpdateContinuation
+
+        drawingUpdateTask = Task.detached {
+            for await drawing in drawingUpdate.debounce(for: 0.3) {
+                do {
+                    let jot = Jot.makeEmpty()
+                    let jotFile = JotFile(
+                        info: jotFileInfo,
+                        jot: Jot(
+                            version: jot.version,
+                            drawing: drawing.dataRepresentation(),
+                            width: jot.width
+                        )
+                    )
+                    try repository.writeDrawing(jotFile: jotFile)
+                } catch {
+                    print(error)
+                }
+            }
+        }
     }
 
     func didLoad() {
@@ -133,12 +163,16 @@ final class EditJotViewModel: Sendable {
         isEditingContinuation.yield(!isEditing)
     }
 
+    func didChangeDrawing(_ drawing: PKDrawing) {
+        drawingUpdateContinuation.yield(drawing)
+    }
+
     func didTapBackButton() {
         if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
             coordinator?.showJotConflictPage(
                 jotFileInfo: jotFileInfo,
                 jotFileVersions: jotFileVersions
-            ) { [weak self] result in
+            ) { [weak self] _ in
                 Task { @MainActor in
                     self?.coordinator?.goBack()
                 }
@@ -158,5 +192,9 @@ final class EditJotViewModel: Sendable {
                 message: error.localizedDescription
             )
         }
+    }
+
+    deinit {
+        drawingUpdateTask?.cancel()
     }
 }
