@@ -2251,6 +2251,30 @@
         }
       }
     },
+    "filesystem.duplicate.filename.multi" : {
+      "comment" : "The suffix added to a duplicated file name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ copy %d"
+          }
+        }
+      }
+    },
+    "filesystem.duplicate.filename.plain" : {
+      "comment" : "A suffix added to a duplicated file name with a number in case of name conflicts.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ copy"
+          }
+        }
+      }
+    },
     "jotConflict.action.keepBoth" : {
       "comment" : "Action to keep both conflicting versions of a jot",
       "extractionState" : "manual",
@@ -3631,6 +3655,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刪除 Jot"
+          }
+        }
+      }
+    },
+    "jots.duplicate.error.generic" : {
+      "comment" : "The error message displayed when a Jot couldn’t be duplicated.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not duplicate “%@”"
           }
         }
       }

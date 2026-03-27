@@ -21,6 +21,8 @@ import Foundation
 protocol JotsRepositoryProtocol {
 
     func getJotFiles() throws -> AsyncThrowingStream<[JotFile.Info], Error>
+
+    func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
 
 struct JotsRepository: JotsRepositoryProtocol {
@@ -70,5 +72,9 @@ struct JotsRepository: JotsRepositoryProtocol {
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
+        try jotFileService.duplicate(jotFileInfo: jotFileInfo)
     }
 }

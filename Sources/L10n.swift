@@ -98,6 +98,15 @@ enum L10n {
             static let showInFinder = String(localized: "jots.menu.showInFinder")
         }
 
+        enum Duplicate {
+
+            enum Error {
+                static func generic(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.duplicate.error.generic"), jotName)
+                }
+            }
+        }
+
         enum Rename {
             static let title = String(localized: "jots.rename.title")
 
@@ -139,6 +148,22 @@ enum L10n {
             static let jpg = String(localized: "share.format.jpg")
             static let pdf = String(localized: "share.format.pdf")
             static let png = String(localized: "share.format.png")
+        }
+    }
+
+    enum FileSystem {
+
+        enum Duplicate {
+
+            enum FileName {
+                static func plain(_ jotName: String) -> String {
+                    String(format: String(localized: "filesystem.duplicate.filename.plain"), jotName)
+                }
+
+                static func multi(_ jotName: String, _ duplicateCount: Int) -> String {
+                    String(format: String(localized: "filesystem.duplicate.filename.multi"), jotName, duplicateCount)
+                }
+            }
         }
     }
 }

@@ -41,7 +41,10 @@ final class JotsViewModel: PageViewModel {
     let actions = [PageCallToActionView.ActionConfiguration]()
 
     private var jotsTask: Task<Void, Never>?
+
     private weak var coordinator: JotsCoordinator?
+
+    let repository: JotsRepositoryProtocol
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
@@ -50,6 +53,7 @@ final class JotsViewModel: PageViewModel {
         menuConfigurationFactory: JotMenuConfigurationFactory
     ) {
         self.coordinator = coordinator
+        self.repository = repository
         self.menuConfigurationFactory = menuConfigurationFactory
 
         (items, itemsContinuation) = AsyncStream.makeStream(
@@ -131,8 +135,10 @@ final class JotsViewModel: PageViewModel {
                                 coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
                             }
                         },
-                        onDuplicate: {
-                            /* no-op */
+                        onDuplicate: { [weak self] in
+                            Task { @MainActor in
+                                self?.didTapDuplicateJot(jotFileInfo: jotFileInfo)
+                            }
                         },
                         onDelete: { [weak coordinator] in
                             Task { @MainActor in
@@ -154,6 +160,17 @@ final class JotsViewModel: PageViewModel {
                 )
             }
         )
+    }
+
+    private func didTapDuplicateJot(jotFileInfo: JotFile.Info) {
+        do {
+            _ = try repository.duplicate(jotFileInfo: jotFileInfo)
+        } catch {
+            coordinator?.showInfoAlert(
+                title: L10n.Jots.Duplicate.Error.generic(jotFileInfo.name),
+                message: error.localizedDescription
+            )
+        }
     }
 
     deinit {

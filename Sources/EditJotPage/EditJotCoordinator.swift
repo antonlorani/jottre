@@ -20,6 +20,8 @@ import UIKit
 
 final class EditJotCoordinator: NavigationCoordinator {
 
+    private var retainedInfoAlertCoordinator: Coordinator?
+
     private var retainedJotConflictCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
@@ -96,6 +98,10 @@ final class EditJotCoordinator: NavigationCoordinator {
         navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
     }
 
+    func openJot(jotFileInfo: JotFile.Info) {
+        navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
+    }
+
     func showInFiles() {
 
     }
@@ -110,6 +116,22 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     func goBack() {
         navigation.popViewController(animated: true)
+    }
+
+    func showInfoAlert(
+        title: String,
+        message: String
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        infoAlertCoordinator.start()
     }
 
     private func getFileURLQueryItem(url: URL) -> URL? {

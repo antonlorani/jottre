@@ -24,6 +24,8 @@ protocol JotFileServiceProtocol: Sendable {
     func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile
 
     func write(jotFile: JotFile) throws
+
+    func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
 
 struct JotFileService: JotFileServiceProtocol {
@@ -90,6 +92,16 @@ struct JotFileService: JotFileServiceProtocol {
         try fileService.writeFile(
             fileURL: jotFile.info.url,
             data: data
+        )
+    }
+
+    func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
+        let duplicatedFileURL = try fileService.duplicateFile(fileURL: jotFileInfo.url)
+
+        return JotFile.Info(
+            url: duplicatedFileURL,
+            name: duplicatedFileURL.deletingPathExtension().lastPathComponent,
+            modificationDate: jotFileInfo.modificationDate
         )
     }
 }
