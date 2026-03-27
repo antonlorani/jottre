@@ -221,7 +221,6 @@ final class EditJotViewController: UIViewController {
 extension EditJotViewController: PKCanvasViewDelegate {
 
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        print("Drawing did change")
         viewModel.didChangeDrawing(canvasView.drawing)
     }
 }
