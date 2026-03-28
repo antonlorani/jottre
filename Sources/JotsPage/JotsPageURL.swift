@@ -16,6 +16,8 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct CloudMigrationURL: URLConvertible {
-    let path = "/cloud-migration"
+import UIKit
+
+struct JotsPageURL: URLConvertible {
+    let path = "/"
 }

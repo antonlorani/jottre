@@ -24,6 +24,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedInfoAlertCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
+    private var retainedCloudMigrationCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
@@ -31,7 +32,6 @@ final class JotsCoordinator: NavigationCoordinator {
         settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
         editJotCoordinatorFactory.make(navigation: navigation),
-        cloudMigrationCoordinatorFactory.make(navigation: navigation),
         createJotCoordinatorFactory.make(navigation: navigation),
         deleteJotCoordinatorFactory.make(navigation: navigation),
     ]
@@ -85,6 +85,13 @@ final class JotsCoordinator: NavigationCoordinator {
 
         if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
             viewControllers.append(contentsOf: childCoordinator.handle(url: url))
+        }
+
+        // TODO: Spin up async task for checking cloud status, then navigate to cloud migration.
+        // IMPORTANT: Ensure that we don't start the task twice if there's a re-entrant navigation behaviour.
+
+        if true {
+            showCloudMigrationPage()
         }
 
         return viewControllers
@@ -154,5 +161,14 @@ final class JotsCoordinator: NavigationCoordinator {
 
     func showInFiles(jotFileInfo: JotFile.Info) {
         navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
+    }
+
+    private func showCloudMigrationPage() {
+        let cloudMigrationCoordinator = cloudMigrationCoordinatorFactory.make(navigation: navigation)
+        retainedCloudMigrationCoordinator = cloudMigrationCoordinator
+        cloudMigrationCoordinator.onEnd = { [weak self] in
+            self?.retainedCloudMigrationCoordinator = nil
+        }
+        cloudMigrationCoordinator.start()
     }
 }

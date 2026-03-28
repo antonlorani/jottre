@@ -19,14 +19,14 @@
 @MainActor
 protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
 
-    func make(navigation: Navigation) -> NavigationCoordinator
+    func make(navigation: Navigation) -> Coordinator
 }
 
 struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
 
     let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
 
-    func make(navigation: Navigation) -> NavigationCoordinator {
+    func make(navigation: Navigation) -> Coordinator {
         CloudMigrationCoordinator(
             navigation: navigation,
             cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory

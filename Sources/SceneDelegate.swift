@@ -75,7 +75,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if let url = connectionOptions.urlContexts.first?.url {
                 url
             } else {
-                CloudMigrationURL().toURL()
+                JotsPageURL().toURL()
             }
 
         let fileManager = FileManager.default
