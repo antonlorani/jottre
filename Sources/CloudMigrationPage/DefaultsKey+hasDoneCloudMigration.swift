@@ -16,22 +16,9 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-@MainActor
-protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
+extension DefaultsKey {
 
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol
-}
-
-struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
-
-    let repository: CloudMigrationRepositoryProtocol
-    let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
-
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol {
-        CloudMigrationCoordinator(
-            repository: repository,
-            navigation: navigation,
-            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
-        )
+    static var hasDoneCloudMigration: DefaultsKey<Bool> {
+        #function
     }
 }

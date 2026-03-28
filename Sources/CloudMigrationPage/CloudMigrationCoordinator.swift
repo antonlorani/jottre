@@ -18,19 +18,35 @@
 
 import UIKit
 
-final class CloudMigrationCoordinator: Coordinator {
+protocol CloudMigrationCoordinatorProtocol: Coordinator {
+
+    func shouldStart() async -> Bool
+}
+
+final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
 
     var onEnd: (() -> Void)?
 
+    private let repository: CloudMigrationRepositoryProtocol
     private let navigation: Navigation
     private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
 
     init(
+        repository: CloudMigrationRepositoryProtocol,
         navigation: Navigation,
         cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
     ) {
+        self.repository = repository
         self.navigation = navigation
         self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
+    }
+
+    func shouldStart() async -> Bool {
+        do {
+            return try await repository.getShouldShowCloudMigration()
+        } catch {
+            return false
+        }
     }
 
     func start() {

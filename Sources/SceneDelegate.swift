@@ -87,6 +87,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileConflictService: fileConflictService
         )
 
+        let defaultsService = DefaultsService(userDefaults: .standard)
+
         let textBarButtonItemFactory: TextBarButtonItemFactory
         let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
@@ -147,6 +149,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
             ),
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
+                repository: CloudMigrationRepository(
+                    fileService: fileService,
+                    defaultsService: defaultsService
+                ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory

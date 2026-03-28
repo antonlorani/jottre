@@ -21,6 +21,8 @@ import UIKit
 @MainActor
 final class JotsCoordinator: NavigationCoordinator {
 
+    private var cloudMigrationTask: Task<Void, Never>?
+
     private var retainedInfoAlertCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
@@ -87,12 +89,7 @@ final class JotsCoordinator: NavigationCoordinator {
             viewControllers.append(contentsOf: childCoordinator.handle(url: url))
         }
 
-        // TODO: Spin up async task for checking cloud status, then navigate to cloud migration.
-        // IMPORTANT: Ensure that we don't start the task twice if there's a re-entrant navigation behaviour.
-
-        if true {
-            showCloudMigrationPage()
-        }
+        showCloudMigrationPageIfNeeded()
 
         return viewControllers
     }
@@ -163,12 +160,30 @@ final class JotsCoordinator: NavigationCoordinator {
         navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
     }
 
-    private func showCloudMigrationPage() {
-        let cloudMigrationCoordinator = cloudMigrationCoordinatorFactory.make(navigation: navigation)
+    private func showCloudMigrationPageIfNeeded() {
+        cloudMigrationTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+
+            let cloudMigrationCoordinator = await cloudMigrationCoordinatorFactory.make(navigation: navigation)
+            guard await cloudMigrationCoordinator.shouldStart() else {
+                return
+            }
+
+            await showCloudMigrationPage(cloudMigrationCoordinator: cloudMigrationCoordinator)
+        }
+    }
+
+    private func showCloudMigrationPage(cloudMigrationCoordinator: CloudMigrationCoordinatorProtocol) {
         retainedCloudMigrationCoordinator = cloudMigrationCoordinator
         cloudMigrationCoordinator.onEnd = { [weak self] in
             self?.retainedCloudMigrationCoordinator = nil
         }
         cloudMigrationCoordinator.start()
+    }
+
+    deinit {
+        cloudMigrationTask?.cancel()
     }
 }
