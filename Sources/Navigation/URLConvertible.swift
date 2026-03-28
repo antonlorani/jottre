@@ -49,7 +49,9 @@ extension URLConvertible {
         components.scheme = scheme
         components.host = host
         components.path = path
-        components.queryItems = queryItems
+        if !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
         guard let url = components.url else {
             preconditionFailure()
         }
