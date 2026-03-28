@@ -81,9 +81,9 @@ struct JotMenuConfigurationFactory: Sendable {
                 JotMenuConfiguration.Action(
                     title: {
                         #if targetEnvironment(macCatalyst)
-                        L10n.Jots.Menu.showInFinder
+                        L10n.Jots.Menu.revealInFinder
                         #else
-                        L10n.Jots.Menu.showInFiles
+                        L10n.Jots.Menu.revealInFiles
                         #endif
                     }(),
                     systemImageName: "folder"
