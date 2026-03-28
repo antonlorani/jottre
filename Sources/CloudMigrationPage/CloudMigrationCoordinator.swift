@@ -27,6 +27,8 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
 
     var onEnd: (() -> Void)?
 
+    private var retainedInfoAlertCoordinator: Coordinator?
+
     private let repository: CloudMigrationRepositoryProtocol
     private let navigation: Navigation
     private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
@@ -51,9 +53,30 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
 
     func start() {
         let navigationController = UINavigationController(
-            rootViewController: cloudMigrationViewControllerFactory.make(coordinator: self)
+            rootViewController: cloudMigrationViewControllerFactory.make(
+                viewModel: CloudMigrationViewModel(
+                    repository: repository,
+                    coordinator: self
+                )
+            )
         )
         navigation.present(navigationController, animated: true)
+    }
+
+    func showInfoAlert(
+        title: String,
+        message: String
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        infoAlertCoordinator.start()
     }
 
     func dismiss() {
