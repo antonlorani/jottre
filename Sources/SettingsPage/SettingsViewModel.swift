@@ -31,7 +31,10 @@ final class SettingsViewModel: PageViewModel {
     let items: AsyncStream<[PageCellItem]>
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
-    init(coordinator: SettingsCoordinator) {
+    init(
+        repository: SettingsRepositoryProtocol,
+        coordinator: SettingsCoordinator
+    ) {
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
@@ -42,8 +45,8 @@ final class SettingsViewModel: PageViewModel {
             bufferingPolicy: .bufferingNewest(1)
         )
 
-        itemsContinuation.yield([
-            .settingsDropdown(
+        var items = [
+            PageCellItem.settingsDropdown(
                 name: L10n.Settings.Appearance.title,
                 current: .init(
                     label: SettingsViewModel.makeLabel(userInterfaceStyle: .unspecified),
@@ -56,11 +59,24 @@ final class SettingsViewModel: PageViewModel {
                     )
                 },
                 onAction: { _ in }
-            ),
-            //            .settingsToggle(
-            //                name: "iCloud Synchronization",
-            //                isOn: false
-            //            ),
+            )
+        ]
+
+        if repository.shouldShowEnableICloudButton() {
+            items.append(
+                .settingsExternalLink(
+                    name: L10n.Settings.ICloud.title,
+                    info: L10n.Settings.ICloud.info,
+                    onAction: { [weak coordinator] in
+                        Task { @MainActor in
+                            coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
+                        }
+                    }
+                )
+            )
+        }
+
+        items.append(contentsOf: [
             .settingsExternalLink(
                 name: L10n.Settings.ICloud.title,
                 info: L10n.Settings.ICloud.info,
@@ -84,6 +100,8 @@ final class SettingsViewModel: PageViewModel {
                 value: "2.0.0"
             ),
         ])
+
+        itemsContinuation.yield(items)
 
         rightNavigationItemsContinuation.yield([
             .symbol(systemImageName: "xmark") { [weak coordinator] in

@@ -114,6 +114,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ),
             settingsCoordinatorFactory: SettingsCoordinatorFactory(
                 settingsViewControllerFactory: SettingsViewControllerFactory(
+                    repository: SettingsRepository(fileService: fileService),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )
