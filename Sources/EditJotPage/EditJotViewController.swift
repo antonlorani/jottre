@@ -102,21 +102,7 @@ final class EditJotViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let scale = canvasView.bounds.width / drawingWidth
-        canvasView.minimumZoomScale = scale
-        canvasView.zoomScale = scale
-
-        let drawingMaxY =
-            if canvasView.drawing.bounds.isNull {
-                CGFloat.zero
-            } else {
-                canvasView.drawing.bounds.maxY + Constants.CanvasView.bottomFreespace
-            }
-
-        canvasView.contentSize = CGSize(
-            width: canvasView.bounds.width,
-            height: max(canvasView.bounds.height, drawingMaxY * scale)
-        )
+        layoutCanvasContent()
     }
 
     private func setUpNavigationBar() {
@@ -134,12 +120,34 @@ final class EditJotViewController: UIViewController {
     }
 
     private func setUpViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .adaptiveBlackWhite
 
         #if !targetEnvironment(macCatalyst)
         toolPicker.addObserver(canvasView)
         toolPicker.setVisible(true, forFirstResponder: canvasView)
         #endif
+    }
+
+    private func layoutCanvasContent() {
+        guard drawingWidth > 0 else {
+            return
+        }
+
+        let scale = canvasView.bounds.width / drawingWidth
+        canvasView.minimumZoomScale = scale
+        canvasView.zoomScale = scale
+
+        let drawingMaxY =
+            if canvasView.drawing.bounds.isNull {
+                CGFloat.zero
+            } else {
+                canvasView.drawing.bounds.maxY + Constants.CanvasView.bottomFreespace
+            }
+
+        canvasView.contentSize = CGSize(
+            width: canvasView.bounds.width,
+            height: max(canvasView.bounds.height, drawingMaxY * scale)
+        )
     }
 
     private func setUpCanvasView() {
