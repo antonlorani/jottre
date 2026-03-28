@@ -32,13 +32,14 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
     ) {
         previewImage = nil
         name = jotFileInfo.name
-        lastModifiedText = jotFileInfo.modificationDate.map {
-            DateFormatter.localizedString(
-                from: $0,
-                dateStyle: .long,
-                timeStyle: .short
-            )
-        } ?? String()
+        lastModifiedText =
+            jotFileInfo.modificationDate.map {
+                DateFormatter.localizedString(
+                    from: $0,
+                    dateStyle: .long,
+                    timeStyle: .short
+                )
+            } ?? String()
         self.isCloudSynchronized = isCloudSynchronized
         self.jotFileInfo = jotFileInfo
     }

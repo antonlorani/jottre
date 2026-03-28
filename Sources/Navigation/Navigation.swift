@@ -38,7 +38,8 @@ struct Navigation: Sendable {
                 _ viewController: UIViewController,
                 _ animated: Bool
             ) -> Void,
-        dismissViewControllerProvider: @Sendable @escaping (_ animated: Bool, _ completion: (@Sendable () -> Void)?) ->
+        dismissViewControllerProvider:
+            @Sendable @escaping (_ animated: Bool, _ completion: (@Sendable () -> Void)?) ->
             Void,
         popViewControllerProvider: @Sendable @escaping (_ animated: Bool) -> Void
     ) {
