@@ -69,7 +69,7 @@ final class RenameJotCoordinator: Coordinator {
                     let self,
                     let newName = alertController.textFields?.first?.text
                 else {
-                    onEnd?()
+                    self?.onEnd?()
                     return
                 }
                 handleRename(newName: newName)
