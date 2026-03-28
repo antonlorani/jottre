@@ -161,21 +161,11 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     private func showCloudMigrationPageIfNeeded() {
-        cloudMigrationTask = Task.detached { [weak self] in
-            guard let self else {
-                return
-            }
-
-            let cloudMigrationCoordinator = await cloudMigrationCoordinatorFactory.make(navigation: navigation)
-            guard await cloudMigrationCoordinator.shouldStart() else {
-                return
-            }
-
-            await showCloudMigrationPage(cloudMigrationCoordinator: cloudMigrationCoordinator)
+        let cloudMigrationCoordinator = cloudMigrationCoordinatorFactory.make(navigation: navigation)
+        guard cloudMigrationCoordinator.shouldStart() else {
+            return
         }
-    }
 
-    private func showCloudMigrationPage(cloudMigrationCoordinator: CloudMigrationCoordinatorProtocol) {
         retainedCloudMigrationCoordinator = cloudMigrationCoordinator
         cloudMigrationCoordinator.onEnd = { [weak self] in
             self?.retainedCloudMigrationCoordinator = nil

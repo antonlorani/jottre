@@ -43,12 +43,8 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
         self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
     }
 
-    func shouldStart() async -> Bool {
-        do {
-            return try await repository.getShouldShowCloudMigration()
-        } catch {
-            return false
-        }
+    func shouldStart() -> Bool {
+        repository.getShouldShowCloudMigration()
     }
 
     func start() {
