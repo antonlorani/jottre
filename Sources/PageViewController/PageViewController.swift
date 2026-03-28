@@ -154,6 +154,12 @@ final class PageViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        viewModel.didLoad()
+    }
+
     private func registerIfNeeded(_ cellType: any PageCell.Type) {
         let identifier = cellType.reuseIdentifier
         guard !registeredReuseIdentifiers.contains(identifier) else {
