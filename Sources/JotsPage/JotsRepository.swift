@@ -18,32 +18,34 @@
 
 import Foundation
 
-protocol JotsRepositoryProtocol {
+protocol JotsRepositoryProtocol: Sendable {
 
-    func getJotFiles() throws -> AsyncThrowingStream<[JotFile.Info], Error>
+    func getJotFiles() -> AsyncThrowingStream<[JotFile.Info], Error>
+
+    func shouldShowEnableICloudButton() -> Bool
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
 
 struct JotsRepository: JotsRepositoryProtocol {
 
-    private let jotFileService: JotFileServiceProtocol
     private let fileService: FileServiceProtocol
+    private let jotFileService: JotFileServiceProtocol
 
     init(
-        jotFileService: JotFileServiceProtocol,
-        fileService: FileServiceProtocol
+        fileService: FileServiceProtocol,
+        jotFileService: JotFileServiceProtocol
     ) {
-        self.jotFileService = jotFileService
         self.fileService = fileService
+        self.jotFileService = jotFileService
     }
 
-    func getJotFiles() throws -> AsyncThrowingStream<[JotFile.Info], Error> {
+    func getJotFiles() -> AsyncThrowingStream<[JotFile.Info], Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
                     let localDirectory = try fileService.localDocumentsDirectory()
-                    let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+                    let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
                     let directories = [localDirectory, cloudDirectory].compactMap { $0 }
 
                     try await withThrowingTaskGroup(of: Void.self) { group in
@@ -72,6 +74,10 @@ struct JotsRepository: JotsRepositoryProtocol {
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    func shouldShowEnableICloudButton() -> Bool {
+        !fileService.isICloudEnabled()
     }
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {

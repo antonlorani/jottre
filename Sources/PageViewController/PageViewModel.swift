@@ -26,6 +26,8 @@ protocol PageViewModel: AnyObject {
 
     var items: AsyncStream<[PageCellItem]> { get }
     var actions: [PageCallToActionView.ActionConfiguration] { get }
+
+    func didLoad()
 }
 
 extension PageViewModel {
@@ -48,5 +50,9 @@ extension PageViewModel {
         AsyncStream { continuation in
             continuation.finish()
         }
+    }
+
+    func didLoad() {
+        /* no-op */
     }
 }

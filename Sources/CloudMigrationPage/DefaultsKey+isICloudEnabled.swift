@@ -16,6 +16,9 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct CloudMigrationURL: URLConvertible {
-    let path = "/cloud-migration"
+extension DefaultsKey {
+
+    static var isICloudEnabled: DefaultsKey<Bool> {
+        #function
+    }
 }

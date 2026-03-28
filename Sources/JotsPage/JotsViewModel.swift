@@ -44,7 +44,7 @@ final class JotsViewModel: PageViewModel {
 
     private weak var coordinator: JotsCoordinator?
 
-    let repository: JotsRepositoryProtocol
+    private let repository: JotsRepositoryProtocol
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
@@ -64,22 +64,30 @@ final class JotsViewModel: PageViewModel {
             of: [PageNavigationItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        leftNavigationItemsContinuation.yield([
-            .symbol(
+
+        var leftNavigationItems = [
+            PageNavigationItem.symbol(
                 systemImageName: "gear",
             ) { [weak coordinator] in
                 Task { @MainActor in
                     coordinator?.openSettings()
                 }
-            },
-            .symbol(
-                systemImageName: "icloud.slash",
-            ) { [weak coordinator] in
-                Task { @MainActor in
-                    coordinator?.openEnableCloudPage()
+            }
+        ]
+
+        if repository.shouldShowEnableICloudButton() {
+            leftNavigationItems.append(
+                .symbol(
+                    systemImageName: "icloud.slash",
+                ) { [weak coordinator] in
+                    Task { @MainActor in
+                        coordinator?.openEnableCloudPage()
+                    }
                 }
-            },
-        ])
+            )
+        }
+
+        leftNavigationItemsContinuation.yield(leftNavigationItems)
 
         (rightNavigationItems, rightNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
@@ -94,11 +102,16 @@ final class JotsViewModel: PageViewModel {
                 }
             }
         ])
+    }
 
-        jotsTask = Task { [weak self] in
+    func didLoad() {
+        jotsTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
             do {
-                for try await jotFileInfos in try repository.getJotFiles() {
-                    self?.handleJots(jotFileInfos: jotFileInfos)
+                for try await jotFileInfos in repository.getJotFiles() {
+                    await handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {
                 print(error)

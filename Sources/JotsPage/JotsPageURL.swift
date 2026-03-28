@@ -16,22 +16,8 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-@MainActor
-protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
+import UIKit
 
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol
-}
-
-struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
-
-    let repository: CloudMigrationRepositoryProtocol
-    let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
-
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol {
-        CloudMigrationCoordinator(
-            repository: repository,
-            navigation: navigation,
-            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
-        )
-    }
+struct JotsPageURL: URLConvertible {
+    let path = "/"
 }

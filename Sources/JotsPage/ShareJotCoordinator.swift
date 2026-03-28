@@ -42,6 +42,9 @@ final class ShareJotCoordinator: Coordinator {
             activityItems: [],
             applicationActivities: nil
         )
+        activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
+            self?.onEnd?()
+        }
         navigation.present(activityViewController, animated: true)
     }
 }

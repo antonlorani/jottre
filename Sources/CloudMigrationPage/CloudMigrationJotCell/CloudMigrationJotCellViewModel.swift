@@ -24,14 +24,22 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
     let name: String
     let infoText: String
     let isCloudCheckboxOn: Bool
+    let onTap: @Sendable () -> Void
 
-    init(cloudMigrationJot: CloudMigrationJotBusinessModel) {
+    init(
+        cloudMigrationJot: CloudMigrationJotBusinessModel,
+        onTap: @Sendable @escaping () -> Void
+    ) {
         name = cloudMigrationJot.name
         infoText = cloudMigrationJot.lastModifiedText
         isCloudCheckboxOn = cloudMigrationJot.isCloudSynchronized
+        self.onTap = onTap
     }
 
     func handle(action: PageCellAction) {
-        /* no-op */
+        switch action {
+        case .tap:
+            onTap()
+        }
     }
 }

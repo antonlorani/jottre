@@ -45,7 +45,10 @@ final class InfoAlertCoordinator: Coordinator {
 
         let okAction = UIAlertAction(
             title: "ok",
-            style: .cancel
+            style: .cancel,
+            handler: { [weak self] _ in
+                self?.onEnd?()
+            }
         )
         alertController.addAction(okAction)
         navigation.present(alertController, animated: true)

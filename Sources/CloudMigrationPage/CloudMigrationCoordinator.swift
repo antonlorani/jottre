@@ -18,32 +18,68 @@
 
 import UIKit
 
-final class CloudMigrationCoordinator: NavigationCoordinator {
+protocol CloudMigrationCoordinatorProtocol: Coordinator {
 
+    func shouldStart() -> Bool
+}
+
+final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
+
+    var onEnd: (() -> Void)?
+
+    private var retainedInfoAlertCoordinator: Coordinator?
+
+    private let repository: CloudMigrationRepositoryProtocol
     private let navigation: Navigation
     private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
 
     init(
+        repository: CloudMigrationRepositoryProtocol,
         navigation: Navigation,
         cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
     ) {
+        self.repository = repository
         self.navigation = navigation
         self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(CloudMigrationURL().path)
+    func shouldStart() -> Bool {
+        repository.getShouldShowCloudMigration()
     }
 
-    func handle(url: URL) -> [UIViewController] {
+    func start() {
         let navigationController = UINavigationController(
-            rootViewController: cloudMigrationViewControllerFactory.make(coordinator: self)
+            rootViewController: cloudMigrationViewControllerFactory.make(
+                viewModel: CloudMigrationViewModel(
+                    repository: repository,
+                    coordinator: self
+                )
+            )
         )
         navigation.present(navigationController, animated: true)
-        return []
+    }
+
+    func showInfoAlert(
+        title: String,
+        message: String
+    ) {
+        let infoAlertCoordinator = InfoAlertCoordinator(
+            navigation: navigation,
+            title: title,
+            message: message
+        )
+        retainedInfoAlertCoordinator = infoAlertCoordinator
+        infoAlertCoordinator.onEnd = { [weak self] in
+            self?.retainedInfoAlertCoordinator = nil
+        }
+        infoAlertCoordinator.start()
     }
 
     func dismiss() {
-        navigation.dismiss(animated: true)
+        navigation.dismiss(animated: true) { [weak self] in
+            Task { @MainActor in
+                self?.onEnd?()
+            }
+        }
     }
 }

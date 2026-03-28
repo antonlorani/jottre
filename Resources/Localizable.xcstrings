@@ -1201,6 +1201,18 @@
         }
       }
     },
+    "cloudMigration.errorAlert.title" : {
+      "comment" : "The title of the error alert when migrating a Jot between the local file-system and iCloud failed.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to migrate “%@”"
+          }
+        }
+      }
+    },
     "cloudMigration.subtitle" : {
       "comment" : "Subtitle on the iCloud migration screen",
       "extractionState" : "manual",

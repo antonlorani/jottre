@@ -26,12 +26,16 @@ protocol SettingsViewControllerFactoryProtocol: Sendable {
 
 struct SettingsViewControllerFactory: SettingsViewControllerFactoryProtocol {
 
+    let repository: SettingsRepositoryProtocol
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
     func make(coordinator: SettingsCoordinator) -> UIViewController {
         let viewController = PageViewController(
-            viewModel: SettingsViewModel(coordinator: coordinator),
+            viewModel: SettingsViewModel(
+                repository: repository,
+                coordinator: coordinator
+            ),
             textBarButtonItemFactory: textBarButtonItemFactory,
             symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )

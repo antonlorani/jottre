@@ -21,9 +21,12 @@ import UIKit
 @MainActor
 final class JotsCoordinator: NavigationCoordinator {
 
+    private var cloudMigrationTask: Task<Void, Never>?
+
     private var retainedInfoAlertCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
+    private var retainedCloudMigrationCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
@@ -31,7 +34,6 @@ final class JotsCoordinator: NavigationCoordinator {
         settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
         editJotCoordinatorFactory.make(navigation: navigation),
-        cloudMigrationCoordinatorFactory.make(navigation: navigation),
         createJotCoordinatorFactory.make(navigation: navigation),
         deleteJotCoordinatorFactory.make(navigation: navigation),
     ]
@@ -86,6 +88,8 @@ final class JotsCoordinator: NavigationCoordinator {
         if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
             viewControllers.append(contentsOf: childCoordinator.handle(url: url))
         }
+
+        showCloudMigrationPageIfNeeded()
 
         return viewControllers
     }
@@ -154,5 +158,22 @@ final class JotsCoordinator: NavigationCoordinator {
 
     func showInFiles(jotFileInfo: JotFile.Info) {
         navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
+    }
+
+    private func showCloudMigrationPageIfNeeded() {
+        let cloudMigrationCoordinator = cloudMigrationCoordinatorFactory.make(navigation: navigation)
+        guard cloudMigrationCoordinator.shouldStart() else {
+            return
+        }
+
+        retainedCloudMigrationCoordinator = cloudMigrationCoordinator
+        cloudMigrationCoordinator.onEnd = { [weak self] in
+            self?.retainedCloudMigrationCoordinator = nil
+        }
+        cloudMigrationCoordinator.start()
+    }
+
+    deinit {
+        cloudMigrationTask?.cancel()
     }
 }

@@ -59,9 +59,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     navigationController?.present(viewController, animated: animated)
                 }
             },
-            dismissViewControllerProvider: { [weak navigationController] animated in
+            dismissViewControllerProvider: { [weak navigationController] animated, completion in
                 Task { @MainActor in
-                    navigationController?.dismiss(animated: animated)
+                    navigationController?.dismiss(animated: animated, completion: completion)
                 }
             },
             popViewControllerProvider: { [weak navigationController] animated in
@@ -75,7 +75,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if let url = connectionOptions.urlContexts.first?.url {
                 url
             } else {
-                CloudMigrationURL().toURL()
+                JotsPageURL().toURL()
             }
 
         let fileManager = FileManager.default
@@ -86,6 +86,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileService: fileService,
             fileConflictService: fileConflictService
         )
+
+        let defaultsService = DefaultsService(userDefaults: .standard)
 
         let textBarButtonItemFactory: TextBarButtonItemFactory
         let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
@@ -103,8 +105,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
-                    jotFileService: jotFileService,
-                    fileService: fileService
+                    fileService: fileService,
+                    jotFileService: jotFileService
                 ),
                 menuConfigurationFactory: menuConfigurationFactory,
                 textBarButtonItemFactory: textBarButtonItemFactory,
@@ -112,6 +114,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ),
             settingsCoordinatorFactory: SettingsCoordinatorFactory(
                 settingsViewControllerFactory: SettingsViewControllerFactory(
+                    repository: SettingsRepository(fileService: fileService),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )
@@ -147,6 +150,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
             ),
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
+                repository: CloudMigrationRepository(
+                    fileService: fileService,
+                    jotFileService: jotFileService,
+                    defaultsService: defaultsService
+                ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory

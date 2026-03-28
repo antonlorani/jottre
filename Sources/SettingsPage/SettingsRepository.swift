@@ -16,22 +16,22 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-@MainActor
-protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
+import Foundation
 
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol
+protocol SettingsRepositoryProtocol: Sendable {
+
+    func shouldShowEnableICloudButton() -> Bool
 }
 
-struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
+struct SettingsRepository: SettingsRepositoryProtocol {
 
-    let repository: CloudMigrationRepositoryProtocol
-    let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
+    private let fileService: FileServiceProtocol
 
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol {
-        CloudMigrationCoordinator(
-            repository: repository,
-            navigation: navigation,
-            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
-        )
+    init(fileService: FileServiceProtocol) {
+        self.fileService = fileService
+    }
+
+    func shouldShowEnableICloudButton() -> Bool {
+        !fileService.isICloudEnabled()
     }
 }

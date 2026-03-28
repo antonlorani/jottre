@@ -16,22 +16,17 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-@MainActor
-protocol CloudMigrationCoordinatorFactoryProtocol: Sendable {
+struct DefaultsKey<T: LosslessStringConvertible & Sendable>: Sendable, CustomStringConvertible,
+    ExpressibleByStringLiteral
+{
 
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol
-}
+    let description: String
 
-struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol {
+    init(_ key: String) {
+        description = key
+    }
 
-    let repository: CloudMigrationRepositoryProtocol
-    let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
-
-    func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol {
-        CloudMigrationCoordinator(
-            repository: repository,
-            navigation: navigation,
-            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
-        )
+    init(stringLiteral value: StringLiteralType) {
+        description = value
     }
 }
