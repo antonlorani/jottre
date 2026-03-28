@@ -152,7 +152,7 @@ final class JotsCoordinator: NavigationCoordinator {
         infoAlertCoordinator.start()
     }
 
-    func showInFiles() {
-
+    func showInFiles(jotFileInfo: JotFile.Info) {
+        navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
     }
 }

@@ -102,8 +102,8 @@ final class EditJotCoordinator: NavigationCoordinator {
         navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
     }
 
-    func showInFiles() {
-
+    func showInFiles(jotFileInfo: JotFile.Info) {
+        navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
     }
 
     func showJotConflictPage(

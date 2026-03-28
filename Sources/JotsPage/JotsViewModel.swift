@@ -145,7 +145,7 @@ final class JotsViewModel: PageViewModel {
                         },
                         onShowInFiles: { [weak coordinator] in
                             Task { @MainActor in
-                                coordinator?.showInFiles()
+                                coordinator?.showInFiles(jotFileInfo: jotFileInfo)
                             }
                         }
                     ),
