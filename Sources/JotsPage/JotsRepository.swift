@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol JotsRepositoryProtocol {
+protocol JotsRepositoryProtocol: Sendable {
 
     func getJotFiles() -> AsyncThrowingStream<[JotFile.Info], Error>
 
