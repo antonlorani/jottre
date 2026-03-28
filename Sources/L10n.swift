@@ -100,8 +100,8 @@ enum L10n {
         }
 
         enum Menu {
-            static let showInFiles = String(localized: "jots.menu.showInFiles")
-            static let showInFinder = String(localized: "jots.menu.showInFinder")
+            static let revealInFiles = String(localized: "jots.menu.revealInFiles")
+            static let revealInFinder = String(localized: "jots.menu.revealInFinder")
         }
 
         enum Duplicate {

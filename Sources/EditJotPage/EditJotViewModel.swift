@@ -58,7 +58,10 @@ final class EditJotViewModel: Sendable {
         },
         onShowInFiles: { [weak self] in
             Task { @MainActor in
-                self?.coordinator?.showInFiles()
+                guard let self else {
+                    return
+                }
+                self.coordinator?.showInFiles(jotFileInfo: self.jotFileInfo)
             }
         }
     )
