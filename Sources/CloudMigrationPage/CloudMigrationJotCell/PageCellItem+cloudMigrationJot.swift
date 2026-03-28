@@ -20,14 +20,16 @@ extension PageCellItem {
 
     @MainActor
     static func cloudMigrationJot(
-        cloudMigrationJot: CloudMigrationJotBusinessModel
+        cloudMigrationJot: CloudMigrationJotBusinessModel,
+        onTap: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
             id: cloudMigrationJot,
             cellType: CloudMigrationJotCell.self,
             sizing: .fullWidth(estimatedHeight: 56),
             viewModel: CloudMigrationJotCellViewModel(
-                cloudMigrationJot: cloudMigrationJot
+                cloudMigrationJot: cloudMigrationJot,
+                onTap: onTap
             )
         )
     }
