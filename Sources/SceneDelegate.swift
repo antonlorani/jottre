@@ -105,8 +105,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
-                    jotFileService: jotFileService,
-                    fileService: fileService
+                    fileService: fileService,
+                    jotFileService: jotFileService
                 ),
                 menuConfigurationFactory: menuConfigurationFactory,
                 textBarButtonItemFactory: textBarButtonItemFactory,

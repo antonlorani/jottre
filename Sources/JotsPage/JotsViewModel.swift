@@ -64,22 +64,30 @@ final class JotsViewModel: PageViewModel {
             of: [PageNavigationItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        leftNavigationItemsContinuation.yield([
-            .symbol(
+
+        var leftNavigationItems = [
+            PageNavigationItem.symbol(
                 systemImageName: "gear",
             ) { [weak coordinator] in
                 Task { @MainActor in
                     coordinator?.openSettings()
                 }
-            },
-            .symbol(
-                systemImageName: "icloud.slash",
-            ) { [weak coordinator] in
-                Task { @MainActor in
-                    coordinator?.openEnableCloudPage()
+            }
+        ]
+
+        if repository.shouldShowEnableICloudButton() {
+            leftNavigationItems.append(
+                .symbol(
+                    systemImageName: "icloud.slash",
+                ) { [weak coordinator] in
+                    Task { @MainActor in
+                        coordinator?.openEnableCloudPage()
+                    }
                 }
-            },
-        ])
+            )
+        }
+
+        leftNavigationItemsContinuation.yield(leftNavigationItems)
 
         (rightNavigationItems, rightNavigationItemsContinuation) = AsyncStream.makeStream(
             of: [PageNavigationItem].self,
