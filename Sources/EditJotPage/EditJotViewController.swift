@@ -40,6 +40,7 @@ final class EditJotViewController: UIViewController {
         canvasView.drawingPolicy = .default
         canvasView.maximumZoomScale = Constants.CanvasView.maximumZoomScale
         canvasView.bounces = false
+        canvasView.contentInsetAdjustmentBehavior = .always
         return canvasView
     }()
 
@@ -115,10 +116,6 @@ final class EditJotViewController: UIViewController {
         canvasView.contentSize = CGSize(
             width: canvasView.bounds.width,
             height: max(canvasView.bounds.height, drawingMaxY * scale)
-        )
-        canvasView.contentOffset = CGPoint(
-            x: 0,
-            y: -canvasView.adjustedContentInset.top
         )
     }
 
