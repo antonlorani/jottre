@@ -83,6 +83,10 @@ final class JotConflictCoordinator: Coordinator {
     }
 
     func dismiss() {
-        navigation.dismiss(animated: true)
+        navigation.dismiss(animated: true) { [weak self] in
+            Task { @MainActor in
+                self?.onEnd?()
+            }
+        }
     }
 }

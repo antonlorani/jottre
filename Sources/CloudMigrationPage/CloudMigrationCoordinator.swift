@@ -76,7 +76,10 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
     }
 
     func dismiss() {
-        navigation.dismiss(animated: true)  // TODO: Add completion handler and THEN onEnd
-        onEnd?()
+        navigation.dismiss(animated: true) { [weak self] in
+            Task { @MainActor in
+                self?.onEnd?()
+            }
+        }
     }
 }

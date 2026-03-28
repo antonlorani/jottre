@@ -59,9 +59,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     navigationController?.present(viewController, animated: animated)
                 }
             },
-            dismissViewControllerProvider: { [weak navigationController] animated in
+            dismissViewControllerProvider: { [weak navigationController] animated, completion in
                 Task { @MainActor in
-                    navigationController?.dismiss(animated: animated)
+                    navigationController?.dismiss(animated: animated, completion: completion)
                 }
             },
             popViewControllerProvider: { [weak navigationController] animated in
