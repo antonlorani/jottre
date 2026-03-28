@@ -25,7 +25,7 @@ protocol CloudMigrationRepositoryProtocol: Sendable {
         jotFileInfo: JotFile.Info,
         shouldSynchronizeWithICloud: Bool
     ) async throws
-    func getShouldShowCloudMigration() async throws -> Bool
+    func getShouldShowCloudMigration() -> Bool
     func markCloudMigrationPageDone()
 }
 
@@ -122,12 +122,12 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
         )
     }
 
-    func getShouldShowCloudMigration() async throws -> Bool {
+    func getShouldShowCloudMigration() -> Bool {
         guard defaultsService.getValue(.hasDoneCloudMigration) == false else {
             return false
         }
 
-        let isICloudEnabled = try await fileService.cloudDocumentsDirectory() != nil
+        let isICloudEnabled = fileService.isICloudEnabled()
         if let wasICloudEnabled = defaultsService.getValue(.isICloudEnabled) {
             return wasICloudEnabled != isICloudEnabled
         }

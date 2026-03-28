@@ -20,6 +20,8 @@ import Foundation
 
 protocol FileServiceProtocol: Sendable {
 
+    func isICloudEnabled() -> Bool
+
     func localDocumentsDirectory() throws -> URL?
 
     func cloudDocumentsDirectory() async throws -> URL?
@@ -50,6 +52,10 @@ struct FileService: FileServiceProtocol {
 
     init(fileManager: FileManager) {
         self.fileManager = fileManager
+    }
+
+    func isICloudEnabled() -> Bool {
+        fileManager.ubiquityIdentityToken != nil
     }
 
     func localDocumentsDirectory() throws -> URL? {

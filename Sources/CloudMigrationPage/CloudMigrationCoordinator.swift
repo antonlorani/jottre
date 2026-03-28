@@ -20,7 +20,7 @@ import UIKit
 
 protocol CloudMigrationCoordinatorProtocol: Coordinator {
 
-    func shouldStart() async -> Bool
+    func shouldStart() -> Bool
 }
 
 final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
