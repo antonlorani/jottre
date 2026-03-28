@@ -42,7 +42,7 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
     }
 
     func createJot(name: String) async throws -> JotFile.Info {
-        let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+        let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
         let localDirectory = try fileService.localDocumentsDirectory()
 
         guard let directory = cloudDirectory ?? localDirectory else {

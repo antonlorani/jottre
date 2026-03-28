@@ -54,7 +54,7 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
             let task = Task {
                 do {
                     let localDirectory = try fileService.localDocumentsDirectory()
-                    let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+                    let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
                     let directories = [(localDirectory, false), (cloudDirectory, true)]
                         .compactMap { (url, isCloud) in url.map { ($0, isCloud) } }
 
@@ -102,7 +102,7 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
     ) async throws {
         guard
             let localDirector = try fileService.localDocumentsDirectory(),
-            let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+            let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
         else {
             throw Failure.couldNotResolveDirectories
         }

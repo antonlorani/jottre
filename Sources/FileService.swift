@@ -24,7 +24,7 @@ protocol FileServiceProtocol: Sendable {
 
     func localDocumentsDirectory() throws -> URL?
 
-    func cloudDocumentsDirectory() async throws -> URL?
+    func iCloudDocumentsDirectory() async throws -> URL?
 
     func listContents(
         directory: URL,
@@ -70,7 +70,7 @@ struct FileService: FileServiceProtocol {
         return directory
     }
 
-    func cloudDocumentsDirectory() async throws -> URL? {
+    func iCloudDocumentsDirectory() async throws -> URL? {
         guard
             let directory = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
         else {
