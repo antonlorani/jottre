@@ -54,7 +54,10 @@ final class RenameJotCoordinator: Coordinator {
         alertController.addAction(
             UIAlertAction(
                 title: L10n.Action.cancel,
-                style: .cancel
+                style: .cancel,
+                handler: { [weak self] _ in
+                    self?.onEnd?()
+                }
             )
         )
         alertController.addAction(
@@ -66,6 +69,7 @@ final class RenameJotCoordinator: Coordinator {
                     let self,
                     let newName = alertController.textFields?.first?.text
                 else {
+                    onEnd?()
                     return
                 }
                 handleRename(newName: newName)
