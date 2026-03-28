@@ -44,7 +44,7 @@ final class JotsViewModel: PageViewModel {
 
     private weak var coordinator: JotsCoordinator?
 
-    let repository: JotsRepositoryProtocol
+    private let repository: JotsRepositoryProtocol
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
@@ -94,11 +94,16 @@ final class JotsViewModel: PageViewModel {
                 }
             }
         ])
+    }
 
-        jotsTask = Task { [weak self] in
+    func didLoad() {
+        jotsTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
             do {
                 for try await jotFileInfos in repository.getJotFiles() {
-                    self?.handleJots(jotFileInfos: jotFileInfos)
+                    await handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {
                 print(error)
