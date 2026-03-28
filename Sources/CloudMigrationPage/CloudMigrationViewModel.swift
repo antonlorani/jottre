@@ -22,8 +22,9 @@ import Foundation
 final class CloudMigrationViewModel: PageViewModel, Sendable {
 
     let items: AsyncStream<[PageCellItem]>
-    private let _itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
+    private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
+    private let repository: CloudMigrationRepositoryProtocol
     private weak var coordinator: CloudMigrationCoordinator?
 
     private(set) lazy var actions = [
@@ -36,50 +37,76 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
         }
     ]
 
-    init(coordinator: CloudMigrationCoordinator) {
+    private var jotsTask: Task<Void, Never>?
+
+    init(
+        repository: CloudMigrationRepositoryProtocol,
+        coordinator: CloudMigrationCoordinator
+    ) {
+        self.repository = repository
         self.coordinator = coordinator
 
-        (items, _itemsContinuation) = AsyncStream.makeStream(
+        (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
-        _itemsContinuation.yield(
+    }
+
+    func didLoad() {
+        jotsTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                for try await cloudMigrationJots in repository.getJotFiles() {
+                    await handleJots(cloudMigrationJots: cloudMigrationJots)
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+    private func handleJots(cloudMigrationJots: [CloudMigrationJotBusinessModel]) {
+        itemsContinuation.yield(
             [
-                .pageHeader(
+                PageCellItem.pageHeader(
                     headline: L10n.CloudMigration.title,
                     subheadline: L10n.CloudMigration.subtitle
-                ),
-                .cloudMigrationJot(
-                    cloudMigrationJot: CloudMigrationJotBusinessModel(
-                        previewImage: nil,
-                        name: "Project Brainstorm",
-                        lastModifiedText: "May 23 2025",
-                        isCloudSynchronized: false
-                    )
-                ),
-                .cloudMigrationJot(
-                    cloudMigrationJot: CloudMigrationJotBusinessModel(
-                        previewImage: nil,
-                        name: "Final Sketch",
-                        lastModifiedText: "June 15 2024",
-                        isCloudSynchronized: false
-                    )
-                ),
-                .cloudMigrationJot(
-                    cloudMigrationJot: CloudMigrationJotBusinessModel(
-                        previewImage: nil,
-                        name: "Calculator Pro",
-                        lastModifiedText: "December 3 2023",
-                        isCloudSynchronized: true
-                    )
-                ),
+                )
             ]
+                + cloudMigrationJots.map { cloudMigrationJot in
+                    PageCellItem.cloudMigrationJot(
+                        cloudMigrationJot: cloudMigrationJot
+                    ) { [weak self] in
+                        Task { @MainActor in
+                            self?.didTapCloudMigrationJot(cloudMigrationJot: cloudMigrationJot)
+                        }
+                    }
+                }
         )
     }
 
-    private func didTapItem(index: Int) {}
+    private func didTapCloudMigrationJot(
+        cloudMigrationJot: CloudMigrationJotBusinessModel
+    ) {
+        Task.detached { [weak self] in
+            do {
+                try await self?.repository.moveJotFile(
+                    jotFileInfo: cloudMigrationJot.toJotFileInfo(),
+                    shouldSynchronizeWithICloud: !cloudMigrationJot.isCloudSynchronized
+                )
+            } catch {
+                await self?.coordinator?.showInfoAlert(
+                    title: L10n.CloudMigration.ErrorAlert.title(cloudMigrationJot.name),
+                    message: error.localizedDescription
+                )
+            }
+        }
+    }
 
     private func didTapDoneButton() {
+        repository.markCloudMigrationPageDone()
         coordinator?.dismiss()
     }
 }

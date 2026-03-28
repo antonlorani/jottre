@@ -16,23 +16,110 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import Foundation
+
 protocol CloudMigrationRepositoryProtocol: Sendable {
 
+    func getJotFiles() -> AsyncThrowingStream<[CloudMigrationJotBusinessModel], Error>
+    func moveJotFile(
+        jotFileInfo: JotFile.Info,
+        shouldSynchronizeWithICloud: Bool
+    ) async throws
     func getShouldShowCloudMigration() async throws -> Bool
     func markCloudMigrationPageDone()
 }
 
 struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
 
+    enum Failure: Error {
+        case couldNotResolveDirectories
+    }
+
     private let fileService: FileServiceProtocol
+    private let jotFileService: JotFileServiceProtocol
     private let defaultsService: DefaultsServiceProtocol
 
     init(
         fileService: FileServiceProtocol,
+        jotFileService: JotFileServiceProtocol,
         defaultsService: DefaultsServiceProtocol
     ) {
         self.fileService = fileService
+        self.jotFileService = jotFileService
         self.defaultsService = defaultsService
+    }
+
+    func getJotFiles() -> AsyncThrowingStream<[CloudMigrationJotBusinessModel], Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    let localDirectory = try fileService.localDocumentsDirectory()
+                    let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+                    let directories = [(localDirectory, false), (cloudDirectory, true)]
+                        .compactMap { (url, isCloud) in url.map { ($0, isCloud) } }
+
+                    try await withThrowingTaskGroup(of: Void.self) { group in
+                        for (directory, _) in directories {
+                            group.addTask {
+                                for try await _ in fileService.directoryChanges(directory: directory) {
+                                    try continuation.yield(
+                                        directories
+                                            .flatMap { (dir, isCloud) in
+                                                try jotFileService.listContents(directory: dir)
+                                                    .map { (info: $0, isCloud: isCloud) }
+                                            }
+                                            .sorted { lhs, rhs in
+                                                if lhs.isCloud != rhs.isCloud {
+                                                    return !lhs.isCloud
+                                                }
+                                                return lhs.info.modificationDate ?? .distantPast > rhs.info
+                                                    .modificationDate ?? .distantPast
+                                            }
+                                            .map { jotFileInfo, isCloud in
+                                                CloudMigrationJotBusinessModel(
+                                                    jotFileInfo: jotFileInfo,
+                                                    isCloudSynchronized: isCloud
+                                                )
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                        try await group.waitForAll()
+                    }
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+                continuation.finish()
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
+    func moveJotFile(
+        jotFileInfo: JotFile.Info,
+        shouldSynchronizeWithICloud: Bool
+    ) async throws {
+        guard
+            let localDirector = try fileService.localDocumentsDirectory(),
+            let cloudDirectory = try await fileService.cloudDocumentsDirectory()
+        else {
+            throw Failure.couldNotResolveDirectories
+        }
+
+        let targetDirectory =
+            if shouldSynchronizeWithICloud {
+                cloudDirectory
+            } else {
+                localDirector
+            }
+
+        try fileService.moveFile(
+            fileURL: jotFileInfo.url,
+            newFileURL:
+                targetDirectory
+                .appendingPathComponent(jotFileInfo.url.lastPathComponent, isDirectory: false)
+        )
     }
 
     func getShouldShowCloudMigration() async throws -> Bool {

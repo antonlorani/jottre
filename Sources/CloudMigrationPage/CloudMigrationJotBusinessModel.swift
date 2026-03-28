@@ -23,4 +23,27 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
     let name: String
     let lastModifiedText: String
     let isCloudSynchronized: Bool
+
+    private let jotFileInfo: JotFile.Info
+
+    init(
+        jotFileInfo: JotFile.Info,
+        isCloudSynchronized: Bool
+    ) {
+        previewImage = nil
+        name = jotFileInfo.name
+        lastModifiedText = jotFileInfo.modificationDate.map {
+            DateFormatter.localizedString(
+                from: $0,
+                dateStyle: .long,
+                timeStyle: .short
+            )
+        } ?? String()
+        self.isCloudSynchronized = isCloudSynchronized
+        self.jotFileInfo = jotFileInfo
+    }
+
+    func toJotFileInfo() -> JotFile.Info {
+        jotFileInfo
+    }
 }

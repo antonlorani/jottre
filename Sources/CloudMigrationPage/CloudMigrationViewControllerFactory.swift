@@ -21,7 +21,7 @@ import UIKit
 @MainActor
 protocol CloudMigrationViewControllerFactoryProtocol: Sendable {
 
-    func make(coordinator: CloudMigrationCoordinator) -> UIViewController
+    func make(viewModel: CloudMigrationViewModel) -> UIViewController
 }
 
 struct CloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol {
@@ -29,9 +29,9 @@ struct CloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryP
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
-    func make(coordinator: CloudMigrationCoordinator) -> UIViewController {
+    func make(viewModel: CloudMigrationViewModel) -> UIViewController {
         PageViewController(
-            viewModel: CloudMigrationViewModel(coordinator: coordinator),
+            viewModel: viewModel,
             textBarButtonItemFactory: textBarButtonItemFactory,
             symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )

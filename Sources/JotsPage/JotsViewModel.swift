@@ -97,7 +97,7 @@ final class JotsViewModel: PageViewModel {
 
         jotsTask = Task { [weak self] in
             do {
-                for try await jotFileInfos in try repository.getJotFiles() {
+                for try await jotFileInfos in repository.getJotFiles() {
                     self?.handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {

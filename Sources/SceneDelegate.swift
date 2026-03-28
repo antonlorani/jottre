@@ -151,6 +151,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
                 repository: CloudMigrationRepository(
                     fileService: fileService,
+                    jotFileService: jotFileService,
                     defaultsService: defaultsService
                 ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
