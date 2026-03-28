@@ -18,29 +18,33 @@
 
 import Foundation
 
-extension AsyncStream where Element: Sendable {
+extension AsyncSequence where Self: Sendable, Element: Sendable {
 
     func debounce(
         for seconds: TimeInterval
     ) -> AsyncStream<Element> {
         AsyncStream<Element> { continuation in
-            let task = Task {
+            let task = Task { [self] in
                 var currentTask: Task<Void, Never>?
 
-                for await value in self {
-                    currentTask?.cancel()
-                    let captured = value
-                    currentTask = Task {
-                        do {
-                            try await Task.sleep(nanoseconds: UInt64(seconds * Double(NSEC_PER_SEC)))
-                            guard !Task.isCancelled else {
-                                return
+                do {
+                    for try await value in self {
+                        currentTask?.cancel()
+                        let captured = value
+                        currentTask = Task {
+                            do {
+                                try await Task.sleep(nanoseconds: UInt64(seconds * Double(NSEC_PER_SEC)))
+                                guard !Task.isCancelled else {
+                                    return
+                                }
+                                continuation.yield(captured)
+                            } catch {
+                                /* no-op */
                             }
-                            continuation.yield(captured)
-                        } catch {
-                            /* no-op */
                         }
                     }
+                } catch {
+                    /* Upstream sequence threw — finish gracefully */
                 }
 
                 await currentTask?.value

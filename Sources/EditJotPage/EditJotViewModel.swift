@@ -106,8 +106,6 @@ final class EditJotViewModel: Sendable {
         isEditingContinuation.yield(false)
         #endif
 
-        isEditingContinuation.yield(true)
-
         let (drawingUpdate, drawingUpdateContinuation) = AsyncStream.makeStream(
             of: PKDrawing.self,
             bufferingPolicy: .bufferingNewest(1)
@@ -115,7 +113,7 @@ final class EditJotViewModel: Sendable {
         self.drawingUpdateContinuation = drawingUpdateContinuation
 
         drawingUpdateTask = Task.detached {
-            for await drawing in drawingUpdate.debounce(for: 0.3) {
+            for await drawing in drawingUpdate.dropFirst().debounce(for: 0.3) {
                 do {
                     let jot = Jot.makeEmpty()
                     let jotFile = JotFile(
