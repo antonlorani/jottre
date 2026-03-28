@@ -42,10 +42,10 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
 
         let isICloudEnabled = try await fileService.cloudDocumentsDirectory() != nil
         if let wasICloudEnabled = defaultsService.getValue(.isICloudEnabled) {
-            if wasICloudEnabled != isICloudEnabled {
-                return true
-            }
-        } else if !isICloudEnabled {
+            return wasICloudEnabled != isICloudEnabled
+        }
+
+        if !isICloudEnabled {
             defaultsService.set(.isICloudEnabled, value: false)
         }
 
