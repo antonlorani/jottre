@@ -19,7 +19,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane bump_version
 ```
 
-Bump version from merge commit, commit Info.plist update, and push tag
+Bump version from merge commit and push tag
 
 ----
 
