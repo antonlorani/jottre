@@ -201,6 +201,7 @@ platform :ios do
             api_key: options[:api_key],
             submit_for_review: false,
             automatic_release: false,
+            precheck_include_in_app_purchases: false,
             skip_metadata: true,
             skip_screenshots: true
         )
@@ -311,6 +312,7 @@ platform :mac do
             api_key: options[:api_key],
             submit_for_review: false,
             automatic_release: false,
+            precheck_include_in_app_purchases: false,
             skip_metadata: true,
             skip_screenshots: true
         )
