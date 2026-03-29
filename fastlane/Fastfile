@@ -250,7 +250,7 @@ platform :mac do
 
         match(
             type: 'development',
-            platform: 'macos',
+            platform: 'catalyst',
             api_key: options[:api_key],
             readonly: readonly
         )
