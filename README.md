@@ -9,6 +9,9 @@ Simple and minimalistic handwriting app across Apple platforms.
 
 **Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319)**
 
+> [!IMPORTANT]
+> Modernization efforts are currently ongoing in `master`. Checkout the `v1.5` tag for viewing the current AppStore version.
+
 ## License
 
 Copyright (C) 2021-2026 Anton Lorani
