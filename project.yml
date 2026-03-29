@@ -27,6 +27,10 @@ options:
     - uk
     - vi
 
+settings:
+  base:
+    DEVELOPMENT_TEAM: Y78RPE9KK3
+
 targets:
   Jottre:
     type: application
@@ -68,7 +72,6 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre
         PRODUCT_NAME: Jottre
-        DEVELOPMENT_TEAM: Y78RPE9KK3
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
