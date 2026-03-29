@@ -43,16 +43,12 @@ def make_options(options = {})
     }.merge(options)
 end
 
-def next_build_number(api_key:, platform:, version: nil)
-    args = {
-        api_key: api_key,
-        live: false,
-        platform: platform,
-        initial_build_number: 0
-    }
-    args[:version] = version if version
+def release_build_number(platform:)
+    platform_suffix = platform == 'osx' ? '2' : '1'
+    build_number = "#{Time.now.utc.strftime('%Y%m%d%H%M%S%L')}#{platform_suffix}"
 
-    (app_store_build_number(**args).to_i + 1).to_s
+    UI.message("Using timestamp build number #{build_number}")
+    build_number
 end
 
 def manual_signing_xcargs(identity:, provisioning_profile:)
@@ -177,8 +173,7 @@ platform :ios do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: next_build_number(
-                api_key: options[:api_key],
+            value: release_build_number(
                 platform: 'ios'
             )
         )
@@ -290,8 +285,7 @@ platform :mac do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: next_build_number(
-                api_key: options[:api_key],
+            value: release_build_number(
                 platform: 'osx'
             )
         )
