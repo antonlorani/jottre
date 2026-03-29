@@ -144,7 +144,8 @@ platform :ios do
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'generic/platform=iOS',
-            export_method: 'app-store'
+            export_method: 'app-store',
+            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
         )
 
         upload_to_app_store(
@@ -243,7 +244,8 @@ platform :mac do
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'platform=macOS,variant=Mac Catalyst',
-            export_method: 'app-store'
+            export_method: 'app-store',
+            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
         )
 
         upload_to_app_store(
