@@ -43,16 +43,16 @@ def make_options(options = {})
     }.merge(options)
 end
 
-def next_build_number(api_key:, version:, platform:)
-    latest_build_number = app_store_build_number(
+def next_build_number(api_key:, platform:, version: nil)
+    args = {
         api_key: api_key,
         live: false,
-        version: version,
         platform: platform,
         initial_build_number: 0
-    )
+    }
+    args[:version] = version if version
 
-    (latest_build_number.to_i + 1).to_s
+    (app_store_build_number(**args).to_i + 1).to_s
 end
 
 def manual_signing_xcargs(identity:, provisioning_profile:)
@@ -179,7 +179,6 @@ platform :ios do
             key: 'CFBundleVersion',
             value: next_build_number(
                 api_key: options[:api_key],
-                version: version,
                 platform: 'ios'
             )
         )
@@ -293,7 +292,6 @@ platform :mac do
             key: 'CFBundleVersion',
             value: next_build_number(
                 api_key: options[:api_key],
-                version: version,
                 platform: 'osx'
             )
         )
