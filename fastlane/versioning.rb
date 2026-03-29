@@ -28,12 +28,13 @@ module Versioning
         `git describe --exact-match --tags HEAD 2>/dev/null || true`.strip == tag
     end
 
-    # Returns the next version bump strategy suitable since the last tag.
+    # Returns the next version bump strategy suitable since the last tag, or
+    # nil if no version marker is present.
     def self.bump_strategy(since_tag:)
         range = since_tag ? "#{since_tag}..HEAD" : 'HEAD'
         subjects = `git log #{range} --pretty=format:'%s'`.strip
 
-        strategy = 'patch'
+        strategy = nil
         subjects.each_line do |line|
             line = line.strip
             next if line.empty?
@@ -43,6 +44,8 @@ module Versioning
                 break
             elsif line.match?(/^minor:/i) && strategy != 'major'
                 strategy = 'minor'
+            elsif line.match?(/^patch:/i) && strategy.nil?
+                strategy = 'patch'
             end
         end
         strategy
