@@ -42,6 +42,10 @@ targets:
       path: Resources/Info.plist
       properties:
         UILaunchScreen: {}
+        LSApplicationQueriesSchemes:
+          - shareddocuments
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
           UISceneConfigurations:

@@ -18,28 +18,20 @@
 
 import Foundation
 
-protocol SettingsRepositoryProtocol: Sendable {
+protocol BundleServiceProtocol: Sendable {
 
-    func shouldShowEnableICloudButton() -> Bool
-
-    func appVersion() -> String
+    func shortVersionString() -> String?
 }
 
-struct SettingsRepository: SettingsRepositoryProtocol {
+struct BundleService: BundleServiceProtocol {
 
-    private let fileService: FileServiceProtocol
-    private let bundleService: BundleServiceProtocol
+    private let bundle: Bundle
 
-    init(fileService: FileServiceProtocol, bundleService: BundleServiceProtocol) {
-        self.fileService = fileService
-        self.bundleService = bundleService
+    init(bundle: Bundle) {
+        self.bundle = bundle
     }
 
-    func shouldShowEnableICloudButton() -> Bool {
-        !fileService.isICloudEnabled()
-    }
-
-    func appVersion() -> String {
-        bundleService.shortVersionString() ?? "-"
+    func shortVersionString() -> String? {
+        bundle.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 }

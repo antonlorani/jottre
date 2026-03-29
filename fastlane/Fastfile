@@ -38,7 +38,7 @@ def make_options(options = {})
     }.merge(options)
 end
 
-desc 'Bump version from merge commit, commit Info.plist update, and push tag'
+desc 'Bump version from merge commit and push tag'
 lane :bump_version do
     tag = Versioning.latest_tag
 
@@ -52,18 +52,6 @@ lane :bump_version do
     )
 
     UI.message("#{current} → #{new_version} (#{bump_strategy} version bump)")
-
-    set_info_plist_value(
-        path: INFO_PLIST,
-        key: 'CFBundleShortVersionString',
-        value: new_version
-    )
-
-    git_commit(
-        path: INFO_PLIST,
-        message: "Bump version to #{new_version} [skip ci]"
-    )
-    push_to_git_remote
 
     add_git_tag(tag: new_version)
     push_git_tags
@@ -132,6 +120,15 @@ platform :ios do
             platform: 'ios',
             api_key: options[:api_key],
             readonly: true
+        )
+
+        version = Versioning.latest_tag
+        UI.user_error!('No version tag found') unless version
+
+        set_info_plist_value(
+            path: INFO_PLIST,
+            key: 'CFBundleShortVersionString',
+            value: version
         )
 
         set_info_plist_value(
@@ -221,6 +218,15 @@ platform :mac do
             platform: 'ios',
             api_key: options[:api_key],
             readonly: true
+        )
+
+        version = Versioning.latest_tag
+        UI.user_error!('No version tag found') unless version
+
+        set_info_plist_value(
+            path: INFO_PLIST,
+            key: 'CFBundleShortVersionString',
+            value: version
         )
 
         set_info_plist_value(
