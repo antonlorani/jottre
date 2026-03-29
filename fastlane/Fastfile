@@ -312,8 +312,12 @@ platform :mac do
             skip_package_ipa: true
         )
 
+        pkg_path = Dir.glob(File.join(Dir.tmpdir, 'gym_output*', '*.pkg')).max_by { |f| File.mtime(f) }
+        UI.user_error!('No .pkg found in gym export output') unless pkg_path
+
         upload_to_app_store(
             api_key: options[:api_key],
+            pkg: pkg_path,
             submit_for_review: false,
             automatic_release: false,
             precheck_include_in_app_purchases: false,
