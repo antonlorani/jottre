@@ -22,6 +22,10 @@ default_platform(:ios)
 
 SCHEME = 'Jottre'
 INFO_PLIST = 'Resources/Info.plist'
+APP_IDENTIFIER = 'com.antonlorani.jottre'
+TEAM_ID = 'Y78RPE9KK3'
+APPLE_DISTRIBUTION_IDENTITY = 'Apple Distribution'
+APP_STORE_PROFILE = "match AppStore #{APP_IDENTIFIER}"
 
 NO_SIGN_XCARGS = "CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO"
 
@@ -48,6 +52,25 @@ def next_build_number(api_key:, version:, platform:)
     )
 
     (latest_build_number.to_i + 1).to_s
+end
+
+def manual_signing_xcargs(identity:, provisioning_profile:)
+    [
+        'CODE_SIGN_STYLE=Manual',
+        "DEVELOPMENT_TEAM=#{TEAM_ID}",
+        "CODE_SIGN_IDENTITY='#{identity}'",
+        "PROVISIONING_PROFILE_SPECIFIER='#{provisioning_profile}'"
+    ].join(' ')
+end
+
+def manual_signing_export_options(provisioning_profile:)
+    {
+        signingStyle: 'manual',
+        teamID: TEAM_ID,
+        provisioningProfiles: {
+            APP_IDENTIFIER => provisioning_profile
+        }
+    }
 end
 
 desc 'Bump version from merge commit and push tag'
@@ -164,8 +187,14 @@ platform :ios do
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'generic/platform=iOS',
+            xcargs: manual_signing_xcargs(
+                identity: APPLE_DISTRIBUTION_IDENTITY,
+                provisioning_profile: APP_STORE_PROFILE
+            ),
             export_method: 'app-store',
-            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
+            export_options: manual_signing_export_options(
+                provisioning_profile: APP_STORE_PROFILE
+            )
         )
 
         upload_to_app_store(
@@ -268,8 +297,14 @@ platform :mac do
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'platform=macOS,variant=Mac Catalyst',
+            xcargs: manual_signing_xcargs(
+                identity: APPLE_DISTRIBUTION_IDENTITY,
+                provisioning_profile: APP_STORE_PROFILE
+            ),
             export_method: 'app-store',
-            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
+            export_options: manual_signing_export_options(
+                provisioning_profile: APP_STORE_PROFILE
+            )
         )
 
         upload_to_app_store(
