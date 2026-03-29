@@ -26,6 +26,7 @@ APP_IDENTIFIER = 'com.antonlorani.jottre'
 TEAM_ID = 'Y78RPE9KK3'
 APPLE_DISTRIBUTION_IDENTITY = 'Apple Distribution'
 APP_STORE_PROFILE = "match AppStore #{APP_IDENTIFIER}"
+CATALYST_APP_STORE_PROFILE = "match AppStore #{APP_IDENTIFIER} catalyst"
 
 NO_SIGN_XCARGS = "CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO"
 
@@ -63,12 +64,12 @@ def manual_signing_xcargs(identity:, provisioning_profile:)
     ].join(' ')
 end
 
-def manual_signing_export_options(provisioning_profile:)
+def manual_signing_export_options(provisioning_profile:, bundle_id: APP_IDENTIFIER)
     {
         signingStyle: 'manual',
         teamID: TEAM_ID,
         provisioningProfiles: {
-            APP_IDENTIFIER => provisioning_profile
+            bundle_id => provisioning_profile
         }
     }
 end
@@ -246,16 +247,18 @@ platform :mac do
     lane :sync_profiles do |options|
         options = make_options(options)
         readonly = options.fetch(:readonly, true)
+        force = options.fetch(:force, false)
 
         match(
             type: 'development',
-            platform: 'ios',
+            platform: 'macos',
             api_key: options[:api_key],
             readonly: readonly
         )
         match(
             type: 'appstore',
-            platform: 'ios',
+            platform: 'catalyst',
+            additional_cert_types: ['mac_installer_distribution'],
             api_key: options[:api_key],
             readonly: readonly
         )
@@ -268,7 +271,8 @@ platform :mac do
         setup_ci
         match(
             type: 'appstore',
-            platform: 'ios',
+            platform: 'catalyst',
+            additional_cert_types: ['mac_installer_distribution'],
             api_key: options[:api_key],
             readonly: true
         )
@@ -300,12 +304,14 @@ platform :mac do
             destination: 'platform=macOS,variant=Mac Catalyst',
             xcargs: manual_signing_xcargs(
                 identity: APPLE_DISTRIBUTION_IDENTITY,
-                provisioning_profile: APP_STORE_PROFILE
+                provisioning_profile: CATALYST_APP_STORE_PROFILE
             ),
             export_method: 'app-store',
             export_options: manual_signing_export_options(
-                provisioning_profile: APP_STORE_PROFILE
-            )
+                provisioning_profile: CATALYST_APP_STORE_PROFILE,
+                bundle_id: "#{APP_IDENTIFIER}.macos"
+            ),
+            skip_package_ipa: true
         )
 
         upload_to_app_store(
