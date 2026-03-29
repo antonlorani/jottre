@@ -115,6 +115,7 @@ platform :ios do
     lane :distribute do |options|
         options = make_options(options)
 
+        setup_ci
         match(
             type: 'appstore',
             platform: 'ios',
@@ -213,6 +214,7 @@ platform :mac do
     lane :distribute do |options|
         options = make_options(options)
 
+        setup_ci
         match(
             type: 'appstore',
             platform: 'ios',
