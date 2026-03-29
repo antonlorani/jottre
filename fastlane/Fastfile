@@ -125,6 +125,8 @@ platform :ios do
         version = Versioning.latest_tag
         UI.user_error!('No version tag found') unless version
 
+        generate_project
+
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleShortVersionString',
@@ -136,8 +138,6 @@ platform :ios do
             key: 'CFBundleVersion',
             value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
         )
-
-        generate_project
 
         gym(
             scheme: SCHEME,
@@ -223,6 +223,8 @@ platform :mac do
         version = Versioning.latest_tag
         UI.user_error!('No version tag found') unless version
 
+        generate_project
+
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleShortVersionString',
@@ -234,8 +236,6 @@ platform :mac do
             key: 'CFBundleVersion',
             value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
         )
-
-        generate_project
 
         gym(
             scheme: SCHEME,
