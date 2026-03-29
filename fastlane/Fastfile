@@ -290,24 +290,23 @@ platform :mac do
             )
         )
 
-        gym(
+        pkg_path = gym(
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'platform=macOS,variant=Mac Catalyst',
+            catalyst_platform: 'macos',
             xcargs: manual_signing_xcargs(
                 identity: APPLE_DISTRIBUTION_IDENTITY,
                 provisioning_profile: CATALYST_APP_STORE_PROFILE
             ),
             export_method: 'app-store',
             export_options: manual_signing_export_options(
-                provisioning_profile: CATALYST_APP_STORE_PROFILE,
-                bundle_id: "#{APP_IDENTIFIER}.macos"
+                provisioning_profile: CATALYST_APP_STORE_PROFILE
             ),
-            skip_package_ipa: true
+            output_directory: 'build'
         )
 
-        pkg_path = Dir.glob(File.join(Dir.tmpdir, 'gym_output*', '*.pkg')).max_by { |f| File.mtime(f) }
-        UI.user_error!('No .pkg found in gym export output') unless pkg_path
+        UI.user_error!("Expected gym to export a .pkg, got #{pkg_path || 'nil'}") unless pkg_path&.end_with?('.pkg')
 
         upload_to_app_store(
             api_key: options[:api_key],
