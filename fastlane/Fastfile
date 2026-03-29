@@ -38,23 +38,39 @@ def make_options(options = {})
     }.merge(options)
 end
 
+def next_build_number(api_key:, version:, platform:)
+    latest_build_number = app_store_build_number(
+        api_key: api_key,
+        live: false,
+        version: version,
+        platform: platform,
+        initial_build_number: 0
+    )
+
+    (latest_build_number.to_i + 1).to_s
+end
+
 desc 'Bump version from merge commit and push tag'
 lane :bump_version do
     tag = Versioning.latest_tag
 
     UI.user_error!("HEAD is already tagged as #{tag}.") if tag && Versioning.head_tagged?(tag)
 
-    current = tag || get_info_plist_value(path: INFO_PLIST, key: 'CFBundleShortVersionString')
     bump_strategy = Versioning.bump_strategy(since_tag: tag)
-    new_version = Versioning.bump_version(
-        current: current,
-        bump_strategy: bump_strategy
-    )
+    if bump_strategy
+        current = tag || get_info_plist_value(path: INFO_PLIST, key: 'CFBundleShortVersionString')
+        new_version = Versioning.bump_version(
+            current: current,
+            bump_strategy: bump_strategy
+        )
 
-    UI.message("#{current} → #{new_version} (#{bump_strategy} version bump)")
+        UI.message("#{current} → #{new_version} (#{bump_strategy} version bump)")
 
-    add_git_tag(tag: new_version)
-    push_git_tags
+        add_git_tag(tag: new_version)
+        push_git_tags
+    else
+        UI.message('No version marker found; keeping the current marketing version.')
+    end
 end
 
 platform :ios do
@@ -137,14 +153,19 @@ platform :ios do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
+            value: next_build_number(
+                api_key: options[:api_key],
+                version: version,
+                platform: 'ios'
+            )
         )
 
         gym(
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'generic/platform=iOS',
-            export_method: 'app-store'
+            export_method: 'app-store',
+            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
         )
 
         upload_to_app_store(
@@ -236,14 +257,19 @@ platform :mac do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
+            value: next_build_number(
+                api_key: options[:api_key],
+                version: version,
+                platform: 'osx'
+            )
         )
 
         gym(
             scheme: SCHEME,
             configuration: 'Release',
             destination: 'platform=macOS,variant=Mac Catalyst',
-            export_method: 'app-store'
+            export_method: 'app-store',
+            xcargs: "CODE_SIGN_IDENTITY='Apple Distribution'"
         )
 
         upload_to_app_store(
