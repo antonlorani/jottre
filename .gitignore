@@ -1,2 +1,3 @@
-exports/*
-resources/*
+Jottre.xcodeproj
+Jottre.entitlements
+**/.DS_Store

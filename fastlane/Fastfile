@@ -1,0 +1,249 @@
+# frozen_string_literal: true
+
+# Jottre: Minimalistic jotting for iPhone, iPad and Mac.
+# Copyright (C) 2021-2026 Anton Lorani
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+require_relative 'versioning'
+
+default_platform(:ios)
+
+SCHEME = 'Jottre'
+INFO_PLIST = 'Resources/Info.plist'
+
+NO_SIGN_XCARGS = "CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO"
+
+def make_options(options = {})
+    api_key = app_store_connect_api_key(
+        key_id: ENV.fetch('APP_STORE_CONNECT_API_KEY_ID'),
+        issuer_id: ENV.fetch('APP_STORE_CONNECT_API_ISSUER_ID'),
+        key_content: ENV.fetch('APP_STORE_CONNECT_API_KEY_CONTENT'),
+        is_key_content_base64: true
+    )
+
+    {
+        api_key: api_key
+    }.merge(options)
+end
+
+desc 'Bump version from merge commit, commit Info.plist update, and push tag'
+lane :bump_version do
+    tag = Versioning.latest_tag
+
+    UI.user_error!("HEAD is already tagged as #{tag}.") if tag && Versioning.head_tagged?(tag)
+
+    current = tag || get_info_plist_value(path: INFO_PLIST, key: 'CFBundleShortVersionString')
+    bump_strategy = Versioning.bump_strategy(since_tag: tag)
+    new_version = Versioning.bump_version(
+        current: current,
+        bump_strategy: bump_strategy
+    )
+
+    UI.message("#{current} → #{new_version} (#{bump_strategy} version bump)")
+
+    set_info_plist_value(
+        path: INFO_PLIST,
+        key: 'CFBundleShortVersionString',
+        value: new_version
+    )
+
+    git_commit(
+        path: INFO_PLIST,
+        message: "Bump version to #{new_version} [skip ci]"
+    )
+    push_to_git_remote
+
+    add_git_tag(tag: new_version)
+    push_git_tags
+end
+
+platform :ios do
+    desc 'Generate the Xcode project using XcodeGen'
+    lane :generate_project do
+        sh('xcodegen generate --spec ../project.yml')
+    end
+
+    desc 'Verify iOS/iPadOS debug build'
+    lane :build_debug do
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Debug',
+            destination: 'generic/platform=iOS',
+            xcargs: NO_SIGN_XCARGS,
+            skip_package_ipa: true,
+            output_directory: 'build'
+        )
+    end
+
+    desc 'Verify iOS/iPadOS release build'
+    lane :build_release do
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Release',
+            destination: 'generic/platform=iOS',
+            xcargs: NO_SIGN_XCARGS,
+            skip_package_ipa: true,
+            output_directory: 'build'
+        )
+    end
+
+    desc 'Generate/sync development and App Store provisioning profiles for iOS/iPadOS'
+    lane :sync_profiles do |options|
+        options = make_options(options)
+        readonly = options.fetch(:readonly, true)
+
+        match(
+            type: 'development',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: readonly
+        )
+
+        match(
+            type: 'appstore',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: readonly
+        )
+    end
+
+    desc 'Build and upload iOS/iPadOS release to App Store Connect'
+    lane :distribute do |options|
+        options = make_options(options)
+
+        match(
+            type: 'appstore',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: true
+        )
+
+        set_info_plist_value(
+            path: INFO_PLIST,
+            key: 'CFBundleVersion',
+            value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
+        )
+
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Release',
+            destination: 'generic/platform=iOS',
+            export_method: 'app-store'
+        )
+
+        upload_to_app_store(
+            api_key: options[:api_key],
+            submit_for_review: false,
+            automatic_release: false,
+            skip_metadata: true,
+            skip_screenshots: true
+        )
+    end
+end
+
+platform :mac do
+    desc 'Generate the Xcode project using XcodeGen'
+    lane :generate_project do
+        sh('xcodegen generate --spec ../project.yml')
+    end
+
+    desc 'Verify macOS debug build'
+    lane :build_debug do
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Debug',
+            destination: 'platform=macOS,variant=Mac Catalyst',
+            xcargs: NO_SIGN_XCARGS,
+            skip_package_ipa: true,
+            output_directory: 'build'
+        )
+    end
+
+    desc 'Verify macOS release build'
+    lane :build_release do
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Release',
+            destination: 'platform=macOS,variant=Mac Catalyst',
+            xcargs: NO_SIGN_XCARGS,
+            skip_package_ipa: true,
+            output_directory: 'build'
+        )
+    end
+
+    desc 'Generate/sync development and App Store provisioning profiles for macOS (Mac Catalyst)'
+    lane :sync_profiles do |options|
+        options = make_options(options)
+        readonly = options.fetch(:readonly, true)
+
+        match(
+            type: 'development',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: readonly
+        )
+        match(
+            type: 'appstore',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: readonly
+        )
+    end
+
+    desc 'Build and upload macOS release to App Store Connect'
+    lane :distribute do |options|
+        options = make_options(options)
+
+        match(
+            type: 'appstore',
+            platform: 'ios',
+            api_key: options[:api_key],
+            readonly: true
+        )
+
+        set_info_plist_value(
+            path: INFO_PLIST,
+            key: 'CFBundleVersion',
+            value: ENV.fetch('GITHUB_RUN_NUMBER', '1')
+        )
+
+        generate_project
+
+        gym(
+            scheme: SCHEME,
+            configuration: 'Release',
+            destination: 'platform=macOS,variant=Mac Catalyst',
+            export_method: 'app-store'
+        )
+
+        upload_to_app_store(
+            api_key: options[:api_key],
+            submit_for_review: false,
+            automatic_release: false,
+            skip_metadata: true,
+            skip_screenshots: true
+        )
+    end
+end

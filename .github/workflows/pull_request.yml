@@ -1,0 +1,87 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, reopened, synchronize, ready_for_review]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  soundness:
+    name: Soundness
+    uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
+    with:
+      api_breakage_check_enabled: false
+      broken_symlink_check_enabled: false
+      docs_check_enabled: false
+      python_lint_check_enabled: false
+      shell_check_enabled: false
+      unacceptable_language_check_enabled: false
+      yamllint_check_enabled: false
+
+  lint-ruby:
+    name: Lint Ruby
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bundle exec rubocop
+
+  build-ios-debug:
+    name: Build iOS/iPadOS Debug
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - run: bundle exec fastlane ios build_debug
+
+  build-ios-release:
+    name: Build iOS/iPadOS Release
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - run: bundle exec fastlane ios build_release
+
+  build-macos-debug:
+    name: Build macOS Debug
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - run: bundle exec fastlane mac build_debug
+
+  build-macos-release:
+    name: Build macOS Release
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - run: bundle exec fastlane mac build_release

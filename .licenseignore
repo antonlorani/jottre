@@ -1,0 +1,17 @@
+.github
+README.md
+.gitignore
+*.md
+*.json
+*.yml
+*.yaml
+*.rb
+Jottre.xcodeproj
+Resources
+hooks
+fastlane
+Gemfile
+Gemfile.lock
+Brewfile
+LICENSE
+.ruby-version

@@ -1,79 +1,30 @@
-
-
 <p style="text-align: center; max-width: 500px; height: auto;">
 <p align="center" >
-  <img src="images/app_icon.png" style="border-radius: 50px; overflow: hidden;" width=300 height=auto>
+  <img src="Resources/Assets.xcassets/AppIcon.appiconset/icon_1024x1024.png" style="border-radius: 50px; overflow: hidden;" width=300 height=auto>
 </p>
-
-
-**Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319)**
 
 # Jottre
 
-Simple and minimalistic handwriting app for iPadOS (and iOS, macOS).
+Simple and minimalistic handwriting app across Apple platforms.
 
-At the moment the full version of Jottre only supports iPadOS. This means that 'Jottre for iPhone' and 'Jottre for Mac' are intended as read-only applications.
+**Available on the [App Store](https://apps.apple.com/us/app/jottre/id1550272319)**
 
+> [!IMPORTANT]
+> Modernization efforts are currently ongoing in `master`. Checkout the `v1.5` tag for viewing the current AppStore version.
 
+## License
 
-## Features
+Copyright (C) 2021-2026 Anton Lorani
 
-- Builds on the powerful PencilKit framework (iPadOS only)
-- iCloud documents synchronization
-- Support for dark and light mode
-- Minimalistic design
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-
-## Update 1.5
-
-- Added support for multi-window
-
-
-## Preview
-
-<p align="center" >
-  <img src="images/mini.jpg" style="width: calc(100% - 20px);" height=auto>
-</p>
-
-<p align="center" >
-  <img src="images/cloud.jpg" style="width: calc(100% - 20px);" height=auto>
-</p>
-
-
-
-<p align="center" >
-  <img src="images/mode.jpg" style="width: calc(100% - 20px);" height=auto>
-</p>
-
-
-
-
-
-## Known issues
-
-- [x] Drawings are not rendered in the correct userInterfaceStyle (when starting the app)
-- [x] iCloud synchronization is not fast enough (documents are not uploaded directly)
-- [x] Animation of CollectionViewCells (Deleting, Inserting...) not implemented
-- [x] Deleting items takes too much time
-- [x] If removing items from collectionview, certain thumbnails were not shown correctly
-- [x] Changing the userInterface style will not affect upcoming application-scenes
-- [x] As the ViewControllers widths shrunk the PencilKit Toolbar removes the forward/backwards button
-
-## Up next
-
-- Support for Widgets
-> How to render the thumbnails, so that most of the content is visible inside the viewable Widget area
-
-- PDF Viewer
-- PDF AnkAnnotations (Drawing on PDF via PDFKit)
-
-  
-
-
-
-
-
-
-
-`© Anton Lorani, 2021`
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
