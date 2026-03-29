@@ -64,7 +64,6 @@ targets:
     entitlements:
       path: Jottre.entitlements
       properties:
-        com.apple.security.app-sandbox: true
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.files.downloads.read-write: true
         com.apple.developer.icloud-container-identifiers:
@@ -85,4 +84,8 @@ targets:
         DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
         BUNDLE_IDENTIFIER_MACCATALYST: com.antonlorani.jottre
         SWIFT_EMIT_LOC_STRINGS: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_APP_SANDBOX: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+        VALIDATE_PRODUCT: YES
     packages: []
