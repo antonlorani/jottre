@@ -81,6 +81,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let fileManager = FileManager.default
         let fileService = FileService(fileManager: fileManager)
         let fileConflictService = FileConflictService(fileManager: fileManager)
+        let bundleService = BundleService(bundle: .main)
         let jotFileService = JotFileService(fileService: fileService)
         let jotFileConflictService = JotFileConflictService(
             fileService: fileService,
@@ -114,7 +115,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ),
             settingsCoordinatorFactory: SettingsCoordinatorFactory(
                 settingsViewControllerFactory: SettingsViewControllerFactory(
-                    repository: SettingsRepository(fileService: fileService),
+                    repository: SettingsRepository(
+                        fileService: fileService,
+                        bundleService: bundleService
+                    ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )

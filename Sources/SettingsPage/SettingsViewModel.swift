@@ -97,7 +97,7 @@ final class SettingsViewModel: PageViewModel {
             ),
             .settingsInfo(
                 name: L10n.Settings.Version.title,
-                value: "2.0.0"
+                value: repository.appVersion()
             ),
         ])
 
