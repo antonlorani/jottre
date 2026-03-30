@@ -24,7 +24,7 @@ final class JotCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .top
         imageView.clipsToBounds = true
         return imageView
     }()
