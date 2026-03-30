@@ -88,6 +88,7 @@ final class JotsCoordinator: NavigationCoordinator {
 
         if let childCoordinator = childCoordinators.first(where: { $0.shouldHandle(url: url) }) {
             viewControllers.append(contentsOf: childCoordinator.handle(url: url))
+            return viewControllers
         }
 
         showCloudMigrationPageIfNeeded()
