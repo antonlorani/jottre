@@ -34,9 +34,7 @@ extension AsyncSequence where Self: Sendable, Element: Sendable {
                         currentTask = Task {
                             do {
                                 try await Task.sleep(nanoseconds: UInt64(seconds * Double(NSEC_PER_SEC)))
-                                guard !Task.isCancelled else {
-                                    return
-                                }
+                                try Task.checkCancellation()
                                 continuation.yield(captured)
                             } catch {
                                 /* no-op */

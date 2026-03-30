@@ -16,20 +16,33 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import UIKit
+
 protocol JotConflictRepositoryProtocol: Sendable {
 
     func resolveVersionConflicts(
         jotFileInfo: JotFile.Info,
         resolvedVersions: [JotFileVersion]
     ) throws
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage?
 }
 
 struct JotConflictRepository: JotConflictRepositoryProtocol {
 
     private let jotFileConflictService: JotFileConflictServiceProtocol
+    private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
 
-    init(jotFileConflictService: JotFileConflictServiceProtocol) {
+    init(
+        jotFileConflictService: JotFileConflictServiceProtocol,
+        jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
+    ) {
         self.jotFileConflictService = jotFileConflictService
+        self.jotFilePreviewImageService = jotFilePreviewImageService
     }
 
     func resolveVersionConflicts(
@@ -40,5 +53,22 @@ struct JotConflictRepository: JotConflictRepositoryProtocol {
             jotFileInfo: jotFileInfo,
             resolvedVersions: resolvedVersions
         )
+    }
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage? {
+        do {
+            let imageData = try await jotFilePreviewImageService.getPreviewImageData(
+                jotFileInfo: jotFileInfo,
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
+            )
+            return UIImage(data: imageData)
+        } catch {
+            return nil
+        }
     }
 }

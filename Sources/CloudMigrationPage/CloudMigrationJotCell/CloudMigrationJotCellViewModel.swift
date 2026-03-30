@@ -18,7 +18,6 @@
 
 import UIKit
 
-@MainActor
 final class CloudMigrationJotCellViewModel: PageCellViewModel {
 
     let name: String
@@ -26,13 +25,19 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
     let isCloudCheckboxOn: Bool
     let onTap: @Sendable () -> Void
 
+    private let cloudMigrationJot: CloudMigrationJotBusinessModel
+    private let repository: CloudMigrationRepositoryProtocol
+
     init(
         cloudMigrationJot: CloudMigrationJotBusinessModel,
+        repository: CloudMigrationRepositoryProtocol,
         onTap: @Sendable @escaping () -> Void
     ) {
         name = cloudMigrationJot.name
         infoText = cloudMigrationJot.lastModifiedText
         isCloudCheckboxOn = cloudMigrationJot.isCloudSynchronized
+        self.cloudMigrationJot = cloudMigrationJot
+        self.repository = repository
         self.onTap = onTap
     }
 
@@ -40,6 +45,27 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
         switch action {
         case .tap:
             onTap()
+        }
+    }
+
+    func getPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage? {
+        let task = Task.detached { [weak self] in
+            guard let self else {
+                return nil as UIImage?
+            }
+            return await self.repository.getPreviewImage(
+                jotFileInfo: self.cloudMigrationJot.toJotFileInfo(),
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
+            )
+        }
+        return await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
         }
     }
 }

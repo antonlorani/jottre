@@ -24,7 +24,7 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .top
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -61,6 +61,14 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
     required init?(coder: NSCoder) {
         assertionFailure("\(#function) has not been implemented")
         return nil
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            loadPreviewImage()
+        }
     }
 
     private func setUpViews() {
@@ -101,11 +109,36 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
         )
     }
 
+    private var viewModel: JotConflictCellViewModel?
+    private var previewImageTask: Task<Void, Never>?
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        previewImageView.image = nil
+    }
+
     func configure(
         viewModel: JotConflictCellViewModel
     ) {
-        previewImageView.image = viewModel.previewImage
-        nameLabel.text = viewModel.title
+        self.viewModel = viewModel
+        nameLabel.text = viewModel.name
         infoLabel.text = viewModel.infoText
+        loadPreviewImage()
+    }
+
+    private func loadPreviewImage() {
+        guard let viewModel else {
+            return
+        }
+        previewImageTask?.cancel()
+        previewImageTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            previewImageView.image = await viewModel.getPreviewImage(
+                userInterfaceStyle: traitCollection.userInterfaceStyle,
+                displayScale: traitCollection.displayScale
+            )
+        }
     }
 }

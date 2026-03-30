@@ -77,7 +77,8 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
             ]
                 + cloudMigrationJots.map { cloudMigrationJot in
                     PageCellItem.cloudMigrationJot(
-                        cloudMigrationJot: cloudMigrationJot
+                        cloudMigrationJot: cloudMigrationJot,
+                        repository: repository,
                     ) { [weak self] in
                         Task { @MainActor in
                             self?.didTapCloudMigrationJot(cloudMigrationJot: cloudMigrationJot)

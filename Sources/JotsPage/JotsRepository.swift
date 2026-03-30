@@ -17,6 +17,7 @@
 */
 
 import Foundation
+import UIKit
 
 protocol JotsRepositoryProtocol: Sendable {
 
@@ -25,19 +26,28 @@ protocol JotsRepositoryProtocol: Sendable {
     func shouldShowEnableICloudButton() -> Bool
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage?
 }
 
 struct JotsRepository: JotsRepositoryProtocol {
 
     private let fileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
+    private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
 
     init(
         fileService: FileServiceProtocol,
-        jotFileService: JotFileServiceProtocol
+        jotFileService: JotFileServiceProtocol,
+        jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
     ) {
         self.fileService = fileService
         self.jotFileService = jotFileService
+        self.jotFilePreviewImageService = jotFilePreviewImageService
     }
 
     func getJotFiles() -> AsyncThrowingStream<[JotFile.Info], Error> {
@@ -82,5 +92,22 @@ struct JotsRepository: JotsRepositoryProtocol {
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
         try jotFileService.duplicate(jotFileInfo: jotFileInfo)
+    }
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage? {
+        do {
+            let imageData = try await jotFilePreviewImageService.getPreviewImageData(
+                jotFileInfo: jotFileInfo,
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
+            )
+            return UIImage(data: imageData)
+        } catch {
+            return nil
+        }
     }
 }

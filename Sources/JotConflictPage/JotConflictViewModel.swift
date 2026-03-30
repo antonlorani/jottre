@@ -38,7 +38,8 @@ final class JotConflictViewModel: PageViewModel, Sendable {
                     sizing: .equalSplit(
                         perRow: jotFileVersions.count,
                         itemHeight: 200
-                    )
+                    ),
+                    repository: repository
                 )
             }
         )

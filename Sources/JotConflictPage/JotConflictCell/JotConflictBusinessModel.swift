@@ -19,13 +19,21 @@
 import UIKit
 
 struct JotConflictBusinessModel: Sendable, Hashable {
-    let previewImage: UIImage?
+
     let name: String
     let lastEditedDateString: String
 
-    init(jotFileVersion: JotFileVersion) {
-        previewImage = nil
+    private let jotFileVersion: JotFileVersion
+
+    init(
+        jotFileVersion: JotFileVersion
+    ) {
         name = jotFileVersion.info.name
         lastEditedDateString = jotFileVersion.localizedNameOfSavingComputer ?? "unknown"
+        self.jotFileVersion = jotFileVersion
+    }
+
+    func toJotFileVersion() -> JotFileVersion {
+        jotFileVersion
     }
 }

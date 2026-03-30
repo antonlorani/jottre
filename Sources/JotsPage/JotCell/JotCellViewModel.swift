@@ -20,26 +20,50 @@ import UIKit
 
 final class JotCellViewModel: PageCellViewModel {
 
-    let jot: JotBusinessModel
-    let infoText: String?
+    let name: String
     let jotMenuConfigurations: [JotMenuConfiguration]
     let onAction: @Sendable () -> Void
 
+    private let jot: JotBusinessModel
+    private let repository: JotsRepositoryProtocol
+
     init(
         jot: JotBusinessModel,
-        infoText: String?,
         jotMenuConfigurations: [JotMenuConfiguration],
+        repository: JotsRepositoryProtocol,
         onAction: @Sendable @escaping () -> Void
     ) {
-        self.jot = jot
-        self.infoText = infoText
+        self.name = jot.name
         self.jotMenuConfigurations = jotMenuConfigurations
         self.onAction = onAction
+        self.jot = jot
+        self.repository = repository
     }
 
     func handle(action: PageCellAction) {
         switch action {
         case .tap: onAction()
+        }
+    }
+
+    func getPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage? {
+        let task = Task.detached { [weak self] in
+            guard let self else {
+                return nil as UIImage?
+            }
+            return await self.repository.getPreviewImage(
+                jotFileInfo: self.jot.toJotFileInfo(),
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
+            )
+        }
+        return await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
         }
     }
 

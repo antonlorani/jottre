@@ -24,7 +24,7 @@ final class JotCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .top
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -53,6 +53,14 @@ final class JotCell: UICollectionViewCell, PageCell {
     required init?(coder: NSCoder) {
         assertionFailure("\(#function) has not been implemented")
         return nil
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            loadPreviewImage()
+        }
     }
 
     private func setUpViews() {
@@ -89,10 +97,35 @@ final class JotCell: UICollectionViewCell, PageCell {
         )
     }
 
+    private var viewModel: JotCellViewModel?
+    private var previewImageTask: Task<Void, Never>?
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        previewImageView.image = nil
+    }
+
     func configure(
         viewModel: JotCellViewModel
     ) {
-        previewImageView.image = viewModel.jot.previewImage
-        nameLabel.text = viewModel.jot.name
+        self.viewModel = viewModel
+        nameLabel.text = viewModel.name
+        loadPreviewImage()
+    }
+
+    private func loadPreviewImage() {
+        guard let viewModel else {
+            return
+        }
+        previewImageTask?.cancel()
+        previewImageTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            previewImageView.image = await viewModel.getPreviewImage(
+                userInterfaceStyle: traitCollection.userInterfaceStyle,
+                displayScale: traitCollection.displayScale
+            )
+        }
     }
 }

@@ -19,6 +19,16 @@
 import UIKit
 
 struct JotBusinessModel: Sendable, Hashable {
-    let previewImage: UIImage?
     let name: String
+
+    private let jotFileInfo: JotFile.Info
+
+    init(jotFileInfo: JotFile.Info) {
+        name = jotFileInfo.name
+        self.jotFileInfo = jotFileInfo
+    }
+
+    func toJotFileInfo() -> JotFile.Info {
+        jotFileInfo
+    }
 }

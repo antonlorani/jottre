@@ -21,6 +21,7 @@ extension PageCellItem {
     @MainActor
     static func cloudMigrationJot(
         cloudMigrationJot: CloudMigrationJotBusinessModel,
+        repository: CloudMigrationRepositoryProtocol,
         onTap: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
@@ -29,6 +30,7 @@ extension PageCellItem {
             sizing: .fullWidth(estimatedHeight: 56),
             viewModel: CloudMigrationJotCellViewModel(
                 cloudMigrationJot: cloudMigrationJot,
+                repository: repository,
                 onTap: onTap
             )
         )

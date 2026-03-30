@@ -23,6 +23,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
 
     private enum Constants {
 
+        static let height = CGFloat(56)
+
         enum Preview {
             static let width = CGFloat(70)
         }
@@ -39,6 +41,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -59,6 +63,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
+        label.numberOfLines = 1
         return label
     }()
 
@@ -67,6 +72,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
+        label.numberOfLines = 1
         return label
     }()
 
@@ -89,6 +95,14 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         return nil
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            loadPreviewImage()
+        }
+    }
+
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
@@ -108,6 +122,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
+            contentView.heightAnchor.constraint(equalToConstant: Constants.height),
+
             previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
@@ -118,14 +134,11 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLine.widthAnchor.constraint(equalToConstant: DesignTokens.Length.separator),
 
-            labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
+            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelContainer.leadingAnchor.constraint(
                 equalTo: separatorLine.trailingAnchor,
                 constant: DesignTokens.Spacing.md
             ),
-            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.bottomAnchor
-                .constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor),
             labelContainer.trailingAnchor.constraint(
                 lessThanOrEqualTo: checkboxImageView.leadingAnchor,
                 constant: -DesignTokens.Spacing.xs
@@ -147,10 +160,37 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         ])
     }
 
-    func configure(viewModel: CloudMigrationJotCellViewModel) {
+    private var viewModel: CloudMigrationJotCellViewModel?
+    private var previewImageTask: Task<Void, Never>?
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
         previewImageView.image = nil
+    }
+
+    func configure(
+        viewModel: CloudMigrationJotCellViewModel
+    ) {
+        self.viewModel = viewModel
         nameLabel.text = viewModel.name
         infoTextLabel.text = viewModel.infoText
         checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.isCloudCheckboxOn)
+        loadPreviewImage()
+    }
+
+    private func loadPreviewImage() {
+        guard let viewModel else {
+            return
+        }
+        previewImageTask?.cancel()
+        previewImageTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            previewImageView.image = await viewModel.getPreviewImage(
+                userInterfaceStyle: traitCollection.userInterfaceStyle,
+                displayScale: traitCollection.displayScale
+            )
+        }
     }
 }

@@ -20,19 +20,44 @@ import UIKit
 
 final class JotConflictCellViewModel: PageCellViewModel {
 
-    let previewImage: UIImage?
-    let title: String
+    let name: String
     let infoText: String
 
+    private let jotConflict: JotConflictBusinessModel
+    private let repository: JotConflictRepositoryProtocol
+
     init(
-        jotConflict: JotConflictBusinessModel
+        jotConflict: JotConflictBusinessModel,
+        repository: JotConflictRepositoryProtocol
     ) {
-        previewImage = jotConflict.previewImage
-        title = jotConflict.name
+        name = jotConflict.name
         infoText = jotConflict.lastEditedDateString
+        self.jotConflict = jotConflict
+        self.repository = repository
     }
 
     func handle(action: PageCellAction) {
         /* no-op */
+    }
+
+    func getPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
+    ) async -> UIImage? {
+        let task = Task.detached { [weak self] in
+            guard let self else {
+                return nil as UIImage?
+            }
+            return await self.repository.getPreviewImage(
+                jotFileInfo: self.jotConflict.toJotFileVersion().info,
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
+            )
+        }
+        return await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
+        }
     }
 }

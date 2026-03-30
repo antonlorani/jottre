@@ -19,7 +19,6 @@
 import UIKit
 
 struct CloudMigrationJotBusinessModel: Sendable, Hashable {
-    let previewImage: UIImage?
     let name: String
     let lastModifiedText: String
     let isCloudSynchronized: Bool
@@ -30,7 +29,6 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
         jotFileInfo: JotFile.Info,
         isCloudSynchronized: Bool
     ) {
-        previewImage = nil
         name = jotFileInfo.name
         lastModifiedText =
             jotFileInfo.modificationDate.map {
