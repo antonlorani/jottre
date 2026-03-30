@@ -20,19 +20,16 @@ import UIKit
 
 final class JotCellViewModel: PageCellViewModel {
 
-    let jot: JotBusinessModel
-    let infoText: String?
+    let name: String
     let jotMenuConfigurations: [JotMenuConfiguration]
     let onAction: @Sendable () -> Void
 
     init(
         jot: JotBusinessModel,
-        infoText: String?,
         jotMenuConfigurations: [JotMenuConfiguration],
         onAction: @Sendable @escaping () -> Void
     ) {
-        self.jot = jot
-        self.infoText = infoText
+        self.name = jot.name
         self.jotMenuConfigurations = jotMenuConfigurations
         self.onAction = onAction
     }

@@ -128,13 +128,9 @@ final class JotsViewModel: PageViewModel {
         }
         itemsContinuation.yield(
             jotFileInfos.map { jotFileInfo in
-                let jot = JotBusinessModel(
-                    previewImage: nil,
-                    name: jotFileInfo.name
-                )
+                let jot = JotBusinessModel(jotFileInfo: jotFileInfo)
                 return .jot(
                     jot: jot,
-                    infoText: nil,
                     jotMenuConfigurations: menuConfigurationFactory.make(
                         onShare: { [weak coordinator] format in
                             Task { @MainActor in

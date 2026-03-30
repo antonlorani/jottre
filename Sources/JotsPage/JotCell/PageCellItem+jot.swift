@@ -16,31 +16,21 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-private struct JotCellItemID: Sendable, Hashable {
-    let jot: JotBusinessModel
-    let infoText: String?
-}
-
 extension PageCellItem {
 
     @MainActor
     static func jot(
         jot: JotBusinessModel,
-        infoText: String?,
         jotMenuConfigurations: [JotMenuConfiguration],
         sizing: PageCellSizingStrategy,
         onAction: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
-            id: JotCellItemID(
-                jot: jot,
-                infoText: infoText
-            ),
+            id: jot,
             cellType: JotCell.self,
             sizing: sizing,
             viewModel: JotCellViewModel(
                 jot: jot,
-                infoText: infoText,
                 jotMenuConfigurations: jotMenuConfigurations,
                 onAction: onAction
             )

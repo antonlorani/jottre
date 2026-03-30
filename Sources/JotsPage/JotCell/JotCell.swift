@@ -92,7 +92,7 @@ final class JotCell: UICollectionViewCell, PageCell {
     func configure(
         viewModel: JotCellViewModel
     ) {
-        previewImageView.image = viewModel.jot.previewImage
-        nameLabel.text = viewModel.jot.name
+        //        previewImageView.image = viewModel.jot.previewImage
+        nameLabel.text = viewModel.name
     }
 }
