@@ -28,6 +28,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedRenameJotCoordinator: Coordinator?
     private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedCloudMigrationCoordinator: Coordinator?
+    private var retainedRevealFileCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
@@ -165,7 +166,12 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func showInFiles(jotFileInfo: JotFile.Info) {
-        navigation.open(url: RevealFileURL(fileURL: jotFileInfo.url))
+        let revealFileCoordinator = RevealFileCoordinator(jotFileInfo: jotFileInfo)
+        retainedRevealFileCoordinator = revealFileCoordinator
+        revealFileCoordinator.onEnd = { [weak self] in
+            self?.retainedRevealFileCoordinator = nil
+        }
+        revealFileCoordinator.start()
     }
 
     private func showCloudMigrationPageIfNeeded() {
