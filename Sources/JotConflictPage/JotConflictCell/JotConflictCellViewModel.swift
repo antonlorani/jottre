@@ -23,9 +23,6 @@ final class JotConflictCellViewModel: PageCellViewModel {
     let name: String
     let infoText: String
 
-    private var previewImageContinuation: AsyncStream<UIImage?>.Continuation?
-    private var previewImageTask: Task<Void, Never>?
-
     private let jotConflict: JotConflictBusinessModel
     private let repository: JotConflictRepositoryProtocol
 
@@ -43,44 +40,22 @@ final class JotConflictCellViewModel: PageCellViewModel {
         /* no-op */
     }
 
-    func didLoad(
+    func getPreviewImage(
         userInterfaceStyle: UIUserInterfaceStyle
-    ) -> AsyncStream<UIImage?> {
-        previewImageContinuation?.finish()
-        let (stream, continuation) = AsyncStream.makeStream(
-            of: UIImage?.self,
-            bufferingPolicy: .bufferingNewest(1)
-        )
-        previewImageContinuation = continuation
-        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
-        return stream
-    }
-
-    func didChangeTraitCollection(
-        userInterfaceStyle: UIUserInterfaceStyle
-    ) {
-        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
-    }
-
-    private func loadPreviewImage(
-        userInterfaceStyle: UIUserInterfaceStyle
-    ) {
-        previewImageTask?.cancel()
-        let previewImageContinuation = previewImageContinuation
-        previewImageTask = Task.detached { [weak self] in
+    ) async -> UIImage? {
+        let task = Task.detached { [weak self] in
             guard let self else {
-                return
+                return nil as UIImage?
             }
-            let previewImage = await repository.getPreviewImage(
-                jotFileInfo: jotConflict.toJotFileVersion().info,
+            return await self.repository.getPreviewImage(
+                jotFileInfo: self.jotConflict.toJotFileVersion().info,
                 userInterfaceStyle: userInterfaceStyle
             )
-            previewImageContinuation?.yield(previewImage)
         }
-    }
-
-    deinit {
-        previewImageTask?.cancel()
-        previewImageContinuation?.finish()
+        return await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
+        }
     }
 }

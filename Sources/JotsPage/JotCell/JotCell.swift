@@ -59,7 +59,7 @@ final class JotCell: UICollectionViewCell, PageCell {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            viewModel?.didChangeTraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle)
+            loadPreviewImage()
         }
     }
 
@@ -110,13 +110,23 @@ final class JotCell: UICollectionViewCell, PageCell {
     ) {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
+        loadPreviewImage()
+    }
 
+    private func loadPreviewImage() {
+        guard let viewModel else {
+            return
+        }
         previewImageTask?.cancel()
-        let previewImageStream = viewModel.didLoad(userInterfaceStyle: traitCollection.userInterfaceStyle)
         previewImageTask = Task { [weak self] in
-            for await previewImage in previewImageStream {
-                self?.previewImageView.image = previewImage
+            guard let self else {
+                return
             }
+            let image = await viewModel.getPreviewImage(userInterfaceStyle: traitCollection.userInterfaceStyle)
+            guard !Task.isCancelled else {
+                return
+            }
+            previewImageView.image = image
         }
     }
 }
