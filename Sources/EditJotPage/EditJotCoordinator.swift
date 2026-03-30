@@ -25,22 +25,26 @@ final class EditJotCoordinator: NavigationCoordinator {
     private var retainedJotConflictCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
+    private var retainedDeleteJotCoordinator: Coordinator?
 
     private let navigation: Navigation
     private let editJotViewControllerFactory: EditJotViewControllerFactoryProtocol
     private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+    private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
         editJotViewControllerFactory: EditJotViewControllerFactoryProtocol,
         jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol,
-        renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+        renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
+        deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.editJotViewControllerFactory = editJotViewControllerFactory
         self.jotConflictCoordinatorFactory = jotConflictCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
+        self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -95,7 +99,16 @@ final class EditJotCoordinator: NavigationCoordinator {
     }
 
     func openDeleteJot(jotFileInfo: JotFile.Info) {
-        navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
+        let deleteJotCoordinator = deleteJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        )
+        retainedDeleteJotCoordinator = deleteJotCoordinator
+        deleteJotCoordinator.onEnd = { [weak self] in
+            self?.retainedDeleteJotCoordinator = nil
+            self?.goBack()
+        }
+        deleteJotCoordinator.start()
     }
 
     func openJot(jotFileInfo: JotFile.Info) {
@@ -111,16 +124,17 @@ final class EditJotCoordinator: NavigationCoordinator {
         jotFileVersions: [JotFileVersion],
         onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
     ) {
-        retainedJotConflictCoordinator = jotConflictCoordinatorFactory.make(
+        let jotConflictCoordinator = jotConflictCoordinatorFactory.make(
             jotFileInfo: jotFileInfo,
             jotFileVersions: jotFileVersions,
             navigation: navigation,
             onResult: onResult
         )
-        retainedJotConflictCoordinator?.start()
-        retainedJotConflictCoordinator?.onEnd = { [weak self] in
+        retainedJotConflictCoordinator = jotConflictCoordinator
+        jotConflictCoordinator.onEnd = { [weak self] in
             self?.retainedJotConflictCoordinator = nil
         }
+        jotConflictCoordinator.start()
     }
 
     func goBack() {

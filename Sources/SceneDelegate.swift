@@ -103,6 +103,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let menuConfigurationFactory = JotMenuConfigurationFactory()
 
+        let deleteJotCoordinatorFactory = DeleteJotCoordinatorFactory(
+            repository: DeleteJotRepository(
+                fileService: fileService
+            )
+        )
+
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
@@ -151,7 +157,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     repository: RenameJotRepository(
                         fileService: fileService
                     )
-                )
+                ),
+                deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
             ),
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
                 repository: CloudMigrationRepository(
@@ -170,11 +177,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     jotFileService: jotFileService
                 )
             ),
-            deleteJotCoordinatorFactory: DeleteJotCoordinatorFactory(
-                repository: DeleteJotRepository(
-                    fileService: fileService
-                )
-            ),
+            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
             renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
                 repository: RenameJotRepository(
                     fileService: fileService

@@ -26,6 +26,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedInfoAlertCoordinator: Coordinator?
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
+    private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedCloudMigrationCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
@@ -35,7 +36,6 @@ final class JotsCoordinator: NavigationCoordinator {
         enableCloudCoordinatorFactory.make(navigation: navigation),
         editJotCoordinatorFactory.make(navigation: navigation),
         createJotCoordinatorFactory.make(navigation: navigation),
-        deleteJotCoordinatorFactory.make(navigation: navigation),
     ]
 
     private let navigation: Navigation
@@ -137,7 +137,15 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openDeleteJot(jotFileInfo: JotFile.Info) {
-        navigation.open(url: DeleteJotURL(jotFileInfo: jotFileInfo))
+        let deleteJotCoordinator = deleteJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        )
+        retainedDeleteJotCoordinator = deleteJotCoordinator
+        deleteJotCoordinator.onEnd = { [weak self] in
+            self?.retainedDeleteJotCoordinator = nil
+        }
+        deleteJotCoordinator.start()
     }
 
     func showInfoAlert(
