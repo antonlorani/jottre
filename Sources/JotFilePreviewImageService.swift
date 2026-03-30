@@ -24,7 +24,8 @@ protocol JotFilePreviewImageServiceProtocol: Sendable {
 
     func getPreviewImageData(
         jotFileInfo: JotFile.Info,
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
     ) async throws -> Data
 }
 
@@ -47,7 +48,8 @@ struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
 
     func getPreviewImageData(
         jotFileInfo: JotFile.Info,
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
     ) async throws -> Data {
         let jotFile = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
         let drawing = try PKDrawing(data: jotFile.jot.drawing)
@@ -59,7 +61,7 @@ struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
             width: jotFile.jot.width,
             height: jotFile.jot.width / aspectRatio
         )
-        let scale = await UIScreen.main.scale * Constants.size.width / jotFile.jot.width
+        let scale = displayScale * Constants.size.width / jotFile.jot.width
 
         let traitCollection = UITraitCollection(userInterfaceStyle: userInterfaceStyle)
 

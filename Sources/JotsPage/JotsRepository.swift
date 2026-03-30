@@ -29,7 +29,8 @@ protocol JotsRepositoryProtocol: Sendable {
 
     func getPreviewImage(
         jotFileInfo: JotFile.Info,
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
     ) async -> UIImage?
 }
 
@@ -95,12 +96,14 @@ struct JotsRepository: JotsRepositoryProtocol {
 
     func getPreviewImage(
         jotFileInfo: JotFile.Info,
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
     ) async -> UIImage? {
         do {
             let imageData = try await jotFilePreviewImageService.getPreviewImageData(
                 jotFileInfo: jotFileInfo,
-                userInterfaceStyle: userInterfaceStyle
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
             )
             return UIImage(data: imageData)
         } catch {

@@ -123,7 +123,8 @@ final class JotCell: UICollectionViewCell, PageCell {
                 return
             }
             previewImageView.image = await viewModel.getPreviewImage(
-                userInterfaceStyle: traitCollection.userInterfaceStyle
+                userInterfaceStyle: traitCollection.userInterfaceStyle,
+                displayScale: traitCollection.displayScale
             )
         }
     }

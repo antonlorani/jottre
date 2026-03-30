@@ -47,7 +47,8 @@ final class JotCellViewModel: PageCellViewModel {
     }
 
     func getPreviewImage(
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        displayScale: CGFloat
     ) async -> UIImage? {
         let task = Task.detached { [weak self] in
             guard let self else {
@@ -55,7 +56,8 @@ final class JotCellViewModel: PageCellViewModel {
             }
             return await self.repository.getPreviewImage(
                 jotFileInfo: self.jot.toJotFileInfo(),
-                userInterfaceStyle: userInterfaceStyle
+                userInterfaceStyle: userInterfaceStyle,
+                displayScale: displayScale
             )
         }
         return await withTaskCancellationHandler {
