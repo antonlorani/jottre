@@ -49,18 +49,18 @@ final class JotCell: UICollectionViewCell, PageCell {
         setUpViews()
     }
 
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        assertionFailure("\(#function) has not been implemented")
+        return nil
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             viewModel?.didChangeTraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle)
         }
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        assertionFailure("\(#function) has not been implemented")
-        return nil
     }
 
     private func setUpViews() {
@@ -100,6 +100,11 @@ final class JotCell: UICollectionViewCell, PageCell {
     private var viewModel: JotCellViewModel?
     private var previewImageTask: Task<Void, Never>?
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        previewImageView.image = nil
+    }
+
     func configure(
         viewModel: JotCellViewModel
     ) {
@@ -107,12 +112,11 @@ final class JotCell: UICollectionViewCell, PageCell {
         nameLabel.text = viewModel.name
 
         previewImageTask?.cancel()
+        let previewImageStream = viewModel.didLoad(userInterfaceStyle: traitCollection.userInterfaceStyle)
         previewImageTask = Task { [weak self] in
-            for await previewImage in viewModel.previewImage {
+            for await previewImage in previewImageStream {
                 self?.previewImageView.image = previewImage
             }
         }
-
-        viewModel.didLoad(userInterfaceStyle: traitCollection.userInterfaceStyle)
     }
 }

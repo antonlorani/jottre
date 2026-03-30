@@ -24,12 +24,10 @@ final class JotCellViewModel: PageCellViewModel {
     let jotMenuConfigurations: [JotMenuConfiguration]
     let onAction: @Sendable () -> Void
 
-    private let jot: JotBusinessModel
-
-    let previewImage: AsyncStream<UIImage?>
-    private let previewImageContinuation: AsyncStream<UIImage?>.Continuation
+    private var previewImageContinuation: AsyncStream<UIImage?>.Continuation?
     private var previewImageTask: Task<Void, Never>?
 
+    private let jot: JotBusinessModel
     private let repository: JotsRepositoryProtocol
 
     init(
@@ -43,17 +41,25 @@ final class JotCellViewModel: PageCellViewModel {
         self.onAction = onAction
         self.jot = jot
         self.repository = repository
+    }
 
-        (previewImage, previewImageContinuation) = AsyncStream.makeStream(
-            of: UIImage?.self,
-            bufferingPolicy: .bufferingNewest(1)
-        )
+    func handle(action: PageCellAction) {
+        switch action {
+        case .tap: onAction()
+        }
     }
 
     func didLoad(
         userInterfaceStyle: UIUserInterfaceStyle
-    ) {
+    ) -> AsyncStream<UIImage?> {
+        previewImageContinuation?.finish()
+        let (stream, continuation) = AsyncStream.makeStream(
+            of: UIImage?.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        previewImageContinuation = continuation
         loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+        return stream
     }
 
     func didChangeTraitCollection(
@@ -66,6 +72,7 @@ final class JotCellViewModel: PageCellViewModel {
         userInterfaceStyle: UIUserInterfaceStyle
     ) {
         previewImageTask?.cancel()
+        let previewImageContinuation = previewImageContinuation
         previewImageTask = Task.detached { [weak self] in
             guard let self else {
                 return
@@ -74,13 +81,7 @@ final class JotCellViewModel: PageCellViewModel {
                 jotFileInfo: jot.toJotFileInfo(),
                 userInterfaceStyle: userInterfaceStyle
             )
-            previewImageContinuation.yield(previewImage)
-        }
-    }
-
-    func handle(action: PageCellAction) {
-        switch action {
-        case .tap: onAction()
+            previewImageContinuation?.yield(previewImage)
         }
     }
 
@@ -98,5 +99,6 @@ final class JotCellViewModel: PageCellViewModel {
 
     deinit {
         previewImageTask?.cancel()
+        previewImageContinuation?.finish()
     }
 }

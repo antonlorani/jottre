@@ -154,7 +154,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         symbolBarButtonItemFactory: symbolBarButtonItemFactory
                     ),
                     repository: JotConflictRepository(
-                        jotFileConflictService: jotFileConflictService
+                        jotFileConflictService: jotFileConflictService,
+                        jotFilePreviewImageService: jotFilePreviewImageService
                     )
                 ),
                 renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
@@ -168,6 +169,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 repository: CloudMigrationRepository(
                     fileService: fileService,
                     jotFileService: jotFileService,
+                    jotFilePreviewImageService: jotFilePreviewImageService,
                     defaultsService: defaultsService
                 ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
