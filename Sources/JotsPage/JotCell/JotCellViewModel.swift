@@ -24,14 +24,58 @@ final class JotCellViewModel: PageCellViewModel {
     let jotMenuConfigurations: [JotMenuConfiguration]
     let onAction: @Sendable () -> Void
 
+    private let jot: JotBusinessModel
+
+    let previewImage: AsyncStream<UIImage?>
+    private let previewImageContinuation: AsyncStream<UIImage?>.Continuation
+    private var previewImageTask: Task<Void, Never>?
+
+    private let repository: JotsRepositoryProtocol
+
     init(
         jot: JotBusinessModel,
         jotMenuConfigurations: [JotMenuConfiguration],
+        repository: JotsRepositoryProtocol,
         onAction: @Sendable @escaping () -> Void
     ) {
         self.name = jot.name
         self.jotMenuConfigurations = jotMenuConfigurations
         self.onAction = onAction
+        self.jot = jot
+        self.repository = repository
+
+        (previewImage, previewImageContinuation) = AsyncStream.makeStream(
+            of: UIImage?.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+    }
+
+    func didLoad(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+    }
+
+    func didChangeTraitCollection(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+    }
+
+    private func loadPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        previewImageTask?.cancel()
+        previewImageTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+            let previewImage = await repository.getPreviewImage(
+                jotFileInfo: jot.toJotFileInfo(),
+                userInterfaceStyle: userInterfaceStyle
+            )
+            previewImageContinuation.yield(previewImage)
+        }
     }
 
     func handle(action: PageCellAction) {
@@ -50,5 +94,9 @@ final class JotCellViewModel: PageCellViewModel {
             }
             return UIMenu.make(jotMenuConfigurations: jotMenuConfigurations)
         }
+    }
+
+    deinit {
+        previewImageTask?.cancel()
     }
 }

@@ -159,6 +159,7 @@ final class JotsViewModel: PageViewModel {
                         }
                     ),
                     sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 205, itemHeight: 216),
+                    repository: repository,
                     onAction: { [weak coordinator] in
                         Task { @MainActor in
                             coordinator?.openJot(jotFileInfo: jotFileInfo)

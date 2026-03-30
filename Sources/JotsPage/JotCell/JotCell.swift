@@ -49,6 +49,14 @@ final class JotCell: UICollectionViewCell, PageCell {
         setUpViews()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            viewModel?.didChangeTraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle)
+        }
+    }
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         assertionFailure("\(#function) has not been implemented")
@@ -89,10 +97,22 @@ final class JotCell: UICollectionViewCell, PageCell {
         )
     }
 
+    private var viewModel: JotCellViewModel?
+    private var previewImageTask: Task<Void, Never>?
+
     func configure(
         viewModel: JotCellViewModel
     ) {
-        //        previewImageView.image = viewModel.jot.previewImage
+        self.viewModel = viewModel
         nameLabel.text = viewModel.name
+
+        previewImageTask?.cancel()
+        previewImageTask = Task { [weak self] in
+            for await previewImage in viewModel.previewImage {
+                self?.previewImageView.image = previewImage
+            }
+        }
+
+        viewModel.didLoad(userInterfaceStyle: traitCollection.userInterfaceStyle)
     }
 }

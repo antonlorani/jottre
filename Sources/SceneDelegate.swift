@@ -87,6 +87,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileService: fileService,
             fileConflictService: fileConflictService
         )
+        let jotFilePreviewImageService = JotFilePreviewImageService(
+            jotFileService: jotFileService
+        )
 
         let defaultsService = DefaultsService(userDefaults: .standard)
 
@@ -113,7 +116,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
                     fileService: fileService,
-                    jotFileService: jotFileService
+                    jotFileService: jotFileService,
+                    jotFilePreviewImageService: jotFilePreviewImageService
                 ),
                 menuConfigurationFactory: menuConfigurationFactory,
                 textBarButtonItemFactory: textBarButtonItemFactory,

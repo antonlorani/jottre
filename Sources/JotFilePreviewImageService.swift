@@ -20,7 +20,7 @@ import Foundation
 import PencilKit
 import UIKit
 
-protocol JotFilePreviewServiceProtocol: Sendable {
+protocol JotFilePreviewImageServiceProtocol: Sendable {
 
     func getPreviewImageData(
         jotFileInfo: JotFile.Info,
@@ -28,28 +28,28 @@ protocol JotFilePreviewServiceProtocol: Sendable {
     ) async throws -> Data
 }
 
-struct JotFilePreviewService: Sendable {
+struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
 
     enum Constants {
+
         static let size = CGSize(width: 160, height: 160)
-        static let compressionQuality = CGFloat(0.8)
     }
 
     enum Failure: Error {
         case couldNotRenderImage
     }
 
-    private let fileService: JotFileServiceProtocol
+    private let jotFileService: JotFileServiceProtocol
 
-    init(fileService: JotFileServiceProtocol) {
-        self.fileService = fileService
+    init(jotFileService: JotFileServiceProtocol) {
+        self.jotFileService = jotFileService
     }
 
     func getPreviewImageData(
         jotFileInfo: JotFile.Info,
         userInterfaceStyle: UIUserInterfaceStyle
     ) async throws -> Data {
-        let jotFile = try fileService.readJotFile(jotFileInfo: jotFileInfo)
+        let jotFile = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
         let drawing = try PKDrawing(data: jotFile.jot.drawing)
 
         let aspectRatio = Constants.size.width / Constants.size.height
@@ -71,7 +71,7 @@ struct JotFilePreviewService: Sendable {
             return image
         }
 
-        guard let imageData = image?.jpegData(compressionQuality: Constants.compressionQuality) else {
+        guard let imageData = image?.pngData() else {
             throw Failure.couldNotRenderImage
         }
 

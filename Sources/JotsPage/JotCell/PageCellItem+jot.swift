@@ -23,6 +23,7 @@ extension PageCellItem {
         jot: JotBusinessModel,
         jotMenuConfigurations: [JotMenuConfiguration],
         sizing: PageCellSizingStrategy,
+        repository: JotsRepositoryProtocol,
         onAction: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
@@ -32,6 +33,7 @@ extension PageCellItem {
             viewModel: JotCellViewModel(
                 jot: jot,
                 jotMenuConfigurations: jotMenuConfigurations,
+                repository: repository,
                 onAction: onAction
             )
         )
