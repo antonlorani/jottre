@@ -21,13 +21,17 @@ extension PageCellItem {
     @MainActor
     static func jotConflict(
         jotConflict: JotConflictBusinessModel,
-        sizing: PageCellSizingStrategy
+        sizing: PageCellSizingStrategy,
+        repository: JotConflictRepositoryProtocol
     ) -> PageCellItem {
         PageCellItem(
             id: jotConflict,
             cellType: JotConflictCell.self,
             sizing: sizing,
-            viewModel: JotConflictCellViewModel(jotConflict: jotConflict)
+            viewModel: JotConflictCellViewModel(
+                jotConflict: jotConflict,
+                repository: repository
+            )
         )
     }
 }

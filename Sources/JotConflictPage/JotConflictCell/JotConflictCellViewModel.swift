@@ -20,19 +20,67 @@ import UIKit
 
 final class JotConflictCellViewModel: PageCellViewModel {
 
-    let previewImage: UIImage?
-    let title: String
+    let name: String
     let infoText: String
 
+    private var previewImageContinuation: AsyncStream<UIImage?>.Continuation?
+    private var previewImageTask: Task<Void, Never>?
+
+    private let jotConflict: JotConflictBusinessModel
+    private let repository: JotConflictRepositoryProtocol
+
     init(
-        jotConflict: JotConflictBusinessModel
+        jotConflict: JotConflictBusinessModel,
+        repository: JotConflictRepositoryProtocol
     ) {
-        previewImage = jotConflict.previewImage
-        title = jotConflict.name
+        name = jotConflict.name
         infoText = jotConflict.lastEditedDateString
+        self.jotConflict = jotConflict
+        self.repository = repository
     }
 
     func handle(action: PageCellAction) {
         /* no-op */
+    }
+
+    func didLoad(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) -> AsyncStream<UIImage?> {
+        previewImageContinuation?.finish()
+        let (stream, continuation) = AsyncStream.makeStream(
+            of: UIImage?.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        previewImageContinuation = continuation
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+        return stream
+    }
+
+    func didChangeTraitCollection(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+    }
+
+    private func loadPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        previewImageTask?.cancel()
+        let previewImageContinuation = previewImageContinuation
+        previewImageTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+            let previewImage = await repository.getPreviewImage(
+                jotFileInfo: jotConflict.toJotFileVersion().info,
+                userInterfaceStyle: userInterfaceStyle
+            )
+            previewImageContinuation?.yield(previewImage)
+        }
+    }
+
+    deinit {
+        previewImageTask?.cancel()
+        previewImageContinuation?.finish()
     }
 }
