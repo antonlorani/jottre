@@ -1,21 +1,3 @@
-/*
- Jottre: Minimalistic jotting for iPhone, iPad and Mac.
- Copyright (C) 2021-2026 Anton Lorani
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import UIKit
 
 final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
@@ -39,6 +21,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -59,6 +43,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
+        label.numberOfLines = 1
         return label
     }()
 
@@ -67,6 +52,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
+        label.numberOfLines = 1
         return label
     }()
 
@@ -89,6 +75,14 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         return nil
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            viewModel?.didChangeTraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle)
+        }
+    }
+
     private func setUpViews() {
         contentView.backgroundColor = .secondarySystemGroupedBackground
         contentView.layer.cornerRadius = DesignTokens.CornerRadius.cell
@@ -108,6 +102,7 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
+            contentView.heightAnchor.constraint(equalToConstant: 56),
             previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
@@ -118,14 +113,11 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLine.widthAnchor.constraint(equalToConstant: DesignTokens.Length.separator),
 
-            labelContainer.topAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.topAnchor),
+            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelContainer.leadingAnchor.constraint(
                 equalTo: separatorLine.trailingAnchor,
                 constant: DesignTokens.Spacing.md
             ),
-            labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelContainer.bottomAnchor
-                .constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.bottomAnchor),
             labelContainer.trailingAnchor.constraint(
                 lessThanOrEqualTo: checkboxImageView.leadingAnchor,
                 constant: -DesignTokens.Spacing.xs
@@ -147,10 +139,28 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         ])
     }
 
-    func configure(viewModel: CloudMigrationJotCellViewModel) {
+    private var viewModel: CloudMigrationJotCellViewModel?
+    private var previewImageTask: Task<Void, Never>?
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
         previewImageView.image = nil
+    }
+
+    func configure(
+        viewModel: CloudMigrationJotCellViewModel
+    ) {
+        self.viewModel = viewModel
         nameLabel.text = viewModel.name
         infoTextLabel.text = viewModel.infoText
         checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.isCloudCheckboxOn)
+
+        previewImageTask?.cancel()
+        let previewImageStream = viewModel.didLoad(userInterfaceStyle: traitCollection.userInterfaceStyle)
+        previewImageTask = Task { [weak self] in
+            for await previewImage in previewImageStream {
+                self?.previewImageView.image = previewImage
+            }
+        }
     }
 }

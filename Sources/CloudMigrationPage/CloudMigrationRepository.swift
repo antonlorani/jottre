@@ -17,16 +17,25 @@
 */
 
 import Foundation
+import UIKit
 
 protocol CloudMigrationRepositoryProtocol: Sendable {
 
     func getJotFiles() -> AsyncThrowingStream<[CloudMigrationJotBusinessModel], Error>
+
     func moveJotFile(
         jotFileInfo: JotFile.Info,
         shouldSynchronizeWithICloud: Bool
     ) async throws
+
     func getShouldShowCloudMigration() -> Bool
+
     func markCloudMigrationPageDone()
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) async -> UIImage?
 }
 
 struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
@@ -37,15 +46,18 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
 
     private let fileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
+    private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
     private let defaultsService: DefaultsServiceProtocol
 
     init(
         fileService: FileServiceProtocol,
         jotFileService: JotFileServiceProtocol,
+        jotFilePreviewImageService: JotFilePreviewImageServiceProtocol,
         defaultsService: DefaultsServiceProtocol
     ) {
         self.fileService = fileService
         self.jotFileService = jotFileService
+        self.jotFilePreviewImageService = jotFilePreviewImageService
         self.defaultsService = defaultsService
     }
 
@@ -141,5 +153,20 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
 
     func markCloudMigrationPageDone() {
         defaultsService.set(.hasDoneCloudMigration, value: true)
+    }
+
+    func getPreviewImage(
+        jotFileInfo: JotFile.Info,
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) async -> UIImage? {
+        do {
+            let imageData = try await jotFilePreviewImageService.getPreviewImageData(
+                jotFileInfo: jotFileInfo,
+                userInterfaceStyle: userInterfaceStyle
+            )
+            return UIImage(data: imageData)
+        } catch {
+            return nil
+        }
     }
 }

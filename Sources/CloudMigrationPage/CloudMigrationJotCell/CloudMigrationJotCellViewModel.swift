@@ -18,7 +18,6 @@
 
 import UIKit
 
-@MainActor
 final class CloudMigrationJotCellViewModel: PageCellViewModel {
 
     let name: String
@@ -26,13 +25,22 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
     let isCloudCheckboxOn: Bool
     let onTap: @Sendable () -> Void
 
+    private var previewImageContinuation: AsyncStream<UIImage?>.Continuation?
+    private var previewImageTask: Task<Void, Never>?
+
+    private let cloudMigrationJot: CloudMigrationJotBusinessModel
+    private let repository: CloudMigrationRepositoryProtocol
+
     init(
         cloudMigrationJot: CloudMigrationJotBusinessModel,
+        repository: CloudMigrationRepositoryProtocol,
         onTap: @Sendable @escaping () -> Void
     ) {
         name = cloudMigrationJot.name
         infoText = cloudMigrationJot.lastModifiedText
         isCloudCheckboxOn = cloudMigrationJot.isCloudSynchronized
+        self.cloudMigrationJot = cloudMigrationJot
+        self.repository = repository
         self.onTap = onTap
     }
 
@@ -41,5 +49,46 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
         case .tap:
             onTap()
         }
+    }
+
+    func didLoad(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) -> AsyncStream<UIImage?> {
+        previewImageContinuation?.finish()
+        let (stream, continuation) = AsyncStream.makeStream(
+            of: UIImage?.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        previewImageContinuation = continuation
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+        return stream
+    }
+
+    func didChangeTraitCollection(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        loadPreviewImage(userInterfaceStyle: userInterfaceStyle)
+    }
+
+    private func loadPreviewImage(
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) {
+        previewImageTask?.cancel()
+        let previewImageContinuation = previewImageContinuation
+        previewImageTask = Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+            let previewImage = await repository.getPreviewImage(
+                jotFileInfo: cloudMigrationJot.toJotFileInfo(),
+                userInterfaceStyle: userInterfaceStyle
+            )
+            previewImageContinuation?.yield(previewImage)
+        }
+    }
+
+    deinit {
+        previewImageTask?.cancel()
+        previewImageContinuation?.finish()
     }
 }
