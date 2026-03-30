@@ -122,11 +122,9 @@ final class JotCell: UICollectionViewCell, PageCell {
             guard let self else {
                 return
             }
-            let image = await viewModel.getPreviewImage(userInterfaceStyle: traitCollection.userInterfaceStyle)
-            guard !Task.isCancelled else {
-                return
-            }
-            previewImageView.image = image
+            previewImageView.image = await viewModel.getPreviewImage(
+                userInterfaceStyle: traitCollection.userInterfaceStyle
+            )
         }
     }
 }
