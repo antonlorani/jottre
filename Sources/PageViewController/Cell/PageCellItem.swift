@@ -38,20 +38,31 @@ struct PageCellItem: Sendable, Hashable {
         id: some Hashable & Sendable,
         cellType: Cell.Type,
         sizing: PageCellSizingStrategy,
-        viewModel: ViewModel
+        viewModel: @MainActor @autoclosure @escaping () -> ViewModel
     ) where Cell.ViewModel == ViewModel {
         self.id = id
         self.cellType = Cell.self
         self.sizing = sizing
+
+        var retainedViewModel: ViewModel?
+        let getViewModel: @MainActor () -> ViewModel = {
+            guard let retainedViewModel else {
+                let viewModel = viewModel()
+                retainedViewModel = viewModel
+                return viewModel
+            }
+            return retainedViewModel
+        }
+
         configure = { cell in
             guard let cell = cell as? Cell else {
                 assertionFailure("Expected '\(Cell.self)' but received '\(type(of: cell))'.")
                 return
             }
-            cell.configure(viewModel: viewModel)
+            cell.configure(viewModel: getViewModel())
         }
-        handleAction = { viewModel.handle(action: $0) }
-        contextMenuConfiguration = { viewModel.handleContextMenuConfiguration() }
+        handleAction = { getViewModel().handle(action: $0) }
+        contextMenuConfiguration = { getViewModel().handleContextMenuConfiguration() }
     }
 
     func hash(into hasher: inout Hasher) {
