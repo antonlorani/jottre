@@ -18,29 +18,38 @@
 
 import UIKit
 
-final class RevealFileNavigationCoordinator: NavigationCoordinator {
+final class RevealFileCoordinator: Coordinator {
 
-    func shouldHandle(url: URL) -> Bool {
-        url.scheme == "shareddocuments"
+    var onEnd: (() -> Void)?
+
+    private let jotFileInfo: JotFile.Info
+
+    init(
+        jotFileInfo: JotFile.Info
+    ) {
+        self.jotFileInfo = jotFileInfo
     }
 
-    func handle(url: URL) -> [UIViewController] {
+    func start() {
+        defer {
+            onEnd?()
+        }
+
         #if targetEnvironment(macCatalyst)
         guard
             let nsWorkspaceClass = NSClassFromString("NSWorkspace"),
             let workspace = nsWorkspaceClass.value(forKeyPath: "sharedWorkspace") as? NSObject
         else {
-            return []
+            return
         }
 
         workspace.perform(
             NSSelectorFromString("selectFile:inFileViewerRootedAtPath:"),
-            with: url.path,
+            with: jotFileInfo.url.path,
             with: ""
         )
         #else
-        UIApplication.shared.open(url)
+        UIApplication.shared.open(jotFileInfo.url)
         #endif
-        return []
     }
 }

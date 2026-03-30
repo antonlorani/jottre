@@ -21,15 +21,22 @@ import UIKit
 @MainActor
 protocol DeleteJotCoordinatorFactoryProtocol: Sendable {
 
-    func make(navigation: Navigation) -> NavigationCoordinator
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator
 }
 
 struct DeleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol {
 
     let repository: DeleteJotRepositoryProtocol
 
-    func make(navigation: Navigation) -> NavigationCoordinator {
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator {
         DeleteJotCoordinator(
+            jotFileInfo: jotFileInfo,
             navigation: navigation,
             repository: repository
         )

@@ -18,38 +18,27 @@
 
 import UIKit
 
-final class DeleteJotCoordinator: NavigationCoordinator {
+final class DeleteJotCoordinator: Coordinator {
+
+    var onEnd: (() -> Void)?
 
     private var retainedInfoAlertCoordinator: Coordinator?
 
+    private let jotFileInfo: JotFile.Info
     private let navigation: Navigation
     private let repository: DeleteJotRepositoryProtocol
 
     init(
+        jotFileInfo: JotFile.Info,
         navigation: Navigation,
         repository: DeleteJotRepositoryProtocol
     ) {
+        self.jotFileInfo = jotFileInfo
         self.navigation = navigation
         self.repository = repository
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        guard
-            url.path.hasPrefix(DeleteJotURL().path),
-            getFileURLQueryItem(url: url) != nil
-        else {
-            return false
-        }
-        return true
-    }
-
-    func handle(url: URL) -> [UIViewController] {
-        guard let fileURL = getFileURLQueryItem(url: url),
-            let jotFileInfo = JotFile.Info(url: fileURL, modificationDate: nil)
-        else {
-            return []
-        }
-
+    func start() {
         let alertController = UIAlertController(
             title: L10n.Jots.Delete.title,
             message: L10n.Jots.Delete.message,
@@ -66,13 +55,19 @@ final class DeleteJotCoordinator: NavigationCoordinator {
                 title: L10n.Action.delete,
                 style: .destructive
             ) { [weak self] _ in
-                self?.handleDeleteJot(jotFileInfo: jotFileInfo)
-                self?.navigation.dismiss(animated: true)
+                guard let self else {
+                    return
+                }
+                handleDeleteJot(jotFileInfo: jotFileInfo)
+                navigation.dismiss(animated: true) { [weak self] in
+                    Task { @MainActor in
+                        self?.onEnd?()
+                    }
+                }
             }
         )
         navigation.present(alertController, animated: true)
 
-        return []
     }
 
     private func handleDeleteJot(jotFileInfo: JotFile.Info) {
@@ -100,15 +95,5 @@ final class DeleteJotCoordinator: NavigationCoordinator {
             self?.retainedInfoAlertCoordinator = nil
         }
         infoAlertCoordinator.start()
-    }
-
-    private func getFileURLQueryItem(url: URL) -> URL? {
-        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
-            let fileURLValue = queryItems.first(where: { $0.name == "fileURL" })?.value,
-            let fileURL = URL(string: fileURLValue)
-        else {
-            return nil
-        }
-        return fileURL
     }
 }

@@ -21,7 +21,6 @@ import UIKit
 final class RootCoordinator: NavigationCoordinator {
 
     private lazy var externalLinkNavigationCoordinator = ExternalLinkNavigationCoordinator()
-    private lazy var revealFileNavigationCoordinator = RevealFileNavigationCoordinator()
     private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
 
     private let navigation: Navigation
@@ -45,10 +44,6 @@ final class RootCoordinator: NavigationCoordinator {
 
         if externalLinkNavigationCoordinator.shouldHandle(url: url) {
             viewControllers.append(contentsOf: externalLinkNavigationCoordinator.handle(url: url))
-        }
-
-        if revealFileNavigationCoordinator.shouldHandle(url: url) {
-            viewControllers.append(contentsOf: revealFileNavigationCoordinator.handle(url: url))
         }
 
         return viewControllers
