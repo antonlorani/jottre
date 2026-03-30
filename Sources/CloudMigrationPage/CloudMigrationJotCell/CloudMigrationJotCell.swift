@@ -23,6 +23,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
 
     private enum Constants {
 
+        static let height = CGFloat(56)
+
         enum Preview {
             static let width = CGFloat(70)
         }
@@ -120,7 +122,8 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 56),
+            contentView.heightAnchor.constraint(equalToConstant: Constants.height),
+
             previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             previewImageView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
