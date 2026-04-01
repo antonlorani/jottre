@@ -142,7 +142,10 @@ private final class UbiquitousDirectoryObserver: @unchecked Sendable {
     func stop() {
         queue.addOperation { [self] in
             query.stop()
-            observers.forEach { NotificationCenter.default.removeObserver($0) }
+
+            for observer in observers {
+                NotificationCenter.default.removeObserver(observer)
+            }
         }
     }
 }
