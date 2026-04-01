@@ -24,7 +24,7 @@ final class JotCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .top
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -39,7 +39,11 @@ final class JotCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        #if targetEnvironment(macCatalyst)
         label.font = .preferredFont(forTextStyle: .body, weight: .semibold)
+        #else
+        label.font = .preferredFont(forTextStyle: .caption1, weight: .semibold)
+        #endif
         return label
     }()
 

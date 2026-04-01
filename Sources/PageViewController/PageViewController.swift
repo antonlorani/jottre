@@ -56,6 +56,7 @@ final class PageViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.preservesSuperviewLayoutMargins = true
+        collectionView.contentInset.bottom = DesignTokens.Spacing.sm
         collectionView.delegate = self
         return collectionView
     }()
