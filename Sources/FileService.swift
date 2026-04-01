@@ -48,6 +48,11 @@ protocol FileServiceProtocol: Sendable {
 
 struct FileService: FileServiceProtocol {
 
+    enum Failure: Error {
+        case couldNotReadFileContents
+        case couldNotWriteFileContents
+    }
+
     nonisolated(unsafe) private let fileManager: FileManager
 
     init(fileManager: FileManager) {
@@ -95,6 +100,14 @@ struct FileService: FileServiceProtocol {
     }
 
     func directoryChanges(directory: URL) -> AsyncStream<Void> {
+        if fileManager.isUbiquitousItem(at: directory) {
+            ubiquitousDirectoryChanges()
+        } else {
+            localDirectoryChanges(directory: directory)
+        }
+    }
+
+    private func localDirectoryChanges(directory: URL) -> AsyncStream<Void> {
         AsyncStream { continuation in
             continuation.yield()
 
@@ -126,12 +139,64 @@ struct FileService: FileServiceProtocol {
         }
     }
 
+    private func ubiquitousDirectoryChanges() -> AsyncStream<Void> {
+        AsyncStream { continuation in
+            continuation.yield()
+            let observer = UbiquitousDirectoryObserver { continuation.yield() }
+            continuation.onTermination = { _ in observer.stop() }
+        }
+    }
+
     func readFile(fileURL: URL) throws -> Data {
-        try Data(contentsOf: fileURL)
+        let coordinator = NSFileCoordinator()
+        var error: NSError?
+        var result: Result<Data, Error>?
+
+        coordinator.coordinate(
+            readingItemAt: fileURL,
+            options: [],
+            error: &error
+        ) { url in
+            result = Result(catching: {
+                try Data(contentsOf: url)
+            })
+        }
+
+        if let error {
+            throw error
+        }
+
+        guard let result else {
+            throw Failure.couldNotReadFileContents
+        }
+
+        return try result.get()
     }
 
     func writeFile(fileURL: URL, data: Data) throws {
-        try data.write(to: fileURL, options: .atomic)
+        let coordinator = NSFileCoordinator()
+        var error: NSError?
+        var result: Result<Void, Error>?
+
+        coordinator.coordinate(
+            writingItemAt: fileURL,
+            options: .forReplacing,
+            error: &error
+        ) { url in
+            result = Result(catching: {
+                try data.write(to: url, options: .atomic)
+            })
+        }
+
+        if let error {
+            throw error
+        }
+
+        guard let result else {
+            throw Failure.couldNotWriteFileContents
+        }
+
+        try result.get()
     }
 
     func fileExists(fileURL: URL) -> Bool {
@@ -173,6 +238,43 @@ struct FileService: FileServiceProtocol {
             } catch CocoaError.fileWriteFileExists {
                 continue
             }
+        }
+    }
+}
+
+private final class UbiquitousDirectoryObserver: @unchecked Sendable {
+
+    private let queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+
+    private let query = NSMetadataQuery()
+    private var observers = [Any]()
+
+    init(onUpdate: @Sendable @escaping () -> Void) {
+        query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+        query.predicate = NSPredicate(format: "%K LIKE '*.\(JotFile.Info.fileExtension)'", NSMetadataItemFSNameKey)
+        query.operationQueue = queue
+
+        for name: NSNotification.Name in [.NSMetadataQueryDidFinishGathering, .NSMetadataQueryDidUpdate] {
+            observers.append(
+                NotificationCenter.default.addObserver(forName: name, object: query, queue: queue) { _ in
+                    onUpdate()
+                }
+            )
+        }
+
+        queue.addOperation { [self] in
+            query.start()
+        }
+    }
+
+    func stop() {
+        queue.addOperation { [self] in
+            query.stop()
+            observers.forEach { NotificationCenter.default.removeObserver($0) }
         }
     }
 }

@@ -21,6 +21,8 @@ import Foundation
 struct JotFile: Sendable {
 
     struct Info: Sendable, Hashable {
+        static let fileExtension = "jot"
+
         let url: URL
         let name: String
         let modificationDate: Date?
