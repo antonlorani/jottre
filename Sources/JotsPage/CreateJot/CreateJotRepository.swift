@@ -52,7 +52,7 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
         let fileURL =
             directory
             .appendingPathComponent(name, isDirectory: false)
-            .appendingPathExtension("jot")
+            .appendingPathExtension(JotFile.Info.fileExtension)
 
         guard !fileService.fileExists(fileURL: fileURL) else {
             throw Failure.fileExists

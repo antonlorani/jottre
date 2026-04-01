@@ -41,7 +41,7 @@ struct JotFile: Sendable {
             url: URL,
             modificationDate: Date?
         ) {
-            guard url.pathExtension == "jot" else {
+            guard url.pathExtension == Info.fileExtension else {
                 return nil
             }
             self.init(

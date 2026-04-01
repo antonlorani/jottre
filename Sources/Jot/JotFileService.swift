@@ -67,7 +67,7 @@ struct JotFileService: JotFileServiceProtocol {
                 properties.isRegularFile == true
                     && properties.isReadable == true
                     && properties.isWritable == true
-                    && fileURL.pathExtension == "jot"
+                    && fileURL.pathExtension == JotFile.Info.fileExtension
             }
             .map { (fileURL: URL, properties: URLResourceValues) in
                 JotFile.Info(
