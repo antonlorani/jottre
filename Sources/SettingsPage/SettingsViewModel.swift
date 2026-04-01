@@ -78,15 +78,6 @@ final class SettingsViewModel: PageViewModel {
 
         items.append(contentsOf: [
             .settingsExternalLink(
-                name: L10n.Settings.ICloud.title,
-                info: L10n.Settings.ICloud.info,
-                onAction: { [weak coordinator] in
-                    Task { @MainActor in
-                        coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
-                    }
-                }
-            ),
-            .settingsExternalLink(
                 name: L10n.Settings.Github.title,
                 info: nil,
                 onAction: { [weak coordinator] in
