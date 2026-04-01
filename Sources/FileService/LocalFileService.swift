@@ -47,6 +47,10 @@ struct LocalFileService: FileServiceProtocol {
         return directory
     }
 
+    func temporaryDirectory() -> URL {
+        fileManager.temporaryDirectory
+    }
+
     func listContents(
         directory: URL,
         properties: [URLResourceKey]

@@ -95,8 +95,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let jotFileConflictService = JotFileConflictService(
             fileConflictService: fileConflictService
         )
-        let jotFilePreviewImageService = JotFilePreviewImageService(
-            jotFileService: jotFileService
+        let jotFilePreviewImageService = CachedJotFilePreviewImageService(
+            localFileService: localFileService,
+            jotFilePreviewImageService: JotFilePreviewImageService(
+                jotFileService: jotFileService
+            )
         )
 
         let defaultsService = DefaultsService(userDefaults: .standard)

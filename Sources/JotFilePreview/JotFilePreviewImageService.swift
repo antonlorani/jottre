@@ -16,18 +16,8 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Foundation
 import PencilKit
 import UIKit
-
-protocol JotFilePreviewImageServiceProtocol: Sendable {
-
-    func getPreviewImageData(
-        jotFileInfo: JotFile.Info,
-        userInterfaceStyle: UIUserInterfaceStyle,
-        displayScale: CGFloat
-    ) async throws -> Data
-}
 
 struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
 
