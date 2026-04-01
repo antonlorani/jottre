@@ -20,7 +20,13 @@ import UIKit
 
 final class JotCellViewModel: PageCellViewModel {
 
+    enum Preview {
+        case thumbnail
+        case cloudImage
+    }
+
     let name: String
+    let preview: Preview
     let jotMenuConfigurations: [JotMenuConfiguration]
     let onAction: @Sendable () -> Void
 
@@ -34,6 +40,7 @@ final class JotCellViewModel: PageCellViewModel {
         onAction: @Sendable @escaping () -> Void
     ) {
         self.name = jot.name
+        self.preview = jot.isDownloaded ? .thumbnail : .cloudImage
         self.jotMenuConfigurations = jotMenuConfigurations
         self.onAction = onAction
         self.jot = jot

@@ -20,11 +20,13 @@ import UIKit
 
 struct JotBusinessModel: Sendable, Hashable {
     let name: String
+    let isDownloaded: Bool
 
     private let jotFileInfo: JotFile.Info
 
     init(jotFileInfo: JotFile.Info) {
         name = jotFileInfo.name
+        isDownloaded = jotFileInfo.ubiquitousInfo?.downloadStatus != .notDownloaded
         self.jotFileInfo = jotFileInfo
     }
 

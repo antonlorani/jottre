@@ -19,13 +19,32 @@
 import UIKit
 
 final class JotCell: UICollectionViewCell, PageCell {
+
+    private enum Constants {
+
+        enum CloudIconImage {
+            static let size = CGFloat(60)
+        }
+    }
+
     static let reuseIdentifier = "JotCell"
 
-    private let previewImageView: UIImageView = {
+    private let previewLayoutGuide = UILayoutGuide()
+
+    private lazy var previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    private lazy var cloudIconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "icloud.and.arrow.down.fill")
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .secondaryLabel
         return imageView
     }()
 
@@ -39,6 +58,7 @@ final class JotCell: UICollectionViewCell, PageCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         #if targetEnvironment(macCatalyst)
         label.font = .preferredFont(forTextStyle: .body, weight: .semibold)
         #else
@@ -78,16 +98,16 @@ final class JotCell: UICollectionViewCell, PageCell {
             right: DesignTokens.Spacing.xs
         )
 
-        contentView.addSubview(previewImageView)
+        contentView.addLayoutGuide(previewLayoutGuide)
         contentView.addSubview(separatorLine)
         contentView.addSubview(nameLabel)
 
         NSLayoutConstraint.activate(
             [
-                previewImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-                previewImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-                previewImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-                previewImageView.bottomAnchor.constraint(equalTo: separatorLine.topAnchor),
+                previewLayoutGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+                previewLayoutGuide.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+                previewLayoutGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+                previewLayoutGuide.bottomAnchor.constraint(equalTo: separatorLine.topAnchor),
 
                 separatorLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                 separatorLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -107,6 +127,8 @@ final class JotCell: UICollectionViewCell, PageCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         previewImageView.image = nil
+        previewImageView.removeFromSuperview()
+        cloudIconImageView.removeFromSuperview()
     }
 
     func configure(
@@ -122,14 +144,36 @@ final class JotCell: UICollectionViewCell, PageCell {
             return
         }
         previewImageTask?.cancel()
-        previewImageTask = Task { [weak self] in
-            guard let self else {
-                return
+        switch viewModel.preview {
+        case .thumbnail:
+            if previewImageView.superview == nil {
+                contentView.addSubview(previewImageView)
+                NSLayoutConstraint.activate([
+                    previewImageView.topAnchor.constraint(equalTo: previewLayoutGuide.topAnchor),
+                    previewImageView.leadingAnchor.constraint(equalTo: previewLayoutGuide.leadingAnchor),
+                    previewImageView.trailingAnchor.constraint(equalTo: previewLayoutGuide.trailingAnchor),
+                    previewImageView.bottomAnchor.constraint(equalTo: previewLayoutGuide.bottomAnchor),
+                ])
             }
-            previewImageView.image = await viewModel.getPreviewImage(
-                userInterfaceStyle: traitCollection.userInterfaceStyle,
-                displayScale: traitCollection.displayScale
-            )
+            previewImageTask = Task { [weak self] in
+                guard let self else {
+                    return
+                }
+                previewImageView.image = await viewModel.getPreviewImage(
+                    userInterfaceStyle: traitCollection.userInterfaceStyle,
+                    displayScale: traitCollection.displayScale
+                )
+            }
+        case .cloudImage:
+            if cloudIconImageView.superview == nil {
+                contentView.addSubview(cloudIconImageView)
+                NSLayoutConstraint.activate([
+                    cloudIconImageView.centerXAnchor.constraint(equalTo: previewLayoutGuide.centerXAnchor),
+                    cloudIconImageView.centerYAnchor.constraint(equalTo: previewLayoutGuide.centerYAnchor),
+                    cloudIconImageView.widthAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+                    cloudIconImageView.heightAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+                ])
+            }
         }
     }
 }
