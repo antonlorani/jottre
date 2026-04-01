@@ -60,16 +60,16 @@ final class EditJotViewController: UIViewController {
         self.symbolBarButtonItemFactory = symbolBarButtonItemFactory
         super.init(nibName: nil, bundle: nil)
 
-        isEditingTask = Task { @MainActor in
+        isEditingTask = Task { @MainActor [weak self] in
             for await isEditing in viewModel.isEditing {
-                handleEditing(isEditing: isEditing)
+                self?.handleEditing(isEditing: isEditing)
             }
         }
         drawingTask = Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
             for await drawing in viewModel.drawing {
+                guard let self else {
+                    return
+                }
                 drawingWidth = drawing.width
                 canvasView.drawing = drawing.value
 
@@ -88,6 +88,7 @@ final class EditJotViewController: UIViewController {
 
     deinit {
         isEditingTask?.cancel()
+        drawingTask?.cancel()
     }
 
     override func viewDidLoad() {
