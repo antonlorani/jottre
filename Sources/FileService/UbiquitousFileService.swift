@@ -49,6 +49,10 @@ struct UbiquitousFileService: FileServiceProtocol {
         return directory
     }
 
+    func temporaryDirectory() -> URL {
+        localFileService.temporaryDirectory()
+    }
+
     func listContents(
         directory: URL,
         properties: [URLResourceKey]

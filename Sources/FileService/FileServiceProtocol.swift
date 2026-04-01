@@ -26,6 +26,10 @@ protocol FileServiceProtocol: Sendable {
     /// Returns the path to the apps documents directory.
     func documentsDirectory() async throws -> URL?
 
+    /// A temporary directory, suitable for loosy file persistence.
+    func temporaryDirectory() -> URL
+
+    /// Returns the contents of the given directories.
     func listContents(
         directory: URL,
         properties: [URLResourceKey]
