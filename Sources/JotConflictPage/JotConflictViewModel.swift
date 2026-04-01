@@ -21,6 +21,13 @@ import Foundation
 @MainActor
 final class JotConflictViewModel: PageViewModel, Sendable {
 
+    private enum Constants {
+
+        static func character(offset: Int) -> String {
+            UnicodeScalar(65 + offset)?.description ?? String()
+        }
+    }
+
     private(set) lazy var items: AsyncStream<[PageCellItem]> = AsyncStream<[PageCellItem]>(
         [PageCellItem].self,
         bufferingPolicy: .bufferingNewest(1)
@@ -32,19 +39,23 @@ final class JotConflictViewModel: PageViewModel, Sendable {
             )
         ]
         pageCellItems.append(
-            contentsOf: jotFileVersions.map { jotFileVersion in
-                PageCellItem.jotConflict(
-                    jotConflict: JotConflictBusinessModel(
-                        jotFileInfo: jotFileInfo,
-                        jotFileVersion: jotFileVersion
-                    ),
-                    sizing: .equalSplit(
-                        perRow: jotFileVersions.count,
-                        itemHeight: 200
-                    ),
-                    repository: repository
-                )
-            }
+            contentsOf:
+                jotFileVersions
+                .enumerated()
+                .map { offset, jotFileVersion in
+                    PageCellItem.jotConflict(
+                        jotConflict: JotConflictBusinessModel(
+                            name: "Version \(Constants.character(offset: offset))",
+                            jotFileInfo: jotFileInfo,
+                            jotFileVersion: jotFileVersion
+                        ),
+                        sizing: .equalSplit(
+                            perRow: jotFileVersions.count,
+                            itemHeight: 200
+                        ),
+                        repository: repository
+                    )
+                }
         )
         continuation.yield(pageCellItems)
         continuation.finish()
@@ -56,7 +67,7 @@ final class JotConflictViewModel: PageViewModel, Sendable {
         .map { (offset, jotFileVersion) in
             PageCallToActionView.ActionConfiguration(
                 style: .primary,
-                title: L10n.JotConflict.Action.keepVersion(UnicodeScalar(65 + offset)?.description ?? String()),
+                title: L10n.JotConflict.Action.keepVersion(Constants.character(offset: offset)),
                 icon: nil
             ) { [weak self] in
                 self?.didTapKeepVersion(jotFileVersion: jotFileVersion)
