@@ -82,8 +82,9 @@ final class JotConflictCoordinator: Coordinator {
         infoAlertCoordinator.start()
     }
 
-    func dismiss() {
+    func dismiss(completion: @Sendable @escaping () -> Void) {
         navigation.dismiss(animated: true) { [weak self] in
+            completion()
             Task { @MainActor in
                 self?.onEnd?()
             }

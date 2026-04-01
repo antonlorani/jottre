@@ -104,7 +104,12 @@ final class JotConflictViewModel: PageViewModel, Sendable {
                 jotFileInfo: jotFileInfo,
                 resolvedVersions: [jotFileVersion]
             )
-            coordinator?.dismiss()
+            coordinator?.dismiss(completion: { [weak self] in
+                guard let self else {
+                    return
+                }
+                onResult(.keep(jotFileInfo))
+            })
         } catch {
             coordinator?.showInfoAlert(
                 title: L10n.JotConflict.Error.generic,
@@ -119,7 +124,9 @@ final class JotConflictViewModel: PageViewModel, Sendable {
                 jotFileInfo: jotFileInfo,
                 resolvedVersions: jotFileVersions
             )
-            coordinator?.dismiss()
+            coordinator?.dismiss(completion: { [weak self] in
+                self?.onResult(.keepAll)
+            })
         } catch {
             coordinator?.showInfoAlert(
                 title: L10n.JotConflict.Error.generic,
