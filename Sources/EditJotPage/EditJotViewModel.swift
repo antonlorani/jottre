@@ -28,7 +28,7 @@ final class EditJotViewModel: Sendable {
 
     private(set) lazy var menuConfigurations = menuConfigurationFactory.make(
         onShare: { [weak self] format in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 self?.coordinator?.showShareJot(format: format)
             }
         },
@@ -57,7 +57,7 @@ final class EditJotViewModel: Sendable {
             }
         },
         onShowInFiles: { [weak self] in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 guard let self else {
                     return
                 }
