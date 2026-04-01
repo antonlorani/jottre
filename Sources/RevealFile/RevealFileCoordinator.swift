@@ -49,7 +49,8 @@ final class RevealFileCoordinator: Coordinator {
             with: ""
         )
         #else
-        UIApplication.shared.open(jotFileInfo.url)
+        let revealFileURL = RevealFileURL(jotFileInfo: jotFileInfo)
+        UIApplication.shared.open(revealFileURL.toURL())
         #endif
     }
 }
