@@ -18,35 +18,12 @@
 
 import Foundation
 
-protocol FileServiceProtocol: Sendable {
+struct LocalFileService: FileServiceProtocol {
 
-    func isICloudEnabled() -> Bool
-
-    func localDocumentsDirectory() throws -> URL?
-
-    func iCloudDocumentsDirectory() async throws -> URL?
-
-    func listContents(
-        directory: URL,
-        properties: [URLResourceKey]
-    ) throws -> [URL]
-
-    func directoryChanges(directory: URL) -> AsyncStream<Void>
-
-    func readFile(fileURL: URL) throws -> Data
-
-    func writeFile(fileURL: URL, data: Data) throws
-
-    func fileExists(fileURL: URL) -> Bool
-
-    func removeFile(fileURL: URL) throws
-
-    func moveFile(fileURL: URL, newFileURL: URL) throws
-
-    func duplicateFile(fileURL: URL) throws -> URL
-}
-
-struct FileService: FileServiceProtocol {
+    enum Failure: Error {
+        case couldNotReadFileContents
+        case couldNotWriteFileContents
+    }
 
     nonisolated(unsafe) private let fileManager: FileManager
 
@@ -54,26 +31,12 @@ struct FileService: FileServiceProtocol {
         self.fileManager = fileManager
     }
 
-    func isICloudEnabled() -> Bool {
-        fileManager.ubiquityIdentityToken != nil
+    func isEnabled() -> Bool {
+        true
     }
 
-    func localDocumentsDirectory() throws -> URL? {
+    func documentsDirectory() async throws -> URL? {
         guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return nil
-        }
-
-        var isDirectory = ObjCBool(true)
-        if !fileManager.fileExists(atPath: directory.path, isDirectory: &isDirectory) {
-            try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
-        }
-        return directory
-    }
-
-    func iCloudDocumentsDirectory() async throws -> URL? {
-        guard
-            let directory = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-        else {
             return nil
         }
 
@@ -92,6 +55,10 @@ struct FileService: FileServiceProtocol {
             at: directory,
             includingPropertiesForKeys: properties
         )
+    }
+
+    func isUbiquitous(url: URL) -> Bool {
+        fileManager.isUbiquitousItem(at: url)
     }
 
     func directoryChanges(directory: URL) -> AsyncStream<Void> {
@@ -127,11 +94,55 @@ struct FileService: FileServiceProtocol {
     }
 
     func readFile(fileURL: URL) throws -> Data {
-        try Data(contentsOf: fileURL)
+        let coordinator = NSFileCoordinator()
+        var error: NSError?
+        var result: Result<Data, Error>?
+
+        coordinator.coordinate(
+            readingItemAt: fileURL,
+            options: [],
+            error: &error
+        ) { url in
+            result = Result(catching: {
+                try Data(contentsOf: url)
+            })
+        }
+
+        if let error {
+            throw error
+        }
+
+        guard let result else {
+            throw Failure.couldNotReadFileContents
+        }
+
+        return try result.get()
     }
 
     func writeFile(fileURL: URL, data: Data) throws {
-        try data.write(to: fileURL, options: .atomic)
+        let coordinator = NSFileCoordinator()
+        var error: NSError?
+        var result: Result<Void, Error>?
+
+        coordinator.coordinate(
+            writingItemAt: fileURL,
+            options: .forReplacing,
+            error: &error
+        ) { url in
+            result = Result(catching: {
+                try data.write(to: url, options: .atomic)
+            })
+        }
+
+        if let error {
+            throw error
+        }
+
+        guard let result else {
+            throw Failure.couldNotWriteFileContents
+        }
+
+        try result.get()
     }
 
     func fileExists(fileURL: URL) -> Bool {

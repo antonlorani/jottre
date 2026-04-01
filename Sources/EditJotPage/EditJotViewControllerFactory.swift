@@ -35,7 +35,7 @@ struct EditJotViewControllerFactory: EditJotViewControllerFactoryProtocol {
 
     func make(
         jotFileInfo: JotFile.Info,
-        coordinator: EditJotCoordinator
+        coordinator: EditJotCoordinator,
     ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(

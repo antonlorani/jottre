@@ -19,13 +19,22 @@
 import Foundation
 
 protocol JotFileServiceProtocol: Sendable {
-    func listContents(directory: URL) throws -> [JotFile.Info]
+    func documentsDirectoryContents() -> AsyncThrowingStream<[JotFile.Info], Error>
 
     func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile
 
     func write(jotFile: JotFile) throws
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
+
+    func rename(jotFileInfo: JotFile.Info, newName: String) throws -> JotFile.Info
+
+    func remove(jotFileInfo: JotFile.Info) throws
+
+    func move(
+        jotFileInfo: JotFile.Info,
+        shouldBecomeUbiquitous: Bool
+    ) async throws
 }
 
 struct JotFileService: JotFileServiceProtocol {
@@ -40,16 +49,87 @@ struct JotFileService: JotFileServiceProtocol {
         ]
     }
 
+    enum Failure: Error {
+        case couldNotResolveDocumentsDirectory
+    }
+
     private let propertyListDecoder = PropertyListDecoder()
     private let propertyListEncoder = PropertyListEncoder()
 
-    private let fileService: FileServiceProtocol
+    private let localFileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
 
-    init(fileService: FileServiceProtocol) {
-        self.fileService = fileService
+    init(
+        localFileService: FileServiceProtocol,
+        ubiquitousFileService: FileServiceProtocol
+    ) {
+        self.localFileService = localFileService
+        self.ubiquitousFileService = ubiquitousFileService
     }
 
-    func listContents(directory: URL) throws -> [JotFile.Info] {
+    func documentsDirectoryContents() -> AsyncThrowingStream<[JotFile.Info], Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    let ubiquitousDocumentsDirectory = try await ubiquitousFileService.documentsDirectory()
+                    let localDocumentsDirectory = try await localFileService.documentsDirectory()
+
+                    let documentsDirectories: [(isUbiquitous: Bool, directory: URL)] = [
+                        (isUbiquitous: true, directory: ubiquitousDocumentsDirectory),
+                        (isUbiquitous: false, directory: localDocumentsDirectory),
+                    ]
+                    .compactMap { isUbiquitous, directory in
+                        guard let directory else {
+                            return nil
+                        }
+                        return (isUbiquitous: isUbiquitous, directory: directory)
+                    }
+
+                    try await withThrowingTaskGroup(of: Void.self) { group in
+                        for (isUbiquitous, documentsDirectory) in documentsDirectories {
+                            let fileService =
+                                if isUbiquitous {
+                                    ubiquitousFileService
+                                } else {
+                                    localFileService
+                                }
+
+                            group.addTask {
+                                for try await _ in fileService.directoryChanges(directory: documentsDirectory) {
+                                    try continuation.yield(
+                                        documentsDirectories
+                                            .flatMap { (isUbiquitous: Bool, directory: URL) in
+                                                try listContents(
+                                                    directory: directory,
+                                                    isUbiquitous: isUbiquitous
+                                                )
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                        try await group.waitForAll()
+                    }
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+                continuation.finish()
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
+    private func listContents(
+        directory: URL,
+        isUbiquitous: Bool
+    ) throws -> [JotFile.Info] {
+        let fileService =
+            if isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
         let contents = try fileService.listContents(
             directory: directory,
             properties: Constants.fileProperties
@@ -67,20 +147,29 @@ struct JotFileService: JotFileServiceProtocol {
                 properties.isRegularFile == true
                     && properties.isReadable == true
                     && properties.isWritable == true
-                    && fileURL.pathExtension == "jot"
+                    && fileURL.pathExtension == JotFile.Info.fileExtension
             }
             .map { (fileURL: URL, properties: URLResourceValues) in
                 JotFile.Info(
                     url: fileURL,
                     name: fileURL.deletingPathExtension().lastPathComponent,
-                    modificationDate: properties.contentModificationDate
+                    modificationDate: properties.contentModificationDate,
+                    isUbiquitous: isUbiquitous
                 )
             }
     }
 
     func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile {
+        let fileService =
+            if jotFileInfo.isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
         let data = try fileService.readFile(fileURL: jotFileInfo.url)
         let jot = try propertyListDecoder.decode(Jot.self, from: data)
+
         return JotFile(
             info: jotFileInfo,
             jot: jot
@@ -88,7 +177,15 @@ struct JotFileService: JotFileServiceProtocol {
     }
 
     func write(jotFile: JotFile) throws {
+        let fileService =
+            if jotFile.info.isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
         let data = try propertyListEncoder.encode(jotFile.jot)
+
         try fileService.writeFile(
             fileURL: jotFile.info.url,
             data: data
@@ -96,12 +193,81 @@ struct JotFileService: JotFileServiceProtocol {
     }
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
+        let fileService =
+            if jotFileInfo.isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
         let duplicatedFileURL = try fileService.duplicateFile(fileURL: jotFileInfo.url)
 
         return JotFile.Info(
             url: duplicatedFileURL,
             name: duplicatedFileURL.deletingPathExtension().lastPathComponent,
-            modificationDate: jotFileInfo.modificationDate
+            modificationDate: jotFileInfo.modificationDate,
+            isUbiquitous: jotFileInfo.isUbiquitous
+        )
+    }
+
+    func rename(
+        jotFileInfo: JotFile.Info,
+        newName: String
+    ) throws -> JotFile.Info {
+        let newFileURL = jotFileInfo.url
+            .deletingPathExtension()
+            .deletingLastPathComponent()
+            .appendingPathComponent(newName)
+            .appendingPathExtension(jotFileInfo.url.pathExtension)
+
+        let fileService =
+            if jotFileInfo.isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
+        try fileService.moveFile(
+            fileURL: jotFileInfo.url,
+            newFileURL: newFileURL
+        )
+
+        return JotFile.Info(
+            url: newFileURL,
+            name: newName,
+            modificationDate: jotFileInfo.modificationDate,
+            isUbiquitous: jotFileInfo.isUbiquitous
+        )
+    }
+
+    func remove(jotFileInfo: JotFile.Info) throws {
+        let fileService =
+            if jotFileInfo.isUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
+        try fileService.removeFile(fileURL: jotFileInfo.url)
+    }
+
+    func move(
+        jotFileInfo: JotFile.Info,
+        shouldBecomeUbiquitous: Bool
+    ) async throws {
+        let fileService =
+            if shouldBecomeUbiquitous {
+                ubiquitousFileService
+            } else {
+                localFileService
+            }
+
+        guard let documentsDirectory = try await fileService.documentsDirectory() else {
+            throw Failure.couldNotResolveDocumentsDirectory
+        }
+
+        try fileService.moveFile(
+            fileURL: jotFileInfo.url,
+            newFileURL: documentsDirectory.appendingPathComponent(jotFileInfo.url.lastPathComponent, isDirectory: false)
         )
     }
 }

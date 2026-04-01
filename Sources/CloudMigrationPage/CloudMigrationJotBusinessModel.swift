@@ -21,14 +21,11 @@ import UIKit
 struct CloudMigrationJotBusinessModel: Sendable, Hashable {
     let name: String
     let lastModifiedText: String
-    let isCloudSynchronized: Bool
+    let isUbiquitous: Bool
 
     private let jotFileInfo: JotFile.Info
 
-    init(
-        jotFileInfo: JotFile.Info,
-        isCloudSynchronized: Bool
-    ) {
+    init(jotFileInfo: JotFile.Info) {
         name = jotFileInfo.name
         lastModifiedText =
             jotFileInfo.modificationDate.map {
@@ -38,7 +35,7 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
                     timeStyle: .short
                 )
             } ?? String()
-        self.isCloudSynchronized = isCloudSynchronized
+        self.isUbiquitous = jotFileInfo.isUbiquitous
         self.jotFileInfo = jotFileInfo
     }
 

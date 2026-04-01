@@ -26,6 +26,11 @@ protocol FileConflictServiceProtocol: Sendable {
         fileURL: URL,
         resolvedVersions: [URL]
     ) throws
+
+    func copyVersionToTemporary(
+        fileURL: URL,
+        versionURL: URL
+    ) throws -> URL?
 }
 
 struct FileConflictService: FileConflictServiceProtocol {
@@ -44,25 +49,34 @@ struct FileConflictService: FileConflictServiceProtocol {
         fileURL: URL,
         resolvedVersions: [URL]
     ) throws {
-        guard let unresolvedConflicts = getConflictingVersions(fileURL: fileURL) else {
+        guard
+            let unresolvedConflicts = getConflictingVersions(fileURL: fileURL),
+            !resolvedVersions.isEmpty
+        else {
             return
         }
 
-        if let first = resolvedVersions.first {
-            _ = try fileManager.replaceItemAt(
-                fileURL,
-                withItemAt: first
-            )
+        if let first = resolvedVersions.first, first != fileURL,
+            let version = unresolvedConflicts.first(where: { $0.url == first })
+        {
+            try version.replaceItem(at: fileURL, options: [])
         }
 
         let directory = fileURL.deletingLastPathComponent()
         let name = fileURL.deletingPathExtension().lastPathComponent
-        let ext = fileURL.pathExtension
 
-        for (index, version) in resolvedVersions.dropFirst().enumerated() {
-            let copyName = "\(name) (\(index + 2)).\(ext)"
-            let copyURL = directory.appendingPathComponent(copyName)
-            try fileManager.copyItem(at: version, to: copyURL)
+        for (index, versionURL) in resolvedVersions.dropFirst().enumerated() {
+            guard let version = unresolvedConflicts.first(where: { $0.url == versionURL }) else {
+                continue
+            }
+
+            let copyName = "\(name) (\(index + 2))"
+            let copyURL =
+                directory
+                .appendingPathComponent(copyName, isDirectory: false)
+                .appendingPathExtension(fileURL.pathExtension)
+
+            try version.replaceItem(at: copyURL, options: [])
         }
 
         for conflictingVersion in unresolvedConflicts {
@@ -70,5 +84,22 @@ struct FileConflictService: FileConflictServiceProtocol {
         }
 
         try NSFileVersion.removeOtherVersionsOfItem(at: fileURL)
+    }
+
+    func copyVersionToTemporary(
+        fileURL: URL,
+        versionURL: URL
+    ) throws -> URL? {
+        guard
+            let versions = NSFileVersion.unresolvedConflictVersionsOfItem(at: fileURL),
+            let version = versions.first(where: { $0.url == versionURL })
+        else {
+            return nil
+        }
+        let tmpURL = fileManager.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+            .appendingPathExtension(fileURL.pathExtension)
+        try version.replaceItem(at: tmpURL, options: [])
+        return tmpURL
     }
 }

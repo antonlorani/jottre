@@ -24,18 +24,18 @@ protocol JotFileConflictServiceProtocol: Sendable {
         jotFileInfo: JotFile.Info,
         resolvedVersions: [JotFileVersion]
     ) throws
+
+    func copyVersionToTemporary(
+        jotFileInfo: JotFile.Info,
+        jotFileVersion: JotFileVersion
+    ) throws -> JotFile.Info?
 }
 
 struct JotFileConflictService: JotFileConflictServiceProtocol {
 
-    private let fileService: FileServiceProtocol
     private let fileConflictService: FileConflictServiceProtocol
 
-    init(
-        fileService: FileServiceProtocol,
-        fileConflictService: FileConflictServiceProtocol
-    ) {
-        self.fileService = fileService
+    init(fileConflictService: FileConflictServiceProtocol) {
         self.fileConflictService = fileConflictService
     }
 
@@ -53,7 +53,8 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
                     info: JotFile.Info(
                         url: fileVersion.url,
                         name: fileVersion.localizedName ?? fileVersion.url.deletingPathExtension().lastPathComponent,
-                        modificationDate: fileVersion.modificationDate
+                        modificationDate: fileVersion.modificationDate,
+                        isUbiquitous: true
                     )
                 )
             }
@@ -66,6 +67,26 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
         try fileConflictService.resolveVersionConflicts(
             fileURL: jotFileInfo.url,
             resolvedVersions: resolvedVersions.map(\.info.url)
+        )
+    }
+
+    func copyVersionToTemporary(
+        jotFileInfo: JotFile.Info,
+        jotFileVersion: JotFileVersion
+    ) throws -> JotFile.Info? {
+        guard
+            let tmpURL = try fileConflictService.copyVersionToTemporary(
+                fileURL: jotFileInfo.url,
+                versionURL: jotFileVersion.info.url
+            )
+        else {
+            return nil
+        }
+        return JotFile.Info(
+            url: tmpURL,
+            name: jotFileVersion.info.name,
+            modificationDate: jotFileVersion.info.modificationDate,
+            isUbiquitous: jotFileVersion.info.isUbiquitous
         )
     }
 }

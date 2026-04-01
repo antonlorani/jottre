@@ -30,29 +30,41 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
         case fileExists
     }
 
-    private let fileService: FileServiceProtocol
+    private let localFileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
 
     init(
-        fileService: FileServiceProtocol,
+        localFileService: FileServiceProtocol,
+        ubiquitousFileService: FileServiceProtocol,
         jotFileService: JotFileServiceProtocol
     ) {
-        self.fileService = fileService
+        self.localFileService = localFileService
+        self.ubiquitousFileService = ubiquitousFileService
         self.jotFileService = jotFileService
     }
 
     func createJot(name: String) async throws -> JotFile.Info {
-        let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
-        let localDirectory = try fileService.localDocumentsDirectory()
+        let fileService: FileServiceProtocol
+        let directory: URL
+        let isUbiquitous: Bool
 
-        guard let directory = cloudDirectory ?? localDirectory else {
+        if let ubiquitousDirectory = try await ubiquitousFileService.documentsDirectory() {
+            fileService = ubiquitousFileService
+            directory = ubiquitousDirectory
+            isUbiquitous = true
+        } else if let localDirectory = try await localFileService.documentsDirectory() {
+            fileService = localFileService
+            directory = localDirectory
+            isUbiquitous = false
+        } else {
             throw Failure.couldNotCreateFile
         }
 
         let fileURL =
             directory
             .appendingPathComponent(name, isDirectory: false)
-            .appendingPathExtension("jot")
+            .appendingPathExtension(JotFile.Info.fileExtension)
 
         guard !fileService.fileExists(fileURL: fileURL) else {
             throw Failure.fileExists
@@ -62,7 +74,8 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
             info: JotFile.Info(
                 url: fileURL,
                 name: name,
-                modificationDate: nil
+                modificationDate: nil,
+                isUbiquitous: isUbiquitous
             ),
             jot: .makeEmpty()
         )

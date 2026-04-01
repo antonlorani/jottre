@@ -27,16 +27,19 @@ protocol SettingsRepositoryProtocol: Sendable {
 
 struct SettingsRepository: SettingsRepositoryProtocol {
 
-    private let fileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
     private let bundleService: BundleServiceProtocol
 
-    init(fileService: FileServiceProtocol, bundleService: BundleServiceProtocol) {
-        self.fileService = fileService
+    init(
+        ubiquitousFileService: FileServiceProtocol,
+        bundleService: BundleServiceProtocol
+    ) {
+        self.ubiquitousFileService = ubiquitousFileService
         self.bundleService = bundleService
     }
 
     func shouldShowEnableICloudButton() -> Bool {
-        !fileService.isICloudEnabled()
+        !ubiquitousFileService.isEnabled()
     }
 
     func appVersion() -> String {

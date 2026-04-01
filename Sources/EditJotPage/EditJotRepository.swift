@@ -20,6 +20,7 @@
 
 protocol EditJotRepositoryProtocol: Sendable {
 
+    func isUbiquitous(url: URL) -> Bool
     func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat)
     func writeDrawing(jotFile: JotFile) throws
     func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
@@ -28,18 +29,27 @@ protocol EditJotRepositoryProtocol: Sendable {
 
 struct EditJotRepository: EditJotRepositoryProtocol {
 
+    private let ubiquitousFileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
     private let jotFileConflictService: JotFileConflictServiceProtocol
 
     init(
+        ubiquitousFileService: FileServiceProtocol,
         jotFileService: JotFileServiceProtocol,
         jotFileConflictService: JotFileConflictServiceProtocol
     ) {
+        self.ubiquitousFileService = ubiquitousFileService
         self.jotFileService = jotFileService
         self.jotFileConflictService = jotFileConflictService
     }
 
+    func isUbiquitous(url: URL) -> Bool {
+        ubiquitousFileService.isUbiquitous(url: url)
+    }
+
     func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat) {
+        try? FileManager.default.startDownloadingUbiquitousItem(at: jotFileInfo.url)
+
         let file = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
         let drawing = try PKDrawing(data: file.jot.drawing)
         return (

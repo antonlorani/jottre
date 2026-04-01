@@ -35,7 +35,7 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
     ) {
         name = cloudMigrationJot.name
         infoText = cloudMigrationJot.lastModifiedText
-        isCloudCheckboxOn = cloudMigrationJot.isCloudSynchronized
+        isCloudCheckboxOn = cloudMigrationJot.isUbiquitous
         self.cloudMigrationJot = cloudMigrationJot
         self.repository = repository
         self.onTap = onTap

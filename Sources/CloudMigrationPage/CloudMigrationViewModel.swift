@@ -95,7 +95,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
             do {
                 try await self?.repository.moveJotFile(
                     jotFileInfo: cloudMigrationJot.toJotFileInfo(),
-                    shouldSynchronizeWithICloud: !cloudMigrationJot.isCloudSynchronized
+                    shouldBecomeUbiquitous: !cloudMigrationJot.isUbiquitous
                 )
             } catch {
                 await self?.coordinator?.showInfoAlert(

@@ -22,14 +22,17 @@ struct JotConflictBusinessModel: Sendable, Hashable {
 
     let name: String
     let lastEditedDateString: String
+    let jotFileInfo: JotFile.Info
 
     private let jotFileVersion: JotFileVersion
 
     init(
+        jotFileInfo: JotFile.Info,
         jotFileVersion: JotFileVersion
     ) {
         name = jotFileVersion.info.name
         lastEditedDateString = jotFileVersion.localizedNameOfSavingComputer ?? "unknown"
+        self.jotFileInfo = jotFileInfo
         self.jotFileVersion = jotFileVersion
     }
 
