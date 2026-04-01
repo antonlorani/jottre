@@ -120,6 +120,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
 
+        let editJotRepository = EditJotRepository(
+            ubiquitousFileService: ubiquitousFileService,
+            jotFileService: jotFileService,
+            jotFileConflictService: jotFileConflictService
+        )
+
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
@@ -148,11 +154,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
             ),
             editJotCoordinatorFactory: EditJotCoordinatorFactory(
+                repository: editJotRepository,
                 editJotViewControllerFactory: EditJotViewControllerFactory(
-                    repository: EditJotRepository(
-                        jotFileService: jotFileService,
-                        jotFileConflictService: jotFileConflictService
-                    ),
+                    repository: editJotRepository,
                     menuConfigurationFactory: menuConfigurationFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 ),

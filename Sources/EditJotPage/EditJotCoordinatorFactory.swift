@@ -24,6 +24,7 @@ protocol EditJotCoordinatorFactoryProtocol {
 
 struct EditJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol {
 
+    let repository: EditJotRepositoryProtocol
     let editJotViewControllerFactory: EditJotViewControllerFactoryProtocol
     let jotConflictCoordinatorFactory: JotConflictCoordinatorFactory
     let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
@@ -32,6 +33,7 @@ struct EditJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol {
     func make(navigation: Navigation) -> NavigationCoordinator {
         EditJotCoordinator(
             navigation: navigation,
+            repository: repository,
             editJotViewControllerFactory: editJotViewControllerFactory,
             jotConflictCoordinatorFactory: jotConflictCoordinatorFactory,
             renameJotCoordinatorFactory: renameJotCoordinatorFactory,

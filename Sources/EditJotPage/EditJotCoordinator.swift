@@ -29,6 +29,7 @@ final class EditJotCoordinator: NavigationCoordinator {
     private var retainedRevealFileCoordinator: Coordinator?
 
     private let navigation: Navigation
+    private let repository: EditJotRepositoryProtocol
     private let editJotViewControllerFactory: EditJotViewControllerFactoryProtocol
     private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
@@ -36,12 +37,14 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     init(
         navigation: Navigation,
+        repository: EditJotRepositoryProtocol,
         editJotViewControllerFactory: EditJotViewControllerFactoryProtocol,
         jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
+        self.repository = repository
         self.editJotViewControllerFactory = editJotViewControllerFactory
         self.jotConflictCoordinatorFactory = jotConflictCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
@@ -63,7 +66,7 @@ final class EditJotCoordinator: NavigationCoordinator {
             let jotFileInfo = JotFile.Info(
                 url: fileURL,
                 modificationDate: nil,
-                isUbiquitous: false
+                isUbiquitous: repository.isUbiquitous(url: fileURL)
             )
         else {
             return []
