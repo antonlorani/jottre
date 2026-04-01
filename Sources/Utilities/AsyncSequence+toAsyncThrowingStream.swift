@@ -16,23 +16,20 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-protocol RenameJotRepositoryProtocol {
+extension AsyncSequence where Self: Sendable, Element: Sendable {
 
-    func rename(jotFileInfo: JotFile.Info, newName: String) throws -> JotFile.Info
-}
-
-struct RenameJotRepository: RenameJotRepositoryProtocol {
-
-    private let jotFileService: JotFileServiceProtocol
-
-    init(jotFileService: JotFileServiceProtocol) {
-        self.jotFileService = jotFileService
-    }
-
-    func rename(jotFileInfo: JotFile.Info, newName: String) throws -> JotFile.Info {
-        try jotFileService.rename(
-            jotFileInfo: jotFileInfo,
-            newName: newName
-        )
+    func toAsyncThrowingStream() -> AsyncThrowingStream<Element, Error> {
+        AsyncThrowingStream { continuation in
+            Task {
+                do {
+                    for try await element in self {
+                        continuation.yield(element)
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
     }
 }

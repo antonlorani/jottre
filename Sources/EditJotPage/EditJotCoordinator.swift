@@ -60,7 +60,11 @@ final class EditJotCoordinator: NavigationCoordinator {
 
     func handle(url: URL) -> [UIViewController] {
         guard let fileURL = getFileURLQueryItem(url: url),
-            let jotFileInfo = JotFile.Info(url: fileURL, modificationDate: nil)
+            let jotFileInfo = JotFile.Info(
+                url: fileURL,
+                modificationDate: nil,
+                isUbiquitous: false
+            )
         else {
             return []
         }

@@ -27,6 +27,7 @@ protocol JotConflictRepositoryProtocol: Sendable {
 
     func getPreviewImage(
         jotFileInfo: JotFile.Info,
+        jotFileVersion: JotFileVersion,
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage?
@@ -57,17 +58,39 @@ struct JotConflictRepository: JotConflictRepositoryProtocol {
 
     func getPreviewImage(
         jotFileInfo: JotFile.Info,
+        jotFileVersion: JotFileVersion,
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage? {
         do {
-            let imageData = try await jotFilePreviewImageService.getPreviewImageData(
+            let readableVersionFileInfo: JotFile.Info
+            let tmpURL: URL?
+
+            if let tmpInfo = try jotFileConflictService.copyVersionToTemporary(
                 jotFileInfo: jotFileInfo,
+                jotFileVersion: jotFileVersion
+            ) {
+                readableVersionFileInfo = tmpInfo
+                tmpURL = tmpInfo.url
+            } else {
+                readableVersionFileInfo = jotFileInfo
+                tmpURL = nil
+            }
+
+            defer {
+                if let tmpURL {
+                    try? FileManager.default.removeItem(at: tmpURL)
+                }
+            }
+
+            let imageData = try await jotFilePreviewImageService.getPreviewImageData(
+                jotFileInfo: readableVersionFileInfo,
                 userInterfaceStyle: userInterfaceStyle,
                 displayScale: displayScale
             )
             return UIImage(data: imageData)
         } catch {
+            print(error)
             return nil
         }
     }

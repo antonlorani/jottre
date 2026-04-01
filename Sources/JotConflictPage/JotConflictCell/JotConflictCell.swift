@@ -24,7 +24,7 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
     private let previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .top
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -85,6 +85,7 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
         contentView.addSubview(previewImageView)
         contentView.addSubview(separatorLine)
         contentView.addSubview(nameLabel)
+        contentView.addSubview(infoLabel)
 
         NSLayoutConstraint.activate(
             [

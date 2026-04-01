@@ -18,35 +18,7 @@
 
 import Foundation
 
-protocol FileServiceProtocol: Sendable {
-
-    func isICloudEnabled() -> Bool
-
-    func localDocumentsDirectory() throws -> URL?
-
-    func iCloudDocumentsDirectory() async throws -> URL?
-
-    func listContents(
-        directory: URL,
-        properties: [URLResourceKey]
-    ) throws -> [URL]
-
-    func directoryChanges(directory: URL) -> AsyncStream<Void>
-
-    func readFile(fileURL: URL) throws -> Data
-
-    func writeFile(fileURL: URL, data: Data) throws
-
-    func fileExists(fileURL: URL) -> Bool
-
-    func removeFile(fileURL: URL) throws
-
-    func moveFile(fileURL: URL, newFileURL: URL) throws
-
-    func duplicateFile(fileURL: URL) throws -> URL
-}
-
-struct FileService: FileServiceProtocol {
+struct LocalFileService: FileServiceProtocol {
 
     enum Failure: Error {
         case couldNotReadFileContents
@@ -59,26 +31,12 @@ struct FileService: FileServiceProtocol {
         self.fileManager = fileManager
     }
 
-    func isICloudEnabled() -> Bool {
-        fileManager.ubiquityIdentityToken != nil
+    func isEnabled() -> Bool {
+        true
     }
 
-    func localDocumentsDirectory() throws -> URL? {
+    func documentsDirectory() async throws -> URL? {
         guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return nil
-        }
-
-        var isDirectory = ObjCBool(true)
-        if !fileManager.fileExists(atPath: directory.path, isDirectory: &isDirectory) {
-            try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
-        }
-        return directory
-    }
-
-    func iCloudDocumentsDirectory() async throws -> URL? {
-        guard
-            let directory = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-        else {
             return nil
         }
 
@@ -99,15 +57,11 @@ struct FileService: FileServiceProtocol {
         )
     }
 
-    func directoryChanges(directory: URL) -> AsyncStream<Void> {
-        if fileManager.isUbiquitousItem(at: directory) {
-            ubiquitousDirectoryChanges()
-        } else {
-            localDirectoryChanges(directory: directory)
-        }
+    func isUbiquitous(url: URL) -> Bool {
+        fileManager.isUbiquitousItem(at: url)
     }
 
-    private func localDirectoryChanges(directory: URL) -> AsyncStream<Void> {
+    func directoryChanges(directory: URL) -> AsyncStream<Void> {
         AsyncStream { continuation in
             continuation.yield()
 
@@ -136,14 +90,6 @@ struct FileService: FileServiceProtocol {
             }
 
             source.resume()
-        }
-    }
-
-    private func ubiquitousDirectoryChanges() -> AsyncStream<Void> {
-        AsyncStream { continuation in
-            continuation.yield()
-            let observer = UbiquitousDirectoryObserver { continuation.yield() }
-            continuation.onTermination = { _ in observer.stop() }
         }
     }
 
@@ -238,43 +184,6 @@ struct FileService: FileServiceProtocol {
             } catch CocoaError.fileWriteFileExists {
                 continue
             }
-        }
-    }
-}
-
-private final class UbiquitousDirectoryObserver: @unchecked Sendable {
-
-    private let queue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-
-    private let query = NSMetadataQuery()
-    private var observers = [Any]()
-
-    init(onUpdate: @Sendable @escaping () -> Void) {
-        query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
-        query.predicate = NSPredicate(format: "%K LIKE '*.\(JotFile.Info.fileExtension)'", NSMetadataItemFSNameKey)
-        query.operationQueue = queue
-
-        for name: NSNotification.Name in [.NSMetadataQueryDidFinishGathering, .NSMetadataQueryDidUpdate] {
-            observers.append(
-                NotificationCenter.default.addObserver(forName: name, object: query, queue: queue) { _ in
-                    onUpdate()
-                }
-            )
-        }
-
-        queue.addOperation { [self] in
-            query.start()
-        }
-    }
-
-    func stop() {
-        queue.addOperation { [self] in
-            query.stop()
-            observers.forEach { NotificationCenter.default.removeObserver($0) }
         }
     }
 }

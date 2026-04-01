@@ -36,58 +36,33 @@ protocol JotsRepositoryProtocol: Sendable {
 
 struct JotsRepository: JotsRepositoryProtocol {
 
-    private let fileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
     private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
 
     init(
-        fileService: FileServiceProtocol,
+        ubiquitousFileService: FileServiceProtocol,
         jotFileService: JotFileServiceProtocol,
         jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
     ) {
-        self.fileService = fileService
+        self.ubiquitousFileService = ubiquitousFileService
         self.jotFileService = jotFileService
         self.jotFilePreviewImageService = jotFilePreviewImageService
     }
 
     func getJotFiles() -> AsyncThrowingStream<[JotFile.Info], Error> {
-        AsyncThrowingStream { continuation in
-            let task = Task {
-                do {
-                    let localDirectory = try fileService.localDocumentsDirectory()
-                    let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
-                    let directories = [localDirectory, cloudDirectory].compactMap { $0 }
-
-                    try await withThrowingTaskGroup(of: Void.self) { group in
-                        for directory in directories {
-                            group.addTask {
-                                for try await _ in fileService.directoryChanges(directory: directory) {
-                                    try continuation.yield(
-                                        directories
-                                            .flatMap { (directory: URL) throws -> [JotFile.Info] in
-                                                try jotFileService.listContents(directory: directory)
-                                            }
-                                            .sorted(by: {
-                                                ($0.modificationDate ?? .distantPast)
-                                                    > ($1.modificationDate ?? .distantPast)
-                                            })
-                                    )
-                                }
-                            }
-                        }
-                        try await group.waitForAll()
-                    }
-                } catch {
-                    continuation.finish(throwing: error)
+        jotFileService
+            .documentsDirectoryContents()
+            .map { jotFileInfos in
+                jotFileInfos.sorted { a, b in
+                    (a.modificationDate ?? .distantPast) > (b.modificationDate ?? .distantPast)
                 }
-                continuation.finish()
             }
-            continuation.onTermination = { _ in task.cancel() }
-        }
+            .toAsyncThrowingStream()
     }
 
     func shouldShowEnableICloudButton() -> Bool {
-        !fileService.isICloudEnabled()
+        !ubiquitousFileService.isEnabled()
     }
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {

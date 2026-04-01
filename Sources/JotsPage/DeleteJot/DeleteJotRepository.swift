@@ -25,13 +25,13 @@ protocol DeleteJotRepositoryProtocol: Sendable {
 
 struct DeleteJotRepository: DeleteJotRepositoryProtocol {
 
-    private let fileService: FileServiceProtocol
+    private let jotFileService: JotFileServiceProtocol
 
-    init(fileService: FileServiceProtocol) {
-        self.fileService = fileService
+    init(jotFileService: JotFileServiceProtocol) {
+        self.jotFileService = jotFileService
     }
 
     func deleteJot(jotFileInfo: JotFile.Info) throws {
-        try fileService.removeFile(fileURL: jotFileInfo.url)
+        try jotFileService.remove(jotFileInfo: jotFileInfo)
     }
 }

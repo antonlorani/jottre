@@ -49,7 +49,8 @@ final class JotConflictCellViewModel: PageCellViewModel {
                 return nil as UIImage?
             }
             return await self.repository.getPreviewImage(
-                jotFileInfo: self.jotConflict.toJotFileVersion().info,
+                jotFileInfo: self.jotConflict.jotFileInfo,
+                jotFileVersion: self.jotConflict.toJotFileVersion(),
                 userInterfaceStyle: userInterfaceStyle,
                 displayScale: displayScale
             )

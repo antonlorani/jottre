@@ -26,20 +26,24 @@ struct JotFile: Sendable {
         let url: URL
         let name: String
         let modificationDate: Date?
+        let isUbiquitous: Bool
 
         init(
             url: URL,
             name: String,
-            modificationDate: Date?
+            modificationDate: Date?,
+            isUbiquitous: Bool
         ) {
             self.url = url
             self.name = name
             self.modificationDate = modificationDate
+            self.isUbiquitous = isUbiquitous
         }
 
         init?(
             url: URL,
-            modificationDate: Date?
+            modificationDate: Date?,
+            isUbiquitous: Bool
         ) {
             guard url.pathExtension == Info.fileExtension else {
                 return nil
@@ -47,7 +51,8 @@ struct JotFile: Sendable {
             self.init(
                 url: url,
                 name: url.deletingPathExtension().lastPathComponent,
-                modificationDate: modificationDate
+                modificationDate: modificationDate,
+                isUbiquitous: isUbiquitous
             )
         }
     }

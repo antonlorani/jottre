@@ -34,7 +34,10 @@ final class JotConflictViewModel: PageViewModel, Sendable {
         pageCellItems.append(
             contentsOf: jotFileVersions.map { jotFileVersion in
                 PageCellItem.jotConflict(
-                    jotConflict: JotConflictBusinessModel(jotFileVersion: jotFileVersion),
+                    jotConflict: JotConflictBusinessModel(
+                        jotFileInfo: jotFileInfo,
+                        jotFileVersion: jotFileVersion
+                    ),
                     sizing: .equalSplit(
                         perRow: jotFileVersions.count,
                         itemHeight: 200
@@ -81,9 +84,15 @@ final class JotConflictViewModel: PageViewModel, Sendable {
         coordinator: JotConflictCoordinator,
         onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
     ) {
-        assert(jotFileVersions.count >= 2, "Resolving a version conflict between less than two files is not logical.")
+        assert(jotFileVersions.count >= 1, "Resolving a version conflict between less than two files is not logical.")
         self.jotFileInfo = jotFileInfo
-        self.jotFileVersions = jotFileVersions
+        self.jotFileVersions =
+            [
+                JotFileVersion(
+                    localizedNameOfSavingComputer: "This Device",
+                    info: jotFileInfo
+                )
+            ] + jotFileVersions
         self.repository = repository
         self.coordinator = coordinator
         self.onResult = onResult

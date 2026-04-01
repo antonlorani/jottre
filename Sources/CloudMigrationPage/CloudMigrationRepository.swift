@@ -25,7 +25,7 @@ protocol CloudMigrationRepositoryProtocol: Sendable {
 
     func moveJotFile(
         jotFileInfo: JotFile.Info,
-        shouldSynchronizeWithICloud: Bool
+        shouldBecomeUbiquitous: Bool
     ) async throws
 
     func getShouldShowCloudMigration() -> Bool
@@ -41,97 +41,46 @@ protocol CloudMigrationRepositoryProtocol: Sendable {
 
 struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
 
-    enum Failure: Error {
-        case couldNotResolveDirectories
-    }
-
-    private let fileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
     private let jotFileService: JotFileServiceProtocol
     private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
     private let defaultsService: DefaultsServiceProtocol
 
     init(
-        fileService: FileServiceProtocol,
+        ubiquitousFileService: FileServiceProtocol,
         jotFileService: JotFileServiceProtocol,
         jotFilePreviewImageService: JotFilePreviewImageServiceProtocol,
         defaultsService: DefaultsServiceProtocol
     ) {
-        self.fileService = fileService
+        self.ubiquitousFileService = ubiquitousFileService
         self.jotFileService = jotFileService
         self.jotFilePreviewImageService = jotFilePreviewImageService
         self.defaultsService = defaultsService
     }
 
     func getJotFiles() -> AsyncThrowingStream<[CloudMigrationJotBusinessModel], Error> {
-        AsyncThrowingStream { continuation in
-            let task = Task {
-                do {
-                    let localDirectory = try fileService.localDocumentsDirectory()
-                    let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
-                    let directories = [(localDirectory, false), (cloudDirectory, true)]
-                        .compactMap { (url, isCloud) in url.map { ($0, isCloud) } }
-
-                    try await withThrowingTaskGroup(of: Void.self) { group in
-                        for (directory, _) in directories {
-                            group.addTask {
-                                for try await _ in fileService.directoryChanges(directory: directory) {
-                                    try continuation.yield(
-                                        directories
-                                            .flatMap { (dir, isCloud) in
-                                                try jotFileService.listContents(directory: dir)
-                                                    .map { (info: $0, isCloud: isCloud) }
-                                            }
-                                            .sorted { lhs, rhs in
-                                                if lhs.isCloud != rhs.isCloud {
-                                                    return !lhs.isCloud
-                                                }
-                                                return lhs.info.modificationDate ?? .distantPast > rhs.info
-                                                    .modificationDate ?? .distantPast
-                                            }
-                                            .map { jotFileInfo, isCloud in
-                                                CloudMigrationJotBusinessModel(
-                                                    jotFileInfo: jotFileInfo,
-                                                    isCloudSynchronized: isCloud
-                                                )
-                                            }
-                                    )
-                                }
-                            }
+        jotFileService
+            .documentsDirectoryContents()
+            .map { jotFileInfos in
+                jotFileInfos
+                    .sorted { lhs, rhs in
+                        if lhs.isUbiquitous != rhs.isUbiquitous {
+                            return !lhs.isUbiquitous
                         }
-                        try await group.waitForAll()
+                        return lhs.modificationDate ?? .distantPast > rhs.modificationDate ?? .distantPast
                     }
-                } catch {
-                    continuation.finish(throwing: error)
-                }
-                continuation.finish()
+                    .map(CloudMigrationJotBusinessModel.init)
             }
-            continuation.onTermination = { _ in task.cancel() }
-        }
+            .toAsyncThrowingStream()
     }
 
     func moveJotFile(
         jotFileInfo: JotFile.Info,
-        shouldSynchronizeWithICloud: Bool
+        shouldBecomeUbiquitous: Bool
     ) async throws {
-        guard
-            let localDirector = try fileService.localDocumentsDirectory(),
-            let cloudDirectory = try await fileService.iCloudDocumentsDirectory()
-        else {
-            throw Failure.couldNotResolveDirectories
-        }
-
-        let targetDirectory =
-            if shouldSynchronizeWithICloud {
-                cloudDirectory
-            } else {
-                localDirector
-            }
-
-        try fileService.moveFile(
-            fileURL: jotFileInfo.url,
-            newFileURL:
-                targetDirectory
-                .appendingPathComponent(jotFileInfo.url.lastPathComponent, isDirectory: false)
+        try await jotFileService.move(
+            jotFileInfo: jotFileInfo,
+            shouldBecomeUbiquitous: shouldBecomeUbiquitous
         )
     }
 
@@ -140,12 +89,12 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
             return false
         }
 
-        let isICloudEnabled = fileService.isICloudEnabled()
+        let isUbiquitousFileServiceEnabled = ubiquitousFileService.isEnabled()
         if let wasICloudEnabled = defaultsService.getValue(.isICloudEnabled) {
-            return wasICloudEnabled != isICloudEnabled
+            return wasICloudEnabled != isUbiquitousFileServiceEnabled
         }
 
-        if !isICloudEnabled {
+        if !isUbiquitousFileServiceEnabled {
             defaultsService.set(.isICloudEnabled, value: false)
         }
 

@@ -40,6 +40,8 @@ struct EditJotRepository: EditJotRepositoryProtocol {
     }
 
     func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat) {
+        try? FileManager.default.startDownloadingUbiquitousItem(at: jotFileInfo.url)
+
         let file = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
         let drawing = try PKDrawing(data: file.jot.drawing)
         return (

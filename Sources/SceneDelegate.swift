@@ -79,12 +79,20 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
 
         let fileManager = FileManager.default
-        let fileService = FileService(fileManager: fileManager)
+        let localFileService = LocalFileService(
+            fileManager: fileManager
+        )
+        let ubiquitousFileService = UbiquitousFileService(
+            fileManager: fileManager,
+            localFileService: localFileService
+        )
         let fileConflictService = FileConflictService(fileManager: fileManager)
         let bundleService = BundleService(bundle: .main)
-        let jotFileService = JotFileService(fileService: fileService)
+        let jotFileService = JotFileService(
+            localFileService: localFileService,
+            ubiquitousFileService: ubiquitousFileService
+        )
         let jotFileConflictService = JotFileConflictService(
-            fileService: fileService,
             fileConflictService: fileConflictService
         )
         let jotFilePreviewImageService = JotFilePreviewImageService(
@@ -108,14 +116,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let deleteJotCoordinatorFactory = DeleteJotCoordinatorFactory(
             repository: DeleteJotRepository(
-                fileService: fileService
+                jotFileService: jotFileService
             )
         )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
-                    fileService: fileService,
+                    ubiquitousFileService: ubiquitousFileService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService
                 ),
@@ -126,7 +134,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             settingsCoordinatorFactory: SettingsCoordinatorFactory(
                 settingsViewControllerFactory: SettingsViewControllerFactory(
                     repository: SettingsRepository(
-                        fileService: fileService,
+                        ubiquitousFileService: ubiquitousFileService,
                         bundleService: bundleService
                     ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
@@ -160,14 +168,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 ),
                 renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
                     repository: RenameJotRepository(
-                        fileService: fileService
+                        jotFileService: jotFileService
                     )
                 ),
                 deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
             ),
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
                 repository: CloudMigrationRepository(
-                    fileService: fileService,
+                    ubiquitousFileService: ubiquitousFileService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService,
                     defaultsService: defaultsService
@@ -179,14 +187,15 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ),
             createJotCoordinatorFactory: CreateJotCoordinatorFactory(
                 repository: CreateJotRepository(
-                    fileService: fileService,
+                    localFileService: localFileService,
+                    ubiquitousFileService: ubiquitousFileService,
                     jotFileService: jotFileService
                 )
             ),
             deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
             renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
                 repository: RenameJotRepository(
-                    fileService: fileService
+                    jotFileService: jotFileService
                 )
             )
         )
