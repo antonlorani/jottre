@@ -75,7 +75,7 @@ struct CreateJotRepository: CreateJotRepositoryProtocol {
                 url: fileURL,
                 name: name,
                 modificationDate: nil,
-                isUbiquitous: isUbiquitous
+                ubiquitousInfo: isUbiquitous ? UbiquitousInfo(downloadStatus: .current) : nil
             ),
             jot: .makeEmpty()
         )

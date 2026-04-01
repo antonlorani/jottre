@@ -61,8 +61,9 @@ struct LocalFileService: FileServiceProtocol {
         )
     }
 
-    func isUbiquitous(url: URL) -> Bool {
-        fileManager.isUbiquitousItem(at: url)
+    func ubiquitousInfo(url: URL) -> UbiquitousInfo? {
+        assertionFailure("Shouldn't have called \(#function) in \(Self.self)")
+        return nil
     }
 
     func directoryChanges(directory: URL) -> AsyncStream<Void> {

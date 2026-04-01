@@ -16,30 +16,12 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
-
-struct CloudMigrationJotBusinessModel: Sendable, Hashable {
-    let name: String
-    let lastModifiedText: String
-    let isUbiquitous: Bool
-
-    private let jotFileInfo: JotFile.Info
-
-    init(jotFileInfo: JotFile.Info) {
-        name = jotFileInfo.name
-        lastModifiedText =
-            jotFileInfo.modificationDate.map {
-                DateFormatter.localizedString(
-                    from: $0,
-                    dateStyle: .long,
-                    timeStyle: .short
-                )
-            } ?? String()
-        self.isUbiquitous = jotFileInfo.ubiquitousInfo != nil
-        self.jotFileInfo = jotFileInfo
+struct UbiquitousInfo: Sendable, Hashable {
+    enum DownloadStatus: Sendable, Hashable {
+        case downloaded
+        case current
+        case notDownloaded
     }
 
-    func toJotFileInfo() -> JotFile.Info {
-        jotFileInfo
-    }
+    let downloadStatus: DownloadStatus?
 }

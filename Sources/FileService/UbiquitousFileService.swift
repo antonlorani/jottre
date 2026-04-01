@@ -63,12 +63,35 @@ struct UbiquitousFileService: FileServiceProtocol {
         )
     }
 
-    func isUbiquitous(url: URL) -> Bool {
-        fileManager.isUbiquitousItem(at: url)
+    func ubiquitousInfo(url: URL) -> UbiquitousInfo? {
+        guard fileManager.isUbiquitousItem(at: url) else {
+            return nil
+        }
+
+        let resourceValues = try? url.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey])
+
+        let downloadStatus: UbiquitousInfo.DownloadStatus? =
+            switch resourceValues?.ubiquitousItemDownloadingStatus {
+            case .current:
+                UbiquitousInfo.DownloadStatus.current
+            case .downloaded:
+                UbiquitousInfo.DownloadStatus.downloaded
+            case .notDownloaded:
+                UbiquitousInfo.DownloadStatus.notDownloaded
+            default:
+                nil
+            }
+
+        return UbiquitousInfo(
+            downloadStatus: downloadStatus
+        )
     }
 
     func directoryChanges(directory: URL) -> AsyncStream<Void> {
-        assert(isUbiquitous(url: directory), "Cannot listen to directory changes of a non ubiquitous directory.")
+        assert(
+            fileManager.isUbiquitousItem(at: directory),
+            "Cannot listen to directory changes of a non ubiquitous directory."
+        )
         return AsyncStream { continuation in
             continuation.yield()
             let observer = UbiquitousDirectoryObserver {

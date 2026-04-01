@@ -66,7 +66,7 @@ final class EditJotCoordinator: NavigationCoordinator {
             let jotFileInfo = JotFile.Info(
                 url: fileURL,
                 modificationDate: nil,
-                isUbiquitous: repository.isUbiquitous(url: fileURL)
+                ubiquitousInfo: repository.ubiquitousInfo(url: fileURL)
             )
         else {
             return []
