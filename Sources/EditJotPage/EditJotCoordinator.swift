@@ -150,6 +150,10 @@ final class EditJotCoordinator: NavigationCoordinator {
         jotConflictCoordinator.start()
     }
 
+    func canGoBack() -> Bool {
+        navigation.getViewControllers().count > 1
+    }
+
     func goBack() {
         navigation.popViewController(animated: true)
     }

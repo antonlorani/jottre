@@ -48,6 +48,7 @@ final class EditJotViewController: UIViewController {
 
     private var isEditingTask: Task<Void, Never>?
     private var drawingTask: Task<Void, Never>?
+    private var backButtonTask: Task<Void, Never>?
 
     private let viewModel: EditJotViewModel
     private let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
@@ -78,6 +79,11 @@ final class EditJotViewController: UIViewController {
                 }
             }
         }
+        backButtonTask = Task { @MainActor [weak self] in
+            for await showsBackButton in viewModel.showsBackButton {
+                self?.handleBackButton(showsBackButton: showsBackButton)
+            }
+        }
     }
 
     @available(*, unavailable)
@@ -89,6 +95,7 @@ final class EditJotViewController: UIViewController {
     deinit {
         isEditingTask?.cancel()
         drawingTask?.cancel()
+        backButtonTask?.cancel()
     }
 
     override func viewDidLoad() {
@@ -109,7 +116,12 @@ final class EditJotViewController: UIViewController {
     private func setUpNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = viewModel.title
+    }
 
+    private func handleBackButton(showsBackButton: Bool) {
+        guard showsBackButton else {
+            return
+        }
         navigationItem.leftBarButtonItem = symbolBarButtonItemFactory.make(
             symbolName: "chevron.left",
             primaryAction: .action(

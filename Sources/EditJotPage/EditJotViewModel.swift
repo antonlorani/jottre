@@ -76,6 +76,9 @@ final class EditJotViewModel: Sendable {
     let isEditing: AsyncStream<Bool?>
     private let isEditingContinuation: AsyncStream<Bool?>.Continuation
 
+    let showsBackButton: AsyncStream<Bool>
+    private let showsBackButtonContinuation: AsyncStream<Bool>.Continuation
+
     private var drawingUpdateTask: Task<Void, Never>?
     private let drawingUpdateContinuation: AsyncStream<PKDrawing>.Continuation
 
@@ -102,6 +105,10 @@ final class EditJotViewModel: Sendable {
         )
         (drawing, drawingContinuation) = AsyncStream.makeStream(
             of: Drawing.self,
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        (showsBackButton, showsBackButtonContinuation) = AsyncStream.makeStream(
+            of: Bool.self,
             bufferingPolicy: .bufferingNewest(1)
         )
 
@@ -140,6 +147,8 @@ final class EditJotViewModel: Sendable {
     }
 
     func didLoad() {
+        showsBackButtonContinuation.yield(coordinator?.canGoBack() ?? false)
+
         if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
             coordinator?.showJotConflictPage(
                 jotFileInfo: jotFileInfo,
