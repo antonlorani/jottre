@@ -20,14 +20,13 @@ extension PageCellItem {
 
     @MainActor
     static func settingsToggle(
-        name: String,
-        isOn: Bool
+        settingsToggle: SettingsToggleBusinessModel
     ) -> PageCellItem {
         PageCellItem(
-            id: name,
+            id: settingsToggle,
             cellType: SettingsToggleCell.self,
             sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: SettingsToggleCellViewModel(name: name, isOn: isOn)
+            viewModel: SettingsToggleCellViewModel(settingsToggle: settingsToggle)
         )
     }
 }

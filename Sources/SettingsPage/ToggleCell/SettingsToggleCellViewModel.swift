@@ -22,11 +22,10 @@ final class SettingsToggleCellViewModel: PageCellViewModel {
     let isOn: Bool
 
     init(
-        name: String,
-        isOn: Bool
+        settingsToggle: SettingsToggleBusinessModel
     ) {
-        self.name = name
-        self.isOn = isOn
+        self.name = settingsToggle.name
+        self.isOn = settingsToggle.isOn
     }
 
     func handle(action: PageCellAction) {

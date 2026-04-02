@@ -23,12 +23,11 @@ final class SettingsExternalLinkCellViewModel: PageCellViewModel {
     let onAction: @Sendable () -> Void
 
     init(
-        name: String,
-        info: String?,
+        settingsExternalLink: SettingsExternalLinkBusinessModel,
         onAction: @Sendable @escaping () -> Void
     ) {
-        self.name = name
-        self.info = info
+        self.name = settingsExternalLink.name
+        self.info = settingsExternalLink.info
         self.onAction = onAction
     }
 

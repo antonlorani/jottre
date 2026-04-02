@@ -20,14 +20,13 @@ extension PageCellItem {
 
     @MainActor
     static func settingsInfo(
-        name: String,
-        value: String
+        settingsInfo: SettingsInfoBusinessModel
     ) -> PageCellItem {
         PageCellItem(
-            id: name,
+            id: settingsInfo,
             cellType: SettingsInfoCell.self,
             sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: SettingsInfoCellViewModel(name: name, value: value)
+            viewModel: SettingsInfoCellViewModel(settingsInfo: settingsInfo)
         )
     }
 }

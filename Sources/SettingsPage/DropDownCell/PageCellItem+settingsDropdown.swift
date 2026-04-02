@@ -20,19 +20,15 @@ extension PageCellItem {
 
     @MainActor
     static func settingsDropdown(
-        name: String,
-        current: SettingsDropdownBusinessModel.Option,
-        options: [SettingsDropdownBusinessModel.Option],
+        settingsDropdown: SettingsDropdownBusinessModel,
         onAction: @Sendable @escaping (SettingsDropdownBusinessModel.Option) -> Void
     ) -> PageCellItem {
         PageCellItem(
-            id: name,
+            id: settingsDropdown,
             cellType: SettingsDropdownCell.self,
             sizing: .fullWidth(estimatedHeight: 56),
             viewModel: SettingsDropdownCellViewModel(
-                name: name,
-                current: current,
-                options: options,
+                settingsDropdown: settingsDropdown,
                 onAction: onAction
             )
         )

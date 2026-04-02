@@ -21,9 +21,11 @@ final class SettingsInfoCellViewModel: PageCellViewModel {
     let name: String
     let value: String
 
-    init(name: String, value: String) {
-        self.name = name
-        self.value = value
+    init(
+        settingsInfo: SettingsInfoBusinessModel
+    ) {
+        self.name = settingsInfo.name
+        self.value = settingsInfo.value
     }
 
     func handle(action: PageCellAction) {

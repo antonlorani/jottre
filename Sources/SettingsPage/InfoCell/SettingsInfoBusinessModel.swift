@@ -16,7 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct SettingsInfoBusinessModel {
+struct SettingsInfoBusinessModel: Sendable, Hashable {
     let name: String
     let value: String
 }

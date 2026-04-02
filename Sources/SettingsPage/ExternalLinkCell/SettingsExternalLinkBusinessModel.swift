@@ -16,7 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct SettingsExternalLinkBusinessModel {
+struct SettingsExternalLinkBusinessModel: Sendable, Hashable {
     let name: String
     let info: String?
 }

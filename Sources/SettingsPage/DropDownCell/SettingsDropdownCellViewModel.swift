@@ -24,14 +24,12 @@ final class SettingsDropdownCellViewModel: PageCellViewModel {
     let onAction: @Sendable (SettingsDropdownBusinessModel.Option) -> Void
 
     init(
-        name: String,
-        current: SettingsDropdownBusinessModel.Option,
-        options: [SettingsDropdownBusinessModel.Option],
+        settingsDropdown: SettingsDropdownBusinessModel,
         onAction: @Sendable @escaping (SettingsDropdownBusinessModel.Option) -> Void
     ) {
-        self.name = name
-        self.current = current
-        self.options = options
+        self.name = settingsDropdown.name
+        self.current = settingsDropdown.current
+        self.options = settingsDropdown.options
         self.onAction = onAction
     }
 
