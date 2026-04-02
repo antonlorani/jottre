@@ -16,26 +16,33 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Foundation
+import UIKit
 
 protocol SettingsRepositoryProtocol: Sendable {
 
     func shouldShowEnableICloudButton() -> Bool
 
     func appVersion() -> String
+
+    func userInterfaceStyle() -> AsyncStream<UIUserInterfaceStyle>
+
+    func updateUserInterfaceStyle(_ style: UIUserInterfaceStyle)
 }
 
 struct SettingsRepository: SettingsRepositoryProtocol {
 
     private let ubiquitousFileService: FileServiceProtocol
     private let bundleService: BundleServiceProtocol
+    private let defaultsService: DefaultsServiceProtocol
 
     init(
         ubiquitousFileService: FileServiceProtocol,
-        bundleService: BundleServiceProtocol
+        bundleService: BundleServiceProtocol,
+        defaultsService: DefaultsServiceProtocol
     ) {
         self.ubiquitousFileService = ubiquitousFileService
         self.bundleService = bundleService
+        self.defaultsService = defaultsService
     }
 
     func shouldShowEnableICloudButton() -> Bool {
@@ -44,5 +51,19 @@ struct SettingsRepository: SettingsRepositoryProtocol {
 
     func appVersion() -> String {
         bundleService.shortVersionString() ?? "-"
+    }
+
+    func userInterfaceStyle() -> AsyncStream<UIUserInterfaceStyle> {
+        defaultsService.getValueStream(.userInterfaceStyle)
+            .map { value in
+                value
+                    .flatMap { UIUserInterfaceStyle(rawValue: $0) }
+                    ?? .unspecified
+            }
+            .toAsyncStream()
+    }
+
+    func updateUserInterfaceStyle(_ style: UIUserInterfaceStyle) {
+        defaultsService.set(.userInterfaceStyle, value: style.rawValue)
     }
 }

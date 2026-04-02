@@ -144,7 +144,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 settingsViewControllerFactory: SettingsViewControllerFactory(
                     repository: SettingsRepository(
                         ubiquitousFileService: ubiquitousFileService,
-                        bundleService: bundleService
+                        bundleService: bundleService,
+                        defaultsService: defaultsService
                     ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory

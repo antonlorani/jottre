@@ -21,6 +21,11 @@ import UIKit
 @MainActor
 final class SettingsViewModel: PageViewModel {
 
+    private enum Constants {
+
+        static let userInterfaceStyleOptions: [UIUserInterfaceStyle] = [.unspecified, .dark, .light]
+    }
+
     var title: String? {
         L10n.Settings.title
     }
@@ -31,10 +36,17 @@ final class SettingsViewModel: PageViewModel {
     let items: AsyncStream<[PageCellItem]>
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
+    private let repository: SettingsRepositoryProtocol
+    private weak var coordinator: SettingsCoordinator?
+
+    private var loadingTask: Task<Void, Never>?
+
     init(
         repository: SettingsRepositoryProtocol,
         coordinator: SettingsCoordinator
     ) {
+        self.repository = repository
+        self.coordinator = coordinator
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
             bufferingPolicy: .bufferingNewest(1)
@@ -45,31 +57,76 @@ final class SettingsViewModel: PageViewModel {
             bufferingPolicy: .bufferingNewest(1)
         )
 
+        rightNavigationItemsContinuation.yield([
+            .symbol(systemImageName: "xmark") { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.dismiss()
+                }
+            }
+        ])
+    }
+
+    func didLoad() {
+        loadingTask = Task { [weak self] in
+            guard let repository = self?.repository else {
+                return
+            }
+            let shouldShowEnableICloudButton = repository.shouldShowEnableICloudButton()
+            let appVersion = repository.appVersion()
+            for await userInterfaceStyle in repository.userInterfaceStyle() {
+                guard let self else {
+                    return
+                }
+                itemsContinuation.yield(
+                    makePageItems(
+                        userInterfaceStyle: userInterfaceStyle,
+                        shouldShowEnableICloudButton: shouldShowEnableICloudButton,
+                        appVersion: appVersion
+                    )
+                )
+            }
+        }
+    }
+
+    private func makePageItems(
+        userInterfaceStyle: UIUserInterfaceStyle,
+        shouldShowEnableICloudButton: Bool,
+        appVersion: String
+    ) -> [PageCellItem] {
         var items = [
             PageCellItem.settingsDropdown(
-                name: L10n.Settings.Appearance.title,
-                current: .init(
-                    label: SettingsViewModel.makeLabel(userInterfaceStyle: .unspecified),
-                    value: UIUserInterfaceStyle.unspecified
+                settingsDropdown: SettingsDropdownBusinessModel(
+                    name: L10n.Settings.Appearance.title,
+                    current: SettingsDropdownBusinessModel.Option(
+                        label: SettingsViewModel.makeLabel(userInterfaceStyle: userInterfaceStyle),
+                        value: userInterfaceStyle
+                    ),
+                    options: Constants.userInterfaceStyleOptions.map { userInterfaceStyleOption in
+                        SettingsDropdownBusinessModel.Option(
+                            label: SettingsViewModel.makeLabel(userInterfaceStyle: userInterfaceStyleOption),
+                            value: userInterfaceStyleOption
+                        )
+                    }
                 ),
-                options: [UIUserInterfaceStyle.unspecified, .dark, .light].map { style in
-                    .init(
-                        label: SettingsViewModel.makeLabel(userInterfaceStyle: style),
-                        value: style
-                    )
-                },
-                onAction: { _ in }
+                onAction: { [weak self] option in
+                    guard let style = option.value as? UIUserInterfaceStyle else {
+                        return
+                    }
+                    self?.repository.updateUserInterfaceStyle(style)
+                }
             )
         ]
 
-        if repository.shouldShowEnableICloudButton() {
+        if shouldShowEnableICloudButton {
             items.append(
                 .settingsExternalLink(
-                    name: L10n.Settings.ICloud.title,
-                    info: L10n.Settings.ICloud.info,
-                    onAction: { [weak coordinator] in
-                        Task { @MainActor in
-                            coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
+                    settingsExternalLink: SettingsExternalLinkBusinessModel(
+                        name: L10n.Settings.ICloud.title,
+                        info: L10n.Settings.ICloud.info
+                    ),
+                    onAction: { [weak self] in
+                        Task { @MainActor [weak self] in
+                            self?.coordinator?.openExternalLink(url: EnableICloudSupportURL().toURL())
                         }
                     }
                 )
@@ -78,29 +135,25 @@ final class SettingsViewModel: PageViewModel {
 
         items.append(contentsOf: [
             .settingsExternalLink(
-                name: L10n.Settings.Github.title,
-                info: nil,
-                onAction: { [weak coordinator] in
-                    Task { @MainActor in
-                        coordinator?.openExternalLink(url: JottreGithubURL().toURL())
+                settingsExternalLink: SettingsExternalLinkBusinessModel(
+                    name: L10n.Settings.Github.title,
+                    info: nil
+                ),
+                onAction: { [weak self] in
+                    Task { @MainActor [weak self] in
+                        self?.coordinator?.openExternalLink(url: JottreGithubURL().toURL())
                     }
                 }
             ),
             .settingsInfo(
-                name: L10n.Settings.Version.title,
-                value: repository.appVersion()
+                settingsInfo: SettingsInfoBusinessModel(
+                    name: L10n.Settings.Version.title,
+                    value: appVersion
+                )
             ),
         ])
 
-        itemsContinuation.yield(items)
-
-        rightNavigationItemsContinuation.yield([
-            .symbol(systemImageName: "xmark") { [weak coordinator] in
-                Task { @MainActor in
-                    coordinator?.dismiss()
-                }
-            }
-        ])
+        return items
     }
 
     private static func makeLabel(userInterfaceStyle: UIUserInterfaceStyle) -> String {
@@ -112,5 +165,9 @@ final class SettingsViewModel: PageViewModel {
         default:
             L10n.Settings.Appearance.system
         }
+    }
+
+    deinit {
+        loadingTask?.cancel()
     }
 }
