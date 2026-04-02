@@ -51,6 +51,7 @@ struct JotFileService: JotFileServiceProtocol {
 
             if isUbiquitous {
                 fileProperties.append(.ubiquitousItemDownloadingStatusKey)
+                fileProperties.append(.ubiquitousItemIsDownloadingKey)
             }
 
             return fileProperties
@@ -172,7 +173,13 @@ struct JotFileService: JotFileServiceProtocol {
                         nil
                     }
 
-                let ubiqitousInfo = isUbiquitous ? UbiquitousInfo(downloadStatus: downloadStatus) : nil
+                let ubiqitousInfo =
+                    isUbiquitous
+                    ? UbiquitousInfo(
+                        downloadStatus: downloadStatus,
+                        isDownloading: properties.ubiquitousItemIsDownloading ?? false
+                    )
+                    : nil
 
                 return JotFile.Info(
                     url: fileURL,

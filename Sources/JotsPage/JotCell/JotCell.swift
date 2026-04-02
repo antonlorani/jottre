@@ -48,6 +48,13 @@ final class JotCell: UICollectionViewCell, PageCell {
         return imageView
     }()
 
+    private lazy var downloadActivityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+
     private let separatorLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -126,9 +133,13 @@ final class JotCell: UICollectionViewCell, PageCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        viewModel = nil
+        previewImageTask?.cancel()
         previewImageView.image = nil
         previewImageView.removeFromSuperview()
         cloudIconImageView.removeFromSuperview()
+        downloadActivityIndicator.stopAnimating()
+        downloadActivityIndicator.removeFromSuperview()
     }
 
     func configure(
@@ -136,25 +147,31 @@ final class JotCell: UICollectionViewCell, PageCell {
     ) {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
+
         loadPreviewImage()
     }
 
     private func loadPreviewImage() {
+        previewImageTask?.cancel()
+        previewImageView.image = nil
+        previewImageView.removeFromSuperview()
+        cloudIconImageView.removeFromSuperview()
+        downloadActivityIndicator.stopAnimating()
+        downloadActivityIndicator.removeFromSuperview()
+
         guard let viewModel else {
             return
         }
-        previewImageTask?.cancel()
+
         switch viewModel.preview {
         case .thumbnail:
-            if previewImageView.superview == nil {
-                contentView.addSubview(previewImageView)
-                NSLayoutConstraint.activate([
-                    previewImageView.topAnchor.constraint(equalTo: previewLayoutGuide.topAnchor),
-                    previewImageView.leadingAnchor.constraint(equalTo: previewLayoutGuide.leadingAnchor),
-                    previewImageView.trailingAnchor.constraint(equalTo: previewLayoutGuide.trailingAnchor),
-                    previewImageView.bottomAnchor.constraint(equalTo: previewLayoutGuide.bottomAnchor),
-                ])
-            }
+            contentView.addSubview(previewImageView)
+            NSLayoutConstraint.activate([
+                previewImageView.topAnchor.constraint(equalTo: previewLayoutGuide.topAnchor),
+                previewImageView.leadingAnchor.constraint(equalTo: previewLayoutGuide.leadingAnchor),
+                previewImageView.trailingAnchor.constraint(equalTo: previewLayoutGuide.trailingAnchor),
+                previewImageView.bottomAnchor.constraint(equalTo: previewLayoutGuide.bottomAnchor),
+            ])
             previewImageTask = Task { [weak self] in
                 guard let self else {
                     return
@@ -165,15 +182,30 @@ final class JotCell: UICollectionViewCell, PageCell {
                 )
             }
         case .cloudImage:
-            if cloudIconImageView.superview == nil {
-                contentView.addSubview(cloudIconImageView)
-                NSLayoutConstraint.activate([
-                    cloudIconImageView.centerXAnchor.constraint(equalTo: previewLayoutGuide.centerXAnchor),
-                    cloudIconImageView.centerYAnchor.constraint(equalTo: previewLayoutGuide.centerYAnchor),
-                    cloudIconImageView.widthAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
-                    cloudIconImageView.heightAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
-                ])
-            }
+            contentView.addSubview(cloudIconImageView)
+            NSLayoutConstraint.activate([
+                cloudIconImageView.centerXAnchor.constraint(equalTo: previewLayoutGuide.centerXAnchor),
+                cloudIconImageView.centerYAnchor.constraint(equalTo: previewLayoutGuide.centerYAnchor),
+                cloudIconImageView.widthAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+                cloudIconImageView.heightAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+            ])
+        case .loadingIndicator:
+            contentView.addSubview(cloudIconImageView)
+            NSLayoutConstraint.activate([
+                cloudIconImageView.centerXAnchor.constraint(equalTo: previewLayoutGuide.centerXAnchor),
+                cloudIconImageView.centerYAnchor.constraint(equalTo: previewLayoutGuide.centerYAnchor),
+                cloudIconImageView.widthAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+                cloudIconImageView.heightAnchor.constraint(equalToConstant: Constants.CloudIconImage.size),
+            ])
+            contentView.addSubview(downloadActivityIndicator)
+            NSLayoutConstraint.activate([
+                downloadActivityIndicator.centerXAnchor.constraint(equalTo: previewLayoutGuide.centerXAnchor),
+                downloadActivityIndicator.topAnchor.constraint(
+                    equalTo: cloudIconImageView.bottomAnchor,
+                    constant: DesignTokens.Spacing.sm
+                ),
+            ])
+            downloadActivityIndicator.startAnimating()
         }
     }
 }

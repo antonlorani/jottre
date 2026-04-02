@@ -111,6 +111,15 @@ enum L10n {
             static let revealInFinder = String(localized: "jots.menu.revealInFinder")
         }
 
+        enum Download {
+
+            enum Error {
+                static func generic(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.download.error.generic"), jotName)
+                }
+            }
+        }
+
         enum Duplicate {
 
             enum Error {

@@ -27,6 +27,8 @@ protocol JotsRepositoryProtocol: Sendable {
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 
+    func download(jotFileInfo: JotFile.Info) throws
+
     func getPreviewImage(
         jotFileInfo: JotFile.Info,
         userInterfaceStyle: UIUserInterfaceStyle,
@@ -67,6 +69,10 @@ struct JotsRepository: JotsRepositoryProtocol {
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
         try jotFileService.duplicate(jotFileInfo: jotFileInfo)
+    }
+
+    func download(jotFileInfo: JotFile.Info) throws {
+        try ubiquitousFileService.startDownload(fileURL: jotFileInfo.url)
     }
 
     func getPreviewImage(

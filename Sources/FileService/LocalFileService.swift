@@ -61,6 +61,10 @@ struct LocalFileService: FileServiceProtocol {
         )
     }
 
+    func startDownload(fileURL: URL) throws {
+        assertionFailure("Shouldn't have called \(#function) in \(Self.self)")
+    }
+
     func ubiquitousInfo(url: URL) -> UbiquitousInfo? {
         assertionFailure("Shouldn't have called \(#function) in \(Self.self)")
         return nil

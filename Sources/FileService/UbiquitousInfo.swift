@@ -24,4 +24,5 @@ struct UbiquitousInfo: Sendable, Hashable {
     }
 
     let downloadStatus: DownloadStatus?
+    let isDownloading: Bool
 }

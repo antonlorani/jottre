@@ -38,6 +38,9 @@ protocol FileServiceProtocol: Sendable {
     /// The ubiquitous info of the given file path if applicable.
     func ubiquitousInfo(url: URL) -> UbiquitousInfo?
 
+    /// Triggers a download of the ubiquitous item at the given URL.
+    func startDownload(fileURL: URL) throws
+
     /// A stream that fires once the contents within the specified directory changes.
     ///
     ///  - NOTE: Only recognizes file changes at the first level depth.

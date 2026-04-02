@@ -23,6 +23,7 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
     let name: String
     let infoText: String
     let isCloudCheckboxOn: Bool
+    let isDownloading: Bool
     let onTap: @Sendable () -> Void
 
     private let cloudMigrationJot: CloudMigrationJotBusinessModel
@@ -36,6 +37,7 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
         name = cloudMigrationJot.name
         infoText = cloudMigrationJot.lastModifiedText
         isCloudCheckboxOn = cloudMigrationJot.isUbiquitous
+        isDownloading = cloudMigrationJot.isDownloading
         self.cloudMigrationJot = cloudMigrationJot
         self.repository = repository
         self.onTap = onTap

@@ -23,6 +23,7 @@ final class JotCellViewModel: PageCellViewModel {
     enum Preview {
         case thumbnail
         case cloudImage
+        case loadingIndicator
     }
 
     let name: String
@@ -40,7 +41,14 @@ final class JotCellViewModel: PageCellViewModel {
         onAction: @Sendable @escaping () -> Void
     ) {
         self.name = jot.name
-        self.preview = jot.isDownloaded ? .thumbnail : .cloudImage
+        self.preview =
+            if jot.isDownloading {
+                .loadingIndicator
+            } else if jot.isDownloaded {
+                .thumbnail
+            } else {
+                .cloudImage
+            }
         self.jotMenuConfigurations = jotMenuConfigurations
         self.onAction = onAction
         self.jot = jot

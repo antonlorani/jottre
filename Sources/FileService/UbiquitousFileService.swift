@@ -63,12 +63,18 @@ struct UbiquitousFileService: FileServiceProtocol {
         )
     }
 
+    func startDownload(fileURL: URL) throws {
+        try fileManager.startDownloadingUbiquitousItem(at: fileURL)
+    }
+
     func ubiquitousInfo(url: URL) -> UbiquitousInfo? {
         guard fileManager.isUbiquitousItem(at: url) else {
             return nil
         }
 
-        let resourceValues = try? url.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey])
+        let resourceValues = try? url.resourceValues(
+            forKeys: [.ubiquitousItemDownloadingStatusKey, .ubiquitousItemIsDownloadingKey]
+        )
 
         let downloadStatus: UbiquitousInfo.DownloadStatus? =
             switch resourceValues?.ubiquitousItemDownloadingStatus {
@@ -83,7 +89,8 @@ struct UbiquitousFileService: FileServiceProtocol {
             }
 
         return UbiquitousInfo(
-            downloadStatus: downloadStatus
+            downloadStatus: downloadStatus,
+            isDownloading: resourceValues?.ubiquitousItemIsDownloading ?? false
         )
     }
 
