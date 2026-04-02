@@ -73,8 +73,10 @@ targets:
                 - jot
         UIFileSharingEnabled: true
         LSSupportsOpeningDocumentsInPlace: true
+        NSUserActivityTypes:
+          - com.antonlorani.jottre.openJot
         UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
+          UIApplicationSupportsMultipleScenes: true
           UISceneConfigurations:
             UIWindowSceneSessionRoleApplication:
               - UISceneConfigurationName: "Default Configuration"
