@@ -41,12 +41,21 @@ struct JotFileService: JotFileServiceProtocol {
 
     private enum Constants {
 
-        static let fileProperties: [URLResourceKey] = [
-            .contentModificationDateKey,
-            .isWritableKey,
-            .isReadableKey,
-            .isRegularFileKey,
-        ]
+        static func fileProperties(isUbiquitous: Bool) -> [URLResourceKey] {
+            var fileProperties: [URLResourceKey] = [
+                .contentModificationDateKey,
+                .isWritableKey,
+                .isReadableKey,
+                .isRegularFileKey,
+            ]
+
+            if isUbiquitous {
+                fileProperties.append(.ubiquitousItemDownloadingStatusKey)
+                fileProperties.append(.ubiquitousItemIsDownloadingKey)
+            }
+
+            return fileProperties
+        }
     }
 
     enum Failure: Error {
@@ -132,7 +141,7 @@ struct JotFileService: JotFileServiceProtocol {
 
         let contents = try fileService.listContents(
             directory: directory,
-            properties: Constants.fileProperties
+            properties: Constants.fileProperties(isUbiquitous: isUbiquitous)
         )
 
         return
@@ -140,7 +149,9 @@ struct JotFileService: JotFileServiceProtocol {
             .map { content in
                 try (
                     content: content,
-                    properties: content.resourceValues(forKeys: Set(Constants.fileProperties))
+                    properties:
+                        content
+                        .resourceValues(forKeys: Set(Constants.fileProperties(isUbiquitous: isUbiquitous)))
                 )
             }
             .filter { (fileURL: URL, properties: URLResourceValues) in
@@ -150,18 +161,38 @@ struct JotFileService: JotFileServiceProtocol {
                     && fileURL.pathExtension == JotFile.Info.fileExtension
             }
             .map { (fileURL: URL, properties: URLResourceValues) in
-                JotFile.Info(
+                lazy var downloadStatus: UbiquitousInfo.DownloadStatus? =
+                    switch properties.ubiquitousItemDownloadingStatus {
+                    case .current:
+                        UbiquitousInfo.DownloadStatus.current
+                    case .downloaded:
+                        UbiquitousInfo.DownloadStatus.downloaded
+                    case .notDownloaded:
+                        UbiquitousInfo.DownloadStatus.notDownloaded
+                    default:
+                        nil
+                    }
+
+                let ubiqitousInfo =
+                    isUbiquitous
+                    ? UbiquitousInfo(
+                        downloadStatus: downloadStatus,
+                        isDownloading: properties.ubiquitousItemIsDownloading ?? false
+                    )
+                    : nil
+
+                return JotFile.Info(
                     url: fileURL,
                     name: fileURL.deletingPathExtension().lastPathComponent,
                     modificationDate: properties.contentModificationDate,
-                    isUbiquitous: isUbiquitous
+                    ubiquitousInfo: ubiqitousInfo
                 )
             }
     }
 
     func readJotFile(jotFileInfo: JotFile.Info) throws -> JotFile {
         let fileService =
-            if jotFileInfo.isUbiquitous {
+            if jotFileInfo.ubiquitousInfo != nil {
                 ubiquitousFileService
             } else {
                 localFileService
@@ -178,7 +209,7 @@ struct JotFileService: JotFileServiceProtocol {
 
     func write(jotFile: JotFile) throws {
         let fileService =
-            if jotFile.info.isUbiquitous {
+            if jotFile.info.ubiquitousInfo != nil {
                 ubiquitousFileService
             } else {
                 localFileService
@@ -194,7 +225,7 @@ struct JotFileService: JotFileServiceProtocol {
 
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info {
         let fileService =
-            if jotFileInfo.isUbiquitous {
+            if jotFileInfo.ubiquitousInfo != nil {
                 ubiquitousFileService
             } else {
                 localFileService
@@ -205,7 +236,7 @@ struct JotFileService: JotFileServiceProtocol {
             url: duplicatedFileURL,
             name: duplicatedFileURL.deletingPathExtension().lastPathComponent,
             modificationDate: jotFileInfo.modificationDate,
-            isUbiquitous: jotFileInfo.isUbiquitous
+            ubiquitousInfo: jotFileInfo.ubiquitousInfo
         )
     }
 
@@ -220,7 +251,7 @@ struct JotFileService: JotFileServiceProtocol {
             .appendingPathExtension(jotFileInfo.url.pathExtension)
 
         let fileService =
-            if jotFileInfo.isUbiquitous {
+            if jotFileInfo.ubiquitousInfo != nil {
                 ubiquitousFileService
             } else {
                 localFileService
@@ -235,13 +266,13 @@ struct JotFileService: JotFileServiceProtocol {
             url: newFileURL,
             name: newName,
             modificationDate: jotFileInfo.modificationDate,
-            isUbiquitous: jotFileInfo.isUbiquitous
+            ubiquitousInfo: jotFileInfo.ubiquitousInfo
         )
     }
 
     func remove(jotFileInfo: JotFile.Info) throws {
         let fileService =
-            if jotFileInfo.isUbiquitous {
+            if jotFileInfo.ubiquitousInfo != nil {
                 ubiquitousFileService
             } else {
                 localFileService

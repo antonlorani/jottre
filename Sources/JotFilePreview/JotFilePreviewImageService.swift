@@ -28,6 +28,7 @@ struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
 
     enum Failure: Error {
         case couldNotRenderImage
+        case fileNotDownloaded
     }
 
     private let jotFileService: JotFileServiceProtocol
@@ -41,6 +42,10 @@ struct JotFilePreviewImageService: JotFilePreviewImageServiceProtocol {
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async throws -> Data {
+        guard jotFileInfo.ubiquitousInfo?.downloadStatus != .notDownloaded else {
+            throw Failure.fileNotDownloaded
+        }
+
         let jotFile = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
         let drawing = try PKDrawing(data: jotFile.jot.drawing)
 

@@ -22,6 +22,8 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
     let name: String
     let lastModifiedText: String
     let isUbiquitous: Bool
+    let isDownloaded: Bool
+    let isDownloading: Bool
 
     private let jotFileInfo: JotFile.Info
 
@@ -35,7 +37,9 @@ struct CloudMigrationJotBusinessModel: Sendable, Hashable {
                     timeStyle: .short
                 )
             } ?? String()
-        self.isUbiquitous = jotFileInfo.isUbiquitous
+        self.isUbiquitous = jotFileInfo.ubiquitousInfo != nil
+        self.isDownloaded = jotFileInfo.ubiquitousInfo?.downloadStatus != .notDownloaded
+        self.isDownloading = jotFileInfo.ubiquitousInfo?.isDownloading ?? false
         self.jotFileInfo = jotFileInfo
     }
 

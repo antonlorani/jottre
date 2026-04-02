@@ -54,7 +54,7 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
                         url: fileVersion.url,
                         name: fileVersion.localizedName ?? fileVersion.url.deletingPathExtension().lastPathComponent,
                         modificationDate: fileVersion.modificationDate,
-                        isUbiquitous: true
+                        ubiquitousInfo: UbiquitousInfo(downloadStatus: nil, isDownloading: false)
                     )
                 )
             }
@@ -86,7 +86,7 @@ struct JotFileConflictService: JotFileConflictServiceProtocol {
             url: tmpURL,
             name: jotFileVersion.info.name,
             modificationDate: jotFileVersion.info.modificationDate,
-            isUbiquitous: jotFileVersion.info.isUbiquitous
+            ubiquitousInfo: jotFileVersion.info.ubiquitousInfo
         )
     }
 }

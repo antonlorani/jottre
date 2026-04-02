@@ -64,8 +64,8 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
             .map { jotFileInfos in
                 jotFileInfos
                     .sorted { lhs, rhs in
-                        if lhs.isUbiquitous != rhs.isUbiquitous {
-                            return !lhs.isUbiquitous
+                        if (lhs.ubiquitousInfo != nil) != (rhs.ubiquitousInfo != nil) {
+                            return lhs.ubiquitousInfo == nil
                         }
                         return lhs.modificationDate ?? .distantPast > rhs.modificationDate ?? .distantPast
                     }

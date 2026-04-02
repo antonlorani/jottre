@@ -35,8 +35,11 @@ protocol FileServiceProtocol: Sendable {
         properties: [URLResourceKey]
     ) throws -> [URL]
 
-    /// Whether the given file url is a ubiquitous item or not.
-    func isUbiquitous(url: URL) -> Bool
+    /// The ubiquitous info of the given file path if applicable.
+    func ubiquitousInfo(url: URL) -> UbiquitousInfo?
+
+    /// Triggers a download of the ubiquitous item at the given URL.
+    func startDownload(fileURL: URL) throws
 
     /// A stream that fires once the contents within the specified directory changes.
     ///

@@ -16,23 +16,13 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
+struct UbiquitousInfo: Sendable, Hashable {
+    enum DownloadStatus: Sendable, Hashable {
+        case downloaded
+        case current
+        case notDownloaded
+    }
 
-struct JotBusinessModel: Sendable, Hashable {
-    let name: String
-    let isDownloaded: Bool
+    let downloadStatus: DownloadStatus?
     let isDownloading: Bool
-
-    private let jotFileInfo: JotFile.Info
-
-    init(jotFileInfo: JotFile.Info) {
-        name = jotFileInfo.name
-        isDownloaded = jotFileInfo.ubiquitousInfo?.downloadStatus != .notDownloaded
-        isDownloading = jotFileInfo.ubiquitousInfo?.isDownloading ?? false
-        self.jotFileInfo = jotFileInfo
-    }
-
-    func toJotFileInfo() -> JotFile.Info {
-        jotFileInfo
-    }
 }

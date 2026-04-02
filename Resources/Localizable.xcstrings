@@ -3533,6 +3533,18 @@
         }
       }
     },
+    "jots.download.error.generic" : {
+      "comment" : "The error message displayed when a Jot couldn't be downloaded.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not download \u201c%@\u201d"
+          }
+        }
+      }
+    },
     "jots.duplicate.error.generic" : {
       "comment" : "The error message displayed when a Jot couldn’t be duplicated.",
       "extractionState" : "manual",

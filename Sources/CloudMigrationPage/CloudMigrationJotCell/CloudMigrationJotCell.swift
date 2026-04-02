@@ -84,6 +84,14 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         return imageView
     }()
 
+    private lazy var downloadActivityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
+    private let trailingSlotGuide = UILayoutGuide()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpViews()
@@ -114,12 +122,12 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             right: DesignTokens.Spacing.md
         )
 
+        contentView.addLayoutGuide(trailingSlotGuide)
         contentView.addSubview(previewImageView)
         contentView.addSubview(separatorLine)
         contentView.addSubview(labelContainer)
         labelContainer.addSubview(nameLabel)
         labelContainer.addSubview(infoTextLabel)
-        contentView.addSubview(checkboxImageView)
 
         NSLayoutConstraint.activate([
             contentView.heightAnchor.constraint(equalToConstant: Constants.height),
@@ -134,13 +142,18 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             separatorLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLine.widthAnchor.constraint(equalToConstant: DesignTokens.Length.separator),
 
+            trailingSlotGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            trailingSlotGuide.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            trailingSlotGuide.widthAnchor.constraint(equalToConstant: Constants.Checbox.size),
+            trailingSlotGuide.heightAnchor.constraint(equalToConstant: Constants.Checbox.size),
+
             labelContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelContainer.leadingAnchor.constraint(
                 equalTo: separatorLine.trailingAnchor,
                 constant: DesignTokens.Spacing.md
             ),
             labelContainer.trailingAnchor.constraint(
-                lessThanOrEqualTo: checkboxImageView.leadingAnchor,
+                lessThanOrEqualTo: trailingSlotGuide.leadingAnchor,
                 constant: -DesignTokens.Spacing.xs
             ),
 
@@ -152,11 +165,6 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
             infoTextLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor),
             infoTextLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor),
             infoTextLabel.bottomAnchor.constraint(equalTo: labelContainer.bottomAnchor),
-
-            checkboxImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            checkboxImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            checkboxImageView.widthAnchor.constraint(equalToConstant: Constants.Checbox.size),
-            checkboxImageView.heightAnchor.constraint(equalToConstant: Constants.Checbox.size),
         ])
     }
 
@@ -166,6 +174,9 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         previewImageView.image = nil
+        checkboxImageView.removeFromSuperview()
+        downloadActivityIndicator.removeFromSuperview()
+        downloadActivityIndicator.stopAnimating()
     }
 
     func configure(
@@ -174,7 +185,23 @@ final class CloudMigrationJotCell: UICollectionViewCell, PageCell {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
         infoTextLabel.text = viewModel.infoText
-        checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.isCloudCheckboxOn)
+        if viewModel.isDownloading {
+            contentView.addSubview(downloadActivityIndicator)
+            NSLayoutConstraint.activate([
+                downloadActivityIndicator.centerXAnchor.constraint(equalTo: trailingSlotGuide.centerXAnchor),
+                downloadActivityIndicator.centerYAnchor.constraint(equalTo: trailingSlotGuide.centerYAnchor),
+            ])
+            downloadActivityIndicator.startAnimating()
+        } else {
+            contentView.addSubview(checkboxImageView)
+            NSLayoutConstraint.activate([
+                checkboxImageView.centerXAnchor.constraint(equalTo: trailingSlotGuide.centerXAnchor),
+                checkboxImageView.centerYAnchor.constraint(equalTo: trailingSlotGuide.centerYAnchor),
+                checkboxImageView.widthAnchor.constraint(equalToConstant: Constants.Checbox.size),
+                checkboxImageView.heightAnchor.constraint(equalToConstant: Constants.Checbox.size),
+            ])
+            checkboxImageView.image = Constants.Checbox.image(isOn: viewModel.isCloudCheckboxOn)
+        }
         loadPreviewImage()
     }
 

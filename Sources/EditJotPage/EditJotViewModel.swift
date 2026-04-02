@@ -79,6 +79,8 @@ final class EditJotViewModel: Sendable {
     private var drawingUpdateTask: Task<Void, Never>?
     private let drawingUpdateContinuation: AsyncStream<PKDrawing>.Continuation
 
+    private var loadingTask: Task<Void, Never>?
+
     private let jotFileInfo: JotFile.Info
     private let repository: EditJotRepositoryProtocol
     private weak var coordinator: EditJotCoordinator?
@@ -138,27 +140,32 @@ final class EditJotViewModel: Sendable {
     }
 
     func didLoad() {
-        do {
-            if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
-                coordinator?.showJotConflictPage(
-                    jotFileInfo: jotFileInfo,
-                    jotFileVersions: jotFileVersions
-                ) { [weak self] result in
-                    Task { @MainActor in
-                        switch result {
-                        case .keepAll:
-                            self?.coordinator?.goBack()
-                        case let .keep(jotFileInfo):
-                            self?.coordinator?.openJot(jotFileInfo: jotFileInfo)
-                        }
+        if let jotFileVersions = repository.getConflictingVersions(jotFileInfo: jotFileInfo) {
+            coordinator?.showJotConflictPage(
+                jotFileInfo: jotFileInfo,
+                jotFileVersions: jotFileVersions
+            ) { [weak self] result in
+                Task { @MainActor in
+                    switch result {
+                    case .keepAll:
+                        self?.coordinator?.goBack()
+                    case let .keep(jotFileInfo):
+                        self?.coordinator?.openJot(jotFileInfo: jotFileInfo)
                     }
                 }
-            } else {
-                let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
-                drawingContinuation.yield(Drawing(value: drawing, width: width))
             }
-        } catch {
-            print(error)
+        } else {
+            loadingTask = Task.detached { [weak self] in
+                guard let self else {
+                    return
+                }
+                do {
+                    let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
+                    drawingContinuation.yield(Drawing(value: drawing, width: width))
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 

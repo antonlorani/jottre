@@ -160,9 +160,20 @@ final class JotsViewModel: PageViewModel {
                     ),
                     sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 160, itemHeight: 216),
                     repository: repository,
-                    onAction: { [weak coordinator] in
+                    onAction: { [weak coordinator, weak self] in
                         Task { @MainActor in
-                            coordinator?.openJot(jotFileInfo: jotFileInfo)
+                            if jot.isDownloaded {
+                                coordinator?.openJot(jotFileInfo: jotFileInfo)
+                            } else {
+                                do {
+                                    try self?.repository.download(jotFileInfo: jotFileInfo)
+                                } catch {
+                                    self?.coordinator?.showInfoAlert(
+                                        title: L10n.Jots.Download.Error.generic(jotFileInfo.name),
+                                        message: error.localizedDescription
+                                    )
+                                }
+                            }
                         }
                     }
                 )
