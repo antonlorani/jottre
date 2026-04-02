@@ -20,17 +20,15 @@ extension PageCellItem {
 
     @MainActor
     static func settingsExternalLink(
-        name: String,
-        info: String?,
+        settingsExternalLink: SettingsExternalLinkBusinessModel,
         onAction: @Sendable @escaping () -> Void
     ) -> PageCellItem {
         PageCellItem(
-            id: name,
+            id: settingsExternalLink,
             cellType: SettingsExternalLinkCell.self,
             sizing: .fullWidth(estimatedHeight: 56),
             viewModel: SettingsExternalLinkCellViewModel(
-                name: name,
-                info: info,
+                settingsExternalLink: settingsExternalLink,
                 onAction: onAction
             )
         )

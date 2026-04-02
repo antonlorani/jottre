@@ -16,15 +16,24 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct SettingsDropdownBusinessModel: Sendable {
+struct SettingsDropdownBusinessModel: Sendable, Hashable {
 
-    struct Option: Sendable {
+    struct Option: Sendable, Hashable {
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.hashValue == rhs.hashValue
+        }
+
         let label: String
         let value: any Hashable & Sendable
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(label)
+            hasher.combine(value)
+        }
     }
 
     let name: String
     let current: Option
     let options: [Option]
-    let onAction: @Sendable (_ newOption: Option) -> Void
 }

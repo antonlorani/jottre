@@ -23,6 +23,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private var rootCoordinator: NavigationCoordinator?
+    private var userInterfaceStyleTask: Task<Void, Never>?
 
     func scene(
         _ scene: UIScene,
@@ -144,7 +145,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 settingsViewControllerFactory: SettingsViewControllerFactory(
                     repository: SettingsRepository(
                         ubiquitousFileService: ubiquitousFileService,
-                        bundleService: bundleService
+                        bundleService: bundleService,
+                        defaultsService: defaultsService
                     ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
@@ -216,7 +218,20 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = navigationController
+
+        userInterfaceStyleTask = Task {
+            for await userInterfaceStyle in defaultsService.getValueStream(.userInterfaceStyle) {
+                window.overrideUserInterfaceStyle =
+                    userInterfaceStyle
+                    .flatMap(UIUserInterfaceStyle.init(rawValue:)) ?? .unspecified
+            }
+        }
+
         window.makeKeyAndVisible()
         self.window = window
+    }
+
+    deinit {
+        userInterfaceStyleTask?.cancel()
     }
 }

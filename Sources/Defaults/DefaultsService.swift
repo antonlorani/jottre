@@ -21,18 +21,24 @@ import Foundation
 protocol DefaultsServiceProtocol: Sendable {
 
     func getValue<T: LosslessStringConvertible & Sendable>(_ defaultsKey: DefaultsKey<T>) -> T?
+
     func set<T: LosslessStringConvertible & Sendable>(_ defaultsKey: DefaultsKey<T>, value: T?)
+
+    func getValueStream<T: LosslessStringConvertible & Sendable>(_ defaultsKey: DefaultsKey<T>) -> AsyncStream<T?>
 }
 
-struct DefaultsService: DefaultsServiceProtocol, @unchecked Sendable {
+final class DefaultsService: DefaultsServiceProtocol, @unchecked Sendable {
 
     private let userDefaults: UserDefaults
+    private let continuationStorage = DefaultsContinuationStorage()
 
     init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
     }
 
-    func getValue<T: LosslessStringConvertible & Sendable>(_ defaultsKey: DefaultsKey<T>) -> T? {
+    func getValue<T: LosslessStringConvertible & Sendable>(
+        _ defaultsKey: DefaultsKey<T>
+    ) -> T? {
         guard let value = userDefaults.value(forKey: defaultsKey.description) as? String else {
             return nil
         }
@@ -43,9 +49,33 @@ struct DefaultsService: DefaultsServiceProtocol, @unchecked Sendable {
         _ defaultsKey: DefaultsKey<T>,
         value: T?
     ) {
-        userDefaults.setValue(
-            value?.description,
-            forKey: defaultsKey.description
-        )
+        let key = defaultsKey.description
+        userDefaults.setValue(value?.description, forKey: key)
+
+        if let continuations = continuationStorage.continuations(defaultsKey: defaultsKey) {
+            for continuation in continuations {
+                continuation.yield(value)
+            }
+        }
+    }
+
+    func getValueStream<T: LosslessStringConvertible & Sendable>(
+        _ defaultsKey: DefaultsKey<T>
+    ) -> AsyncStream<T?> {
+        AsyncStream { [weak self] continuation in
+            continuation.yield(self?.getValue(defaultsKey))
+
+            self?.continuationStorage.add(
+                continuation,
+                defaultsKey: defaultsKey
+            )
+
+            continuation.onTermination = { [weak self] _ in
+                self?.continuationStorage.remove(
+                    continuation,
+                    defaultsKey: defaultsKey
+                )
+            }
+        }
     }
 }

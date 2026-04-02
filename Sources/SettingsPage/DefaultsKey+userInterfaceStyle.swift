@@ -16,17 +16,9 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-extension PageCellItem {
+extension DefaultsKey {
 
-    @MainActor
-    static func settingsToggle(
-        settingsToggle: SettingsToggleBusinessModel
-    ) -> PageCellItem {
-        PageCellItem(
-            id: settingsToggle,
-            cellType: SettingsToggleCell.self,
-            sizing: .fullWidth(estimatedHeight: 56),
-            viewModel: SettingsToggleCellViewModel(settingsToggle: settingsToggle)
-        )
+    static var userInterfaceStyle: DefaultsKey<Int> {
+        #function
     }
 }
