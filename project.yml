@@ -55,8 +55,22 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Jottre Jot
+            CFBundleTypeRole: Editor
+            LSHandlerRank: Owner
+            LSItemContentTypes:
+              - com.antonlorani.jottre.jot
         LSApplicationQueriesSchemes:
           - shareddocuments
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.antonlorani.jottre.jot
+            UTTypeDescription: Jottre Jot
+            UTTypeConformsTo:
+              - public.data
+            UTTypeTagSpecification:
+              public.filename-extension:
+                - jot
         UIFileSharingEnabled: true
         LSSupportsOpeningDocumentsInPlace: true
         UIApplicationSceneManifest:

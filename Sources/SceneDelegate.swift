@@ -23,6 +23,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private var rootCoordinator: NavigationCoordinator?
+    private var navigation: Navigation?
+    private var ubiquitousFileService: UbiquitousFileService?
     private var userInterfaceStyleTask: Task<Void, Never>?
 
     func scene(
@@ -73,8 +75,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
 
         let url =
-            if let url = connectionOptions.urlContexts.first?.url {
-                url
+            if let incomingURL = connectionOptions.urlContexts.first?.url {
+                makeEditJotURL(url: incomingURL)
             } else {
                 JotsPageURL().toURL()
             }
@@ -87,6 +89,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileManager: fileManager,
             localFileService: localFileService
         )
+        self.ubiquitousFileService = ubiquitousFileService
         let fileConflictService = FileConflictService(fileManager: fileManager)
         let bundleService = BundleService(bundle: .main)
         let jotFileService = JotFileService(
@@ -209,6 +212,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
 
+        self.navigation = navigation
+
         let rootCoordinator = RootCoordinator(
             navigation: navigation,
             jotsCoordinatorFactory: jotsCoordinatorFactory
@@ -229,6 +234,29 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window.makeKeyAndVisible()
         self.window = window
+    }
+
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        guard let incomingURL = URLContexts.first?.url else {
+            return
+        }
+        navigation?.open(url: makeEditJotURL(url: incomingURL))
+    }
+
+    private func makeEditJotURL(url: URL) -> URL {
+        guard
+            let jotFileInfo = JotFile.Info(
+                url: url,
+                modificationDate: nil,
+                ubiquitousInfo: ubiquitousFileService?.ubiquitousInfo(url: url)
+            )
+        else {
+            return url
+        }
+        return EditJotURL(jotFileInfo: jotFileInfo).toURL()
     }
 
     deinit {
