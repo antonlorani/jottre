@@ -37,7 +37,8 @@ final class SceneCoordinator {
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
-    private let requestSceneSessionActivation: @Sendable (_ url: URL) -> Void
+    private let requestSceneSessionActivationProvider: @Sendable (_ url: URL) -> Void
+    private let supportsMultipleScenesProvider: () -> Bool
 
     init(
         navigation: Navigation,
@@ -46,7 +47,8 @@ final class SceneCoordinator {
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
-        requestSceneSessionActivation: @Sendable @escaping (_ url: URL) -> Void
+        requestSceneSessionActivationProvider: @Sendable @escaping (_ url: URL) -> Void,
+        supportsMultipleScenesProvider: @escaping () -> Bool
     ) {
         self.navigation = navigation
         self.defaultsService = defaultsService
@@ -54,7 +56,8 @@ final class SceneCoordinator {
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
-        self.requestSceneSessionActivation = requestSceneSessionActivation
+        self.requestSceneSessionActivationProvider = requestSceneSessionActivationProvider
+        self.supportsMultipleScenesProvider = supportsMultipleScenesProvider
     }
 
     func handle(url: URL) -> [UIViewController] {
@@ -107,7 +110,11 @@ final class SceneCoordinator {
     }
 
     func openScene(url: URL) {
-        requestSceneSessionActivation(url)
+        if supportsMultipleScenesProvider() {
+            requestSceneSessionActivationProvider(url)
+        } else {
+            navigation.open(url: url)
+        }
     }
 
     func makeStateRestorationActivity() -> NSUserActivity? {

@@ -229,15 +229,20 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window?.overrideUserInterfaceStyle = userInterfaceStyle
                 }
             },
-            requestSceneSessionActivation: { url in
-                let activity = NSUserActivity(activityType: "com.antonlorani.jottre.openJot")
-                activity.userInfo = ["url": url.absoluteString]
-                UIApplication.shared.requestSceneSessionActivation(
-                    nil,
-                    userActivity: activity,
-                    options: nil,
-                    errorHandler: nil
-                )
+            requestSceneSessionActivationProvider: { url in
+                Task { @MainActor in
+                    let activity = NSUserActivity(activityType: "com.antonlorani.jottre.openJot")
+                    activity.userInfo = ["url": url.absoluteString]
+                    UIApplication.shared.requestSceneSessionActivation(
+                        nil,
+                        userActivity: activity,
+                        options: nil,
+                        errorHandler: nil
+                    )
+                }
+            },
+            supportsMultipleScenesProvider: {
+                UIApplication.shared.supportsMultipleScenes
             }
         )
         self.sceneCoordinator = sceneCoordinator

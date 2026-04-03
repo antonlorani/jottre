@@ -83,9 +83,7 @@ final class CreateJotCoordinator: NavigationCoordinator {
             }
             do {
                 let jotFileInfo = try await repository.createJot(name: name)
-                Task { @MainActor in
-                    openJot(jotFileInfo: jotFileInfo)
-                }
+                navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
             } catch CreateJotRepository.Failure.fileExists {
                 await showInfoAlert(
                     title: L10n.Jots.Create.Error.fileExists(name),
@@ -98,15 +96,6 @@ final class CreateJotCoordinator: NavigationCoordinator {
                 )
             }
         }
-    }
-
-    private func openJot(jotFileInfo: JotFile.Info) {
-        let url = EditJotURL(jotFileInfo: jotFileInfo)
-        #if targetEnvironment(macCatalyst)
-        navigation.openScene(url: url)
-        #else
-        navigation.open(url: url)
-        #endif
     }
 
     private func showInfoAlert(
