@@ -23,7 +23,7 @@ final class SceneCoordinator {
 
     private enum Constants {
         static let activityType = "com.antonlorani.jottre.openJot"
-        static let lastActiveURLKey = "lastActiveURL"
+        static let urlKey = "url"
     }
 
     private var lastActiveURL: URL?
@@ -37,6 +37,7 @@ final class SceneCoordinator {
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
+    private let requestSceneSessionActivation: @Sendable (_ url: URL) -> Void
 
     init(
         navigation: Navigation,
@@ -44,7 +45,8 @@ final class SceneCoordinator {
         ubiquitousFileService: UbiquitousFileService,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
-        onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
+        onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
+        requestSceneSessionActivation: @Sendable @escaping (_ url: URL) -> Void
     ) {
         self.navigation = navigation
         self.defaultsService = defaultsService
@@ -52,6 +54,7 @@ final class SceneCoordinator {
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
+        self.requestSceneSessionActivation = requestSceneSessionActivation
     }
 
     func handle(url: URL) -> [UIViewController] {
@@ -100,16 +103,11 @@ final class SceneCoordinator {
             navigation.open(url: incomingURL)
             return
         }
-        let activity = NSUserActivity(activityType: Constants.activityType)
-        activity.userInfo = [
-            Constants.lastActiveURLKey: incomingURL.absoluteString
-        ]
-        UIApplication.shared.requestSceneSessionActivation(
-            nil,
-            userActivity: activity,
-            options: nil,
-            errorHandler: nil
-        )
+        openScene(url: incomingURL)
+    }
+
+    func openScene(url: URL) {
+        requestSceneSessionActivation(url)
     }
 
     func makeStateRestorationActivity() -> NSUserActivity? {
@@ -118,7 +116,7 @@ final class SceneCoordinator {
         }
         let activity = NSUserActivity(activityType: Constants.activityType)
         activity.userInfo = [
-            Constants.lastActiveURLKey: lastActiveURL.absoluteString
+            Constants.urlKey: lastActiveURL.absoluteString
         ]
         return activity
     }
@@ -129,14 +127,14 @@ final class SceneCoordinator {
     ) -> URL? {
         if let activity = session.stateRestorationActivity,
             activity.activityType == Constants.activityType,
-            let urlString = activity.userInfo?[Constants.lastActiveURLKey] as? String,
+            let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
             return makeEditJotURL(url: url) ?? url
         }
 
         if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
-            let urlString = activity.userInfo?[Constants.lastActiveURLKey] as? String,
+            let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
             return makeEditJotURL(url: url) ?? url

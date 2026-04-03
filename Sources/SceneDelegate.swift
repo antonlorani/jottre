@@ -189,6 +189,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     navigationController?.setViewControllers(viewControllers, animated: true)
                 }
             },
+            openSceneProvider: { [weak self] url in
+                Task { @MainActor in
+                    self?.sceneCoordinator?.openScene(url: url)
+                }
+            },
             presentViewControllerProvider: { [weak navigationController] viewController, animated in
                 Task { @MainActor in
                     navigationController?.present(viewController, animated: animated)
@@ -223,6 +228,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 Task { @MainActor in
                     window?.overrideUserInterfaceStyle = userInterfaceStyle
                 }
+            },
+            requestSceneSessionActivation: { url in
+                let activity = NSUserActivity(activityType: "com.antonlorani.jottre.openJot")
+                activity.userInfo = ["url": url.absoluteString]
+                UIApplication.shared.requestSceneSessionActivation(
+                    nil,
+                    userActivity: activity,
+                    options: nil,
+                    errorHandler: nil
+                )
             }
         )
         self.sceneCoordinator = sceneCoordinator

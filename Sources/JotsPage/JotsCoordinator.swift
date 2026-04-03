@@ -105,7 +105,12 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openJot(jotFileInfo: JotFile.Info) {
-        navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
+        let url = EditJotURL(jotFileInfo: jotFileInfo)
+        #if targetEnvironment(macCatalyst)
+        navigation.openScene(url: url)
+        #else
+        navigation.open(url: url)
+        #endif
     }
 
     func openEnableCloudPage() {
