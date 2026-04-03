@@ -231,8 +231,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             },
             requestSceneSessionActivationProvider: { url in
                 Task { @MainActor in
-                    let activity = NSUserActivity(activityType: "com.antonlorani.jottre.openJot")
-                    activity.userInfo = ["url": url.absoluteString]
+                    let activity = NSUserActivity(
+                        activityType: SceneCoordinator.Constants.activityType
+                    )
+                    activity.userInfo = [SceneCoordinator.Constants.urlKey: url.absoluteString]
                     UIApplication.shared.requestSceneSessionActivation(
                         nil,
                         userActivity: activity,

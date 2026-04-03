@@ -20,10 +20,6 @@ import UIKit
 
 extension UITraitCollection {
 
-    /// Returns `true` when traits affecting image rendering have changed.
-    ///
-    /// Prefer this over `hasDifferentColorAppearance(comparedTo:)`, which can
-    /// return `true` on refocus even when no visible change has occurred.
     func hasRenderingChange(comparedTo previous: UITraitCollection?) -> Bool {
         userInterfaceStyle != previous?.userInterfaceStyle || displayScale != previous?.displayScale
     }

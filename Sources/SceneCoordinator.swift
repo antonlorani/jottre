@@ -21,7 +21,7 @@ import UIKit
 @MainActor
 final class SceneCoordinator {
 
-    private enum Constants {
+    enum Constants {
         static let activityType = "com.antonlorani.jottre.openJot"
         static let urlKey = "url"
     }
