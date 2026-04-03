@@ -238,9 +238,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         sceneCoordinator?.handleURLContexts(urlContexts: URLContexts)
     }
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-        UIApplication.shared.requestSceneSessionDestruction(scene.session, options: nil)
-        print(scene)
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        scene.userActivity = sceneCoordinator?.makeStateRestorationActivity()
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {

@@ -73,6 +73,7 @@ targets:
                 - jot
         UIFileSharingEnabled: true
         LSSupportsOpeningDocumentsInPlace: true
+        NSQuitAlwaysKeepsWindows: true
         NSUserActivityTypes:
           - com.antonlorani.jottre.openJot
         UIApplicationSceneManifest:

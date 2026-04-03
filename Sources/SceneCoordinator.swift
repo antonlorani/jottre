@@ -60,12 +60,13 @@ final class SceneCoordinator {
     }
 
     func handle(
+        session: UISceneSession,
         connectionOptions: UIScene.ConnectionOptions
     ) -> [UIViewController] {
         let url: URL
         let coordinator: NavigationCoordinator
 
-        if let startURL = getStartURL(connectionOptions: connectionOptions) {
+        if let startURL = getStartURL(session: session, connectionOptions: connectionOptions) {
             url = startURL
             lastActiveURL = startURL
             coordinator = editJotCoordinatorFactory.make(navigation: navigation)
@@ -89,7 +90,9 @@ final class SceneCoordinator {
         return coordinator.handle(url: url)
     }
 
-    func handleURLContexts(urlContexts: Set<UIOpenURLContext>) {
+    func handleURLContexts(
+        urlContexts: Set<UIOpenURLContext>
+    ) {
         guard let incomingURL = urlContexts.first?.url else {
             return
         }
@@ -115,19 +118,28 @@ final class SceneCoordinator {
         }
         let activity = NSUserActivity(activityType: Constants.activityType)
         activity.userInfo = [
-            Constants.lastActiveURLKey: lastActiveURL
+            Constants.lastActiveURLKey: lastActiveURL.absoluteString
         ]
         return activity
     }
 
     private func getStartURL(
+        session: UISceneSession,
         connectionOptions: UIScene.ConnectionOptions
     ) -> URL? {
-        if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
-            let lastActiveURLString = activity.userInfo?[Constants.lastActiveURLKey] as? String,
-            let lastActiveURL = URL(string: lastActiveURLString)
+        if let activity = session.stateRestorationActivity,
+            activity.activityType == Constants.activityType,
+            let urlString = activity.userInfo?[Constants.lastActiveURLKey] as? String,
+            let url = URL(string: urlString)
         {
-            return makeEditJotURL(url: lastActiveURL) ?? lastActiveURL
+            return makeEditJotURL(url: url) ?? url
+        }
+
+        if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
+            let urlString = activity.userInfo?[Constants.lastActiveURLKey] as? String,
+            let url = URL(string: urlString)
+        {
+            return makeEditJotURL(url: url) ?? url
         }
 
         if let firstURLContextURL = connectionOptions.urlContexts.first?.url {
