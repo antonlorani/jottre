@@ -226,7 +226,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         )
         self.sceneCoordinator = sceneCoordinator
-        navigationController.viewControllers = sceneCoordinator.handle(connectionOptions: connectionOptions)
+        navigationController.viewControllers = sceneCoordinator.handle(
+            session: session,
+            connectionOptions: connectionOptions
+        )
 
         window.makeKeyAndVisible()
     }
