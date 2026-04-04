@@ -5,622 +5,1456 @@
       "comment": "Generic cancel action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Cancel" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Abbrechen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kanselleer" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "إلغاء" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Cancelar" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Annuler" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "रद्द करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Batal" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Annulla" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "キャンセル" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "취소" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Batal" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Annuleren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Anuluj" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Cancelar" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Cancelar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Отмена" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Avbryt" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ยกเลิก" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "İptal" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Скасувати" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hủy" } }
       }
     },
     "action.create": {
       "comment": "Generic create action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Create" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Erstellen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Skep" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "إنشاء" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Crear" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Créer" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "बनाएं" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Buat" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Crea" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "作成" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "만들기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Cipta" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Aanmaken" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Utwórz" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Criar" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Criar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Создать" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Skapa" } },
+        "th": { "stringUnit": { "state": "translated", "value": "สร้าง" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Oluştur" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Створити" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tạo" } }
       }
     },
     "action.delete": {
       "comment": "Generic delete action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Delete" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Löschen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Verwyder" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "حذف" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Eliminar" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Supprimer" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "हटाएं" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Hapus" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Elimina" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "削除" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "삭제" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Padam" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Verwijderen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Usuń" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Excluir" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Eliminar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Удалить" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Radera" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ลบ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Sil" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Видалити" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa" } }
       }
     },
     "action.done": {
       "comment": "Generic done/confirm action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Done" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Fertig" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Klaar" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تم" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Listo" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Terminé" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "हो गया" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Selesai" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Fine" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "完了" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "완료" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Selesai" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Gereed" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Gotowe" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Concluído" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Concluído" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Готово" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Klar" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เสร็จสิ้น" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bitti" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Готово" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xong" } }
       }
     },
     "action.duplicate": {
       "comment": "Generic duplicate action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duplicate"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Duplicate" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Duplizieren" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Dupliseer" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تكرار" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Duplicar" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Dupliquer" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "डुप्लीकेट करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Duplikat" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Duplica" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "複製" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "복제" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Duplikasi" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Dupliceren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Duplikuj" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Duplicar" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Duplicar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Дублировать" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Duplicera" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ทำซ้ำ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Çoğalt" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Дублювати" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Nhân đôi" } }
       }
     },
     "action.ok": {
       "comment": "Generic ok/acknowledge action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "de": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "af": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "حسنًا" } },
+        "es": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "ठीक है" } },
+        "id": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "it": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "확인" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "ОК" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ตกลง" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Tamam" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "OK" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "OK" } }
       }
     },
     "action.rename": {
       "comment": "Generic rename action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rename"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Rename" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Umbenennen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Hernoem" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "إعادة تسمية" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Renombrar" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Renommer" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "नाम बदलें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Ganti Nama" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Rinomina" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "名前を変更" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이름 변경" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Namakan Semula" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Hernoemen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Zmień nazwę" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Renomear" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Renomear" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Переименовать" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Byt namn" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เปลี่ยนชื่อ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Yeniden Adlandır" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Перейменувати" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đổi tên" } }
       }
     },
     "action.share": {
       "comment": "Generic share action label",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Share"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Share" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Teilen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Deel" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "مشاركة" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Compartir" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Partager" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "साझा करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Bagikan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Condividi" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "共有" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "공유" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Kongsi" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Delen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Udostępnij" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Compartilhar" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Partilhar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поделиться" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Dela" } },
+        "th": { "stringUnit": { "state": "translated", "value": "แชร์" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Paylaş" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Поділитися" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ" } }
       }
     },
     "app.title": {
       "comment": "Application name displayed in the navigation bar on iOS",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jottre"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "th": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Jottre" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Jottre" } }
       }
     },
     "cloudMigration.errorAlert.title": {
       "comment": "The title of the error alert when migrating a Jot between the local file-system and iCloud failed.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unable to migrate “%@”"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Unable to migrate \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Migration von \"%@\" nicht möglich" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" nie migreer nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر ترحيل \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se puede migrar \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de migrer \"%@\"" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" को माइग्रेट नहीं किया जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat memigrasikan \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile migrare \"%@\"" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」を移行できません" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"을(를) 마이그레이션할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat memigrasikan \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet migreren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można zmigrować \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível migrar \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível migrar \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось перенести «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kan inte migrera \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถย้าย \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" taşınamıyor" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося перенести «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể di chuyển \"%@\"" } }
       }
     },
     "cloudMigration.subtitle": {
       "comment": "Subtitle on the iCloud migration screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your Jots can now sync across all your devices. Choose which ones to bring along."
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Your Jots can now sync across all your devices. Choose which ones to bring along." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Deine Jots können jetzt auf all deinen Geräten synchronisiert werden. Wähle aus, welche du mitnehmen möchtest." } },
+        "af": { "stringUnit": { "state": "translated", "value": "Jou Jots kan nou oor al jou toestelle sinkroniseer. Kies watter jy wil saamneem." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "يمكن الآن مزامنة Jots عبر جميع أجهزتك. اختر أيّها تريد نقله." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Tus Jots ya pueden sincronizarse en todos tus dispositivos. Elige cuáles quieres llevar contigo." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Vos Jots peuvent désormais se synchroniser sur tous vos appareils. Choisissez lesquels emporter." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "आपके Jots अब आपके सभी डिवाइस पर सिंक हो सकते हैं। चुनें कि कौन से लाने हैं।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Jots Anda kini dapat disinkronkan di semua perangkat. Pilih mana yang ingin dibawa." } },
+        "it": { "stringUnit": { "state": "translated", "value": "I tuoi Jots ora si sincronizzano su tutti i tuoi dispositivi. Scegli quali portare con te." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Jotがすべてのデバイスで同期できるようになりました。持ち込むものを選んでください。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이제 모든 기기에서 Jot을 동기화할 수 있습니다. 가져올 항목을 선택하세요." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Jots anda kini boleh disegerakkan di semua peranti. Pilih yang mana hendak dibawa." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Je Jots kunnen nu synchroniseren op al je apparaten. Kies welke je wilt meenemen." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Twoje Jots mogą teraz synchronizować się na wszystkich urządzeniach. Wybierz, które chcesz przenieść." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Seus Jots agora podem sincronizar em todos os seus dispositivos. Escolha quais deseja trazer." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Os seus Jots podem agora sincronizar em todos os seus dispositivos. Escolha quais pretende trazer." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Теперь ваши Jots можно синхронизировать на всех устройствах. Выберите, какие перенести." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Dina Jots kan nu synkroniseras på alla dina enheter. Välj vilka du vill ta med." } },
+        "th": { "stringUnit": { "state": "translated", "value": "Jots ของคุณสามารถซิงค์ข้ามอุปกรณ์ทั้งหมดได้แล้ว เลือกรายการที่ต้องการนำมาด้วย" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jots'larınız artık tüm cihazlarınızda eşitlenebilir. Hangilerini getireceğinizi seçin." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Тепер ваші Jots можна синхронізувати на всіх пристроях. Виберіть, які перенести." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Jots của bạn giờ có thể đồng bộ trên tất cả thiết bị. Hãy chọn những mục muốn mang theo." } }
       }
     },
     "cloudMigration.title": {
       "comment": "Headline on the iCloud migration screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud is ready"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "iCloud is ready" } },
+        "de": { "stringUnit": { "state": "translated", "value": "iCloud ist bereit" } },
+        "af": { "stringUnit": { "state": "translated", "value": "iCloud is gereed" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "iCloud جاهز" } },
+        "es": { "stringUnit": { "state": "translated", "value": "iCloud está listo" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "iCloud est prêt" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "iCloud तैयार है" } },
+        "id": { "stringUnit": { "state": "translated", "value": "iCloud siap" } },
+        "it": { "stringUnit": { "state": "translated", "value": "iCloud è pronto" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "iCloudの準備ができました" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "iCloud 준비 완료" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "iCloud sedia" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "iCloud is klaar" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "iCloud jest gotowy" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "iCloud está pronto" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "iCloud está pronto" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "iCloud готов" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "iCloud är redo" } },
+        "th": { "stringUnit": { "state": "translated", "value": "iCloud พร้อมแล้ว" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "iCloud hazır" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "iCloud готовий" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "iCloud đã sẵn sàng" } }
       }
     },
     "enableCloud.action.learnHowToEnable": {
       "comment": "Call-to-action button on the Enable iCloud screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Learn How To Enable"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Learn How To Enable" } },
+        "de": { "stringUnit": { "state": "translated", "value": "So aktivierst du iCloud" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Leer hoe om te aktiveer" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعرّف على كيفية التفعيل" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Aprende cómo activarlo" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Apprendre comment activer" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "सक्षम करना सीखें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Pelajari Cara Mengaktifkan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Scopri come abilitarlo" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "有効にする方法を見る" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "활성화 방법 알아보기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Ketahui Cara Mengaktifkan" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Leer hoe je het inschakelt" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Dowiedz się, jak włączyć" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Saiba como ativar" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Saiba como ativar" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Как включить" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Lär dig hur du aktiverar" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เรียนรู้วิธีเปิดใช้งาน" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Nasıl Etkinleştirileceğini Öğren" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Дізнатися, як увімкнути" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tìm hiểu cách bật" } }
       }
     },
     "enableCloud.feature.share": {
       "comment": "Feature row describing the sharing capability on the Enable iCloud screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Share Jots with others"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Share Jots with others" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Jots mit anderen teilen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Deel Jots met ander mense" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "مشاركة Jots مع الآخرين" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Comparte Jots con otros" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Partagez des Jots avec d'autres" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Jots दूसरों के साथ साझा करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Bagikan Jots dengan orang lain" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Condividi Jots con altri" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Jotを他の人と共有" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "다른 사람과 Jot 공유" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Kongsi Jots dengan orang lain" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Deel Jots met anderen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Udostępniaj Jots innym" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Compartilhe Jots com outras pessoas" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Partilhe Jots com outras pessoas" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Делитесь Jots с другими" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Dela Jots med andra" } },
+        "th": { "stringUnit": { "state": "translated", "value": "แชร์ Jots กับผู้อื่น" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jots'ları başkalarıyla paylaş" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Діліться Jots з іншими" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ Jots với người khác" } }
       }
     },
     "enableCloud.feature.sync": {
       "comment": "Feature row describing cross-device sync on the Enable iCloud screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Synchronize Jots across all your Apple devices"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Synchronize Jots across all your Apple devices" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Jots auf all deinen Apple-Geräten synchronisieren" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Sinkroniseer Jots oor al jou Apple-toestelle" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "مزامنة Jots عبر جميع أجهزة Apple الخاصة بك" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Sincroniza Jots en todos tus dispositivos Apple" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Synchronisez les Jots sur tous vos appareils Apple" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "अपने सभी Apple डिवाइस पर Jots सिंक करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Sinkronkan Jots di semua perangkat Apple Anda" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sincronizza i Jots su tutti i tuoi dispositivi Apple" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "すべてのAppleデバイスでJotを同期" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "모든 Apple 기기에서 Jot 동기화" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Segerakkan Jots di semua peranti Apple anda" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Synchroniseer Jots op al je Apple-apparaten" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Synchronizuj Jots na wszystkich urządzeniach Apple" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Sincronize Jots em todos os seus dispositivos Apple" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Sincronize Jots em todos os seus dispositivos Apple" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Синхронизируйте Jots на всех устройствах Apple" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Synkronisera Jots på alla dina Apple-enheter" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ซิงค์ Jots ข้ามอุปกรณ์ Apple ทั้งหมดของคุณ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jots'ları tüm Apple cihazlarında eşitle" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Синхронізуйте Jots на всіх пристроях Apple" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đồng bộ Jots trên tất cả thiết bị Apple của bạn" } }
       }
     },
     "enableCloud.subtitle": {
       "comment": "Subtitle explaining why iCloud should be enabled",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre."
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "It looks like iCloud is disabled on this device. Turn on iCloud to get the most out of Jottre." } },
+        "de": { "stringUnit": { "state": "translated", "value": "iCloud scheint auf diesem Gerät deaktiviert zu sein. Aktiviere iCloud, um Jottre optimal zu nutzen." } },
+        "af": { "stringUnit": { "state": "translated", "value": "Dit lyk asof iCloud op hierdie toestel gedeaktiveer is. Skakel iCloud aan om die meeste uit Jottre te kry." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "يبدو أن iCloud معطّل على هذا الجهاز. شغّل iCloud للاستفادة الكاملة من Jottre." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Parece que iCloud está desactivado en este dispositivo. Activa iCloud para sacar el máximo partido a Jottre." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Il semble qu'iCloud soit désactivé sur cet appareil. Activez iCloud pour profiter pleinement de Jottre." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "लगता है इस डिवाइस पर iCloud बंद है। Jottre का पूरा लाभ उठाने के लिए iCloud चालू करें।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Sepertinya iCloud dinonaktifkan di perangkat ini. Aktifkan iCloud untuk memaksimalkan Jottre." } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sembra che iCloud sia disattivato su questo dispositivo. Attiva iCloud per sfruttare al meglio Jottre." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "このデバイスではiCloudが無効になっているようです。Jottreを最大限に活用するにはiCloudをオンにしてください。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이 기기에서 iCloud가 비활성화된 것 같습니다. Jottre를 최대한 활용하려면 iCloud를 켜세요." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Nampaknya iCloud dilumpuhkan pada peranti ini. Hidupkan iCloud untuk mendapatkan manfaat penuh daripada Jottre." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Het lijkt erop dat iCloud op dit apparaat is uitgeschakeld. Schakel iCloud in om het meeste uit Jottre te halen." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Wygląda na to, że iCloud jest wyłączony na tym urządzeniu. Włącz iCloud, aby w pełni korzystać z Jottre." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Parece que o iCloud está desativado neste dispositivo. Ative o iCloud para aproveitar ao máximo o Jottre." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Parece que o iCloud está desativado neste dispositivo. Ative o iCloud para tirar o máximo partido do Jottre." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Похоже, iCloud отключён на этом устройстве. Включите iCloud, чтобы использовать все возможности Jottre." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Det verkar som att iCloud är inaktiverat på den här enheten. Slå på iCloud för att få ut det mesta av Jottre." } },
+        "th": { "stringUnit": { "state": "translated", "value": "ดูเหมือนว่า iCloud จะถูกปิดใช้งานบนอุปกรณ์นี้ เปิด iCloud เพื่อใช้ Jottre ได้อย่างเต็มที่" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bu cihazda iCloud'un devre dışı bırakıldığı görünüyor. Jottre'den en iyi şekilde yararlanmak için iCloud'u açın." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Схоже, iCloud вимкнено на цьому пристрої. Увімкніть iCloud, щоб отримати максимум від Jottre." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Có vẻ iCloud đang bị tắt trên thiết bị này. Hãy bật iCloud để tận dụng tối đa Jottre." } }
       }
     },
     "enableCloud.title": {
       "comment": "Headline on the Enable iCloud screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable iCloud"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Enable iCloud" } },
+        "de": { "stringUnit": { "state": "translated", "value": "iCloud aktivieren" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Aktiveer iCloud" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تفعيل iCloud" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Activar iCloud" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Activer iCloud" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "iCloud सक्षम करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Aktifkan iCloud" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Abilita iCloud" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "iCloudを有効にする" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "iCloud 활성화" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Aktifkan iCloud" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "iCloud inschakelen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Włącz iCloud" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Ativar iCloud" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Ativar iCloud" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Включить iCloud" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Aktivera iCloud" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เปิดใช้งาน iCloud" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "iCloud'u Etkinleştir" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Увімкнути iCloud" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bật iCloud" } }
       }
     },
     "filesystem.duplicate.filename.multi": {
       "comment": "The suffix added to a duplicated file name.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ copy %d"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "%@ copy %d" } },
+        "de": { "stringUnit": { "state": "translated", "value": "%@ Kopie %d" } },
+        "af": { "stringUnit": { "state": "translated", "value": "%@ kopie %d" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "%@ نسخة %d" } },
+        "es": { "stringUnit": { "state": "translated", "value": "%@ copia %d" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "%@ copie %d" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "%@ प्रति %d" } },
+        "id": { "stringUnit": { "state": "translated", "value": "%@ salinan %d" } },
+        "it": { "stringUnit": { "state": "translated", "value": "%@ copia %d" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "%@ のコピー %d" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "%@ 사본 %d" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "%@ salinan %d" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "%@ kopie %d" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "%@ kopia %d" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "%@ cópia %d" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "%@ cópia %d" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "%@ копия %d" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "%@ kopia %d" } },
+        "th": { "stringUnit": { "state": "translated", "value": "%@ สำเนา %d" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "%@ kopya %d" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "%@ копія %d" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@ bản sao %d" } }
       }
     },
     "filesystem.duplicate.filename.plain": {
       "comment": "A suffix added to a duplicated file name with a number in case of name conflicts.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ copy"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "%@ copy" } },
+        "de": { "stringUnit": { "state": "translated", "value": "%@ Kopie" } },
+        "af": { "stringUnit": { "state": "translated", "value": "%@ kopie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "%@ نسخة" } },
+        "es": { "stringUnit": { "state": "translated", "value": "%@ copia" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "%@ copie" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "%@ प्रति" } },
+        "id": { "stringUnit": { "state": "translated", "value": "%@ salinan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "%@ copia" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "%@ のコピー" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "%@ 사본" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "%@ salinan" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "%@ kopie" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "%@ kopia" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "%@ cópia" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "%@ cópia" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "%@ копия" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "%@ kopia" } },
+        "th": { "stringUnit": { "state": "translated", "value": "%@ สำเนา" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "%@ kopya" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "%@ копія" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "%@ bản sao" } }
       }
     },
     "jotConflict.action.keepAll": {
       "comment": "Action to keep all conflicting versions of a Jot",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep All"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Keep All" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Alle behalten" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Hou almal" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "احتفظ بالكل" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Conservar todos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Tout conserver" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "सभी रखें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Simpan Semua" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Tieni tutto" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "すべて保持" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "모두 유지" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Simpan Semua" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Alles bewaren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Zachowaj wszystko" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Manter todos" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Manter todos" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Оставить все" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Behåll alla" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เก็บทั้งหมด" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Tümünü Tut" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Зберегти всі" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giữ tất cả" } }
       }
     },
     "jotConflict.action.keepVersion": {
       "comment": "Action to keep version A of a conflicting jot",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep Version %@"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Keep Version %@" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Version %@ behalten" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Hou weergawe %@" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "احتفظ بالإصدار %@" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Conservar versión %@" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Conserver la version %@" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "संस्करण %@ रखें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Simpan Versi %@" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Tieni la versione %@" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "バージョン %@ を保持" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "버전 %@ 유지" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Simpan Versi %@" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Versie %@ bewaren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Zachowaj wersję %@" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Manter versão %@" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Manter versão %@" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Оставить версию %@" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Behåll version %@" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เก็บเวอร์ชัน %@" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "%@ sürümünü tut" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Зберегти версію %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giữ phiên bản %@" } }
       }
     },
     "jotConflict.deviceLabel": {
       "comment": "Label for the current device in conflict resolution",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This Device"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "This Device" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Dieses Gerät" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Hierdie toestel" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "هذا الجهاز" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Este dispositivo" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Cet appareil" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "यह डिवाइस" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Perangkat Ini" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Questo dispositivo" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "このデバイス" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이 기기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Peranti Ini" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Dit apparaat" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "To urządzenie" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Este dispositivo" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Este dispositivo" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Это устройство" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Den här enheten" } },
+        "th": { "stringUnit": { "state": "translated", "value": "อุปกรณ์นี้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bu Cihaz" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Цей пристрій" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Thiết bị này" } }
       }
     },
     "jotConflict.error.generic": {
       "comment": "The error title displayed in the alert shown when a version resolution failed.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not resolve conflicts"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Could not resolve conflicts" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Konflikte konnten nicht gelöst werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon nie konflikte oplos nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر حل التعارضات" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudieron resolver los conflictos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de résoudre les conflits" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "विरोधों को हल नहीं किया जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat menyelesaikan konflik" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile risolvere i conflitti" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "競合を解決できませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "충돌을 해결할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat menyelesaikan konflik" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kon conflicten niet oplossen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można rozwiązać konfliktów" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível resolver os conflitos" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível resolver os conflitos" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось разрешить конфликты" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte lösa konflikter" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถแก้ไขข้อขัดแย้งได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Çakışmalar çözülemedi" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося вирішити конфлікти" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể giải quyết xung đột" } }
       }
     },
     "jotConflict.subtitle": {
       "comment": "Subtitle explaining the conflict; %@ is the name of the jot",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "\"%@\" was edited on two devices at the same time. Choose a version to keep."
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "\"%@\" was edited on two devices at the same time. Choose a version to keep." } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" wurde gleichzeitig auf zwei Geräten bearbeitet. Wähle eine Version aus, die du behalten möchtest." } },
+        "af": { "stringUnit": { "state": "translated", "value": "\"%@\" is gelyktydig op twee toestelle gewysig. Kies 'n weergawe om te behou." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تم تعديل \"%@\" على جهازين في الوقت نفسه. اختر إصدارًا للاحتفاظ به." } },
+        "es": { "stringUnit": { "state": "translated", "value": "\"%@\" fue editado en dos dispositivos al mismo tiempo. Elige una versión para conservar." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "« %@ » a été modifié sur deux appareils en même temps. Choisissez une version à conserver." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" को एक साथ दो डिवाइस पर संपादित किया गया। रखने के लिए एक संस्करण चुनें।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "\"%@\" diedit di dua perangkat secara bersamaan. Pilih versi yang ingin disimpan." } },
+        "it": { "stringUnit": { "state": "translated", "value": "«%@» è stato modificato su due dispositivi contemporaneamente. Scegli la versione da conservare." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」が2つのデバイスで同時に編集されました。保持するバージョンを選んでください。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"이(가) 두 기기에서 동시에 편집되었습니다. 유지할 버전을 선택하세요." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "\"%@\" telah diedit pada dua peranti pada masa yang sama. Pilih versi yang hendak disimpan." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "\"%@\" is tegelijkertijd op twee apparaten bewerkt. Kies een versie om te bewaren." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "\"%@\" zostało edytowane na dwóch urządzeniach jednocześnie. Wybierz wersję do zachowania." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "\"%@\" foi editado em dois dispositivos ao mesmo tempo. Escolha uma versão para manter." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "\"%@\" foi editado em dois dispositivos ao mesmo tempo. Escolha uma versão para manter." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "«%@» было отредактировано на двух устройствах одновременно. Выберите версию для сохранения." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "\"%@\" redigerades på två enheter samtidigt. Välj en version att behålla." } },
+        "th": { "stringUnit": { "state": "translated", "value": "\"%@\" ถูกแก้ไขบนสองอุปกรณ์พร้อมกัน เลือกเวอร์ชันที่ต้องการเก็บไว้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" aynı anda iki cihazda düzenlendi. Saklamak istediğiniz sürümü seçin." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "«%@» було відредаговано на двох пристроях одночасно. Виберіть версію для збереження." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "\"%@\" đã được chỉnh sửa trên hai thiết bị cùng lúc. Hãy chọn phiên bản muốn giữ lại." } }
       }
     },
     "jotConflict.title": {
       "comment": "Headline on the jot conflict resolution screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version Conflict"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Version Conflict" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Versionskonflikt" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Weergawekonflikt" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعارض الإصدارات" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Conflicto de versiones" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Conflit de versions" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "संस्करण विरोध" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Konflik Versi" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Conflitto di versioni" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "バージョンの競合" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "버전 충돌" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Konflik Versi" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Versieconflict" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Konflikt wersji" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Conflito de versões" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Conflito de versões" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Конфликт версий" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Versionskonflikt" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ความขัดแย้งของเวอร์ชัน" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Sürüm Çakışması" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Конфлікт версій" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xung đột phiên bản" } }
       }
     },
     "jotConflict.versionName": {
       "comment": "Label for conflict version (displays as 'Version A', 'Version B', etc.)",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version %@"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Version %@" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Version %@" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Weergawe %@" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الإصدار %@" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Versión %@" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Version %@" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "संस्करण %@" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Versi %@" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Versione %@" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "バージョン %@" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "버전 %@" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Versi %@" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Versie %@" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Wersja %@" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Versão %@" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Versão %@" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Версия %@" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Version %@" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เวอร์ชัน %@" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Sürüm %@" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Версія %@" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phiên bản %@" } }
       }
     },
     "jots.create.error.fileExists": {
       "comment": "The error message when a Jot already exists.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” already exists"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "\"%@\" already exists" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" ist bereits vorhanden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "\"%@\" bestaan reeds" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "\"%@\" موجود بالفعل" } },
+        "es": { "stringUnit": { "state": "translated", "value": "\"%@\" ya existe" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "« %@ » existe déjà" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" पहले से मौजूद है" } },
+        "id": { "stringUnit": { "state": "translated", "value": "\"%@\" sudah ada" } },
+        "it": { "stringUnit": { "state": "translated", "value": "«%@» esiste già" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」はすでに存在します" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"이(가) 이미 존재합니다" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "\"%@\" sudah wujud" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "\"%@\" bestaat al" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "\"%@\" już istnieje" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "\"%@\" já existe" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "\"%@\" já existe" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "«%@» уже существует" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "\"%@\" finns redan" } },
+        "th": { "stringUnit": { "state": "translated", "value": "\"%@\" มีอยู่แล้ว" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" zaten mevcut" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "«%@» вже існує" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "\"%@\" đã tồn tại" } }
       }
     },
     "jots.create.error.generic": {
       "comment": "A generic error message during Jot creation.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Something went wrong"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Something went wrong" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Etwas ist schiefgelaufen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Iets het verkeerd geloop" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "حدث خطأ ما" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Algo salió mal" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Une erreur s'est produite" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "कुछ गलत हो गया" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Terjadi kesalahan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Qualcosa è andato storto" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "問題が発生しました" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "문제가 발생했습니다" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Sesuatu telah berlaku" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Er is iets misgegaan" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Coś poszło nie tak" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Algo deu errado" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Algo correu mal" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Что-то пошло не так" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Något gick fel" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เกิดข้อผิดพลาดบางอย่าง" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bir şeyler ters gitti" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Щось пішло не так" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã xảy ra lỗi" } }
       }
     },
     "jots.create.namePlaceholder": {
       "comment": "Placeholder text in the name text field of the Create Jot alert",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Name" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Name" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Naam" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الاسم" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Nombre" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Nom" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "नाम" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Nama" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Nome" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "名前" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이름" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Nama" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Naam" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nazwa" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Nome" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Nome" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Название" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Namn" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ชื่อ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Ad" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Назва" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tên" } }
       }
     },
     "jots.create.title": {
       "comment": "Title of the Create Jot alert",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New Jot"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "New Jot" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Neues Jot" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Nuwe Jot" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "Jot جديد" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Nuevo Jot" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Nouveau Jot" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "नया Jot" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Jot Baru" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Nuovo Jot" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "新しいJot" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "새 Jot" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Jot Baharu" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Nieuwe Jot" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nowy Jot" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Novo Jot" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Novo Jot" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Новый Jot" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Ny Jot" } },
+        "th": { "stringUnit": { "state": "translated", "value": "Jot ใหม่" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Yeni Jot" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Новий Jot" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Jot mới" } }
       }
     },
     "jots.delete.error.generic": {
-      "comment": "The error message when a Jot couldn’t be deleted.",
+      "comment": "The error message when a Jot couldn't be deleted.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not delete “%@”"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Could not delete \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" konnte nicht gelöscht werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon \"%@\" nie verwyder nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر حذف \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo eliminar \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de supprimer « %@ »" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" को हटाया नहीं जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat menghapus \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile eliminare «%@»" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」を削除できませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"을(를) 삭제할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat memadam \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet verwijderen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można usunąć \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível excluir \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível eliminar \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось удалить «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte radera \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถลบ \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" silinemedi" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося видалити «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể xóa \"%@\"" } }
       }
     },
     "jots.delete.message": {
       "comment": "Confirmation message in the Delete Jot alert",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Are you sure you want to delete this Jot? This action cannot be undone."
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Are you sure you want to delete this Jot? This action cannot be undone." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Möchtest du dieses Jot wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden." } },
+        "af": { "stringUnit": { "state": "translated", "value": "Is jy seker jy wil hierdie Jot verwyder? Hierdie aksie kan nie ongedaan gemaak word nie." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "هل أنت متأكد أنك تريد حذف هذا Jot؟ لا يمكن التراجع عن هذا الإجراء." } },
+        "es": { "stringUnit": { "state": "translated", "value": "¿Seguro que quieres eliminar este Jot? Esta acción no se puede deshacer." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Voulez-vous vraiment supprimer ce Jot ? Cette action est irréversible." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "क्या आप वाकई इस Jot को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Yakin ingin menghapus Jot ini? Tindakan ini tidak dapat dibatalkan." } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sei sicuro di voler eliminare questo Jot? L'operazione non può essere annullata." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "このJotを削除してもよいですか？この操作は元に戻せません。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이 Jot을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Adakah anda pasti ingin memadam Jot ini? Tindakan ini tidak boleh dibuat asal." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Weet je zeker dat je deze Jot wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Czy na pewno chcesz usunąć ten Jot? Tej operacji nie można cofnąć." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Tem certeza de que deseja excluir este Jot? Esta ação não pode ser desfeita." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Tem a certeza de que pretende eliminar este Jot? Esta ação não pode ser anulada." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Вы уверены, что хотите удалить этот Jot? Это действие нельзя отменить." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Är du säker på att du vill radera den här Jot? Den här åtgärden kan inte ångras." } },
+        "th": { "stringUnit": { "state": "translated", "value": "คุณแน่ใจว่าต้องการลบ Jot นี้ใช่ไหม? การดำเนินการนี้ไม่สามารถย้อนกลับได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bu Jot'u silmek istediğinizden emin misiniz? Bu işlem geri alınamaz." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Ви впевнені, що хочете видалити цей Jot? Цю дію неможливо скасувати." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bạn có chắc muốn xóa Jot này không? Hành động này không thể hoàn tác." } }
       }
     },
     "jots.delete.title": {
       "comment": "Title of the Delete Jot confirmation alert",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete Jot"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Delete Jot" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Jot löschen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Verwyder Jot" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "حذف Jot" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Eliminar Jot" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Supprimer le Jot" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Jot हटाएं" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Hapus Jot" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Elimina Jot" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Jotを削除" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "Jot 삭제" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Padam Jot" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Jot verwijderen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Usuń Jot" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Excluir Jot" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Eliminar Jot" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Удалить Jot" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Radera Jot" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ลบ Jot" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jot'u Sil" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Видалити Jot" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xóa Jot" } }
       }
     },
     "jots.download.error.generic": {
       "comment": "The error message displayed when a Jot couldn't be downloaded.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not download “%@”"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Could not download \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" konnte nicht heruntergeladen werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon \"%@\" nie aflaai nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر تنزيل \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo descargar \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de télécharger « %@ »" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" डाउनलोड नहीं हो सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat mengunduh \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile scaricare «%@»" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」をダウンロードできませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"을(를) 다운로드할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat memuat turun \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet downloaden" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można pobrać \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível baixar \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível transferir \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось загрузить «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte ladda ned \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถดาวน์โหลด \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" indirilemedi" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося завантажити «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể tải xuống \"%@\"" } }
       }
     },
     "jots.duplicate.error.generic": {
-      "comment": "The error message displayed when a Jot couldn’t be duplicated.",
+      "comment": "The error message displayed when a Jot couldn't be duplicated.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not duplicate “%@”"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Could not duplicate \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" konnte nicht dupliziert werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon \"%@\" nie dupliseer nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر تكرار \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo duplicar \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de dupliquer « %@ »" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" को डुप्लीकेट नहीं किया जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat menduplikasi \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile duplicare «%@»" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」を複製できませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"을(를) 복제할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat menduplikasi \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet dupliceren" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można zduplikować \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível duplicar \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível duplicar \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось дублировать «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte duplicera \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถทำซ้ำ \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" çoğaltılamadı" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося дублювати «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể nhân đôi \"%@\"" } }
       }
     },
     "jots.empty.title": {
       "comment": "Empty state message when there are no jots",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A blank page full of possibilities. Go ahead, jot something insanely great!"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "A blank page full of possibilities. Go ahead, jot something insanely great!" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Eine leere Seite voller Möglichkeiten. Los geht's, schreib etwas Großartiges!" } },
+        "af": { "stringUnit": { "state": "translated", "value": "'n Leë bladsy vol moontlikhede. Gaan voort, skryf iets ongelooflik wonderlik neer!" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "صفحة بيضاء مليئة بالإمكانيات. هيّا، دوّن شيئًا رائعًا!" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Una página en blanco llena de posibilidades. ¡Adelante, escribe algo increíble!" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Une page blanche pleine de possibilités. Allez, notez quelque chose d'extraordinaire !" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "संभावनाओं से भरा एक खाली पन्ना। आगे बढ़ें, कुछ शानदार लिखें!" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Halaman kosong penuh kemungkinan. Ayo, tuliskan sesuatu yang luar biasa!" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Una pagina bianca piena di possibilità. Dai, annota qualcosa di straordinario!" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "可能性に満ちた白紙のページ。さあ、素晴らしいことを書き留めましょう！" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "가능성으로 가득 찬 빈 페이지. 지금 바로 멋진 것을 적어 보세요!" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Halaman kosong penuh kemungkinan. Ayuh, catat sesuatu yang luar biasa!" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Een blanco pagina vol mogelijkheden. Ga je gang en schrijf iets geweldigs!" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Pusta strona pełna możliwości. No dalej, zapisz coś niesamowitego!" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Uma página em branco cheia de possibilidades. Vá em frente, anote algo incrível!" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Uma página em branco cheia de possibilidades. Avance, escreva algo incrivelmente fantástico!" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Чистая страница, полная возможностей. Вперёд — запишите что-нибудь грандиозное!" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "En tom sida full av möjligheter. Sätt igång och anteckna något fantastiskt!" } },
+        "th": { "stringUnit": { "state": "translated", "value": "หน้ากระดาษเปล่าเต็มไปด้วยความเป็นไปได้ ลองจดบางอย่างที่ยอดเยี่ยมดูสิ!" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Olasılıklarla dolu boş bir sayfa. Haydi, harika bir şeyler jot edin!" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Чиста сторінка, сповнена можливостей. Сміливо — занотуйте щось неймовірне!" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Một trang trắng đầy khả năng. Hãy mạnh dạn ghi lại điều gì đó thật tuyệt vời!" } }
       }
     },
     "jots.menu.revealInFiles": {
       "comment": "Context menu item to reveal the jot in the Files app (iOS only)",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reveal in Files"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Reveal in Files" } },
+        "de": { "stringUnit": { "state": "translated", "value": "In Dateien anzeigen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Wys in Lêers" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الكشف في الملفات" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Mostrar en Archivos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Afficher dans Fichiers" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Files में दिखाएं" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tampilkan di Files" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Mostra in File" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "ファイルで表示" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "파일에서 보기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tunjukkan dalam Fail" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Tonen in Bestanden" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Pokaż w Plikach" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Mostrar em Arquivos" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Mostrar em Ficheiros" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Показать в Файлах" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Visa i Filer" } },
+        "th": { "stringUnit": { "state": "translated", "value": "แสดงใน Files" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Dosyalar'da Göster" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Показати у Файлах" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hiện trong Files" } }
       }
     },
     "jots.menu.revealInFinder": {
       "comment": "Context menu item to reveal the jot in Finder (macOS Catalyst only)",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reveal in Finder"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Reveal in Finder" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Im Finder anzeigen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Wys in Finder" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الكشف في Finder" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Mostrar en el Finder" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Afficher dans le Finder" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Finder में दिखाएं" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tampilkan di Finder" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Mostra nel Finder" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Finderで表示" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "Finder에서 보기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tunjukkan dalam Finder" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Tonen in Finder" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Pokaż w Finderze" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Mostrar no Finder" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Mostrar no Finder" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Показать в Finder" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Visa i Finder" } },
+        "th": { "stringUnit": { "state": "translated", "value": "แสดงใน Finder" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Finder'da Göster" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Показати у Finder" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hiện trong Finder" } }
       }
     },
     "jots.rename.error.generic": {
-      "comment": "The error message displayed when a Jot couldn’t be renamed.",
+      "comment": "The error message displayed when a Jot couldn't be renamed.",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not rename “%@”"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Could not rename \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" konnte nicht umbenannt werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon \"%@\" nie hernoem nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر إعادة تسمية \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo renombrar \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de renommer « %@ »" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" का नाम नहीं बदला जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat mengganti nama \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile rinominare «%@»" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」の名前を変更できませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"의 이름을 변경할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat menamakan semula \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet hernoemen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można zmienić nazwy \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível renomear \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível renomear \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось переименовать «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte byta namn på \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถเปลี่ยนชื่อ \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" yeniden adlandırılamadı" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося перейменувати «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể đổi tên \"%@\"" } }
       }
     },
     "jots.rename.title": {
       "comment": "Title of the Rename Jot alert",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rename Jot"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Rename Jot" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Jot umbenennen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Hernoem Jot" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "إعادة تسمية Jot" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Renombrar Jot" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Renommer le Jot" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "Jot का नाम बदलें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Ganti Nama Jot" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Rinomina Jot" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "Jotの名前を変更" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "Jot 이름 변경" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Namakan Semula Jot" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Jot hernoemen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Zmień nazwę Jot" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Renomear Jot" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Renomear Jot" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Переименовать Jot" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Byt namn på Jot" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เปลี่ยนชื่อ Jot" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Jot'u Yeniden Adlandır" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Перейменувати Jot" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đổi tên Jot" } }
       }
     },
     "settings.appearance.dark": {
       "comment": "Appearance option label for dark mode",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dark"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Dark" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Dunkel" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Donker" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "داكن" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Oscuro" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Sombre" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "डार्क" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Gelap" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Scuro" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "ダーク" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "어둡게" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Gelap" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Donker" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Ciemny" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Escuro" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Escuro" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Тёмная" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Mörkt" } },
+        "th": { "stringUnit": { "state": "translated", "value": "มืด" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Koyu" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Темна" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tối" } }
       }
     },
     "settings.appearance.light": {
       "comment": "Appearance option label for light mode",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Light"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Light" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Hell" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Lig" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "فاتح" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Claro" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Clair" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "लाइट" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Terang" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Chiaro" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "ライト" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "밝게" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Cerah" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Licht" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Jasny" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Claro" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Claro" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Светлая" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Ljust" } },
+        "th": { "stringUnit": { "state": "translated", "value": "สว่าง" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Açık" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Світла" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Sáng" } }
       }
     },
     "settings.appearance.system": {
       "comment": "Appearance option label for following the system setting",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "System" } },
+        "de": { "stringUnit": { "state": "translated", "value": "System" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Stelsel" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "النظام" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Sistema" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Système" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "सिस्टम" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Sistem" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sistema" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "システム" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "시스템" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Sistem" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Systeem" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Systemowy" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Sistema" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Sistema" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Системная" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "System" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ระบบ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Sistem" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Системна" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hệ thống" } }
       }
     },
     "settings.appearance.title": {
       "comment": "Label for the appearance dropdown in Settings",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appearance"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Appearance" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Erscheinungsbild" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Voorkoms" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "المظهر" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Apariencia" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Apparence" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "रूप-रंग" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tampilan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Aspetto" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "外観" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "모양" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Penampilan" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Weergave" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Wygląd" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Aparência" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Aparência" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Внешний вид" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Utseende" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ลักษณะที่ปรากฏ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Görünüm" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Зовнішній вигляд" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giao diện" } }
       }
     },
     "settings.github.title": {
       "comment": "Label for the GitHub external link row in Settings",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stargaze on GitHub"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Stargaze on GitHub" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Auf GitHub mit einem Stern markieren" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Stergaze op GitHub" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "أضف نجمة على GitHub" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Dar una estrella en GitHub" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Mettre une étoile sur GitHub" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "GitHub पर स्टार करें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Beri bintang di GitHub" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Metti una stella su GitHub" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "GitHubでスターをつける" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "GitHub에서 별표 추가" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Beri bintang di GitHub" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Ster geven op GitHub" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Dodaj gwiazdkę na GitHub" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Dar uma estrela no GitHub" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Dar uma estrela no GitHub" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Поставить звезду на GitHub" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Stjärnmärk på GitHub" } },
+        "th": { "stringUnit": { "state": "translated", "value": "กดดาวบน GitHub" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "GitHub'da yıldız ver" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Поставити зірку на GitHub" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Gắn sao trên GitHub" } }
       }
     },
     "settings.icloud.info": {
       "comment": "Caption text below the iCloud Synchronization row in Settings",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Learn how to enable iCloud on this device."
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Learn how to enable iCloud on this device." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Erfahre, wie du iCloud auf diesem Gerät aktivierst." } },
+        "af": { "stringUnit": { "state": "translated", "value": "Leer hoe om iCloud op hierdie toestel te aktiveer." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعرّف على كيفية تفعيل iCloud على هذا الجهاز." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Aprende cómo activar iCloud en este dispositivo." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Découvrez comment activer iCloud sur cet appareil." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "इस डिवाइस पर iCloud कैसे सक्षम करें, यह जानें।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Pelajari cara mengaktifkan iCloud di perangkat ini." } },
+        "it": { "stringUnit": { "state": "translated", "value": "Scopri come abilitare iCloud su questo dispositivo." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "このデバイスでiCloudを有効にする方法を確認する。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "이 기기에서 iCloud를 활성화하는 방법을 알아보세요." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Ketahui cara mengaktifkan iCloud pada peranti ini." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Lees hoe je iCloud inschakelt op dit apparaat." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Dowiedz się, jak włączyć iCloud na tym urządzeniu." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Saiba como ativar o iCloud neste dispositivo." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Saiba como ativar o iCloud neste dispositivo." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Узнайте, как включить iCloud на этом устройстве." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Lär dig hur du aktiverar iCloud på den här enheten." } },
+        "th": { "stringUnit": { "state": "translated", "value": "เรียนรู้วิธีเปิดใช้งาน iCloud บนอุปกรณ์นี้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Bu cihazda iCloud'u nasıl etkinleştireceğinizi öğrenin." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Дізнайтеся, як увімкнути iCloud на цьому пристрої." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tìm hiểu cách bật iCloud trên thiết bị này." } }
       }
     },
     "settings.icloud.title": {
       "comment": "Label for the iCloud synchronization row in Settings",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud Synchronization"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "iCloud Synchronization" } },
+        "de": { "stringUnit": { "state": "translated", "value": "iCloud-Synchronisierung" } },
+        "af": { "stringUnit": { "state": "translated", "value": "iCloud-sinkronisasie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "مزامنة iCloud" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Sincronización con iCloud" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Synchronisation iCloud" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "iCloud सिंक्रनाइज़ेशन" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Sinkronisasi iCloud" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sincronizzazione iCloud" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "iCloud同期" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "iCloud 동기화" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Penyegerakan iCloud" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "iCloud-synchronisatie" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Synchronizacja iCloud" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Sincronização com iCloud" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Sincronização com iCloud" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Синхронизация iCloud" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "iCloud-synkronisering" } },
+        "th": { "stringUnit": { "state": "translated", "value": "การซิงค์ iCloud" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "iCloud Eşzamanlaması" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Синхронізація iCloud" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đồng bộ iCloud" } }
       }
     },
     "settings.title": {
       "comment": "Navigation bar title of the Settings screen",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Settings" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Einstellungen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Instellings" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الإعدادات" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Ajustes" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Réglages" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "सेटिंग्स" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Pengaturan" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impostazioni" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "設定" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "설정" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tetapan" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Instellingen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Ustawienia" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Configurações" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Definições" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Настройки" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Inställningar" } },
+        "th": { "stringUnit": { "state": "translated", "value": "การตั้งค่า" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Ayarlar" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Налаштування" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cài đặt" } }
       }
     },
     "settings.version.title": {
       "comment": "Label for the app version row in Settings",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "Version" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Version" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Weergawe" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "الإصدار" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Versión" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Version" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "संस्करण" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Versi" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Versione" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "バージョン" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "버전" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Versi" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Versie" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Wersja" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Versão" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Versão" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Версия" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Version" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เวอร์ชัน" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Sürüm" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Версія" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Phiên bản" } }
       }
     },
     "share.format.jpg": {
       "comment": "Share format option label for JPEG",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "JPG"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "de": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "af": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "es": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "id": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "it": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "th": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "JPG" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "JPG" } }
       }
     },
     "share.format.pdf": {
       "comment": "Share format option label for PDF",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PDF"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "de": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "af": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "es": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "id": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "it": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "th": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "PDF" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "PDF" } }
       }
     },
     "share.format.png": {
       "comment": "Share format option label for PNG",
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PNG"
-          }
-        }
+        "en": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "de": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "af": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "es": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "id": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "it": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "th": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "PNG" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "PNG" } }
       }
     }
   },
