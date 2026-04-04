@@ -66,7 +66,7 @@ enum L10n {
         static let title = String(localized: "jotConflict.title")
 
         enum Error {
-            static let generic = String(localized: "static let  jotConflict.error.generic")
+            static let generic = String(localized: "jotConflict.error.generic")
         }
 
         static func subtitle(_ jotName: String) -> String {
