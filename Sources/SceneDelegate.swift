@@ -20,6 +20,10 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    #if targetEnvironment(macCatalyst)
+    private lazy var appKitPluginService = MacCatalystAppKitPluginService(bundle: .main)
+    #endif
+
     var window: UIWindow?
 
     private var sceneCoordinator: SceneCoordinator?
@@ -256,15 +260,22 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
     }
 
+    #if targetEnvironment(macCatalyst)
+    func sceneDidDisconnect(_ scene: UIScene) {
+        guard UIApplication.shared.connectedScenes.isEmpty,
+            let appKitPluginService
+        else {
+            return
+        }
+        appKitPluginService.terminate()
+    }
+    #endif
+
     func scene(
         _ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>
     ) {
         sceneCoordinator?.handleURLContexts(urlContexts: URLContexts)
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        scene.userActivity = sceneCoordinator?.makeStateRestorationActivity()
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
