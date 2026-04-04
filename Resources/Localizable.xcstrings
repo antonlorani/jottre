@@ -601,6 +601,18 @@
         }
       }
     },
+    "action.ok" : {
+      "comment" : "Generic ok/acknowledge action label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
     "action.duplicate" : {
       "comment" : "Generic duplicate action label",
       "extractionState" : "manual",
@@ -2895,6 +2907,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本衝突"
+          }
+        }
+      }
+    },
+    "jotConflict.deviceLabel" : {
+      "comment" : "Label for the current device in conflict resolution",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Device"
+          }
+        }
+      }
+    },
+    "jotConflict.versionName" : {
+      "comment" : "Label for conflict version (displays as 'Version A', 'Version B', etc.)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        }
+      }
+    },
+    "jots.empty.title" : {
+      "comment" : "Empty state message when there are no jots",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A blank page full of possibilities. Go ahead, jot something insanely great!"
           }
         }
       }

@@ -122,7 +122,7 @@ final class JotsViewModel: PageViewModel {
     private func handleJots(jotFileInfos: [JotFile.Info]) {
         guard !jotFileInfos.isEmpty else {
             itemsContinuation.yield([
-                .jotsEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+                .jotsEmptyState(title: L10n.Jots.Empty.title)
             ])
             return
         }
