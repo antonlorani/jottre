@@ -56,7 +56,9 @@ def manual_signing_xcargs(identity:, provisioning_profile:)
         'CODE_SIGN_STYLE=Manual',
         "DEVELOPMENT_TEAM=#{TEAM_ID}",
         "CODE_SIGN_IDENTITY='#{identity}'",
-        "PROVISIONING_PROFILE_SPECIFIER='#{provisioning_profile}'"
+        "PROVISIONING_PROFILE_SPECIFIER='#{provisioning_profile}'",
+        'CODE_SIGN_STYLE[sdk=macosx*]=Automatic',
+        'PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]='
     ].join(' ')
 end
 
