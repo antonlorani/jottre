@@ -118,7 +118,10 @@ final class SceneCoordinator {
     }
 
     func makeStateRestorationActivity() -> NSUserActivity? {
-        guard let lastActiveURL else {
+        guard
+            let lastActiveURL,
+            supportsMultipleScenesProvider()
+        else {
             return nil
         }
         let activity = NSUserActivity(activityType: Constants.activityType)
