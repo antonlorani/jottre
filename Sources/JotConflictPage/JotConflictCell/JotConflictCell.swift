@@ -66,7 +66,7 @@ final class JotConflictCell: UICollectionViewCell, PageCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+        if traitCollection.hasRenderingChange(comparedTo: previousTraitCollection) {
             loadPreviewImage()
         }
     }

@@ -55,12 +55,29 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Jottre Jot
+            CFBundleTypeRole: Editor
+            LSHandlerRank: Owner
+            LSItemContentTypes:
+              - com.antonlorani.jottre.jot
         LSApplicationQueriesSchemes:
           - shareddocuments
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.antonlorani.jottre.jot
+            UTTypeDescription: Jottre Jot
+            UTTypeConformsTo:
+              - public.data
+            UTTypeTagSpecification:
+              public.filename-extension:
+                - jot
         UIFileSharingEnabled: true
         LSSupportsOpeningDocumentsInPlace: true
+        NSQuitAlwaysKeepsWindows: true
+        NSUserActivityTypes:
+          - com.antonlorani.jottre.openJot
         UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
+          UIApplicationSupportsMultipleScenes: true
           UISceneConfigurations:
             UIWindowSceneSessionRoleApplication:
               - UISceneConfigurationName: "Default Configuration"
@@ -92,4 +109,32 @@ targets:
         ENABLE_APP_SANDBOX: YES
         ENABLE_USER_SCRIPT_SANDBOXING: YES
         VALIDATE_PRODUCT: YES
+    dependencies:
+      - target: AppKitPlugin
+        embed: true
+        codeSign: true
+        condition: maccatalyst
     packages: []
+
+  AppKitPlugin:
+    type: bundle
+    platform: macOS
+    deploymentTarget: "12.0"
+    sources:
+      - AppKitPlugin
+    info:
+      path: AppKitPlugin/Info.plist
+      properties:
+        CFBundleName: AppKitPlugin
+        CFBundleIdentifier: com.antonlorani.jottre.AppKitPlugin
+        CFBundleVersion: 1
+        CFBundleShortVersionString: 1.0
+        CFBundlePackageType: BNDL
+        CFBundleExecutable: AppKitPlugin
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre.AppKitPlugin
+        SWIFT_VERSION: "6.0"
+        CODE_SIGN_STYLE: Automatic
+        MACH_O_TYPE: mh_bundle
+        ENABLE_HARDENED_RUNTIME: YES

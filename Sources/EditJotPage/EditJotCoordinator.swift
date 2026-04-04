@@ -97,7 +97,9 @@ final class EditJotCoordinator: NavigationCoordinator {
             jotFileInfo: jotFileInfo,
             navigation: navigation
         ) { [weak self] renameJotFileInfo in
-            self?.navigation.open(url: EditJotURL(jotFileInfo: renameJotFileInfo))
+            Task { @MainActor in
+                self?.openJot(jotFileInfo: renameJotFileInfo)
+            }
         }
         retainedRenameJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in
@@ -148,6 +150,10 @@ final class EditJotCoordinator: NavigationCoordinator {
             self?.retainedJotConflictCoordinator = nil
         }
         jotConflictCoordinator.start()
+    }
+
+    func canGoBack() -> Bool {
+        navigation.getViewControllers().count > 1
     }
 
     func goBack() {

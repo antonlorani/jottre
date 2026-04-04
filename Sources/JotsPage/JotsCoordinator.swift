@@ -105,7 +105,7 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openJot(jotFileInfo: JotFile.Info) {
-        navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
+        navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
     }
 
     func openEnableCloudPage() {

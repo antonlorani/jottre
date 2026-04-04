@@ -20,10 +20,13 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    #if targetEnvironment(macCatalyst)
+    private lazy var appKitPluginService = MacCatalystAppKitPluginService(bundle: .main)
+    #endif
+
     var window: UIWindow?
 
-    private var rootCoordinator: NavigationCoordinator?
-    private var userInterfaceStyleTask: Task<Void, Never>?
+    private var sceneCoordinator: SceneCoordinator?
 
     func scene(
         _ scene: UIScene,
@@ -33,51 +36,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else {
             return
         }
+
         #if targetEnvironment(macCatalyst)
         windowScene.title = "Jottre"
         #endif
-
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-
-        let navigationController = UINavigationController()
-        navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-        navigationController.navigationBar.tintColor = .label
-
-        let navigation = Navigation(
-            openURLProvider: { [weak self] url in
-                Task { @MainActor in
-                    guard let viewControllers = self?.rootCoordinator?.handle(url: url) else {
-                        return
-                    }
-                    navigationController.setViewControllers(viewControllers, animated: true)
-                }
-            },
-            presentViewControllerProvider: { [weak navigationController] viewController, animated in
-                Task { @MainActor in
-                    navigationController?.present(viewController, animated: animated)
-                }
-            },
-            dismissViewControllerProvider: { [weak navigationController] animated, completion in
-                Task { @MainActor in
-                    navigationController?.dismiss(animated: animated, completion: completion)
-                }
-            },
-            popViewControllerProvider: { [weak navigationController] animated in
-                Task { @MainActor in
-                    navigationController?.popViewController(animated: animated)
-                }
-            }
-        )
-
-        let url =
-            if let url = connectionOptions.urlContexts.first?.url {
-                url
-            } else {
-                JotsPageURL().toURL()
-            }
 
         let fileManager = FileManager.default
         let localFileService = LocalFileService(
@@ -87,8 +49,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             fileManager: fileManager,
             localFileService: localFileService
         )
-        let fileConflictService = FileConflictService(fileManager: fileManager)
-        let bundleService = BundleService(bundle: .main)
+        let fileConflictService = FileConflictService(
+            fileManager: fileManager
+        )
+        let bundleService = BundleService(
+            bundle: .main
+        )
         let jotFileService = JotFileService(
             localFileService: localFileService,
             ubiquitousFileService: ubiquitousFileService
@@ -102,8 +68,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 jotFileService: jotFileService
             )
         )
-
-        let defaultsService = DefaultsService(userDefaults: .standard)
+        let defaultsService = DefaultsService(
+            userDefaults: .standard
+        )
 
         let textBarButtonItemFactory: TextBarButtonItemFactory
         let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
@@ -128,6 +95,31 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ubiquitousFileService: ubiquitousFileService,
             jotFileService: jotFileService,
             jotFileConflictService: jotFileConflictService
+        )
+
+        let editJotCoordinatorFactory = EditJotCoordinatorFactory(
+            repository: editJotRepository,
+            editJotViewControllerFactory: EditJotViewControllerFactory(
+                repository: editJotRepository,
+                menuConfigurationFactory: menuConfigurationFactory,
+                symbolBarButtonItemFactory: symbolBarButtonItemFactory
+            ),
+            jotConflictCoordinatorFactory: JotConflictCoordinatorFactory(
+                jotConflictViewControllerFactory: JotConflictViewControllerFactory(
+                    textBarButtonItemFactory: textBarButtonItemFactory,
+                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                ),
+                repository: JotConflictRepository(
+                    jotFileConflictService: jotFileConflictService,
+                    jotFilePreviewImageService: jotFilePreviewImageService
+                )
+            ),
+            renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
+                repository: RenameJotRepository(
+                    jotFileService: jotFileService
+                )
+            ),
+            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
         )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
@@ -158,30 +150,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
                 )
             ),
-            editJotCoordinatorFactory: EditJotCoordinatorFactory(
-                repository: editJotRepository,
-                editJotViewControllerFactory: EditJotViewControllerFactory(
-                    repository: editJotRepository,
-                    menuConfigurationFactory: menuConfigurationFactory,
-                    symbolBarButtonItemFactory: symbolBarButtonItemFactory
-                ),
-                jotConflictCoordinatorFactory: JotConflictCoordinatorFactory(
-                    jotConflictViewControllerFactory: JotConflictViewControllerFactory(
-                        textBarButtonItemFactory: textBarButtonItemFactory,
-                        symbolBarButtonItemFactory: symbolBarButtonItemFactory
-                    ),
-                    repository: JotConflictRepository(
-                        jotFileConflictService: jotFileConflictService,
-                        jotFilePreviewImageService: jotFilePreviewImageService
-                    )
-                ),
-                renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
-                    repository: RenameJotRepository(
-                        jotFileService: jotFileService
-                    )
-                ),
-                deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
-            ),
+            editJotCoordinatorFactory: editJotCoordinatorFactory,
             cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory(
                 repository: CloudMigrationRepository(
                     ubiquitousFileService: ubiquitousFileService,
@@ -209,29 +178,119 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
 
-        let rootCoordinator = RootCoordinator(
-            navigation: navigation,
+        let rootCoordinatorFactory = RootCoordinatorFactory(
             jotsCoordinatorFactory: jotsCoordinatorFactory
         )
-        self.rootCoordinator = rootCoordinator
-        navigationController.viewControllers = rootCoordinator.handle(url: url)
+
+        let navigationController = makeNavigationController()
+
+        let navigation = Navigation(
+            openURLProvider: { [weak self, weak navigationController] url in
+                Task { @MainActor in
+                    guard let viewControllers = self?.sceneCoordinator?.handle(url: url) else {
+                        return
+                    }
+                    navigationController?.setViewControllers(viewControllers, animated: true)
+                }
+            },
+            openSceneProvider: { [weak self] url in
+                Task { @MainActor in
+                    self?.sceneCoordinator?.openScene(url: url)
+                }
+            },
+            presentViewControllerProvider: { [weak navigationController] viewController, animated in
+                Task { @MainActor in
+                    navigationController?.present(viewController, animated: animated)
+                }
+            },
+            dismissViewControllerProvider: { [weak navigationController] animated, completion in
+                Task { @MainActor in
+                    navigationController?.dismiss(animated: animated, completion: completion)
+                }
+            },
+            popViewControllerProvider: { [weak navigationController] animated in
+                Task { @MainActor in
+                    navigationController?.popViewController(animated: animated)
+                }
+            },
+            getViewControllersProvider: { [weak navigationController] in
+                navigationController?.viewControllers ?? []
+            }
+        )
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = navigationController
+        self.window = window
 
-        userInterfaceStyleTask = Task {
-            for await userInterfaceStyle in defaultsService.getValueStream(.userInterfaceStyle) {
-                window.overrideUserInterfaceStyle =
-                    userInterfaceStyle
-                    .flatMap(UIUserInterfaceStyle.init(rawValue:)) ?? .unspecified
+        let sceneCoordinator = SceneCoordinator(
+            navigation: navigation,
+            defaultsService: defaultsService,
+            ubiquitousFileService: ubiquitousFileService,
+            rootCoordinatorFactory: rootCoordinatorFactory,
+            editJotCoordinatorFactory: editJotCoordinatorFactory,
+            onUpdateUserInterfaceStyle: { [weak window] userInterfaceStyle in
+                Task { @MainActor in
+                    window?.overrideUserInterfaceStyle = userInterfaceStyle
+                }
+            },
+            requestSceneSessionActivationProvider: { url in
+                Task { @MainActor in
+                    let activity = NSUserActivity(
+                        activityType: SceneCoordinator.Constants.activityType
+                    )
+                    activity.userInfo = [SceneCoordinator.Constants.urlKey: url.absoluteString]
+                    UIApplication.shared.requestSceneSessionActivation(
+                        nil,
+                        userActivity: activity,
+                        options: nil,
+                        errorHandler: nil
+                    )
+                }
+            },
+            supportsMultipleScenesProvider: {
+                UIApplication.shared.supportsMultipleScenes
             }
-        }
+        )
+        self.sceneCoordinator = sceneCoordinator
+        navigationController.viewControllers = sceneCoordinator.handle(
+            session: session,
+            connectionOptions: connectionOptions
+        )
 
         window.makeKeyAndVisible()
-        self.window = window
     }
 
-    deinit {
-        userInterfaceStyleTask?.cancel()
+    #if targetEnvironment(macCatalyst)
+    func sceneDidDisconnect(_ scene: UIScene) {
+        guard UIApplication.shared.connectedScenes.isEmpty,
+            let appKitPluginService
+        else {
+            return
+        }
+        appKitPluginService.terminate()
+    }
+    #endif
+
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        sceneCoordinator?.handleURLContexts(urlContexts: URLContexts)
+    }
+
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        sceneCoordinator?.makeStateRestorationActivity()
+    }
+
+    private func makeNavigationController() -> UINavigationController {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.tintColor = .label
+        return navigationController
     }
 }
