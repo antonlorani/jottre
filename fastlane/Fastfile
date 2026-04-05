@@ -298,6 +298,14 @@ platform :mac do
             provisioning_profile: CATALYST_APP_STORE_PROFILE
         )
 
+        update_code_signing_settings(
+            use_automatic_signing: false,
+            path: 'Jottre.xcodeproj',
+            targets: ['AppKitPlugin'],
+            team_id: TEAM_ID,
+            code_sign_identity: APPLE_DISTRIBUTION_IDENTITY
+        )
+
         pkg_path = gym(
             scheme: SCHEME,
             configuration: 'Release',

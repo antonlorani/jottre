@@ -135,6 +135,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre.AppKitPlugin
         SWIFT_VERSION: "6.0"
-        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
         MACH_O_TYPE: mh_bundle
         ENABLE_HARDENED_RUNTIME: YES
