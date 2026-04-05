@@ -158,7 +158,18 @@ final class JotsViewModel: PageViewModel {
                             }
                         }
                     ),
-                    sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 160, itemHeight: 216),
+                    sizing: .adaptiveGrid(
+                        minColumns: 2,
+                        maxColumns: 8,
+                        minItemWidth: 160,
+                        maxItemWidth: 200,
+                        columnSpacing: DesignTokens.Spacing.md,
+                        rowSpacing: DesignTokens.Spacing.md,
+                        aspectRatio: CGSize(
+                            width: 4,
+                            height: 5
+                        )
+                    ),
                     repository: repository,
                     onAction: { [weak coordinator, weak self] in
                         Task { @MainActor in
