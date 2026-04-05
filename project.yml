@@ -113,7 +113,12 @@ targets:
       - target: AppKitPlugin
         embed: true
         codeSign: true
-        condition: maccatalyst
+    postBuildScripts:
+      - name: Remove AppKitPlugin for non-Catalyst builds
+        script: |
+          if [ "$IS_MACCATALYST" != "YES" ]; then
+            rm -rf "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppKitPlugin.bundle"
+          fi
     packages: []
 
   AppKitPlugin:
