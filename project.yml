@@ -109,16 +109,11 @@ targets:
         ENABLE_APP_SANDBOX: YES
         ENABLE_USER_SCRIPT_SANDBOXING: YES
         VALIDATE_PRODUCT: YES
+        EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]: AppKitPlugin.bundle
     dependencies:
       - target: AppKitPlugin
         embed: true
         codeSign: true
-    postBuildScripts:
-      - name: Remove AppKitPlugin for non-Catalyst builds
-        script: |
-          if [ "$IS_MACCATALYST" != "YES" ]; then
-            rm -rf "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppKitPlugin.bundle"
-          fi
     packages: []
 
   AppKitPlugin:
