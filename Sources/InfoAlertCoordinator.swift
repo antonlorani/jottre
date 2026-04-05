@@ -44,7 +44,7 @@ final class InfoAlertCoordinator: Coordinator {
         )
 
         let okAction = UIAlertAction(
-            title: "ok",
+            title: L10n.Action.ok,
             style: .cancel,
             handler: { [weak self] _ in
                 self?.onEnd?()
