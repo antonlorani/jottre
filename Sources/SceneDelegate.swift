@@ -38,7 +38,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         #if targetEnvironment(macCatalyst)
-        windowScene.title = "Jottre"
+        windowScene.title = L10n.App.title
         #endif
 
         let fileManager = FileManager.default

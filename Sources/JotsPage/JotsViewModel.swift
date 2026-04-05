@@ -122,7 +122,7 @@ final class JotsViewModel: PageViewModel {
     private func handleJots(jotFileInfos: [JotFile.Info]) {
         guard !jotFileInfos.isEmpty else {
             itemsContinuation.yield([
-                .jotsEmptyState(title: "A blank page full of possibilities. Go ahead, jot something insanely great!")
+                .jotsEmptyState(title: L10n.Jots.Empty.title)
             ])
             return
         }
@@ -158,7 +158,18 @@ final class JotsViewModel: PageViewModel {
                             }
                         }
                     ),
-                    sizing: .adaptiveGrid(maxColumns: 8, minItemWidth: 160, itemHeight: 216),
+                    sizing: .adaptiveGrid(
+                        minColumns: 2,
+                        maxColumns: 8,
+                        minItemWidth: 160,
+                        maxItemWidth: 200,
+                        columnSpacing: DesignTokens.Spacing.md,
+                        rowSpacing: DesignTokens.Spacing.md,
+                        aspectRatio: CGSize(
+                            width: 4,
+                            height: 5
+                        )
+                    ),
                     repository: repository,
                     onAction: { [weak coordinator, weak self] in
                         Task { @MainActor in

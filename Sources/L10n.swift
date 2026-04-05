@@ -26,6 +26,7 @@ enum L10n {
         static let delete = String(localized: "action.delete")
         static let done = String(localized: "action.done")
         static let duplicate = String(localized: "action.duplicate")
+        static let ok = String(localized: "action.ok")
         static let rename = String(localized: "action.rename")
         static let share = String(localized: "action.share")
     }
@@ -61,14 +62,19 @@ enum L10n {
     }
 
     enum JotConflict {
+        static let deviceLabel = String(localized: "jotConflict.deviceLabel")
         static let title = String(localized: "jotConflict.title")
 
         enum Error {
-            static let generic = String(localized: "static let  jotConflict.error.generic")
+            static let generic = String(localized: "jotConflict.error.generic")
         }
 
         static func subtitle(_ jotName: String) -> String {
             String(format: String(localized: "jotConflict.subtitle"), jotName)
+        }
+
+        static func versionName(_ version: String) -> String {
+            String(format: String(localized: "jotConflict.versionName"), version)
         }
 
         enum Action {
@@ -81,6 +87,10 @@ enum L10n {
     }
 
     enum Jots {
+
+        enum Empty {
+            static let title = String(localized: "jots.empty.title")
+        }
 
         enum Create {
             static let namePlaceholder = String(localized: "jots.create.namePlaceholder")

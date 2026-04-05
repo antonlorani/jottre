@@ -19,7 +19,45 @@
 import UIKit
 
 enum PageCellSizingStrategy: Sendable, Hashable {
-    case fullWidth(estimatedHeight: CGFloat = 120)
-    case equalSplit(perRow: Int, itemHeight: CGFloat)
-    case adaptiveGrid(maxColumns: Int, minItemWidth: CGFloat, itemHeight: CGFloat)
+    case fullWidth(
+        estimatedHeight: CGFloat = 120,
+        rowSpacing: CGFloat = DesignTokens.Spacing.xs
+    )
+    case equalSplit(
+        perRow: Int,
+        itemHeight: CGFloat,
+        columnSpacing: CGFloat = DesignTokens.Spacing.sm,
+        rowSpacing: CGFloat = DesignTokens.Spacing.sm
+    )
+    case adaptiveGrid(
+        minColumns: Int,
+        maxColumns: Int,
+        minItemWidth: CGFloat,
+        maxItemWidth: CGFloat,
+        columnSpacing: CGFloat,
+        rowSpacing: CGFloat,
+        aspectRatio: CGSize
+    )
+
+    var columnSpacing: CGFloat {
+        switch self {
+        case .fullWidth:
+            return .zero
+        case let .equalSplit(_, _, columnSpacing, _):
+            return columnSpacing
+        case let .adaptiveGrid(_, _, _, _, columnSpacing, _, _):
+            return columnSpacing
+        }
+    }
+
+    var rowSpacing: CGFloat {
+        switch self {
+        case let .fullWidth(_, rowSpacing):
+            return rowSpacing
+        case let .equalSplit(_, _, _, rowSpacing):
+            return rowSpacing
+        case let .adaptiveGrid(_, _, _, _, _, rowSpacing, _):
+            return rowSpacing
+        }
+    }
 }
