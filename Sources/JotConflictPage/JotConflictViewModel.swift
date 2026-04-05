@@ -45,7 +45,7 @@ final class JotConflictViewModel: PageViewModel, Sendable {
                 .map { offset, jotFileVersion in
                     PageCellItem.jotConflict(
                         jotConflict: JotConflictBusinessModel(
-                            name: "Version \(Constants.character(offset: offset))",
+                            name: L10n.JotConflict.versionName(Constants.character(offset: offset)),
                             jotFileInfo: jotFileInfo,
                             jotFileVersion: jotFileVersion
                         ),
@@ -100,7 +100,7 @@ final class JotConflictViewModel: PageViewModel, Sendable {
         self.jotFileVersions =
             [
                 JotFileVersion(
-                    localizedNameOfSavingComputer: "This Device",
+                    localizedNameOfSavingComputer: L10n.JotConflict.deviceLabel,
                     info: jotFileInfo
                 )
             ] + jotFileVersions

@@ -56,7 +56,7 @@ final class PageViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.preservesSuperviewLayoutMargins = true
-        collectionView.contentInset.bottom = DesignTokens.Spacing.sm
+        collectionView.contentInset.bottom = DesignTokens.Spacing.md
         collectionView.delegate = self
         return collectionView
     }()
@@ -253,7 +253,7 @@ final class PageViewController: UIViewController {
             ),
             subitems: rowGroups
         )
-        group.interItemSpacing = .fixed(DesignTokens.Spacing.xs)
+        group.interItemSpacing = .fixed(items.first?.sizing.rowSpacing ?? DesignTokens.Spacing.md)
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsetsReference = .layoutMargins
@@ -282,20 +282,24 @@ final class PageViewController: UIViewController {
         contentWidth: CGFloat
     ) -> (NSCollectionLayoutGroup, Int) {
         switch sizing {
-        case let .fullWidth(estimatedHeight):
-            return makeFullWidthRowLayoutGroup(
+        case let .fullWidth(estimatedHeight, _):
+            makeFullWidthRowLayoutGroup(
                 estimatedHeight: estimatedHeight
             )
-        case let .equalSplit(perRow, height):
-            return makeEqualSplitRowLayoutGroup(
+        case let .equalSplit(perRow, height, columnSpacing, _):
+            makeEqualSplitRowLayoutGroup(
                 perRow: perRow,
-                height: height
+                height: height,
+                columnSpacing: columnSpacing
             )
-        case let .adaptiveGrid(maxColumns, minItemWidth, itemHeight):
-            return makeAdaptiveGridRowLayoutGroup(
+        case let .adaptiveGrid(minColumns, maxColumns, minItemWidth, maxItemWidth, columnSpacing, _, aspectRatio):
+            makeAdaptiveGridRowLayoutGroup(
+                minColumns: minColumns,
                 maxColumns: maxColumns,
                 minItemWidth: minItemWidth,
-                itemHeight: itemHeight,
+                maxItemWidth: maxItemWidth,
+                columnSpacing: columnSpacing,
+                aspectRatio: aspectRatio,
                 contentWidth: contentWidth
             )
         }
@@ -322,7 +326,8 @@ final class PageViewController: UIViewController {
 
     private func makeEqualSplitRowLayoutGroup(
         perRow: Int,
-        height: CGFloat
+        height: CGFloat,
+        columnSpacing: CGFloat
     ) -> (NSCollectionLayoutGroup, Int) {
         let item = NSCollectionLayoutItem(
             layoutSize: .init(
@@ -338,18 +343,24 @@ final class PageViewController: UIViewController {
             subitem: item,
             count: perRow
         )
-        group.interItemSpacing = .fixed(DesignTokens.Spacing.xs)
+        group.interItemSpacing = .fixed(columnSpacing)
         return (group, perRow)
     }
 
     private func makeAdaptiveGridRowLayoutGroup(
+        minColumns: Int,
         maxColumns: Int,
         minItemWidth: CGFloat,
-        itemHeight: CGFloat,
+        maxItemWidth: CGFloat,
+        columnSpacing: CGFloat,
+        aspectRatio: CGSize,
         contentWidth: CGFloat
     ) -> (NSCollectionLayoutGroup, Int) {
-        let spacing = DesignTokens.Spacing.xs
-        let columns = min(maxColumns, max(1, Int((contentWidth + spacing) / (minItemWidth + spacing))))
+        let columnsNeeded = Int(ceil((contentWidth + columnSpacing) / (maxItemWidth + columnSpacing)))
+        let columnsAllowed = Int((contentWidth + columnSpacing) / (minItemWidth + columnSpacing))
+        let columns = max(minColumns, min(maxColumns, min(columnsAllowed, max(columnsNeeded, minColumns))))
+        let itemWidth = (contentWidth - columnSpacing * CGFloat(columns - 1)) / CGFloat(columns)
+        let itemHeight = itemWidth * aspectRatio.height / aspectRatio.width
 
         let item = NSCollectionLayoutItem(
             layoutSize: .init(
@@ -365,7 +376,7 @@ final class PageViewController: UIViewController {
             subitem: item,
             count: columns
         )
-        group.interItemSpacing = .fixed(spacing)
+        group.interItemSpacing = .fixed(columnSpacing)
         return (group, columns)
     }
 }
