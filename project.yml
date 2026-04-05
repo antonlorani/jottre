@@ -109,11 +109,11 @@ targets:
         ENABLE_APP_SANDBOX: YES
         ENABLE_USER_SCRIPT_SANDBOXING: YES
         VALIDATE_PRODUCT: YES
+        EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*]: AppKitPlugin.bundle
     dependencies:
       - target: AppKitPlugin
         embed: true
         codeSign: true
-        condition: maccatalyst
     packages: []
 
   AppKitPlugin:
