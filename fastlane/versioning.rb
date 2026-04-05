@@ -17,10 +17,16 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 module Versioning
+    SEMVER_PATTERN = /\A\d+\.\d+\.\d+\z/
+
     # Returns the latest semver tag or nil if none exists.
     def self.latest_tag
-        tag = `git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || true`.strip
-        tag.empty? ? nil : tag
+        tags = `git tag --sort=-version:refname 2>/dev/null`.strip
+        tags.each_line do |line|
+            tag = line.strip
+            return tag if tag.match?(SEMVER_PATTERN)
+        end
+        nil
     end
 
     # Returns true if HEAD is already tagged.

@@ -164,6 +164,8 @@ platform :ios do
         version = Versioning.latest_tag
         UI.user_error!('No version tag found') unless version
 
+        build_number = release_build_number(platform: 'ios')
+
         generate_project
 
         set_info_plist_value(
@@ -175,9 +177,7 @@ platform :ios do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: release_build_number(
-                platform: 'ios'
-            )
+            value: build_number
         )
 
         configure_manual_signing(
@@ -203,6 +203,10 @@ platform :ios do
             skip_metadata: true,
             skip_screenshots: true
         )
+
+        distribution_tag = "#{version}.#{build_number}+ios"
+        add_git_tag(tag: distribution_tag)
+        push_git_tags(tag: distribution_tag)
     end
 end
 
@@ -277,6 +281,8 @@ platform :mac do
         version = Versioning.latest_tag
         UI.user_error!('No version tag found') unless version
 
+        build_number = release_build_number(platform: 'osx')
+
         generate_project
 
         set_info_plist_value(
@@ -288,9 +294,7 @@ platform :mac do
         set_info_plist_value(
             path: INFO_PLIST,
             key: 'CFBundleVersion',
-            value: release_build_number(
-                platform: 'osx'
-            )
+            value: build_number
         )
 
         configure_manual_signing(
@@ -329,5 +333,9 @@ platform :mac do
             skip_metadata: true,
             skip_screenshots: true
         )
+
+        distribution_tag = "#{version}.#{build_number}+catalyst"
+        add_git_tag(tag: distribution_tag)
+        push_git_tags(tag: distribution_tag)
     end
 end
