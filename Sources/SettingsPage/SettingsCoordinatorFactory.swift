@@ -19,14 +19,14 @@
 @MainActor
 protocol SettingsCoordinatorFactoryProtocol {
 
-    func make(navigation: Navigation) -> NavigationCoordinator
+    func make(navigation: Navigation) -> Coordinator
 }
 
 struct SettingsCoordinatorFactory: SettingsCoordinatorFactoryProtocol {
 
     let settingsViewControllerFactory: SettingsViewControllerFactoryProtocol
 
-    func make(navigation: Navigation) -> NavigationCoordinator {
+    func make(navigation: Navigation) -> Coordinator {
         SettingsCoordinator(
             navigation: navigation,
             settingsViewControllerFactory: settingsViewControllerFactory

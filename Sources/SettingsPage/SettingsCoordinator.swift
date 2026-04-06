@@ -18,7 +18,9 @@
 
 import UIKit
 
-final class SettingsCoordinator: NavigationCoordinator {
+final class SettingsCoordinator: Coordinator {
+
+    var onEnd: (() -> Void)?
 
     private let navigation: Navigation
     private let settingsViewControllerFactory: SettingsViewControllerFactoryProtocol
@@ -31,17 +33,12 @@ final class SettingsCoordinator: NavigationCoordinator {
         self.settingsViewControllerFactory = settingsViewControllerFactory
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(SettingsURL().path)
-    }
-
-    func handle(url: URL) -> [UIViewController] {
+    func start() {
         let navigationController = UINavigationController(
             rootViewController: settingsViewControllerFactory.make(coordinator: self)
         )
         navigationController.navigationBar.prefersLargeTitles = true
         navigation.present(navigationController, animated: true)
-        return []
     }
 
     func openExternalLink(url: URL) {

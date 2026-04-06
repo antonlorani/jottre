@@ -29,11 +29,11 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedDeleteJotCoordinator: Coordinator?
     private var retainedCloudMigrationCoordinator: Coordinator?
     private var retainedRevealFileCoordinator: Coordinator?
+    private var retainedSettingsCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
     private lazy var childCoordinators: [NavigationCoordinator] = [
-        settingsCoordinatorFactory.make(navigation: navigation),
         enableCloudCoordinatorFactory.make(navigation: navigation),
         editJotCoordinatorFactory.make(navigation: navigation),
         createJotCoordinatorFactory.make(navigation: navigation),
@@ -97,7 +97,12 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openSettings() {
-        navigation.open(url: SettingsURL())
+        let settingsCoordinator = settingsCoordinatorFactory.make(navigation: navigation)
+        retainedSettingsCoordinator = settingsCoordinator
+        settingsCoordinator.onEnd = { [weak self] in
+            self?.retainedSettingsCoordinator = nil
+        }
+        settingsCoordinator.start()
     }
 
     func openCreateJot() {
