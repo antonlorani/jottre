@@ -41,7 +41,7 @@ final class EnableCloudCoordinator: Coordinator {
     }
 
     func openLearnHowToEnable() {
-        navigation.openExternal(url: EnableICloudSupportURL())
+        navigation.openExternal(url: EnableICloudSupportURL().toURL())
     }
 
     func dismiss() {

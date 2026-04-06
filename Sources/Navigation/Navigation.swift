@@ -62,12 +62,12 @@ struct Navigation: Sendable {
         openURLProvider(url)
     }
 
-    func openExternal(url: URL) {
-        openExternalURLProvider(url)
-    }
-
     func open<T: URLConvertible>(url: T) {
         openURLProvider(url.toURL())
+    }
+
+    func openExternal(url: URL) {
+        openExternalURLProvider(url)
     }
 
     func openScene(url: URL) {
