@@ -19,14 +19,14 @@
 @MainActor
 protocol EnableCloudCoordinatorFactoryProtocol: Sendable {
 
-    func make(navigation: Navigation) -> NavigationCoordinator
+    func make(navigation: Navigation) -> Coordinator
 }
 
 struct EnableCloudCoordinatorFactory: EnableCloudCoordinatorFactoryProtocol {
 
     let enableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol
 
-    func make(navigation: Navigation) -> NavigationCoordinator {
+    func make(navigation: Navigation) -> Coordinator {
         EnableCloudCoordinator(
             navigation: navigation,
             enableCloudViewControllerFactory: enableCloudViewControllerFactory
