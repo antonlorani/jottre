@@ -42,7 +42,7 @@ final class SettingsCoordinator: Coordinator {
     }
 
     func openExternalLink(url: URL) {
-        navigation.open(url: url)
+        navigation.openExternal(url: url)
     }
 
     func dismiss() {
