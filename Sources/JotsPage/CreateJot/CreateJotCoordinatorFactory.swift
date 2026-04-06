@@ -21,14 +21,14 @@ import UIKit
 @MainActor
 protocol CreateJotCoordinatorFactoryProtocol: Sendable {
 
-    func make(navigation: Navigation) -> NavigationCoordinator
+    func make(navigation: Navigation) -> Coordinator
 }
 
 struct CreateJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol {
 
     let repository: CreateJotRepositoryProtocol
 
-    func make(navigation: Navigation) -> NavigationCoordinator {
+    func make(navigation: Navigation) -> Coordinator {
         CreateJotCoordinator(
             navigation: navigation,
             repository: repository

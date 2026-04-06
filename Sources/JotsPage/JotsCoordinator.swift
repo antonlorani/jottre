@@ -27,16 +27,16 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
     private var retainedDeleteJotCoordinator: Coordinator?
+    private var retainedCreateJotCoordinator: Coordinator?
     private var retainedCloudMigrationCoordinator: Coordinator?
     private var retainedRevealFileCoordinator: Coordinator?
     private var retainedSettingsCoordinator: Coordinator?
+    private var retainedEnableCloudCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
     private lazy var childCoordinators: [NavigationCoordinator] = [
-        enableCloudCoordinatorFactory.make(navigation: navigation),
-        editJotCoordinatorFactory.make(navigation: navigation),
-        createJotCoordinatorFactory.make(navigation: navigation),
+        editJotCoordinatorFactory.make(navigation: navigation)
     ]
 
     private let navigation: Navigation
@@ -106,7 +106,12 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openCreateJot() {
-        navigation.open(url: CreateJotURL())
+        let createJotCoordinator = createJotCoordinatorFactory.make(navigation: navigation)
+        retainedCreateJotCoordinator = createJotCoordinator
+        createJotCoordinator.onEnd = { [weak self] in
+            self?.retainedCreateJotCoordinator = nil
+        }
+        createJotCoordinator.start()
     }
 
     func openJot(
@@ -126,7 +131,12 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openEnableCloudPage() {
-        navigation.open(url: EnableCloudURL())
+        let enableCloudCoordinator = enableCloudCoordinatorFactory.make(navigation: navigation)
+        retainedEnableCloudCoordinator = enableCloudCoordinator
+        enableCloudCoordinator.onEnd = { [weak self] in
+            self?.retainedEnableCloudCoordinator = nil
+        }
+        enableCloudCoordinator.start()
     }
 
     func showShareJot(format: ShareFormat) {
