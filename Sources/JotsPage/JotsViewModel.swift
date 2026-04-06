@@ -145,8 +145,8 @@ final class JotsViewModel: PageViewModel {
                         columnSpacing: DesignTokens.Spacing.md,
                         rowSpacing: DesignTokens.Spacing.md,
                         aspectRatio: CGSize(
-                            width: 4,
-                            height: 5
+                            width: 7,
+                            height: 8
                         )
                     ),
                     repository: repository,
