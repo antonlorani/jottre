@@ -34,20 +34,32 @@ protocol JotsRepositoryProtocol: Sendable {
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage?
+
+    @MainActor
+    func supportsMultipleScenes() -> Bool
+
+    @MainActor
+    func isIPadOS() -> Bool
 }
 
 struct JotsRepository: JotsRepositoryProtocol {
 
     private let ubiquitousFileService: FileServiceProtocol
+    private let applicationService: ApplicationServiceProtocol
+    private let deviceService: DeviceServiceProtocol
     private let jotFileService: JotFileServiceProtocol
     private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
 
     init(
         ubiquitousFileService: FileServiceProtocol,
+        applicationService: ApplicationServiceProtocol,
+        deviceService: DeviceServiceProtocol,
         jotFileService: JotFileServiceProtocol,
         jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
     ) {
         self.ubiquitousFileService = ubiquitousFileService
+        self.applicationService = applicationService
+        self.deviceService = deviceService
         self.jotFileService = jotFileService
         self.jotFilePreviewImageService = jotFilePreviewImageService
     }
@@ -90,5 +102,13 @@ struct JotsRepository: JotsRepositoryProtocol {
         } catch {
             return nil
         }
+    }
+
+    func supportsMultipleScenes() -> Bool {
+        applicationService.supportsMultipleScenes()
+    }
+
+    func isIPadOS() -> Bool {
+        deviceService.isIPadOS()
     }
 }

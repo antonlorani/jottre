@@ -126,6 +126,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
                     ubiquitousFileService: ubiquitousFileService,
+                    applicationService: applicationService,
+                    deviceService: deviceService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService
                 ),
