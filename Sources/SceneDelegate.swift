@@ -20,6 +20,8 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    private static let defaultsService = DefaultsService(userDefaults: .standard)
+
     #if targetEnvironment(macCatalyst)
     private lazy var appKitPluginService = MacCatalystAppKitPluginService(bundle: .main)
     #endif
@@ -68,8 +70,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 jotFileService: jotFileService
             )
         )
-        let defaultsService = DefaultsService(
-            userDefaults: .standard
+        let applicationService = ApplicationService(
+            application: .shared
+        )
+        let deviceService = DeviceService(
+            device: .current
         )
 
         let textBarButtonItemFactory: TextBarButtonItemFactory
@@ -140,7 +145,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     repository: SettingsRepository(
                         ubiquitousFileService: ubiquitousFileService,
                         bundleService: bundleService,
-                        defaultsService: defaultsService
+                        defaultsService: Self.defaultsService
                     ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
@@ -158,7 +163,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     ubiquitousFileService: ubiquitousFileService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService,
-                    defaultsService: defaultsService
+                    defaultsService: Self.defaultsService
                 ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
                     textBarButtonItemFactory: textBarButtonItemFactory,
@@ -226,7 +231,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let sceneCoordinator = SceneCoordinator(
             navigation: navigation,
-            defaultsService: defaultsService,
+            defaultsService: Self.defaultsService,
             ubiquitousFileService: ubiquitousFileService,
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
