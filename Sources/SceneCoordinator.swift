@@ -72,15 +72,24 @@ final class SceneCoordinator {
         let url: URL
         let coordinator: NavigationCoordinator
 
-        if let startURL = getStartURL(session: session, connectionOptions: connectionOptions) {
+        if let (startURL, isRestored) = getStartURL(session: session, connectionOptions: connectionOptions) {
             url = startURL
-            lastActiveURL = startURL
-            coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+
+            if isRestored {
+                coordinator = rootCoordinatorFactory.make(navigation: navigation)
+            } else {
+                if supportsMultipleScenesProvider() {
+                    coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+                } else {
+                    coordinator = rootCoordinatorFactory.make(navigation: navigation)
+                }
+            }
         } else {
             url = JotsPageURL().toURL()
             coordinator = rootCoordinatorFactory.make(navigation: navigation)
         }
 
+        lastActiveURL = url
         retainedRootCoordinator = coordinator
 
         userInterfaceStyleTask?.cancel()
@@ -134,24 +143,33 @@ final class SceneCoordinator {
     private func getStartURL(
         session: UISceneSession,
         connectionOptions: UIScene.ConnectionOptions
-    ) -> URL? {
+    ) -> (url: URL, isRestored: Bool)? {
         if let activity = session.stateRestorationActivity,
             activity.activityType == Constants.activityType,
             let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
-            return makeEditJotURL(url: url) ?? url
+            return (
+                url: makeEditJotURL(url: url) ?? url,
+                isRestored: true
+            )
         }
 
         if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
             let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
-            return makeEditJotURL(url: url) ?? url
+            return (
+                url: makeEditJotURL(url: url) ?? url,
+                isRestored: false
+            )
         }
 
         if let firstURLContextURL = connectionOptions.urlContexts.first?.url {
-            return makeEditJotURL(url: firstURLContextURL) ?? firstURLContextURL
+            return (
+                url: makeEditJotURL(url: firstURLContextURL) ?? firstURLContextURL,
+                isRestored: false
+            )
         }
 
         return nil
