@@ -23,11 +23,14 @@ final class RevealFileCoordinator: Coordinator {
     var onEnd: (() -> Void)?
 
     private let jotFileInfo: JotFile.Info
+    private let applicationService: ApplicationServiceProtocol
 
     init(
-        jotFileInfo: JotFile.Info
+        jotFileInfo: JotFile.Info,
+        applicationService: ApplicationServiceProtocol
     ) {
         self.jotFileInfo = jotFileInfo
+        self.applicationService = applicationService
     }
 
     func start() {
@@ -50,7 +53,7 @@ final class RevealFileCoordinator: Coordinator {
         )
         #else
         let revealFileURL = RevealFileURL(jotFileInfo: jotFileInfo)
-        UIApplication.shared.open(revealFileURL.toURL())
+        applicationService.open(url: revealFileURL.toURL())
         #endif
     }
 }

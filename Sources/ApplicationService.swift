@@ -22,6 +22,10 @@ import UIKit
 protocol ApplicationServiceProtocol: Sendable {
 
     func supportsMultipleScenes() -> Bool
+
+    func open(url: URL)
+
+    func canOpen(url: URL) -> Bool
 }
 
 struct ApplicationService: ApplicationServiceProtocol {
@@ -33,6 +37,14 @@ struct ApplicationService: ApplicationServiceProtocol {
     }
 
     func supportsMultipleScenes() -> Bool {
-        UIApplication.shared.supportsMultipleScenes
+        application.supportsMultipleScenes
+    }
+
+    func open(url: URL) {
+        application.open(url)
+    }
+
+    func canOpen(url: URL) -> Bool {
+        application.canOpenURL(url)
     }
 }

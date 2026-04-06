@@ -48,6 +48,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+    private let revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
@@ -59,6 +60,7 @@ final class JotsCoordinator: NavigationCoordinator {
         createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
+        revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotsViewControllerFactory = jotsViewControllerFactory
@@ -69,6 +71,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.createJotCoordinatorFactory = createJotCoordinatorFactory
         self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
+        self.revealFileCoordinatorFactory = revealFileCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -194,7 +197,10 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func showInFiles(jotFileInfo: JotFile.Info) {
-        let revealFileCoordinator = RevealFileCoordinator(jotFileInfo: jotFileInfo)
+        let revealFileCoordinator = revealFileCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        )
         retainedRevealFileCoordinator = revealFileCoordinator
         revealFileCoordinator.onEnd = { [weak self] in
             self?.retainedRevealFileCoordinator = nil

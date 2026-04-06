@@ -33,31 +33,31 @@ final class SceneCoordinator {
 
     private let navigation: Navigation
     private let defaultsService: DefaultsServiceProtocol
+    private let applicationService: ApplicationServiceProtocol
     private let ubiquitousFileService: UbiquitousFileService
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
     private let requestSceneSessionActivationProvider: @Sendable (_ url: URL) -> Void
-    private let supportsMultipleScenesProvider: () -> Bool
 
     init(
         navigation: Navigation,
         defaultsService: DefaultsServiceProtocol,
+        applicationService: ApplicationServiceProtocol,
         ubiquitousFileService: UbiquitousFileService,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
-        requestSceneSessionActivationProvider: @Sendable @escaping (_ url: URL) -> Void,
-        supportsMultipleScenesProvider: @escaping () -> Bool
+        requestSceneSessionActivationProvider: @Sendable @escaping (_ url: URL) -> Void
     ) {
         self.navigation = navigation
         self.defaultsService = defaultsService
+        self.applicationService = applicationService
         self.ubiquitousFileService = ubiquitousFileService
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
         self.requestSceneSessionActivationProvider = requestSceneSessionActivationProvider
-        self.supportsMultipleScenesProvider = supportsMultipleScenesProvider
     }
 
     func handle(url: URL) -> [UIViewController] {
@@ -78,7 +78,7 @@ final class SceneCoordinator {
             if isRestored {
                 coordinator = rootCoordinatorFactory.make(navigation: navigation)
             } else {
-                if supportsMultipleScenesProvider() {
+                if applicationService.supportsMultipleScenes() {
                     coordinator = editJotCoordinatorFactory.make(navigation: navigation)
                 } else {
                     coordinator = rootCoordinatorFactory.make(navigation: navigation)
@@ -119,7 +119,7 @@ final class SceneCoordinator {
     }
 
     func openScene(url: URL) {
-        if supportsMultipleScenesProvider() {
+        if applicationService.supportsMultipleScenes() {
             requestSceneSessionActivationProvider(url)
         } else {
             navigation.open(url: url)
@@ -129,7 +129,7 @@ final class SceneCoordinator {
     func makeStateRestorationActivity() -> NSUserActivity? {
         guard
             let lastActiveURL,
-            supportsMultipleScenesProvider()
+            applicationService.supportsMultipleScenes()
         else {
             return nil
         }

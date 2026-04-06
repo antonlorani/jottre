@@ -96,6 +96,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
 
+        let revealFileCoordinatorFactory = RevealFileCoordinatorFactory(
+            applicationService: applicationService
+        )
+
         let editJotRepository = EditJotRepository(
             ubiquitousFileService: ubiquitousFileService,
             jotFileService: jotFileService,
@@ -124,7 +128,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     jotFileService: jotFileService
                 )
             ),
-            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
+            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
+            revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
@@ -182,7 +187,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 repository: RenameJotRepository(
                     jotFileService: jotFileService
                 )
-            )
+            ),
+            revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 
         let rootCoordinatorFactory = RootCoordinatorFactory(
@@ -198,6 +204,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         return
                     }
                     navigationController?.setViewControllers(viewControllers, animated: true)
+                }
+            },
+            openExternalURLProvider: { url in
+                Task { @MainActor in
+                    guard applicationService.canOpen(url: url) else {
+                        return
+                    }
+                    applicationService.open(url: url)
                 }
             },
             openSceneProvider: { [weak self] url in
@@ -232,6 +246,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let sceneCoordinator = SceneCoordinator(
             navigation: navigation,
             defaultsService: Self.defaultsService,
+            applicationService: applicationService,
             ubiquitousFileService: ubiquitousFileService,
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
@@ -253,9 +268,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         errorHandler: nil
                     )
                 }
-            },
-            supportsMultipleScenesProvider: {
-                UIApplication.shared.supportsMultipleScenes
             }
         )
         self.sceneCoordinator = sceneCoordinator

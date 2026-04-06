@@ -18,14 +18,26 @@
 
 import UIKit
 
-final class ExternalLinkNavigationCoordinator: NavigationCoordinator {
+@MainActor
+protocol RevealFileCoordinatorFactoryProtocol: Sendable {
 
-    func shouldHandle(url: URL) -> Bool {
-        (url.scheme == "https" || url.scheme == "http") && UIApplication.shared.canOpenURL(url)
-    }
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator
+}
 
-    func handle(url: URL) -> [UIViewController] {
-        UIApplication.shared.open(url)
-        return []
+struct RevealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol {
+
+    let applicationService: ApplicationServiceProtocol
+
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator {
+        RevealFileCoordinator(
+            jotFileInfo: jotFileInfo,
+            applicationService: applicationService
+        )
     }
 }
