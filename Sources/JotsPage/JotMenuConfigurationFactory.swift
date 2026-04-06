@@ -23,35 +23,25 @@ struct JotMenuConfigurationFactory: Sendable {
         onRename: @Sendable @escaping () -> Void,
         onDuplicate: @Sendable @escaping () -> Void,
         onDelete: @Sendable @escaping () -> Void,
-        onShowInFiles: @Sendable @escaping () -> Void
+        onShowInFiles: @Sendable @escaping () -> Void,
+        onOpenInNewWindow: (@Sendable () -> Void)? = nil
     ) -> [JotMenuConfiguration] {
-        [
-            .group(
-                JotMenuConfiguration.Group(
-                    title: L10n.Action.share,
-                    systemImageName: "square.and.arrow.up",
-                    actions: [
-                        JotMenuConfiguration.Action(
-                            title: L10n.Share.Format.pdf,
-                            systemImageName: "doc.fill"
-                        ) {
-                            onShare(.pdf)
-                        },
-                        JotMenuConfiguration.Action(
-                            title: L10n.Share.Format.jpg,
-                            systemImageName: "photo.fill"
-                        ) {
-                            onShare(.jpg)
-                        },
-                        JotMenuConfiguration.Action(
-                            title: L10n.Share.Format.png,
-                            systemImageName: "photo"
-                        ) {
-                            onShare(.png)
-                        },
-                    ]
+        var menuConfiguration = [JotMenuConfiguration]()
+
+        if let onOpenInNewWindow {
+            menuConfiguration.append(
+                .action(
+                    JotMenuConfiguration.Action(
+                        title: L10n.Jots.Menu.openInNewWindow,
+                        systemImageName: "plus.app"
+                    ) {
+                        onOpenInNewWindow()
+                    }
                 )
-            ),
+            )
+        }
+
+        menuConfiguration.append(contentsOf: [
             .action(
                 JotMenuConfiguration.Action(
                     title: L10n.Action.rename,
@@ -91,6 +81,34 @@ struct JotMenuConfigurationFactory: Sendable {
                     onShowInFiles()
                 }
             ),
-        ]
+            .group(
+                JotMenuConfiguration.Group(
+                    title: L10n.Action.share,
+                    systemImageName: "square.and.arrow.up",
+                    actions: [
+                        JotMenuConfiguration.Action(
+                            title: L10n.Share.Format.pdf,
+                            systemImageName: "doc.fill"
+                        ) {
+                            onShare(.pdf)
+                        },
+                        JotMenuConfiguration.Action(
+                            title: L10n.Share.Format.jpg,
+                            systemImageName: "photo.fill"
+                        ) {
+                            onShare(.jpg)
+                        },
+                        JotMenuConfiguration.Action(
+                            title: L10n.Share.Format.png,
+                            systemImageName: "photo"
+                        ) {
+                            onShare(.png)
+                        },
+                    ]
+                )
+            ),
+        ])
+
+        return menuConfiguration
     }
 }
