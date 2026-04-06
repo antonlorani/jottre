@@ -20,7 +20,6 @@ import UIKit
 
 final class RootCoordinator: NavigationCoordinator {
 
-    private lazy var externalLinkNavigationCoordinator = ExternalLinkNavigationCoordinator()
     private lazy var jotsCoordinator = jotsCoordinatorFactory.make(navigation: navigation)
 
     private let navigation: Navigation
@@ -41,11 +40,6 @@ final class RootCoordinator: NavigationCoordinator {
     func handle(url: URL) -> [UIViewController] {
         var viewControllers = [UIViewController]()
         viewControllers.append(contentsOf: jotsCoordinator.handle(url: url))
-
-        if externalLinkNavigationCoordinator.shouldHandle(url: url) {
-            viewControllers.append(contentsOf: externalLinkNavigationCoordinator.handle(url: url))
-        }
-
         return viewControllers
     }
 }

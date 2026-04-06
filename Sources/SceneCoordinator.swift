@@ -33,31 +33,31 @@ final class SceneCoordinator {
 
     private let navigation: Navigation
     private let defaultsService: DefaultsServiceProtocol
+    private let applicationService: ApplicationServiceProtocol
     private let ubiquitousFileService: UbiquitousFileService
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
     private let requestSceneSessionActivationProvider: @Sendable (_ url: URL) -> Void
-    private let supportsMultipleScenesProvider: () -> Bool
 
     init(
         navigation: Navigation,
         defaultsService: DefaultsServiceProtocol,
+        applicationService: ApplicationServiceProtocol,
         ubiquitousFileService: UbiquitousFileService,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
-        requestSceneSessionActivationProvider: @Sendable @escaping (_ url: URL) -> Void,
-        supportsMultipleScenesProvider: @escaping () -> Bool
+        requestSceneSessionActivationProvider: @Sendable @escaping (_ url: URL) -> Void
     ) {
         self.navigation = navigation
         self.defaultsService = defaultsService
+        self.applicationService = applicationService
         self.ubiquitousFileService = ubiquitousFileService
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
         self.requestSceneSessionActivationProvider = requestSceneSessionActivationProvider
-        self.supportsMultipleScenesProvider = supportsMultipleScenesProvider
     }
 
     func handle(url: URL) -> [UIViewController] {
@@ -72,15 +72,24 @@ final class SceneCoordinator {
         let url: URL
         let coordinator: NavigationCoordinator
 
-        if let startURL = getStartURL(session: session, connectionOptions: connectionOptions) {
+        if let (startURL, isRestored) = getStartURL(session: session, connectionOptions: connectionOptions) {
             url = startURL
-            lastActiveURL = startURL
-            coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+
+            if isRestored {
+                coordinator = rootCoordinatorFactory.make(navigation: navigation)
+            } else {
+                if applicationService.supportsMultipleScenes() {
+                    coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+                } else {
+                    coordinator = rootCoordinatorFactory.make(navigation: navigation)
+                }
+            }
         } else {
             url = JotsPageURL().toURL()
             coordinator = rootCoordinatorFactory.make(navigation: navigation)
         }
 
+        lastActiveURL = url
         retainedRootCoordinator = coordinator
 
         userInterfaceStyleTask?.cancel()
@@ -110,7 +119,7 @@ final class SceneCoordinator {
     }
 
     func openScene(url: URL) {
-        if supportsMultipleScenesProvider() {
+        if applicationService.supportsMultipleScenes() {
             requestSceneSessionActivationProvider(url)
         } else {
             navigation.open(url: url)
@@ -120,7 +129,7 @@ final class SceneCoordinator {
     func makeStateRestorationActivity() -> NSUserActivity? {
         guard
             let lastActiveURL,
-            supportsMultipleScenesProvider()
+            applicationService.supportsMultipleScenes()
         else {
             return nil
         }
@@ -134,24 +143,33 @@ final class SceneCoordinator {
     private func getStartURL(
         session: UISceneSession,
         connectionOptions: UIScene.ConnectionOptions
-    ) -> URL? {
+    ) -> (url: URL, isRestored: Bool)? {
         if let activity = session.stateRestorationActivity,
             activity.activityType == Constants.activityType,
             let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
-            return makeEditJotURL(url: url) ?? url
+            return (
+                url: makeEditJotURL(url: url) ?? url,
+                isRestored: true
+            )
         }
 
         if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
             let urlString = activity.userInfo?[Constants.urlKey] as? String,
             let url = URL(string: urlString)
         {
-            return makeEditJotURL(url: url) ?? url
+            return (
+                url: makeEditJotURL(url: url) ?? url,
+                isRestored: false
+            )
         }
 
         if let firstURLContextURL = connectionOptions.urlContexts.first?.url {
-            return makeEditJotURL(url: firstURLContextURL) ?? firstURLContextURL
+            return (
+                url: makeEditJotURL(url: firstURLContextURL) ?? firstURLContextURL,
+                isRestored: false
+            )
         }
 
         return nil

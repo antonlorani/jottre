@@ -27,16 +27,16 @@ final class JotsCoordinator: NavigationCoordinator {
     private var retainedShareJotCoordinator: Coordinator?
     private var retainedRenameJotCoordinator: Coordinator?
     private var retainedDeleteJotCoordinator: Coordinator?
+    private var retainedCreateJotCoordinator: Coordinator?
     private var retainedCloudMigrationCoordinator: Coordinator?
     private var retainedRevealFileCoordinator: Coordinator?
+    private var retainedSettingsCoordinator: Coordinator?
+    private var retainedEnableCloudCoordinator: Coordinator?
 
     private var retainedJotsViewController: UIViewController?
 
     private lazy var childCoordinators: [NavigationCoordinator] = [
-        settingsCoordinatorFactory.make(navigation: navigation),
-        enableCloudCoordinatorFactory.make(navigation: navigation),
-        editJotCoordinatorFactory.make(navigation: navigation),
-        createJotCoordinatorFactory.make(navigation: navigation),
+        editJotCoordinatorFactory.make(navigation: navigation)
     ]
 
     private let navigation: Navigation
@@ -48,6 +48,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+    private let revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
 
     init(
         navigation: Navigation,
@@ -59,6 +60,7 @@ final class JotsCoordinator: NavigationCoordinator {
         createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
+        revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
         self.jotsViewControllerFactory = jotsViewControllerFactory
@@ -69,6 +71,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.createJotCoordinatorFactory = createJotCoordinatorFactory
         self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
+        self.revealFileCoordinatorFactory = revealFileCoordinatorFactory
     }
 
     func shouldHandle(url: URL) -> Bool {
@@ -97,19 +100,46 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func openSettings() {
-        navigation.open(url: SettingsURL())
+        let settingsCoordinator = settingsCoordinatorFactory.make(navigation: navigation)
+        retainedSettingsCoordinator = settingsCoordinator
+        settingsCoordinator.onEnd = { [weak self] in
+            self?.retainedSettingsCoordinator = nil
+        }
+        settingsCoordinator.start()
     }
 
     func openCreateJot() {
-        navigation.open(url: CreateJotURL())
+        let createJotCoordinator = createJotCoordinatorFactory.make(navigation: navigation)
+        retainedCreateJotCoordinator = createJotCoordinator
+        createJotCoordinator.onEnd = { [weak self] in
+            self?.retainedCreateJotCoordinator = nil
+        }
+        createJotCoordinator.start()
     }
 
-    func openJot(jotFileInfo: JotFile.Info) {
-        navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+    func openJot(
+        jotFileInfo: JotFile.Info,
+        prefersNewWindow: Bool
+    ) {
+        let url = EditJotURL(jotFileInfo: jotFileInfo)
+        #if targetEnvironment(macCatalyst)
+        navigation.openScene(url: url)
+        #else
+        if prefersNewWindow {
+            navigation.openScene(url: url)
+        } else {
+            navigation.open(url: url)
+        }
+        #endif
     }
 
     func openEnableCloudPage() {
-        navigation.open(url: EnableCloudURL())
+        let enableCloudCoordinator = enableCloudCoordinatorFactory.make(navigation: navigation)
+        retainedEnableCloudCoordinator = enableCloudCoordinator
+        enableCloudCoordinator.onEnd = { [weak self] in
+            self?.retainedEnableCloudCoordinator = nil
+        }
+        enableCloudCoordinator.start()
     }
 
     func showShareJot(format: ShareFormat) {
@@ -167,7 +197,10 @@ final class JotsCoordinator: NavigationCoordinator {
     }
 
     func showInFiles(jotFileInfo: JotFile.Info) {
-        let revealFileCoordinator = RevealFileCoordinator(jotFileInfo: jotFileInfo)
+        let revealFileCoordinator = revealFileCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            navigation: navigation
+        )
         retainedRevealFileCoordinator = revealFileCoordinator
         revealFileCoordinator.onEnd = { [weak self] in
             self?.retainedRevealFileCoordinator = nil

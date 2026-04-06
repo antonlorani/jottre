@@ -117,6 +117,7 @@ enum L10n {
         }
 
         enum Menu {
+            static let openInNewWindow = String(localized: "jots.menu.openInNewWindow")
             static let revealInFiles = String(localized: "jots.menu.revealInFiles")
             static let revealInFinder = String(localized: "jots.menu.revealInFinder")
         }

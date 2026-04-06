@@ -18,14 +18,33 @@
 
 import UIKit
 
-final class ExternalLinkNavigationCoordinator: NavigationCoordinator {
+@MainActor
+protocol ApplicationServiceProtocol: Sendable {
 
-    func shouldHandle(url: URL) -> Bool {
-        (url.scheme == "https" || url.scheme == "http") && UIApplication.shared.canOpenURL(url)
+    func supportsMultipleScenes() -> Bool
+
+    func open(url: URL)
+
+    func canOpen(url: URL) -> Bool
+}
+
+struct ApplicationService: ApplicationServiceProtocol {
+
+    private let application: UIApplication
+
+    init(application: UIApplication) {
+        self.application = application
     }
 
-    func handle(url: URL) -> [UIViewController] {
-        UIApplication.shared.open(url)
-        return []
+    func supportsMultipleScenes() -> Bool {
+        application.supportsMultipleScenes
+    }
+
+    func open(url: URL) {
+        application.open(url)
+    }
+
+    func canOpen(url: URL) -> Bool {
+        application.canOpenURL(url)
     }
 }

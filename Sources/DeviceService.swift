@@ -16,6 +16,27 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct SettingsURL: URLConvertible {
-    let path = "/settings"
+import UIKit
+
+@MainActor
+protocol DeviceServiceProtocol: Sendable {
+
+    func isIPadOS() -> Bool
+}
+
+struct DeviceService: DeviceServiceProtocol {
+
+    private let device: UIDevice
+
+    init(device: UIDevice) {
+        self.device = device
+    }
+
+    func isIPadOS() -> Bool {
+        #if os(iOS)
+        device.userInterfaceIdiom == .pad
+        #else
+        false
+        #endif
+    }
 }

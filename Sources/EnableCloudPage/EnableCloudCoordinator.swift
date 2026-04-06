@@ -18,7 +18,9 @@
 
 import UIKit
 
-final class EnableCloudCoordinator: NavigationCoordinator {
+final class EnableCloudCoordinator: Coordinator {
+
+    var onEnd: (() -> Void)?
 
     private let navigation: Navigation
     private let enableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol
@@ -31,23 +33,25 @@ final class EnableCloudCoordinator: NavigationCoordinator {
         self.enableCloudViewControllerFactory = enableCloudViewControllerFactory
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(EnableCloudURL().path)
-    }
-
-    func handle(url: URL) -> [UIViewController] {
+    func start() {
         let navigationController = UINavigationController(
             rootViewController: enableCloudViewControllerFactory.make(coordinator: self)
         )
         navigation.present(navigationController, animated: true)
-        return []
     }
 
     func openLearnHowToEnable() {
-        navigation.open(url: EnableICloudSupportURL())
+        navigation.openExternal(url: EnableICloudSupportURL().toURL())
     }
 
     func dismiss() {
-        navigation.dismiss(animated: true)
+        navigation.dismiss(
+            animated: true,
+            completion: { [weak self] in
+                Task { @MainActor in
+                    self?.onEnd?()
+                }
+            }
+        )
     }
 }

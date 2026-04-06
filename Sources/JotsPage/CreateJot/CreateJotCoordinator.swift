@@ -19,7 +19,9 @@
 import UIKit
 
 @MainActor
-final class CreateJotCoordinator: NavigationCoordinator {
+final class CreateJotCoordinator: Coordinator {
+
+    var onEnd: (() -> Void)?
 
     private var retainedInfoAlertCoordinator: Coordinator?
 
@@ -34,11 +36,7 @@ final class CreateJotCoordinator: NavigationCoordinator {
         self.repository = repository
     }
 
-    func shouldHandle(url: URL) -> Bool {
-        url.path.hasPrefix(CreateJotURL().path)
-    }
-
-    func handle(url: URL) -> [UIViewController] {
+    func start() {
         let alertController = UIAlertController(
             title: L10n.Jots.Create.title,
             message: nil,
@@ -68,12 +66,14 @@ final class CreateJotCoordinator: NavigationCoordinator {
 
         let cancelAction = UIAlertAction(
             title: L10n.Action.cancel,
-            style: .cancel
+            style: .cancel,
+            handler: { [weak self] _ in
+                self?.onEnd?()
+            }
         )
         alertController.addAction(cancelAction)
 
         navigation.present(alertController, animated: true)
-        return []
     }
 
     private func handleCreateJot(name: String) {
@@ -82,8 +82,7 @@ final class CreateJotCoordinator: NavigationCoordinator {
                 return
             }
             do {
-                let jotFileInfo = try await repository.createJot(name: name)
-                navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+                try await handleCreateJot(name: name)
             } catch CreateJotRepository.Failure.fileExists {
                 await showInfoAlert(
                     title: L10n.Jots.Create.Error.fileExists(name),
@@ -98,6 +97,12 @@ final class CreateJotCoordinator: NavigationCoordinator {
         }
     }
 
+    private func handleCreateJot(name: String) async throws {
+        let jotFileInfo = try await repository.createJot(name: name)
+        navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+        onEnd?()
+    }
+
     private func showInfoAlert(
         title: String,
         message: String?
@@ -110,6 +115,7 @@ final class CreateJotCoordinator: NavigationCoordinator {
         retainedInfoAlertCoordinator = infoAlertCoordinator
         infoAlertCoordinator.onEnd = { [weak self] in
             self?.retainedInfoAlertCoordinator = nil
+            self?.onEnd?()
         }
         infoAlertCoordinator.start()
     }

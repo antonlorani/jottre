@@ -73,7 +73,6 @@ final class RenameJotCoordinator: Coordinator {
                     return
                 }
                 handleRename(newName: newName)
-                onEnd?()
             }
         )
         navigation.present(alertController, animated: true)
@@ -88,6 +87,7 @@ final class RenameJotCoordinator: Coordinator {
                 newName: newName
             )
             onRename(renamedJotFileInfo)
+            onEnd?()
         } catch {
             showInfoAlert(
                 title: L10n.Jots.Rename.Error.generic(newName),
@@ -108,6 +108,7 @@ final class RenameJotCoordinator: Coordinator {
         retainedInfoAlertCoordinator = infoAlertCoordinator
         infoAlertCoordinator.onEnd = { [weak self] in
             self?.retainedInfoAlertCoordinator = nil
+            self?.onEnd?()
         }
         infoAlertCoordinator.start()
     }

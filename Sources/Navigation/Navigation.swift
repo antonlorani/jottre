@@ -22,6 +22,7 @@ import UIKit
 struct Navigation: Sendable {
 
     private let openURLProvider: @Sendable (_ url: URL) -> Void
+    private let openExternalURLProvider: @Sendable (_ url: URL) -> Void
     private let openSceneProvider: @Sendable (_ url: URL) -> Void
     private let presentViewControllerProvider:
         @Sendable (
@@ -35,6 +36,7 @@ struct Navigation: Sendable {
 
     init(
         openURLProvider: @Sendable @escaping (_ url: URL) -> Void,
+        openExternalURLProvider: @Sendable @escaping (_ url: URL) -> Void,
         openSceneProvider: @Sendable @escaping (_ url: URL) -> Void,
         presentViewControllerProvider:
             @Sendable @escaping (
@@ -48,6 +50,7 @@ struct Navigation: Sendable {
         getViewControllersProvider: @MainActor @escaping () -> [UIViewController]
     ) {
         self.openURLProvider = openURLProvider
+        self.openExternalURLProvider = openExternalURLProvider
         self.openSceneProvider = openSceneProvider
         self.presentViewControllerProvider = presentViewControllerProvider
         self.dismissViewControllerProvider = dismissViewControllerProvider
@@ -61,6 +64,10 @@ struct Navigation: Sendable {
 
     func open<T: URLConvertible>(url: T) {
         openURLProvider(url.toURL())
+    }
+
+    func openExternal(url: URL) {
+        openExternalURLProvider(url)
     }
 
     func openScene(url: URL) {

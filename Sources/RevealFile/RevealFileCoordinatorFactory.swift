@@ -16,6 +16,28 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct CreateJotURL: URLConvertible {
-    let path = "/jots/create"
+import UIKit
+
+@MainActor
+protocol RevealFileCoordinatorFactoryProtocol: Sendable {
+
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator
+}
+
+struct RevealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol {
+
+    let applicationService: ApplicationServiceProtocol
+
+    func make(
+        jotFileInfo: JotFile.Info,
+        navigation: Navigation
+    ) -> Coordinator {
+        RevealFileCoordinator(
+            jotFileInfo: jotFileInfo,
+            applicationService: applicationService
+        )
+    }
 }

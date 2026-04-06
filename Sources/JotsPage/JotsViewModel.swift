@@ -126,37 +126,16 @@ final class JotsViewModel: PageViewModel {
             ])
             return
         }
+        let supportsMultipleScenes = repository.supportsMultipleScenes()
+
         itemsContinuation.yield(
             jotFileInfos.map { jotFileInfo in
                 let jot = JotBusinessModel(jotFileInfo: jotFileInfo)
                 return .jot(
                     jot: jot,
-                    jotMenuConfigurations: menuConfigurationFactory.make(
-                        onShare: { [weak coordinator] format in
-                            Task { @MainActor in
-                                coordinator?.showShareJot(format: format)
-                            }
-                        },
-                        onRename: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
-                            }
-                        },
-                        onDuplicate: { [weak self] in
-                            Task { @MainActor in
-                                self?.didTapDuplicateJot(jotFileInfo: jotFileInfo)
-                            }
-                        },
-                        onDelete: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.openDeleteJot(jotFileInfo: jotFileInfo)
-                            }
-                        },
-                        onShowInFiles: { [weak coordinator] in
-                            Task { @MainActor in
-                                coordinator?.showInFiles(jotFileInfo: jotFileInfo)
-                            }
-                        }
+                    jotMenuConfigurations: makeMenuConfigurations(
+                        jotFileInfo: jotFileInfo,
+                        supportsMultipleScenes: supportsMultipleScenes
                     ),
                     sizing: .adaptiveGrid(
                         minColumns: 2,
@@ -166,20 +145,26 @@ final class JotsViewModel: PageViewModel {
                         columnSpacing: DesignTokens.Spacing.md,
                         rowSpacing: DesignTokens.Spacing.md,
                         aspectRatio: CGSize(
-                            width: 4,
-                            height: 5
+                            width: 7,
+                            height: 8
                         )
                     ),
                     repository: repository,
                     onAction: { [weak coordinator, weak self] in
                         Task { @MainActor in
+                            guard let self else {
+                                return
+                            }
                             if jot.isDownloaded {
-                                coordinator?.openJot(jotFileInfo: jotFileInfo)
+                                coordinator?.openJot(
+                                    jotFileInfo: jotFileInfo,
+                                    prefersNewWindow: !self.repository.isIPadOS()
+                                )
                             } else {
                                 do {
-                                    try self?.repository.download(jotFileInfo: jotFileInfo)
+                                    try self.repository.download(jotFileInfo: jotFileInfo)
                                 } catch {
-                                    self?.coordinator?.showInfoAlert(
+                                    coordinator?.showInfoAlert(
                                         title: L10n.Jots.Download.Error.generic(jotFileInfo.name),
                                         message: error.localizedDescription
                                     )
@@ -189,6 +174,48 @@ final class JotsViewModel: PageViewModel {
                     }
                 )
             }
+        )
+    }
+
+    private func makeMenuConfigurations(
+        jotFileInfo: JotFile.Info,
+        supportsMultipleScenes: Bool
+    ) -> [JotMenuConfiguration] {
+        menuConfigurationFactory.make(
+            onShare: { [weak coordinator] format in
+                Task { @MainActor in
+                    coordinator?.showShareJot(format: format)
+                }
+            },
+            onRename: { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.showRenameAlert(jotFileInfo: jotFileInfo)
+                }
+            },
+            onDuplicate: { [weak self] in
+                Task { @MainActor in
+                    self?.didTapDuplicateJot(jotFileInfo: jotFileInfo)
+                }
+            },
+            onDelete: { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.openDeleteJot(jotFileInfo: jotFileInfo)
+                }
+            },
+            onShowInFiles: { [weak coordinator] in
+                Task { @MainActor in
+                    coordinator?.showInFiles(jotFileInfo: jotFileInfo)
+                }
+            },
+            onOpenInNewWindow: supportsMultipleScenes
+                ? { @Sendable [weak coordinator] in
+                    Task { @MainActor in
+                        coordinator?.openJot(
+                            jotFileInfo: jotFileInfo,
+                            prefersNewWindow: true
+                        )
+                    }
+                } : nil
         )
     }
 

@@ -1009,6 +1009,34 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Một trang trắng đầy khả năng. Hãy mạnh dạn ghi lại điều gì đó thật tuyệt vời!" } }
       }
     },
+    "jots.menu.openInNewWindow": {
+      "comment": "Context menu item to open a jot in a new window",
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Open In New Window" } },
+        "de": { "stringUnit": { "state": "translated", "value": "In neuem Fenster öffnen" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Maak oop in nuwe venster" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "فتح في نافذة جديدة" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Abrir en nueva ventana" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Ouvrir dans une nouvelle fenêtre" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "नई विंडो में खोलें" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Buka di Jendela Baru" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Apri in una nuova finestra" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "新しいウインドウで開く" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "새 윈도우에서 열기" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Buka dalam Tetingkap Baharu" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Open in nieuw venster" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Otwórz w nowym oknie" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Abrir em nova janela" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Abrir em nova janela" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Открыть в новом окне" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Öppna i nytt fönster" } },
+        "th": { "stringUnit": { "state": "translated", "value": "เปิดในหน้าต่างใหม่" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Yeni Pencerede Aç" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Відкрити в новому вікні" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Mở trong cửa sổ mới" } }
+      }
+    },
     "jots.menu.revealInFiles": {
       "comment": "Context menu item to reveal the jot in the Files app (iOS only)",
       "extractionState": "manual",

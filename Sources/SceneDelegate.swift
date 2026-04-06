@@ -20,6 +20,8 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    private static let defaultsService = DefaultsService(userDefaults: .standard)
+
     #if targetEnvironment(macCatalyst)
     private lazy var appKitPluginService = MacCatalystAppKitPluginService(bundle: .main)
     #endif
@@ -68,8 +70,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 jotFileService: jotFileService
             )
         )
-        let defaultsService = DefaultsService(
-            userDefaults: .standard
+        let applicationService = ApplicationService(
+            application: .shared
+        )
+        let deviceService = DeviceService(
+            device: .current
         )
 
         let textBarButtonItemFactory: TextBarButtonItemFactory
@@ -89,6 +94,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             repository: DeleteJotRepository(
                 jotFileService: jotFileService
             )
+        )
+
+        let revealFileCoordinatorFactory = RevealFileCoordinatorFactory(
+            applicationService: applicationService
         )
 
         let editJotRepository = EditJotRepository(
@@ -119,13 +128,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     jotFileService: jotFileService
                 )
             ),
-            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory
+            deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
+            revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 
         let jotsCoordinatorFactory: JotsCoordinatorFactoryProtocol = JotsCoordinatorFactory(
             jotsViewControllerFactory: JotsViewControllerFactory(
                 repository: JotsRepository(
                     ubiquitousFileService: ubiquitousFileService,
+                    applicationService: applicationService,
+                    deviceService: deviceService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService
                 ),
@@ -138,7 +150,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     repository: SettingsRepository(
                         ubiquitousFileService: ubiquitousFileService,
                         bundleService: bundleService,
-                        defaultsService: defaultsService
+                        defaultsService: Self.defaultsService
                     ),
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
@@ -156,7 +168,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     ubiquitousFileService: ubiquitousFileService,
                     jotFileService: jotFileService,
                     jotFilePreviewImageService: jotFilePreviewImageService,
-                    defaultsService: defaultsService
+                    defaultsService: Self.defaultsService
                 ),
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
                     textBarButtonItemFactory: textBarButtonItemFactory,
@@ -175,7 +187,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 repository: RenameJotRepository(
                     jotFileService: jotFileService
                 )
-            )
+            ),
+            revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 
         let rootCoordinatorFactory = RootCoordinatorFactory(
@@ -191,6 +204,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         return
                     }
                     navigationController?.setViewControllers(viewControllers, animated: true)
+                }
+            },
+            openExternalURLProvider: { url in
+                Task { @MainActor in
+                    guard applicationService.canOpen(url: url) else {
+                        return
+                    }
+                    applicationService.open(url: url)
                 }
             },
             openSceneProvider: { [weak self] url in
@@ -224,7 +245,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let sceneCoordinator = SceneCoordinator(
             navigation: navigation,
-            defaultsService: defaultsService,
+            defaultsService: Self.defaultsService,
+            applicationService: applicationService,
             ubiquitousFileService: ubiquitousFileService,
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
@@ -246,9 +268,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         errorHandler: nil
                     )
                 }
-            },
-            supportsMultipleScenesProvider: {
-                UIApplication.shared.supportsMultipleScenes
             }
         )
         self.sceneCoordinator = sceneCoordinator
