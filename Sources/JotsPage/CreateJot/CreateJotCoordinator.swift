@@ -82,8 +82,7 @@ final class CreateJotCoordinator: Coordinator {
                 return
             }
             do {
-                let jotFileInfo = try await repository.createJot(name: name)
-                navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+                try await handleCreateJot(name: name)
             } catch CreateJotRepository.Failure.fileExists {
                 await showInfoAlert(
                     title: L10n.Jots.Create.Error.fileExists(name),
@@ -96,6 +95,12 @@ final class CreateJotCoordinator: Coordinator {
                 )
             }
         }
+    }
+
+    private func handleCreateJot(name: String) async throws {
+        let jotFileInfo = try await repository.createJot(name: name)
+        navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+        onEnd?()
     }
 
     private func showInfoAlert(

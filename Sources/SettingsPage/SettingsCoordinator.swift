@@ -46,6 +46,13 @@ final class SettingsCoordinator: Coordinator {
     }
 
     func dismiss() {
-        navigation.dismiss(animated: true)
+        navigation.dismiss(
+            animated: true,
+            completion: { [weak self] in
+                Task { @MainActor in
+                    self?.onEnd?()
+                }
+            }
+        )
     }
 }
