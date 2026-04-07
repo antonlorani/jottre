@@ -35,6 +35,7 @@ struct JotsCoordinatorFactory: JotsCoordinatorFactoryProtocol {
     let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+    let shareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol
     let revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
 
     func make(navigation: Navigation) -> NavigationCoordinator {
@@ -48,6 +49,7 @@ struct JotsCoordinatorFactory: JotsCoordinatorFactoryProtocol {
             createJotCoordinatorFactory: createJotCoordinatorFactory,
             deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
             renameJotCoordinatorFactory: renameJotCoordinatorFactory,
+            shareJotCoordinatorFactory: shareJotCoordinatorFactory,
             revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
     }

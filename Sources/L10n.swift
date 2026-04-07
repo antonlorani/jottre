@@ -149,6 +149,15 @@ enum L10n {
                 }
             }
         }
+
+        enum Share {
+
+            enum Error {
+                static func generic(_ jotName: String) -> String {
+                    String(format: String(localized: "jots.share.error.generic"), jotName)
+                }
+            }
+        }
     }
 
     enum Settings {
