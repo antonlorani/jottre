@@ -184,7 +184,7 @@ final class JotsViewModel: PageViewModel {
         menuConfigurationFactory.make(
             onShare: { [weak coordinator] format in
                 Task { @MainActor in
-                    coordinator?.showShareJot(format: format)
+                    coordinator?.showShareJot(jotFileInfo: jotFileInfo, format: format)
                 }
             },
             onRename: { [weak coordinator] in

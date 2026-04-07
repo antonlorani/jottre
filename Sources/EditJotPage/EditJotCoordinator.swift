@@ -34,6 +34,7 @@ final class EditJotCoordinator: NavigationCoordinator {
     private let jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
+    private let shareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol
     private let revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
 
     init(
@@ -43,6 +44,7 @@ final class EditJotCoordinator: NavigationCoordinator {
         jotConflictCoordinatorFactory: JotConflictCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
+        shareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol,
         revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
@@ -51,6 +53,7 @@ final class EditJotCoordinator: NavigationCoordinator {
         self.jotConflictCoordinatorFactory = jotConflictCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
         self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
+        self.shareJotCoordinatorFactory = shareJotCoordinatorFactory
         self.revealFileCoordinatorFactory = revealFileCoordinatorFactory
     }
 
@@ -83,10 +86,11 @@ final class EditJotCoordinator: NavigationCoordinator {
         ]
     }
 
-    func showShareJot(format: ShareFormat) {
-        let coordinator = ShareJotCoordinator(
-            navigation: navigation,
-            format: format
+    func showShareJot(jotFileInfo: JotFile.Info, format: ShareFormat) {
+        let coordinator = shareJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            format: format,
+            navigation: navigation
         )
         retainedShareJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in

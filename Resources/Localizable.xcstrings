@@ -1121,6 +1121,34 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Không thể đổi tên \"%@\"" } }
       }
     },
+    "jots.share.error.generic": {
+      "comment": "The error message displayed when a Jot couldn't be shared.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Could not share \"%@\"" } },
+        "de": { "stringUnit": { "state": "translated", "value": "\"%@\" konnte nicht geteilt werden" } },
+        "af": { "stringUnit": { "state": "translated", "value": "Kon \"%@\" nie deel nie" } },
+        "ar": { "stringUnit": { "state": "translated", "value": "تعذّر مشاركة \"%@\"" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo compartir \"%@\"" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de partager « %@ »" } },
+        "hi": { "stringUnit": { "state": "translated", "value": "\"%@\" को साझा नहीं किया जा सका" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Tidak dapat membagikan \"%@\"" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impossibile condividere «%@»" } },
+        "ja": { "stringUnit": { "state": "translated", "value": "「%@」を共有できませんでした" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "\"%@\"을(를) 공유할 수 없음" } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Tidak dapat berkongsi \"%@\"" } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Kan \"%@\" niet delen" } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nie można udostępnić \"%@\"" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Não foi possível compartilhar \"%@\"" } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Não foi possível partilhar \"%@\"" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Не удалось поделиться «%@»" } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Kunde inte dela \"%@\"" } },
+        "th": { "stringUnit": { "state": "translated", "value": "ไม่สามารถแชร์ \"%@\" ได้" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "\"%@\" paylaşılamadı" } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Не вдалося поділитися «%@»" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Không thể chia sẻ \"%@\"" } }
+      }
+    },
     "jots.rename.title": {
       "comment": "Title of the Rename Jot alert",
       "extractionState": "manual",

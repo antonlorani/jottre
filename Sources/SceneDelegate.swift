@@ -96,6 +96,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
 
+        let shareJotCoordinatorFactory = ShareJotCoordinatorFactory(
+            repository: ShareJotRepository(
+                jotFileService: jotFileService
+            )
+        )
+
         let revealFileCoordinatorFactory = RevealFileCoordinatorFactory(
             applicationService: applicationService
         )
@@ -129,6 +135,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
             ),
             deleteJotCoordinatorFactory: deleteJotCoordinatorFactory,
+            shareJotCoordinatorFactory: shareJotCoordinatorFactory,
             revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 
@@ -188,6 +195,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     jotFileService: jotFileService
                 )
             ),
+            shareJotCoordinatorFactory: shareJotCoordinatorFactory,
             revealFileCoordinatorFactory: revealFileCoordinatorFactory
         )
 

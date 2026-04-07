@@ -48,6 +48,7 @@ final class JotsCoordinator: NavigationCoordinator {
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
+    private let shareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol
     private let revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
 
     init(
@@ -60,6 +61,7 @@ final class JotsCoordinator: NavigationCoordinator {
         createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,
+        shareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol,
         revealFileCoordinatorFactory: RevealFileCoordinatorFactoryProtocol
     ) {
         self.navigation = navigation
@@ -71,6 +73,7 @@ final class JotsCoordinator: NavigationCoordinator {
         self.createJotCoordinatorFactory = createJotCoordinatorFactory
         self.deleteJotCoordinatorFactory = deleteJotCoordinatorFactory
         self.renameJotCoordinatorFactory = renameJotCoordinatorFactory
+        self.shareJotCoordinatorFactory = shareJotCoordinatorFactory
         self.revealFileCoordinatorFactory = revealFileCoordinatorFactory
     }
 
@@ -142,10 +145,11 @@ final class JotsCoordinator: NavigationCoordinator {
         enableCloudCoordinator.start()
     }
 
-    func showShareJot(format: ShareFormat) {
-        let coordinator = ShareJotCoordinator(
-            navigation: navigation,
-            format: format
+    func showShareJot(jotFileInfo: JotFile.Info, format: ShareFormat) {
+        let coordinator = shareJotCoordinatorFactory.make(
+            jotFileInfo: jotFileInfo,
+            format: format,
+            navigation: navigation
         )
         retainedShareJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in
