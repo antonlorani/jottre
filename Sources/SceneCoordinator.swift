@@ -126,6 +126,10 @@ final class SceneCoordinator {
         }
     }
 
+    func handlePop() {
+        lastActiveURL = nil
+    }
+
     func makeStateRestorationActivity() -> NSUserActivity? {
         guard
             let lastActiveURL,
