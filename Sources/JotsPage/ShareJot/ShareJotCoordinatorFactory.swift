@@ -24,7 +24,8 @@ protocol ShareJotCoordinatorFactoryProtocol: Sendable {
     func make(
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
-        navigation: Navigation
+        navigation: Navigation,
+        popoverAnchor: PopoverAnchor?
     ) -> Coordinator
 }
 
@@ -35,13 +36,15 @@ struct ShareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol {
     func make(
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
-        navigation: Navigation
+        navigation: Navigation,
+        popoverAnchor: PopoverAnchor?
     ) -> Coordinator {
         ShareJotCoordinator(
             jotFileInfo: jotFileInfo,
             format: format,
             navigation: navigation,
-            repository: repository
+            repository: repository,
+            popoverAnchor: popoverAnchor
         )
     }
 }
