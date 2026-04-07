@@ -28,7 +28,7 @@ final class JotCellViewModel: PageCellViewModel {
 
     let name: String
     let preview: Preview
-    let jotMenuConfigurations: [JotMenuConfiguration]
+    let jotMenuConfigurations: JotMenuConfigurations
     let onAction: @Sendable () -> Void
 
     private let jot: JotBusinessModel
@@ -36,7 +36,7 @@ final class JotCellViewModel: PageCellViewModel {
 
     init(
         jot: JotBusinessModel,
-        jotMenuConfigurations: [JotMenuConfiguration],
+        jotMenuConfigurations: JotMenuConfigurations,
         repository: JotsRepositoryProtocol,
         onAction: @Sendable @escaping () -> Void
     ) {
@@ -82,7 +82,9 @@ final class JotCellViewModel: PageCellViewModel {
         }
     }
 
-    func handleContextMenuConfiguration() -> UIContextMenuConfiguration? {
+    func handleContextMenuConfiguration(
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil
@@ -90,7 +92,11 @@ final class JotCellViewModel: PageCellViewModel {
             guard let self else {
                 return nil
             }
-            return UIMenu.make(jotMenuConfigurations: jotMenuConfigurations)
+            return UIMenu.make(
+                jotMenuConfigurations: self.jotMenuConfigurations.make(popoverAnchorProvider: {
+                    .point(point)
+                })
+            )
         }
     }
 }

@@ -72,11 +72,16 @@ final class SceneCoordinator {
         let url: URL
         let coordinator: NavigationCoordinator
 
+        // TODO: Read startURL -> Check whether its a EditJotURL -> only then use editJot explicitly.
         if let (startURL, isRestored) = getStartURL(session: session, connectionOptions: connectionOptions) {
             url = startURL
 
             if isRestored {
+                #if targetEnvironment(macCatalyst)
+                coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+                #else
                 coordinator = rootCoordinatorFactory.make(navigation: navigation)
+                #endif
             } else {
                 if applicationService.supportsMultipleScenes() {
                     coordinator = editJotCoordinatorFactory.make(navigation: navigation)

@@ -392,6 +392,6 @@ extension PageViewController: UICollectionViewDelegate {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        dataSource.itemIdentifier(for: indexPath)?.contextMenuConfiguration()
+        dataSource.itemIdentifier(for: indexPath)?.contextMenuConfiguration(point)
     }
 }

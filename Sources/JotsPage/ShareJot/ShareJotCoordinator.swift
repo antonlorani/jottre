@@ -18,8 +18,13 @@
 
 import UIKit
 
-enum ShareFormat {
+enum ShareFormat: Sendable {
     case pdf, jpg, png
+}
+
+enum PopoverAnchor: Sendable {
+    case point(CGPoint)
+    case barButtonItem(UIBarButtonItem)
 }
 
 final class ShareJotCoordinator: Coordinator {
@@ -33,17 +38,20 @@ final class ShareJotCoordinator: Coordinator {
     private let format: ShareFormat
     private let navigation: Navigation
     private let repository: ShareJotRepositoryProtocol
+    private let popoverAnchor: PopoverAnchor?
 
     init(
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
         navigation: Navigation,
-        repository: ShareJotRepositoryProtocol
+        repository: ShareJotRepositoryProtocol,
+        popoverAnchor: PopoverAnchor?
     ) {
         self.jotFileInfo = jotFileInfo
         self.format = format
         self.navigation = navigation
         self.repository = repository
+        self.popoverAnchor = popoverAnchor
     }
 
     func start() {
@@ -71,23 +79,18 @@ final class ShareJotCoordinator: Coordinator {
             activityItems: [fileURL],
             applicationActivities: nil
         )
-        activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
-            self?.navigation.dismiss(animated: true) {
-                Task { @MainActor in
-                    self?.onEnd?()
-                }
-            }
+        switch popoverAnchor {
+        case let .point(point):
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: point, size: .zero)
+        case let .barButtonItem(barButtonItem):
+            activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+        case nil:
+            return
         }
-
-        let containerViewController = UIViewController()
-        containerViewController.modalPresentationStyle = .formSheet
-        containerViewController.addChild(activityViewController)
-        containerViewController.view.addSubview(activityViewController.view)
-        activityViewController.view.frame = containerViewController.view.bounds
-        activityViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        activityViewController.didMove(toParent: containerViewController)
-
-        navigation.present(containerViewController, animated: true)
+        activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
+            self?.onEnd?()
+        }
+        navigation.present(activityViewController, animated: true)
     }
 
     private func showInfoAlert(

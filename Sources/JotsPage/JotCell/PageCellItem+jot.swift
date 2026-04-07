@@ -21,7 +21,7 @@ extension PageCellItem {
     @MainActor
     static func jot(
         jot: JotBusinessModel,
-        jotMenuConfigurations: [JotMenuConfiguration],
+        jotMenuConfigurations: JotMenuConfigurations,
         sizing: PageCellSizingStrategy,
         repository: JotsRepositoryProtocol,
         onAction: @Sendable @escaping () -> Void
