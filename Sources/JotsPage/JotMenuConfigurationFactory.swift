@@ -19,10 +19,11 @@
 struct JotMenuConfigurations {
 
     private let makeProvider:
-        (_ popoverAnchorProvider: @Sendable @escaping () -> PopoverAnchor?) -> [JotMenuConfiguration]
+        @Sendable (_ popoverAnchorProvider: @Sendable @escaping () -> PopoverAnchor?) -> [JotMenuConfiguration]
 
     init(
-        makeProvider: @escaping (_ popoverAnchorProvider: @Sendable @escaping () -> PopoverAnchor?) ->
+        makeProvider:
+            @Sendable @escaping (_ popoverAnchorProvider: @Sendable @escaping () -> PopoverAnchor?) ->
             [JotMenuConfiguration]
     ) {
         self.makeProvider = makeProvider
