@@ -29,7 +29,8 @@ struct PageCellItem: Sendable, Hashable {
     let sizing: PageCellSizingStrategy
     let configure: @Sendable @MainActor (_ cell: Any) -> Void
     let handleAction: @Sendable @MainActor (_ action: PageCellAction) -> Void
-    let contextMenuConfiguration: @Sendable @MainActor () -> UIContextMenuConfiguration?
+    let contextMenuConfiguration:
+        @Sendable @MainActor (_ point: CGPoint, _ sourceView: UIView) -> UIContextMenuConfiguration?
 
     init<
         Cell: PageCell,
@@ -62,7 +63,9 @@ struct PageCellItem: Sendable, Hashable {
             cell.configure(viewModel: getViewModel())
         }
         handleAction = { getViewModel().handle(action: $0) }
-        contextMenuConfiguration = { getViewModel().handleContextMenuConfiguration() }
+        contextMenuConfiguration = { point, sourceView in
+            getViewModel().handleContextMenuConfiguration(point: point, sourceView: sourceView)
+        }
     }
 
     func hash(into hasher: inout Hasher) {

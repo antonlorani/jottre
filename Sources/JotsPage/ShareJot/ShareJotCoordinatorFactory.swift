@@ -18,33 +18,33 @@
 
 import UIKit
 
-enum ShareFormat {
-    case pdf, jpg, png
+@MainActor
+protocol ShareJotCoordinatorFactoryProtocol: Sendable {
+
+    func make(
+        jotFileInfo: JotFile.Info,
+        format: ShareFormat,
+        navigation: Navigation,
+        configurePopoverAnchor: PopoverAnchor?
+    ) -> Coordinator
 }
 
-final class ShareJotCoordinator: Coordinator {
+struct ShareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol {
 
-    var onEnd: (() -> Void)?
+    let repository: ShareJotRepositoryProtocol
 
-    private let navigation: Navigation
-    private let format: ShareFormat
-
-    init(
+    func make(
+        jotFileInfo: JotFile.Info,
+        format: ShareFormat,
         navigation: Navigation,
-        format: ShareFormat
-    ) {
-        self.navigation = navigation
-        self.format = format
-    }
-
-    func start() {
-        let activityViewController = UIActivityViewController(
-            activityItems: [],
-            applicationActivities: nil
+        configurePopoverAnchor: PopoverAnchor?
+    ) -> Coordinator {
+        ShareJotCoordinator(
+            jotFileInfo: jotFileInfo,
+            format: format,
+            navigation: navigation,
+            repository: repository,
+            configurePopoverAnchor: configurePopoverAnchor
         )
-        activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
-            self?.onEnd?()
-        }
-        navigation.present(activityViewController, animated: true)
     }
 }

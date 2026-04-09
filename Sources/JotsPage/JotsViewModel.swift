@@ -180,11 +180,15 @@ final class JotsViewModel: PageViewModel {
     private func makeMenuConfigurations(
         jotFileInfo: JotFile.Info,
         supportsMultipleScenes: Bool
-    ) -> [JotMenuConfiguration] {
+    ) -> JotMenuConfigurations {
         menuConfigurationFactory.make(
-            onShare: { [weak coordinator] format in
+            onShare: { [weak coordinator] format, configurePopoverAnchor in
                 Task { @MainActor in
-                    coordinator?.showShareJot(format: format)
+                    coordinator?.showShareJot(
+                        jotFileInfo: jotFileInfo,
+                        format: format,
+                        configurePopoverAnchor: configurePopoverAnchor
+                    )
                 }
             },
             onRename: { [weak coordinator] in

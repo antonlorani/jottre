@@ -22,12 +22,18 @@ import UIKit
 protocol PageCellViewModel: Sendable {
 
     func handle(action: PageCellAction)
-    func handleContextMenuConfiguration() -> UIContextMenuConfiguration?
+    func handleContextMenuConfiguration(
+        point: CGPoint,
+        sourceView: UIView
+    ) -> UIContextMenuConfiguration?
 }
 
 extension PageCellViewModel {
 
-    func handleContextMenuConfiguration() -> UIContextMenuConfiguration? {
+    func handleContextMenuConfiguration(
+        point: CGPoint,
+        sourceView: UIView
+    ) -> UIContextMenuConfiguration? {
         nil
     }
 }

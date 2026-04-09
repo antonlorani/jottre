@@ -27,9 +27,16 @@ final class EditJotViewModel: Sendable {
     }
 
     private(set) lazy var menuConfigurations = menuConfigurationFactory.make(
-        onShare: { [weak self] format in
+        onShare: { [weak self] format, configurePopoverAnchor in
             Task { @MainActor [weak self] in
-                self?.coordinator?.showShareJot(format: format)
+                guard let self else {
+                    return
+                }
+                self.coordinator?.showShareJot(
+                    jotFileInfo: self.jotFileInfo,
+                    format: format,
+                    configurePopoverAnchor: configurePopoverAnchor
+                )
             }
         },
         onRename: { [weak self] in
