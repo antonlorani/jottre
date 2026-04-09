@@ -58,21 +58,19 @@ final class EditJotCoordinator: NavigationCoordinator {
     }
 
     func shouldHandle(url: URL) -> Bool {
-        guard
-            url.path.hasPrefix(EditJotURL().path),
-            getFileURLQueryItem(url: url) != nil
-        else {
+        guard EditJotURL(url: url) != nil else {
             return false
         }
         return true
     }
 
     func handle(url: URL) -> [UIViewController] {
-        guard let fileURL = getFileURLQueryItem(url: url),
+        guard
+            let editJotURL = EditJotURL(url: url),
             let jotFileInfo = JotFile.Info(
-                url: fileURL,
+                url: editJotURL.fileURL,
                 modificationDate: nil,
-                ubiquitousInfo: repository.ubiquitousInfo(url: fileURL)
+                ubiquitousInfo: repository.ubiquitousInfo(url: editJotURL.fileURL)
             )
         else {
             return []
@@ -189,15 +187,5 @@ final class EditJotCoordinator: NavigationCoordinator {
             self?.retainedInfoAlertCoordinator = nil
         }
         infoAlertCoordinator.start()
-    }
-
-    private func getFileURLQueryItem(url: URL) -> URL? {
-        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems,
-            let fileURLValue = queryItems.first(where: { $0.name == "fileURL" })?.value,
-            let fileURL = URL(string: fileURLValue)
-        else {
-            return nil
-        }
-        return fileURL
     }
 }
