@@ -79,13 +79,17 @@ final class ShareJotCoordinator: Coordinator {
             activityItems: [fileURL],
             applicationActivities: nil
         )
-        switch popoverAnchor {
-        case let .point(point):
-            activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: point, size: .zero)
-        case let .barButtonItem(barButtonItem):
-            activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
-        case nil:
-            return
+        if let popoverPresentationController = activityViewController.popoverPresentationController {
+            switch popoverAnchor {
+            case let .point(point):
+                popoverPresentationController.sourceRect = CGRect(origin: point, size: .zero)
+            case let .barButtonItem(barButtonItem):
+                popoverPresentationController.barButtonItem = barButtonItem
+            case nil:
+                assertionFailure("PopoverAnchor must be provided.")
+                onEnd?()
+                return
+            }
         }
         activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
             self?.onEnd?()
