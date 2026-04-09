@@ -83,18 +83,26 @@ final class JotCellViewModel: PageCellViewModel {
     }
 
     func handleContextMenuConfiguration(
-        point: CGPoint
+        point: CGPoint,
+        sourceView: UIView
     ) -> UIContextMenuConfiguration? {
         UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil
-        ) { [weak self] _ in
+        ) { [weak self, weak sourceView] _ in
             guard let self else {
                 return nil
             }
             return UIMenu.make(
                 jotMenuConfigurations: self.jotMenuConfigurations.make(popoverAnchorProvider: {
-                    .point(point)
+                    [weak sourceView] in
+                    guard let sourceView else {
+                        return nil
+                    }
+                    return { popover in
+                        popover.sourceView = sourceView
+                        popover.sourceRect = CGRect(origin: point, size: .zero)
+                    }
                 })
             )
         }

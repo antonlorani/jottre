@@ -148,13 +148,13 @@ final class JotsCoordinator: NavigationCoordinator {
     func showShareJot(
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
-        popoverAnchor: PopoverAnchor?
+        configurePopoverAnchor: PopoverAnchor?
     ) {
         let coordinator = shareJotCoordinatorFactory.make(
             jotFileInfo: jotFileInfo,
             format: format,
             navigation: navigation,
-            popoverAnchor: popoverAnchor
+            configurePopoverAnchor: configurePopoverAnchor
         )
         retainedShareJotCoordinator = coordinator
         coordinator.onEnd = { [weak self] in

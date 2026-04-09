@@ -182,12 +182,12 @@ final class JotsViewModel: PageViewModel {
         supportsMultipleScenes: Bool
     ) -> JotMenuConfigurations {
         menuConfigurationFactory.make(
-            onShare: { [weak coordinator] format, popoverAnchor in
+            onShare: { [weak coordinator] format, configurePopoverAnchor in
                 Task { @MainActor in
                     coordinator?.showShareJot(
                         jotFileInfo: jotFileInfo,
                         format: format,
-                        popoverAnchor: popoverAnchor
+                        configurePopoverAnchor: configurePopoverAnchor
                     )
                 }
             },

@@ -25,7 +25,7 @@ protocol ShareJotCoordinatorFactoryProtocol: Sendable {
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
         navigation: Navigation,
-        popoverAnchor: PopoverAnchor?
+        configurePopoverAnchor: PopoverAnchor?
     ) -> Coordinator
 }
 
@@ -37,14 +37,14 @@ struct ShareJotCoordinatorFactory: ShareJotCoordinatorFactoryProtocol {
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
         navigation: Navigation,
-        popoverAnchor: PopoverAnchor?
+        configurePopoverAnchor: PopoverAnchor?
     ) -> Coordinator {
         ShareJotCoordinator(
             jotFileInfo: jotFileInfo,
             format: format,
             navigation: navigation,
             repository: repository,
-            popoverAnchor: popoverAnchor
+            configurePopoverAnchor: configurePopoverAnchor
         )
     }
 }

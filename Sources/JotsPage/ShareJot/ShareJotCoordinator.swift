@@ -22,10 +22,7 @@ enum ShareFormat: Sendable {
     case pdf, jpg, png
 }
 
-enum PopoverAnchor: Sendable {
-    case point(CGPoint)
-    case barButtonItem(UIBarButtonItem)
-}
+typealias PopoverAnchor = @MainActor @Sendable (UIPopoverPresentationController) -> Void
 
 final class ShareJotCoordinator: Coordinator {
 
@@ -38,20 +35,20 @@ final class ShareJotCoordinator: Coordinator {
     private let format: ShareFormat
     private let navigation: Navigation
     private let repository: ShareJotRepositoryProtocol
-    private let popoverAnchor: PopoverAnchor?
+    private let configurePopoverAnchor: PopoverAnchor?
 
     init(
         jotFileInfo: JotFile.Info,
         format: ShareFormat,
         navigation: Navigation,
         repository: ShareJotRepositoryProtocol,
-        popoverAnchor: PopoverAnchor?
+        configurePopoverAnchor: PopoverAnchor?
     ) {
         self.jotFileInfo = jotFileInfo
         self.format = format
         self.navigation = navigation
         self.repository = repository
-        self.popoverAnchor = popoverAnchor
+        self.configurePopoverAnchor = configurePopoverAnchor
     }
 
     func start() {
@@ -80,16 +77,12 @@ final class ShareJotCoordinator: Coordinator {
             applicationActivities: nil
         )
         if let popoverPresentationController = activityViewController.popoverPresentationController {
-            switch popoverAnchor {
-            case let .point(point):
-                popoverPresentationController.sourceRect = CGRect(origin: point, size: .zero)
-            case let .barButtonItem(barButtonItem):
-                popoverPresentationController.barButtonItem = barButtonItem
-            case nil:
+            guard let configurePopoverAnchor else {
                 assertionFailure("PopoverAnchor must be provided.")
                 onEnd?()
                 return
             }
+            configurePopoverAnchor(popoverPresentationController)
         }
         activityViewController.completionWithItemsHandler = { [weak self] _, _, _, _ in
             self?.onEnd?()

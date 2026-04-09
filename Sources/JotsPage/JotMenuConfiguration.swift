@@ -22,7 +22,7 @@ enum JotMenuConfiguration {
         let title: String
         let systemImageName: String
         var isDestructive: Bool = false
-        let handler: @Sendable () -> Void
+        let handler: @MainActor @Sendable () -> Void
     }
 
     struct Group {

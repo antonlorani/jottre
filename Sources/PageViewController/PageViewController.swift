@@ -392,6 +392,10 @@ extension PageViewController: UICollectionViewDelegate {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        dataSource.itemIdentifier(for: indexPath)?.contextMenuConfiguration(point)
+        guard let cell = collectionView.cellForItem(at: indexPath) else {
+            return nil
+        }
+        let cellPoint = collectionView.convert(point, to: cell)
+        return dataSource.itemIdentifier(for: indexPath)?.contextMenuConfiguration(cellPoint, cell)
     }
 }

@@ -206,20 +206,23 @@ final class EditJotViewController: UIViewController {
     private func makeRightNavigationBarButtonItems(isEditing: Bool?) -> [UIBarButtonItem] {
         var barButtonItems = [UIBarButtonItem]()
 
-        var moreBarButtonItem: UIBarButtonItem?
+        weak var moreBarButtonItemRef: UIBarButtonItem?
 
-        moreBarButtonItem = symbolBarButtonItemFactory.make(
+        let moreBarButtonItem = symbolBarButtonItemFactory.make(
             symbolName: "ellipsis",
             primaryAction: .menu(
                 .make(
                     jotMenuConfigurations: viewModel.menuConfigurations.make(popoverAnchorProvider: {
-                        [weak moreBarButtonItem] in
-                        moreBarButtonItem.map { .barButtonItem($0) }
+                        guard let barButtonItem = moreBarButtonItemRef else {
+                            return nil
+                        }
+                        return { $0.barButtonItem = barButtonItem }
                     })
                 )
             )
         )
-        moreBarButtonItem.map { barButtonItems.append($0) }
+        moreBarButtonItemRef = moreBarButtonItem
+        barButtonItems.append(moreBarButtonItem)
 
         if let isEditing {
             barButtonItems.append(
