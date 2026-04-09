@@ -19,19 +19,34 @@
 import Foundation
 
 struct EditJotURL: URLConvertible {
-    let path = "/jots/edit"
-    let queryItems: [URLQueryItem]
+    static let path = "/jots/edit"
 
-    init(jotFileInfo: JotFile.Info) {
-        queryItems = [
+    let path: String = Self.path
+    var queryItems: [URLQueryItem] {
+        [
             URLQueryItem(
                 name: "fileURL",
-                value: jotFileInfo.url.absoluteString
+                value: fileURL.absoluteString
             )
         ]
     }
 
-    init() {
-        queryItems = []
+    let fileURL: URL
+
+    init(jotFileInfo: JotFile.Info) {
+        fileURL = jotFileInfo.url
+    }
+
+    init?(url: URL) {
+        guard
+            url.path.hasPrefix(EditJotURL.path),
+            let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let fileURLValue = urlComponents.queryItems?.first(where: { $0.name == "fileURL" })?.value,
+            let fileURL = URL(string: fileURLValue)
+        else {
+            return nil
+        }
+
+        self.fileURL = fileURL
     }
 }
