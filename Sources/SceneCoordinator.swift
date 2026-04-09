@@ -72,16 +72,36 @@ final class SceneCoordinator {
         let url: URL
         let coordinator: NavigationCoordinator
 
-        if let (startURL, isRestored) = getStartURL(session: session, connectionOptions: connectionOptions) {
-            url = startURL
+        if let (activityURL, isRestored) = getActivityURL(session: session, connectionOptions: connectionOptions) {
+            lazy var editJotCoordinator = editJotCoordinatorFactory.make(navigation: navigation)
+            lazy var rootCoordinator = rootCoordinatorFactory.make(navigation: navigation)
+
+            let preferredCoordinator: NavigationCoordinator
+            if isEditJotURL(url: activityURL) {
+                preferredCoordinator = editJotCoordinator
+                url = activityURL
+            } else if let editJotURL = makeEditJotURL(fileURL: activityURL) {
+                preferredCoordinator = editJotCoordinator
+                url = editJotURL
+            } else {
+                preferredCoordinator = rootCoordinator
+                url = activityURL
+            }
 
             if isRestored {
-                coordinator = rootCoordinatorFactory.make(navigation: navigation)
+                #if targetEnvironment(macCatalyst)
+                coordinator = preferredCoordinator
+                #else
+                // On iPadOS its more tedious for users to create a new fresh window. Therefore we prefer
+                // restoring a scene that allows navigating back to a jots overview (When the activityURL
+                // opens a nested hierarchy).
+                coordinator = rootCoordinator
+                #endif
             } else {
                 if applicationService.supportsMultipleScenes() {
-                    coordinator = editJotCoordinatorFactory.make(navigation: navigation)
+                    coordinator = preferredCoordinator
                 } else {
-                    coordinator = rootCoordinatorFactory.make(navigation: navigation)
+                    coordinator = rootCoordinator
                 }
             }
         } else {
@@ -144,7 +164,7 @@ final class SceneCoordinator {
         return activity
     }
 
-    private func getStartURL(
+    private func getActivityURL(
         session: UISceneSession,
         connectionOptions: UIScene.ConnectionOptions
     ) -> (url: URL, isRestored: Bool)? {
@@ -154,7 +174,7 @@ final class SceneCoordinator {
             let url = URL(string: urlString)
         {
             return (
-                url: makeEditJotURL(url: url) ?? url,
+                url: url,
                 isRestored: true
             )
         }
@@ -164,14 +184,14 @@ final class SceneCoordinator {
             let url = URL(string: urlString)
         {
             return (
-                url: makeEditJotURL(url: url) ?? url,
+                url: url,
                 isRestored: false
             )
         }
 
         if let firstURLContextURL = connectionOptions.urlContexts.first?.url {
             return (
-                url: makeEditJotURL(url: firstURLContextURL) ?? firstURLContextURL,
+                url: firstURLContextURL,
                 isRestored: false
             )
         }
@@ -179,12 +199,16 @@ final class SceneCoordinator {
         return nil
     }
 
-    private func makeEditJotURL(url: URL) -> URL? {
+    private func isEditJotURL(url: URL) -> Bool {
+        EditJotURL(url: url) != nil
+    }
+
+    private func makeEditJotURL(fileURL: URL) -> URL? {
         guard
             let jotFileInfo = JotFile.Info(
-                url: url,
+                url: fileURL,
                 modificationDate: nil,
-                ubiquitousInfo: ubiquitousFileService.ubiquitousInfo(url: url)
+                ubiquitousInfo: nil
             )
         else {
             return nil
