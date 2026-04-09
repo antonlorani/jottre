@@ -46,6 +46,16 @@ final class EditJotViewController: UIViewController {
 
     private var drawingWidth = CGFloat.zero
 
+    private lazy var swipeBackGesture: UIScreenEdgePanGestureRecognizer = {
+        let gesture = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeBack)
+        )
+        gesture.edges = .left
+        gesture.isEnabled = false
+        return gesture
+    }()
+
     private var isEditingTask: Task<Void, Never>?
     private var drawingTask: Task<Void, Never>?
     private var backButtonTask: Task<Void, Never>?
@@ -134,11 +144,20 @@ final class EditJotViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .adaptiveBlackWhite
+        view.addGestureRecognizer(swipeBackGesture)
 
         #if !targetEnvironment(macCatalyst)
         toolPicker.addObserver(canvasView)
         toolPicker.setVisible(true, forFirstResponder: canvasView)
         #endif
+    }
+
+    @objc
+    private func handleSwipeBack(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        guard gesture.state == .ended else {
+            return
+        }
+        viewModel.didTapBackButton()
     }
 
     private func layoutCanvasContent() {
@@ -178,6 +197,7 @@ final class EditJotViewController: UIViewController {
 
         if let isEditing, isEditing {
             canvasView.becomeFirstResponder()
+            swipeBackGesture.isEnabled = false
 
             if #available(iOS 18.0, *) {
                 canvasView.isDrawingEnabled = true
@@ -186,6 +206,7 @@ final class EditJotViewController: UIViewController {
             }
         } else {
             canvasView.resignFirstResponder()
+            swipeBackGesture.isEnabled = true
 
             if #available(iOS 18.0, *) {
                 canvasView.isDrawingEnabled = false
