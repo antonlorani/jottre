@@ -6,6 +6,7 @@ README.md
 *.yml
 *.yaml
 *.rb
+*.jpg
 Jottre.xcodeproj
 Resources
 hooks
