@@ -34,7 +34,6 @@ final class SceneCoordinator {
     private let navigation: Navigation
     private let defaultsService: DefaultsServiceProtocol
     private let applicationService: ApplicationServiceProtocol
-    private let ubiquitousFileService: UbiquitousFileService
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
@@ -44,7 +43,6 @@ final class SceneCoordinator {
         navigation: Navigation,
         defaultsService: DefaultsServiceProtocol,
         applicationService: ApplicationServiceProtocol,
-        ubiquitousFileService: UbiquitousFileService,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
@@ -53,7 +51,6 @@ final class SceneCoordinator {
         self.navigation = navigation
         self.defaultsService = defaultsService
         self.applicationService = applicationService
-        self.ubiquitousFileService = ubiquitousFileService
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
