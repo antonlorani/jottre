@@ -256,7 +256,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             navigation: navigation,
             defaultsService: Self.defaultsService,
             applicationService: applicationService,
-            ubiquitousFileService: ubiquitousFileService,
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
             onUpdateUserInterfaceStyle: { [weak window] userInterfaceStyle in
@@ -290,7 +289,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     #if targetEnvironment(macCatalyst)
     func sceneDidDisconnect(_ scene: UIScene) {
-        guard UIApplication.shared.connectedScenes.isEmpty,
+        guard
+            UIApplication.shared.connectedScenes.isEmpty,
             let appKitPluginService
         else {
             return
