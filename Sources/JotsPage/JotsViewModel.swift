@@ -93,6 +93,7 @@ final class JotsViewModel: PageViewModel {
             of: [PageNavigationItem].self,
             bufferingPolicy: .bufferingNewest(1)
         )
+        #if !targetEnvironment(macCatalyst)
         rightNavigationItemsContinuation.yield([
             .text(
                 title: L10n.Action.create
@@ -102,6 +103,7 @@ final class JotsViewModel: PageViewModel {
                 }
             }
         ])
+        #endif
     }
 
     func didLoad() {
