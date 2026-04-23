@@ -82,6 +82,11 @@ targets:
             UIWindowSceneSessionRoleApplication:
               - UISceneConfigurationName: "Default Configuration"
                 UISceneDelegateClassName: "$(PRODUCT_MODULE_NAME).SceneDelegate"
+        NSUbiquitousContainers:
+          iCloud.com.antonlorani.jottre:
+            NSUbiquitousContainerIsDocumentScopePublic: true
+            NSUbiquitousContainerSupportedFolderLevels: Any
+            NSUbiquitousContainerName: Jottre
     entitlements:
       path: Jottre.entitlements
       properties:
