@@ -85,7 +85,7 @@ struct CloudMigrationRepository: CloudMigrationRepositoryProtocol {
     }
 
     func getShouldShowCloudMigration() -> Bool {
-        guard defaultsService.getValue(.hasDoneCloudMigration) == false else {
+        if defaultsService.getValue(.hasDoneCloudMigration) == true {
             return false
         }
 
