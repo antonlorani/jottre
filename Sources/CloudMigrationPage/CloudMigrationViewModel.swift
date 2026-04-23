@@ -68,14 +68,27 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
     }
 
     private func handleJots(cloudMigrationJots: [CloudMigrationJotBusinessModel]) {
-        itemsContinuation.yield(
-            [
+        var items = [PageCellItem]()
+
+        if cloudMigrationJots.isEmpty {
+            items.append(
+                contentsOf: [
+                    PageCellItem.cloudImage(),
+                    PageCellItem.pageHeader(
+                        headline: L10n.CloudMigration.title,
+                        subheadline: L10n.CloudMigration.NothingToMigrate.subtitle
+                    ),
+                ]
+            )
+        } else {
+            items.append(
                 PageCellItem.pageHeader(
                     headline: L10n.CloudMigration.title,
                     subheadline: L10n.CloudMigration.subtitle
                 )
-            ]
-                + cloudMigrationJots.map { cloudMigrationJot in
+            )
+            items.append(
+                contentsOf: cloudMigrationJots.map { cloudMigrationJot in
                     PageCellItem.cloudMigrationJot(
                         cloudMigrationJot: cloudMigrationJot,
                         repository: repository,
@@ -85,7 +98,10 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                         }
                     }
                 }
-        )
+            )
+        }
+
+        itemsContinuation.yield(items)
     }
 
     private func didTapCloudMigrationJot(

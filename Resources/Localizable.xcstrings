@@ -281,6 +281,34 @@
         "vi": { "stringUnit": { "state": "translated", "value": "Không thể di chuyển \"%@\"" } }
       }
     },
+    "cloudMigration.nothingToMigrate.subtitle": {
+      "comment": "Subtitle on the iCloud migration screen when there are no Jots to migrate",
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Newly created Jots are now automatically synchronized with iCloud and accessible across all your iCloud-compatible devices." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Neu erstellte Jots werden jetzt automatisch mit iCloud synchronisiert und sind auf all deinen iCloud-kompatiblen Geräten verfügbar." } },
+        "af": { "stringUnit": { "state": "translated", "value": "Nuutgeskepte Jots word nou outomaties met iCloud gesinkroniseer en is op al jou iCloud-versoenbare toestelle beskikbaar." } },
+        "ar": { "stringUnit": { "state": "translated", "value": "يتم الآن مزامنة Jots المنشأة حديثًا تلقائيًا مع iCloud ويمكن الوصول إليها عبر جميع أجهزتك المتوافقة مع iCloud." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Los Jots recién creados ahora se sincronizan automáticamente con iCloud y son accesibles en todos tus dispositivos compatibles con iCloud." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Les Jots nouvellement créés sont désormais automatiquement synchronisés avec iCloud et accessibles sur tous vos appareils compatibles iCloud." } },
+        "hi": { "stringUnit": { "state": "translated", "value": "नए बनाए गए Jots अब स्वचालित रूप से iCloud के साथ सिंक्रनाइज़ होते हैं और आपके सभी iCloud-संगत डिवाइसों पर उपलब्ध हैं।" } },
+        "id": { "stringUnit": { "state": "translated", "value": "Jots yang baru dibuat kini disinkronkan secara otomatis dengan iCloud dan dapat diakses di semua perangkat yang kompatibel dengan iCloud." } },
+        "it": { "stringUnit": { "state": "translated", "value": "I Jots appena creati vengono ora sincronizzati automaticamente con iCloud e sono accessibili su tutti i tuoi dispositivi compatibili con iCloud." } },
+        "ja": { "stringUnit": { "state": "translated", "value": "新しく作成されたJotは自動的にiCloudと同期され、すべてのiCloud対応デバイスからアクセスできます。" } },
+        "ko": { "stringUnit": { "state": "translated", "value": "새로 만든 Jot은 이제 iCloud와 자동으로 동기화되며 모든 iCloud 호환 기기에서 접근할 수 있습니다." } },
+        "ms": { "stringUnit": { "state": "translated", "value": "Jots yang baru dibuat kini disegerakkan secara automatik dengan iCloud dan boleh diakses pada semua peranti serasi iCloud anda." } },
+        "nl": { "stringUnit": { "state": "translated", "value": "Nieuw aangemaakte Jots worden nu automatisch gesynchroniseerd met iCloud en zijn toegankelijk op al je iCloud-compatibele apparaten." } },
+        "pl": { "stringUnit": { "state": "translated", "value": "Nowo utworzone Jots są teraz automatycznie synchronizowane z iCloud i dostępne na wszystkich urządzeniach kompatybilnych z iCloud." } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Os Jots recém-criados agora são sincronizados automaticamente com o iCloud e acessíveis em todos os seus dispositivos compatíveis com o iCloud." } },
+        "pt-PT": { "stringUnit": { "state": "translated", "value": "Os Jots recém-criados são agora automaticamente sincronizados com o iCloud e acessíveis em todos os seus dispositivos compatíveis com o iCloud." } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Новые Jots теперь автоматически синхронизируются с iCloud и доступны на всех ваших устройствах, совместимых с iCloud." } },
+        "sv": { "stringUnit": { "state": "translated", "value": "Nyskapade Jots synkroniseras nu automatiskt med iCloud och är tillgängliga på alla dina iCloud-kompatibla enheter." } },
+        "th": { "stringUnit": { "state": "translated", "value": "Jots ที่สร้างใหม่จะซิงค์กับ iCloud โดยอัตโนมัติและเข้าถึงได้จากอุปกรณ์ที่รองรับ iCloud ทั้งหมดของคุณ" } },
+        "tr": { "stringUnit": { "state": "translated", "value": "Yeni oluşturulan Jots artık iCloud ile otomatik olarak senkronize ediliyor ve tüm iCloud uyumlu cihazlarınızdan erişilebilir." } },
+        "uk": { "stringUnit": { "state": "translated", "value": "Щойно створені Jots тепер автоматично синхронізуються з iCloud і доступні на всіх ваших пристроях, сумісних з iCloud." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Các Jots mới tạo giờ đây được tự động đồng bộ với iCloud và có thể truy cập trên tất cả các thiết bị tương thích iCloud của bạn." } }
+      }
+    },
     "cloudMigration.subtitle": {
       "comment": "Subtitle on the iCloud migration screen",
       "extractionState": "manual",

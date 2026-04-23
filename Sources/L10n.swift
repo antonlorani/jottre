@@ -39,6 +39,10 @@ enum L10n {
         static let subtitle = String(localized: "cloudMigration.subtitle")
         static let title = String(localized: "cloudMigration.title")
 
+        enum NothingToMigrate {
+            static let subtitle = String(localized: "cloudMigration.nothingToMigrate.subtitle")
+        }
+
         enum ErrorAlert {
 
             static func title(_ jotName: String) -> String {
