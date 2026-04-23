@@ -23,6 +23,9 @@ protocol FileServiceProtocol: Sendable {
     /// Whether the ``FileService`` is available for file-system interaction.
     func isEnabled() -> Bool
 
+    /// Materializes the documents directory so it is visible to the user.
+    func initializeDocumentsDirectory() async throws
+
     /// Returns the path to the apps documents directory.
     func documentsDirectory() async throws -> URL?
 

@@ -16,6 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import OSLog
 import UIKit
 
 @MainActor
@@ -34,6 +35,9 @@ final class SceneCoordinator {
     private let navigation: Navigation
     private let defaultsService: DefaultsServiceProtocol
     private let applicationService: ApplicationServiceProtocol
+    private let localFileService: FileServiceProtocol
+    private let ubiquitousFileService: FileServiceProtocol
+    private let logger: Logger
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
@@ -43,6 +47,9 @@ final class SceneCoordinator {
         navigation: Navigation,
         defaultsService: DefaultsServiceProtocol,
         applicationService: ApplicationServiceProtocol,
+        localFileService: FileServiceProtocol,
+        ubiquitousFileService: FileServiceProtocol,
+        logger: Logger,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,
@@ -51,6 +58,9 @@ final class SceneCoordinator {
         self.navigation = navigation
         self.defaultsService = defaultsService
         self.applicationService = applicationService
+        self.localFileService = localFileService
+        self.ubiquitousFileService = ubiquitousFileService
+        self.logger = logger
         self.rootCoordinatorFactory = rootCoordinatorFactory
         self.editJotCoordinatorFactory = editJotCoordinatorFactory
         self.onUpdateUserInterfaceStyle = onUpdateUserInterfaceStyle
@@ -116,6 +126,19 @@ final class SceneCoordinator {
                     userInterfaceStyle
                     .flatMap(UIUserInterfaceStyle.init(rawValue:)) ?? .unspecified
                 onUpdateUserInterfaceStyle(userInterfaceStyle)
+            }
+        }
+
+        Task.detached { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await localFileService.initializeDocumentsDirectory()
+                try await ubiquitousFileService.initializeDocumentsDirectory()
+                logger.info("Initialized documents directories.")
+            } catch {
+                logger.error("Failed to initialize documents directory: \(error)")
             }
         }
 

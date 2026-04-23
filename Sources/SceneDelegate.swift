@@ -16,6 +16,7 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import OSLog
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -256,6 +257,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             navigation: navigation,
             defaultsService: Self.defaultsService,
             applicationService: applicationService,
+            localFileService: localFileService,
+            ubiquitousFileService: ubiquitousFileService,
+            logger: Logger(
+                subsystem: Bundle.main.bundleIdentifier ?? "",
+                category: "SceneCoordinator"
+            ),
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
             onUpdateUserInterfaceStyle: { [weak window] userInterfaceStyle in
