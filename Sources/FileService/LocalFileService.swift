@@ -35,6 +35,19 @@ struct LocalFileService: FileServiceProtocol {
         true
     }
 
+    func initializeDocumentsDirectory() async throws {
+        guard let directory = try await documentsDirectory() else {
+            return
+        }
+
+        let placeholder = directory.appendingPathComponent(".jottre", isDirectory: false)
+        guard !fileExists(fileURL: placeholder) else {
+            return
+        }
+
+        try writeFile(fileURL: placeholder, data: Data("Hello, World!".utf8))
+    }
+
     func documentsDirectory() async throws -> URL? {
         guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return nil

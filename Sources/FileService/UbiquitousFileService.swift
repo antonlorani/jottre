@@ -35,6 +35,22 @@ struct UbiquitousFileService: FileServiceProtocol {
         fileManager.ubiquityIdentityToken != nil
     }
 
+    func initializeDocumentsDirectory() async throws {
+        guard
+            isEnabled(),
+            let directory = try await documentsDirectory()
+        else {
+            return
+        }
+
+        let placeholder = directory.appendingPathComponent(".jottre", isDirectory: false)
+        guard !fileExists(fileURL: placeholder) else {
+            return
+        }
+
+        try writeFile(fileURL: placeholder, data: Data())
+    }
+
     func documentsDirectory() async throws -> URL? {
         guard
             let directory = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
