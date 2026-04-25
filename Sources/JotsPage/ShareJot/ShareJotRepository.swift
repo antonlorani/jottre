@@ -84,7 +84,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
             let renderer = UIGraphicsPDFRenderer(bounds: rect)
             return renderer.pdfData { context in
                 context.beginPage()
-                let image = drawing.image(from: rect, scale: 2)
+                let image = renderDrawing(drawing: drawing, rect: rect)
                 image.draw(in: rect)
             }
         }
@@ -102,7 +102,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
             let image = renderer.image { context in
                 UIColor.white.setFill()
                 context.fill(rect)
-                drawing.image(from: rect, scale: 2).draw(in: rect)
+                renderDrawing(drawing: drawing, rect: rect).draw(in: rect)
             }
             guard let jpegData = image.jpegData(compressionQuality: 0.9) else {
                 throw Failure.couldNotRenderImage
@@ -119,7 +119,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
         url: URL
     ) async throws -> URL {
         let data: Data = try await MainActor.run {
-            let image = drawing.image(from: rect, scale: 2)
+            let image = renderDrawing(drawing: drawing, rect: rect)
             guard let pngData = image.pngData() else {
                 throw Failure.couldNotRenderImage
             }
@@ -127,5 +127,14 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
         }
         try data.write(to: url)
         return url
+    }
+
+    @MainActor
+    private func renderDrawing(drawing: PKDrawing, rect: CGRect) -> UIImage {
+        var image = UIImage()
+        UITraitCollection(userInterfaceStyle: .light).performAsCurrent {
+            image = drawing.image(from: rect, scale: 2)
+        }
+        return image
     }
 }
