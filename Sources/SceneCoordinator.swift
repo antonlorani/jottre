@@ -25,6 +25,7 @@ final class SceneCoordinator {
     enum Constants {
         static let activityType = "com.antonlorani.jottre.openJot"
         static let urlKey = "url"
+        static let fileBookmarkKey = "fileBookmark"
     }
 
     private var lastActiveURL: URL?
@@ -178,10 +179,18 @@ final class SceneCoordinator {
             return nil
         }
         let activity = NSUserActivity(activityType: Constants.activityType)
-        activity.userInfo = [
-            Constants.urlKey: lastActiveURL.absoluteString
-        ]
+        activity.userInfo = makeUserInfo(lastActiveURL: lastActiveURL)
         return activity
+    }
+
+    private func makeUserInfo(lastActiveURL: URL) -> [AnyHashable: Any] {
+        var userInfo: [AnyHashable: Any] = [Constants.urlKey: lastActiveURL.absoluteString]
+        if let fileURL = EditJotURL(url: lastActiveURL)?.fileURL,
+            let bookmark = try? fileURL.bookmarkData()
+        {
+            userInfo[Constants.fileBookmarkKey] = bookmark
+        }
+        return userInfo
     }
 
     private func getActivityURL(
@@ -189,34 +198,51 @@ final class SceneCoordinator {
         connectionOptions: UIScene.ConnectionOptions
     ) -> (url: URL, isRestored: Bool)? {
         if let activity = session.stateRestorationActivity,
-            activity.activityType == Constants.activityType,
-            let urlString = activity.userInfo?[Constants.urlKey] as? String,
-            let url = URL(string: urlString)
+            let url = getURL(activity: activity)
         {
-            return (
-                url: url,
-                isRestored: true
-            )
+            return (url: url, isRestored: true)
         }
 
         if let activity = connectionOptions.userActivities.first(where: { $0.activityType == Constants.activityType }),
-            let urlString = activity.userInfo?[Constants.urlKey] as? String,
-            let url = URL(string: urlString)
+            let url = getURL(activity: activity)
         {
-            return (
-                url: url,
-                isRestored: false
-            )
+            return (url: url, isRestored: false)
         }
 
         if let firstURLContextURL = connectionOptions.urlContexts.first?.url {
-            return (
-                url: firstURLContextURL,
-                isRestored: false
-            )
+            return (url: firstURLContextURL, isRestored: false)
         }
 
         return nil
+    }
+
+    private func getURL(activity: NSUserActivity) -> URL? {
+        guard
+            activity.activityType == Constants.activityType,
+            let urlString = activity.userInfo?[Constants.urlKey] as? String,
+            let url = URL(string: urlString)
+        else {
+            return nil
+        }
+
+        guard
+            let bookmark = activity.userInfo?[Constants.fileBookmarkKey] as? Data
+        else {
+            return url
+        }
+
+        var isStale = false
+        guard
+            let resolved = try? URL(
+                resolvingBookmarkData: bookmark,
+                bookmarkDataIsStale: &isStale
+            ),
+            EditJotURL(url: url) != nil,
+            let rebuilt = makeEditJotURL(fileURL: resolved)
+        else {
+            return url
+        }
+        return rebuilt
     }
 
     private func isEditJotURL(url: URL) -> Bool {
