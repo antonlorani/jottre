@@ -35,6 +35,10 @@ protocol FileConflictServiceProtocol: Sendable {
 
 struct FileConflictService: FileConflictServiceProtocol {
 
+    enum Failure: Error {
+        case couldNotCoordinateWrite
+    }
+
     nonisolated(unsafe) private let fileManager: FileManager
 
     init(fileManager: FileManager) {
@@ -56,12 +60,6 @@ struct FileConflictService: FileConflictServiceProtocol {
             return
         }
 
-        if let first = resolvedVersions.first, first != fileURL,
-            let version = unresolvedConflicts.first(where: { $0.url == first })
-        {
-            try version.replaceItem(at: fileURL, options: [])
-        }
-
         let directory = fileURL.deletingLastPathComponent()
         let name = fileURL.deletingPathExtension().lastPathComponent
 
@@ -76,14 +74,24 @@ struct FileConflictService: FileConflictServiceProtocol {
                 .appendingPathComponent(copyName, isDirectory: false)
                 .appendingPathExtension(fileURL.pathExtension)
 
-            try version.replaceItem(at: copyURL, options: [])
+            try coordinateWrite(fileURL: copyURL) { url in
+                try version.replaceItem(at: url, options: [])
+            }
         }
 
-        for conflictingVersion in unresolvedConflicts {
-            conflictingVersion.isResolved = true
-        }
+        try coordinateWrite(fileURL: fileURL) { url in
+            if let first = resolvedVersions.first, first != fileURL,
+                let version = unresolvedConflicts.first(where: { $0.url == first })
+            {
+                try version.replaceItem(at: url, options: [])
+            }
 
-        try NSFileVersion.removeOtherVersionsOfItem(at: fileURL)
+            for conflictingVersion in unresolvedConflicts {
+                conflictingVersion.isResolved = true
+            }
+
+            try NSFileVersion.removeOtherVersionsOfItem(at: url)
+        }
     }
 
     func copyVersionToTemporary(
@@ -99,7 +107,40 @@ struct FileConflictService: FileConflictServiceProtocol {
         let tmpURL = fileManager.temporaryDirectory
             .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension(fileURL.pathExtension)
-        try version.replaceItem(at: tmpURL, options: [])
+
+        try coordinateWrite(fileURL: tmpURL) { url in
+            try version.replaceItem(at: url, options: [])
+        }
+
         return tmpURL
+    }
+
+    private func coordinateWrite(
+        fileURL: URL,
+        accessor: (URL) throws -> Void
+    ) throws {
+        let coordinator = NSFileCoordinator()
+        var coordinatorError: NSError?
+        var result: Result<Void, Error>?
+
+        coordinator.coordinate(
+            writingItemAt: fileURL,
+            options: .forReplacing,
+            error: &coordinatorError
+        ) { url in
+            result = Result(catching: {
+                try accessor(url)
+            })
+        }
+
+        if let coordinatorError {
+            throw coordinatorError
+        }
+
+        guard let result else {
+            throw Failure.couldNotCoordinateWrite
+        }
+
+        try result.get()
     }
 }
