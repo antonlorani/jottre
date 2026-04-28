@@ -99,7 +99,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let shareJotCoordinatorFactory = ShareJotCoordinatorFactory(
             repository: ShareJotRepository(
-                jotFileService: jotFileService
+                jotFileService: jotFileService,
+                fileService: localFileService
             )
         )
 

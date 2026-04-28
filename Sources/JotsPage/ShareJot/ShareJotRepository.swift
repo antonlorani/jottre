@@ -29,14 +29,30 @@ protocol ShareJotRepositoryProtocol: Sendable {
 
 struct ShareJotRepository: ShareJotRepositoryProtocol {
 
+    private enum Constants {
+
+        enum Rendering {
+            static let scale = CGFloat(2)
+        }
+
+        enum JpegEncoding {
+            static let compressionQuality = CGFloat(0.9)
+        }
+    }
+
     enum Failure: Error {
         case couldNotRenderImage
     }
 
     private let jotFileService: JotFileServiceProtocol
+    private let fileService: FileServiceProtocol
 
-    init(jotFileService: JotFileServiceProtocol) {
+    init(
+        jotFileService: JotFileServiceProtocol,
+        fileService: FileServiceProtocol
+    ) {
         self.jotFileService = jotFileService
+        self.fileService = fileService
     }
 
     func exportJot(
@@ -50,7 +66,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
         let contentHeight = max(drawing.bounds.maxY, width * sqrt(2))
         let rect = CGRect(x: 0, y: 0, width: width, height: contentHeight)
 
-        let tempDirectory = FileManager.default.temporaryDirectory
+        let temporaryDirectory = fileService.temporaryDirectory()
         let fileName = jotFileInfo.name
 
         switch format {
@@ -58,19 +74,19 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
             return try await exportPDF(
                 drawing: drawing,
                 rect: rect,
-                url: tempDirectory.appendingPathComponent("\(fileName).pdf")
+                url: temporaryDirectory.appendingPathComponent("\(fileName).pdf")
             )
         case .jpg:
             return try await exportJPG(
                 drawing: drawing,
                 rect: rect,
-                url: tempDirectory.appendingPathComponent("\(fileName).jpg")
+                url: temporaryDirectory.appendingPathComponent("\(fileName).jpg")
             )
         case .png:
             return try await exportPNG(
                 drawing: drawing,
                 rect: rect,
-                url: tempDirectory.appendingPathComponent("\(fileName).png")
+                url: temporaryDirectory.appendingPathComponent("\(fileName).png")
             )
         }
     }
@@ -104,7 +120,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
                 context.fill(rect)
                 renderDrawing(drawing: drawing, rect: rect).draw(in: rect)
             }
-            guard let jpegData = image.jpegData(compressionQuality: 0.9) else {
+            guard let jpegData = image.jpegData(compressionQuality: Constants.JpegEncoding.compressionQuality) else {
                 throw Failure.couldNotRenderImage
             }
             return jpegData
@@ -133,7 +149,7 @@ struct ShareJotRepository: ShareJotRepositoryProtocol {
     private func renderDrawing(drawing: PKDrawing, rect: CGRect) -> UIImage {
         var image = UIImage()
         UITraitCollection(userInterfaceStyle: .light).performAsCurrent {
-            image = drawing.image(from: rect, scale: 2)
+            image = drawing.image(from: rect, scale: Constants.Rendering.scale)
         }
         return image
     }
