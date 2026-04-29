@@ -107,13 +107,13 @@ final class JotsViewModel: PageViewModel {
     }
 
     func didLoad() {
-        jotsTask = Task.detached { [weak self] in
+        jotsTask = Task { [weak self] in
             guard let self else {
                 return
             }
             do {
                 for try await jotFileInfos in repository.getJotFiles() {
-                    await handleJots(jotFileInfos: jotFileInfos)
+                    handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {
                 print(error)

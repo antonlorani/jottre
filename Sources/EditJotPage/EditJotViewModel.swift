@@ -131,19 +131,10 @@ final class EditJotViewModel: Sendable {
         )
         self.drawingUpdateContinuation = drawingUpdateContinuation
 
-        drawingUpdateTask = Task.detached {
+        drawingUpdateTask = Task {
             for await drawing in drawingUpdate.dropFirst().debounce(for: 0.3) {
                 do {
-                    let jot = Jot.makeEmpty()
-                    let jotFile = JotFile(
-                        info: jotFileInfo,
-                        jot: Jot(
-                            version: jot.version,
-                            drawing: drawing.dataRepresentation(),
-                            width: jot.width
-                        )
-                    )
-                    try repository.writeDrawing(jotFile: jotFile)
+                    try await repository.writeDrawing(jotFileInfo: jotFileInfo, drawing: drawing)
                 } catch {
                     print(error)
                 }
@@ -169,12 +160,12 @@ final class EditJotViewModel: Sendable {
                 }
             }
         } else {
-            loadingTask = Task.detached { [weak self] in
+            loadingTask = Task { [weak self] in
                 guard let self else {
                     return
                 }
                 do {
-                    let (drawing, width) = try repository.readDrawing(jotFileInfo: jotFileInfo)
+                    let (drawing, width) = try await repository.readDrawing(jotFileInfo: jotFileInfo)
                     drawingContinuation.yield(Drawing(value: drawing, width: width))
                 } catch {
                     print(error)

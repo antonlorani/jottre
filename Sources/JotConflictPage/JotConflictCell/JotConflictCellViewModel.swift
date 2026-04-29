@@ -44,21 +44,11 @@ final class JotConflictCellViewModel: PageCellViewModel {
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage? {
-        let task = Task.detached { [weak self] in
-            guard let self else {
-                return nil as UIImage?
-            }
-            return await self.repository.getPreviewImage(
-                jotFileInfo: self.jotConflict.jotFileInfo,
-                jotFileVersion: self.jotConflict.toJotFileVersion(),
-                userInterfaceStyle: userInterfaceStyle,
-                displayScale: displayScale
-            )
-        }
-        return await withTaskCancellationHandler {
-            await task.value
-        } onCancel: {
-            task.cancel()
-        }
+        await repository.getPreviewImage(
+            jotFileInfo: jotConflict.jotFileInfo,
+            jotFileVersion: jotConflict.toJotFileVersion(),
+            userInterfaceStyle: userInterfaceStyle,
+            displayScale: displayScale
+        )
     }
 }

@@ -21,8 +21,8 @@
 protocol EditJotRepositoryProtocol: Sendable {
 
     func ubiquitousInfo(url: URL) -> UbiquitousInfo?
-    func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat)
-    func writeDrawing(jotFile: JotFile) throws
+    func readDrawing(jotFileInfo: JotFile.Info) async throws -> (drawing: PKDrawing, width: CGFloat)
+    func writeDrawing(jotFileInfo: JotFile.Info, drawing: PKDrawing) async throws
     func getConflictingVersions(jotFileInfo: JotFile.Info) -> [JotFileVersion]?
     func duplicate(jotFileInfo: JotFile.Info) throws -> JotFile.Info
 }
@@ -47,7 +47,7 @@ struct EditJotRepository: EditJotRepositoryProtocol {
         ubiquitousFileService.ubiquitousInfo(url: url)
     }
 
-    func readDrawing(jotFileInfo: JotFile.Info) throws -> (drawing: PKDrawing, width: CGFloat) {
+    func readDrawing(jotFileInfo: JotFile.Info) async throws -> (drawing: PKDrawing, width: CGFloat) {
         try? FileManager.default.startDownloadingUbiquitousItem(at: jotFileInfo.url)
 
         let file = try jotFileService.readJotFile(jotFileInfo: jotFileInfo)
@@ -58,7 +58,16 @@ struct EditJotRepository: EditJotRepositoryProtocol {
         )
     }
 
-    func writeDrawing(jotFile: JotFile) throws {
+    func writeDrawing(jotFileInfo: JotFile.Info, drawing: PKDrawing) async throws {
+        let jot = Jot.makeEmpty()
+        let jotFile = JotFile(
+            info: jotFileInfo,
+            jot: Jot(
+                version: jot.version,
+                drawing: drawing.dataRepresentation(),
+                width: jot.width
+            )
+        )
         try jotFileService.write(jotFile: jotFile)
     }
 

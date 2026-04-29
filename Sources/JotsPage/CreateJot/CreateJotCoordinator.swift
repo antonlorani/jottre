@@ -77,19 +77,19 @@ final class CreateJotCoordinator: Coordinator {
     }
 
     private func handleCreateJot(name: String) {
-        Task.detached { [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
             do {
                 try await handleCreateJot(name: name)
             } catch CreateJotRepository.Failure.fileExists {
-                await showInfoAlert(
+                showInfoAlert(
                     title: L10n.Jots.Create.Error.fileExists(name),
                     message: nil
                 )
             } catch {
-                await showInfoAlert(
+                showInfoAlert(
                     title: L10n.Jots.Create.Error.generic,
                     message: error.localizedDescription
                 )

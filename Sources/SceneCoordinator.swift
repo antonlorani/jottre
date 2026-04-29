@@ -130,7 +130,7 @@ final class SceneCoordinator {
             }
         }
 
-        Task.detached { [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
