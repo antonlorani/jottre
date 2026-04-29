@@ -99,7 +99,7 @@ final class CreateJotCoordinator: Coordinator {
 
     private func handleCreateJot(name: String) async throws {
         let jotFileInfo = try await repository.createJot(name: name)
-        navigation.openScene(url: EditJotURL(jotFileInfo: jotFileInfo))
+        navigation.open(url: EditJotURL(jotFileInfo: jotFileInfo))
         onEnd?()
     }
 
