@@ -53,13 +53,13 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
     }
 
     func didLoad() {
-        jotsTask = Task.detached { [weak self] in
+        jotsTask = Task { [weak self] in
             guard let self else {
                 return
             }
             do {
                 for try await cloudMigrationJots in repository.getJotFiles() {
-                    await handleJots(cloudMigrationJots: cloudMigrationJots)
+                    handleJots(cloudMigrationJots: cloudMigrationJots)
                 }
             } catch {
                 print(error)
@@ -107,14 +107,14 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
     private func didTapCloudMigrationJot(
         cloudMigrationJot: CloudMigrationJotBusinessModel
     ) {
-        Task.detached { [weak self] in
+        Task { [weak self] in
             do {
                 try await self?.repository.moveJotFile(
                     jotFileInfo: cloudMigrationJot.toJotFileInfo(),
                     shouldBecomeUbiquitous: !cloudMigrationJot.isUbiquitous
                 )
             } catch {
-                await self?.coordinator?.showInfoAlert(
+                self?.coordinator?.showInfoAlert(
                     title: L10n.CloudMigration.ErrorAlert.title(cloudMigrationJot.name),
                     message: error.localizedDescription
                 )

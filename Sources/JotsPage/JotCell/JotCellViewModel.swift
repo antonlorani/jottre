@@ -65,21 +65,11 @@ final class JotCellViewModel: PageCellViewModel {
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage? {
-        let task = Task.detached { [weak self] in
-            guard let self else {
-                return nil as UIImage?
-            }
-            return await self.repository.getPreviewImage(
-                jotFileInfo: self.jot.toJotFileInfo(),
-                userInterfaceStyle: userInterfaceStyle,
-                displayScale: displayScale
-            )
-        }
-        return await withTaskCancellationHandler {
-            await task.value
-        } onCancel: {
-            task.cancel()
-        }
+        await repository.getPreviewImage(
+            jotFileInfo: jot.toJotFileInfo(),
+            userInterfaceStyle: userInterfaceStyle,
+            displayScale: displayScale
+        )
     }
 
     func handleContextMenuConfiguration(

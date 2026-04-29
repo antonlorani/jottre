@@ -54,20 +54,10 @@ final class CloudMigrationJotCellViewModel: PageCellViewModel {
         userInterfaceStyle: UIUserInterfaceStyle,
         displayScale: CGFloat
     ) async -> UIImage? {
-        let task = Task.detached { [weak self] in
-            guard let self else {
-                return nil as UIImage?
-            }
-            return await self.repository.getPreviewImage(
-                jotFileInfo: self.cloudMigrationJot.toJotFileInfo(),
-                userInterfaceStyle: userInterfaceStyle,
-                displayScale: displayScale
-            )
-        }
-        return await withTaskCancellationHandler {
-            await task.value
-        } onCancel: {
-            task.cancel()
-        }
+        await repository.getPreviewImage(
+            jotFileInfo: cloudMigrationJot.toJotFileInfo(),
+            userInterfaceStyle: userInterfaceStyle,
+            displayScale: displayScale
+        )
     }
 }
