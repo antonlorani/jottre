@@ -99,7 +99,9 @@ end
 
 desc 'Export App Store screenshots from a Sketch file'
 lane :export_screenshots do |options|
-    UI.user_error!('sketch_file is required (e.g. fastlane export_screenshots sketch_file:path/to/file.sketch)') unless options[:sketch_file]
+    unless options[:sketch_file]
+        UI.user_error!('sketch_file is required (e.g. fastlane export_screenshots sketch_file:path/to/file.sketch)')
+    end
 
     sketch_file = File.expand_path(options[:sketch_file])
     output_dir = options[:output_dir] ? File.expand_path(options[:output_dir]) : DEFAULT_SCREENSHOTS_DIR
