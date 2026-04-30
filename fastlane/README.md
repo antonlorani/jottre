@@ -13,6 +13,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### export_screenshots
+
+```sh
+[bundle exec] fastlane export_screenshots
+```
+
+Export App Store screenshots from a Sketch file
+
 ### bump_version
 
 ```sh
@@ -66,6 +74,14 @@ Generate/sync development and App Store provisioning profiles for iOS/iPadOS
 
 Build and upload iOS/iPadOS release to App Store Connect
 
+### ios upload_metadata
+
+```sh
+[bundle exec] fastlane ios upload_metadata
+```
+
+Upload App Store metadata + iPhone/iPad screenshots
+
 ----
 
 
@@ -110,6 +126,14 @@ Generate/sync development and App Store provisioning profiles for macOS (Mac Cat
 ```
 
 Build and upload macOS release to App Store Connect
+
+### mac upload_metadata
+
+```sh
+[bundle exec] fastlane mac upload_metadata
+```
+
+Upload App Store metadata + Mac screenshots
 
 ----
 
