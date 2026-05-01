@@ -17,6 +17,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 require_relative 'versioning'
+require_relative 'appstore_metadata'
+require_relative 'export_screenshots'
+
+DEFAULT_SCREENSHOTS_DIR = File.expand_path('appstoreconnect/screenshots', __dir__)
 
 default_platform(:ios)
 
@@ -70,6 +74,42 @@ def manual_signing_export_options(provisioning_profile:, bundle_id: APP_IDENTIFI
             bundle_id => provisioning_profile
         }
     }
+end
+
+def upload_app_store_metadata(platform:, api_key:)
+    output_dir = File.expand_path("build/asc-metadata-#{platform}", __dir__)
+    metadata_path, screenshots_path = AppStoreMetadata.stage(
+        platform: platform,
+        output_dir: output_dir
+    )
+
+    upload_to_app_store(
+        api_key: api_key,
+        platform: platform == :mac ? 'osx' : 'ios',
+        metadata_path: metadata_path,
+        screenshots_path: screenshots_path,
+        skip_binary_upload: true,
+        overwrite_screenshots: true,
+        submit_for_review: false,
+        automatic_release: false,
+        precheck_include_in_app_purchases: false,
+        force: true
+    )
+end
+
+desc 'Export App Store screenshots from a Sketch file'
+lane :export_screenshots do |options|
+    unless options[:sketch_file]
+        UI.user_error!('sketch_file is required (e.g. fastlane export_screenshots sketch_file:path/to/file.sketch)')
+    end
+
+    sketch_file = File.expand_path(options[:sketch_file])
+    output_dir = options[:output_dir] ? File.expand_path(options[:output_dir]) : DEFAULT_SCREENSHOTS_DIR
+
+    ExportScreenshots.export(
+        sketch_file: sketch_file,
+        output_dir: output_dir
+    )
 end
 
 desc 'Bump version from merge commit and push tag'
@@ -208,6 +248,12 @@ platform :ios do
         add_git_tag(tag: distribution_tag)
         push_git_tags(tag: distribution_tag)
     end
+
+    desc 'Upload App Store metadata + iPhone/iPad screenshots'
+    lane :upload_metadata do |options|
+        options = make_options(options)
+        upload_app_store_metadata(platform: :ios, api_key: options[:api_key])
+    end
 end
 
 platform :mac do
@@ -337,5 +383,11 @@ platform :mac do
         distribution_tag = "#{version}.#{build_number}+catalyst"
         add_git_tag(tag: distribution_tag)
         push_git_tags(tag: distribution_tag)
+    end
+
+    desc 'Upload App Store metadata + Mac screenshots'
+    lane :upload_metadata do |options|
+        options = make_options(options)
+        upload_app_store_metadata(platform: :mac, api_key: options[:api_key])
     end
 end

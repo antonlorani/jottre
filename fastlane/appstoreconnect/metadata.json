@@ -1,0 +1,122 @@
+{
+    "en": {
+        "name": "Jottre",
+        "subtitle": "Minimalistic handwriting",
+        "description": "Jottre is a simple canvas for handwritten notes and sketches. Write freely with Apple Pencil on iPad, or use your finger on iPhone. Notes sync automatically across your iPhone, iPad, and Mac with iCloud. When you're ready to share, export as PDF, JPG, or PNG.",
+        "keywords": "simple notes,jot,notepad,sketchpad,minimal,whiteboard,quick notes,diagram,canvas,jotter,paper,draw",
+        "promotional_text": "Simple and minimalistic jotting.",
+        "release_notes": "Jottre 2.0 builds on what worked well, with thoughtful improvements throughout.",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    },
+    "de": {
+        "name": "Jottre",
+        "subtitle": "Minimalistische Notizen",
+        "description": "Jottre ist ein freier Raum für handgeschriebene Notizen und Skizzen. Schreib mit dem Apple Pencil auf dem iPad oder mit dem Finger auf dem iPhone. Deine Notizen werden automatisch über iCloud auf iPhone, iPad und Mac synchronisiert. Wenn du bereit bist zu teilen, exportiere sie als PDF, JPG oder PNG.",
+        "keywords": "notizen,notizblock,skizzenblock,minimal,whiteboard,schnellnotizen,diagramm,notizheft,papier,zeichnen",
+        "promotional_text": "Einfach und minimalistische Notizen",
+        "release_notes": "Jottre 2.0 baut auf dem auf, was gut funktioniert hat – mit durchdachten Verbesserungen in allen Bereichen.",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    },
+    "es": {
+        "name": "Jottre",
+        "subtitle": "Escritura minimalista",
+        "description": "Jottre es un lienzo sencillo para notas y bocetos a mano alzada. Escribe con total libertad usando el Apple Pencil en el iPad, o con el dedo en el iPhone. Tus notas se sincronizan automáticamente entre iPhone, iPad y Mac mediante iCloud. Cuando quieras compartir, expórtalas en PDF, JPG o PNG.",
+        "keywords": "notas,apuntes,bloc,cuaderno,minimal,pizarra,boceto,dibujar,lienzo,papel,esquema,rápidas",
+        "promotional_text": "Apuntes sencillos y minimalistas.",
+        "release_notes": "Jottre 2.0 mantiene lo que ya funcionaba e incorpora mejoras pensadas con detalle.",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    },
+    "fr": {
+        "name": "Jottre",
+        "subtitle": "Écriture minimaliste",
+        "description": "Jottre, c'est une page blanche pensée pour les notes manuscrites et les croquis. Écrivez librement avec l'Apple Pencil sur iPad, ou du bout du doigt sur iPhone. Vos notes se synchronisent automatiquement entre iPhone, iPad et Mac via iCloud. Au moment de partager, exportez-les en PDF, JPG ou PNG.",
+        "keywords": "notes,carnet,bloc-notes,croquis,minimal,tableau blanc,prise de notes,schéma,dessin,papier,esquisse",
+        "promotional_text": "Des notes simples et épurées.",
+        "release_notes": "Jottre 2.0 conserve ce qui marchait et y ajoute des améliorations pensées avec soin.",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    },
+    "hi": {
+        "name": "Jottre",
+        "subtitle": "सहज हस्तलेखन",
+        "description": "Jottre हस्तलिखित नोट्स और स्केच के लिए एक सरल कैनवस है। iPad पर Apple Pencil से या iPhone पर उंगली से बेझिझक लिखें। आपके नोट्स iCloud के ज़रिए iPhone, iPad और Mac पर अपने आप सिंक होते हैं। साझा करना हो तो PDF, JPG या PNG के रूप में निर्यात करें।",
+        "keywords": "नोट्स,लेखन,स्केच,कैनवस,सरल,व्हाइटबोर्ड,त्वरित नोट्स,डायग्राम,कागज़,चित्र,हस्तलेखन,ड्राइंग,मिनिमल",
+        "promotional_text": "सरल और न्यूनतम लेखन।",
+        "release_notes": "Jottre 2.0 में वही बातें बरकरार हैं जो अच्छी थीं, साथ में सोच-समझकर किए गए सुधार।",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    },
+    "ko": {
+        "name": "Jottre",
+        "subtitle": "미니멀한 손글씨",
+        "description": "Jottre는 손글씨 메모와 스케치를 위한 간결한 캔버스입니다. iPad에서는 Apple Pencil로, iPhone에서는 손끝으로 자유롭게 적어 보세요. 작성한 메모는 iCloud를 통해 iPhone, iPad, Mac에서 자동으로 동기화됩니다. 공유할 때는 PDF, JPG, PNG로 손쉽게 내보낼 수 있습니다.",
+        "keywords": "메모,손글씨,스케치,노트,미니멀,화이트보드,빠른메모,다이어그램,캔버스,그림,종이,글쓰기,필기,아이패드,애플펜슬,낙서,다이어리,스케치북",
+        "promotional_text": "간결하고 미니멀한 메모.",
+        "release_notes": "Jottre 2.0은 좋았던 점은 그대로 두고, 곳곳을 세심하게 다듬었습니다.",
+        "marketing_url": "https://github.com/antonlorani/jottre",
+        "privacy_url": "https://github.com/antonlorani/jottre",
+        "support_url": "https://github.com/antonlorani/jottre/issues",
+        "screenshots": {
+            "ios": {
+                "iphone": ["jotting.png", "icloud.png", "darkmode.png", "share.png"],
+                "ipad": ["jotting.png", "applepencil.png", "icloud.png", "darkmode.png", "share.png"]
+            },
+            "mac": {
+                "mac": ["jotting.png", "icloud.png", "darkmode.png", "share.png"]
+            }
+        }
+    }
+}
