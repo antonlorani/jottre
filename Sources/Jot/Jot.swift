@@ -29,10 +29,9 @@ struct Jot: Codable, Sendable {
         )
     }
 
-    // NOTE: Kept optional for backwards compatibility.
-    let version: Int?
+    var version = Int(3)
     let drawing: Data
     let width: CGFloat
     // NOTE: Kept for backwards compatibility.
-    var lastModified: Double? = nil
+    var lastModified: Double? = Double.zero
 }
