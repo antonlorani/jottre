@@ -122,6 +122,21 @@ targets:
         codeSign: true
     packages: []
 
+  JottreTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - Tests
+    dependencies:
+      - target: Jottre
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antonlorani.jottre.JottreTests
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        GENERATE_INFOPLIST_FILE: YES
+
   AppKitPlugin:
     type: bundle
     platform: macOS
@@ -145,3 +160,47 @@ targets:
         CODE_SIGN_IDENTITY: "-"
         MACH_O_TYPE: mh_bundle
         ENABLE_HARDENED_RUNTIME: YES
+
+schemes:
+  Jottre:
+    build:
+      targets:
+        Jottre: all
+        AppKitPlugin: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - name: JottreTests
+    archive:
+      config: Release
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+
+  JottreTests:
+    build:
+      targets:
+        JottreTests: all
+        Jottre: all
+    test:
+      config: Debug
+      targets:
+        - name: JottreTests
+    analyze:
+      config: Debug
+
+  AppKitPlugin:
+    build:
+      targets:
+        AppKitPlugin: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+    profile:
+      config: Release
+    analyze:
+      config: Debug
