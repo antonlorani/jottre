@@ -92,7 +92,6 @@ targets:
       path: Jottre.entitlements
       properties:
         com.apple.security.files.user-selected.read-write: true
-        com.apple.security.files.downloads.read-write: true
         com.apple.developer.icloud-container-identifiers:
           - iCloud.com.antonlorani.jottre
         com.apple.developer.icloud-services:

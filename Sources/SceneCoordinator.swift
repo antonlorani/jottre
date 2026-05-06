@@ -32,6 +32,9 @@ final class SceneCoordinator {
     private var navigationController: UINavigationController?
     private var retainedRootCoordinator: NavigationCoordinator?
     private var userInterfaceStyleTask: Task<Void, Never>?
+    #if targetEnvironment(macCatalyst)
+    private var securityScopedURL: URL?
+    #endif
 
     private let navigation: Navigation
     private let defaultsService: DefaultsServiceProtocol
@@ -185,9 +188,16 @@ final class SceneCoordinator {
 
     private func makeUserInfo(lastActiveURL: URL) -> [AnyHashable: Any] {
         var userInfo: [AnyHashable: Any] = [Constants.urlKey: lastActiveURL.absoluteString]
-        if let fileURL = EditJotURL(url: lastActiveURL)?.fileURL,
-            let bookmark = try? fileURL.bookmarkData()
-        {
+        guard let fileURL = EditJotURL(url: lastActiveURL)?.fileURL else {
+            return userInfo
+        }
+        #if targetEnvironment(macCatalyst)
+        let bookmarkOptions = URL.BookmarkCreationOptions.withSecurityScope
+        #else
+        let bookmarkOptions = URL.BookmarkCreationOptions()
+        #endif
+
+        if let bookmark = try? fileURL.bookmarkData(options: bookmarkOptions) {
             userInfo[Constants.fileBookmarkKey] = bookmark
         }
         return userInfo
@@ -232,9 +242,17 @@ final class SceneCoordinator {
         }
 
         var isStale = false
+
+        #if targetEnvironment(macCatalyst)
+        let bookmarkOptions = URL.BookmarkResolutionOptions.withSecurityScope
+        #else
+        let bookmarkOptions = URL.BookmarkResolutionOptions()
+        #endif
+
         guard
             let resolved = try? URL(
                 resolvingBookmarkData: bookmark,
+                options: bookmarkOptions,
                 bookmarkDataIsStale: &isStale
             ),
             EditJotURL(url: url) != nil,
@@ -242,6 +260,14 @@ final class SceneCoordinator {
         else {
             return url
         }
+
+        #if targetEnvironment(macCatalyst)
+        if resolved.startAccessingSecurityScopedResource() {
+            securityScopedURL?.stopAccessingSecurityScopedResource()
+            securityScopedURL = resolved
+        }
+        #endif
+
         return rebuilt
     }
 
@@ -263,6 +289,9 @@ final class SceneCoordinator {
     }
 
     deinit {
+        #if targetEnvironment(macCatalyst)
+        securityScopedURL?.stopAccessingSecurityScopedResource()
+        #endif
         userInterfaceStyleTask?.cancel()
     }
 }
