@@ -169,6 +169,7 @@ schemes:
         AppKitPlugin: all
     run:
       config: Debug
+      executable: Jottre
     test:
       config: Debug
       targets:
