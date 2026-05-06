@@ -329,6 +329,79 @@ final class JotFileServiceTests: XCTestCase {
         await fulfillment(of: [removeFileProviderExpectation], timeout: 0.2)
     }
 
+    func test_rename_givenUbiquitousJotFileInfo_movesViaUbiquitousFileService() async throws {
+        // Given
+        let moveFileProviderExpectation = XCTestExpectation(description: "Ubiquitous moveFileProvider is called.")
+        let originalFileURL = URL(staticString: "file:///cloud/old.jot")
+        let expectedNewFileURL = URL(staticString: "file:///cloud/new.jot")
+        let ubiquitousFileServiceMock = FileServiceMock(
+            moveFileProvider: { receivedFileURL, receivedNewFileURL in
+                // Then
+                XCTAssertEqual(receivedFileURL, originalFileURL)
+                XCTAssertEqual(receivedNewFileURL, expectedNewFileURL)
+                moveFileProviderExpectation.fulfill()
+            }
+        )
+        let jotFileService = JotFileService(
+            localFileService: FileServiceMock(),
+            ubiquitousFileService: ubiquitousFileServiceMock
+        )
+
+        // When
+        let renamed = try jotFileService.rename(
+            jotFileInfo: JotFile.Info(
+                url: originalFileURL,
+                name: "old",
+                modificationDate: nil,
+                ubiquitousInfo: UbiquitousInfo(downloadStatus: .current, isDownloading: false)
+            ),
+            newName: "new"
+        )
+
+        // Then
+        XCTAssertEqual(renamed.url, expectedNewFileURL)
+        XCTAssertEqual(renamed.name, "new")
+        await fulfillment(of: [moveFileProviderExpectation], timeout: 0.2)
+    }
+
+    func test_duplicate_givenUbiquitousJotFileInfo_returnsDuplicatedInfoFromUbiquitousFileService() async throws {
+        // Given
+        let duplicateFileProviderExpectation = XCTestExpectation(
+            description: "Ubiquitous duplicateFileProvider is called."
+        )
+        let originalFileURL = URL(staticString: "file:///cloud/note.jot")
+        let duplicatedFileURL = URL(staticString: "file:///cloud/note-1.jot")
+        let originalUbiquitousInfo = UbiquitousInfo(downloadStatus: .current, isDownloading: false)
+        let ubiquitousFileServiceMock = FileServiceMock(
+            duplicateFileProvider: { receivedFileURL in
+                // Then
+                XCTAssertEqual(receivedFileURL, originalFileURL)
+                duplicateFileProviderExpectation.fulfill()
+                return duplicatedFileURL
+            }
+        )
+        let jotFileService = JotFileService(
+            localFileService: FileServiceMock(),
+            ubiquitousFileService: ubiquitousFileServiceMock
+        )
+
+        // When
+        let duplicated = try jotFileService.duplicate(
+            jotFileInfo: JotFile.Info(
+                url: originalFileURL,
+                name: "note",
+                modificationDate: nil,
+                ubiquitousInfo: originalUbiquitousInfo
+            )
+        )
+
+        // Then
+        XCTAssertEqual(duplicated.url, duplicatedFileURL)
+        XCTAssertEqual(duplicated.name, "note-1")
+        XCTAssertEqual(duplicated.ubiquitousInfo, originalUbiquitousInfo)
+        await fulfillment(of: [duplicateFileProviderExpectation], timeout: 0.2)
+    }
+
     func test_move_givenDocumentsDirectoryUnresolved_throwsCouldNotResolveFailure() async {
         // Given
         let localFileServiceMock = FileServiceMock(

@@ -70,6 +70,80 @@ final class CachedJotFilePreviewImageServiceTests: XCTestCase {
         XCTAssertEqual(underlyingCallCount.value, 1)
     }
 
+    func test_getPreviewImageData_givenColdCache_writesThroughToDiskCache() async throws {
+        // Given
+        let writeFileExpectation = XCTestExpectation(description: "FileServiceMock.writeFileProvider is called.")
+        let producedData = Data([4, 5, 6])
+        let writtenURL = LockIsolated<URL?>(nil)
+        let writtenData = LockIsolated<Data?>(nil)
+        let service = CachedJotFilePreviewImageService(
+            localFileService: FileServiceMock(
+                temporaryDirectoryProvider: {
+                    FileManager.default.temporaryDirectory
+                        .appendingPathComponent(UUID().uuidString, isDirectory: true)
+                },
+                readFileProvider: { _ in throw NSError(domain: "noDiskCache", code: 0) },
+                writeFileProvider: { receivedURL, receivedData in
+                    writtenURL.withValue { $0 = receivedURL }
+                    writtenData.withValue { $0 = receivedData }
+                    writeFileExpectation.fulfill()
+                }
+            ),
+            jotFilePreviewImageService: JotFilePreviewImageServiceMock(
+                getPreviewImageDataProvider: { _, _, _ in producedData }
+            )
+        )
+
+        // When
+        let data = try await service.getPreviewImageData(
+            jotFileInfo: info,
+            userInterfaceStyle: .light,
+            displayScale: 2.0
+        )
+
+        // Then
+        XCTAssertEqual(data, producedData)
+        await fulfillment(of: [writeFileExpectation], timeout: 0.5)
+        XCTAssertEqual(writtenData.value, producedData)
+        XCTAssertNotNil(writtenURL.value)
+    }
+
+    func test_getPreviewImageData_givenJotFileInfoWithoutModificationDate_skipsDiskCache() async throws {
+        // Given
+        let readFileExpectation = XCTestExpectation(description: "FileServiceMock.readFileProvider is not called.")
+        readFileExpectation.isInverted = true
+        let writeFileExpectation = XCTestExpectation(description: "FileServiceMock.writeFileProvider is not called.")
+        writeFileExpectation.isInverted = true
+        let undatedInfo = JotFile.Info(
+            url: URL(staticString: "file:///tmp/note.jot"),
+            name: "note",
+            modificationDate: nil,
+            ubiquitousInfo: nil
+        )
+        let service = CachedJotFilePreviewImageService(
+            localFileService: FileServiceMock(
+                readFileProvider: { _ in
+                    readFileExpectation.fulfill()
+                    return Data()
+                },
+                writeFileProvider: { _, _ in writeFileExpectation.fulfill() }
+            ),
+            jotFilePreviewImageService: JotFilePreviewImageServiceMock(
+                getPreviewImageDataProvider: { _, _, _ in Data([1]) }
+            )
+        )
+
+        // When
+        _ = try await service.getPreviewImageData(
+            jotFileInfo: undatedInfo,
+            userInterfaceStyle: .light,
+            displayScale: 2.0
+        )
+
+        // Then
+        await fulfillment(of: [readFileExpectation, writeFileExpectation], timeout: 0.2)
+    }
+
     func test_getPreviewImageData_givenDiskCacheHit_skipsUnderlyingService() async throws {
         // Given
         let cachedData = Data([42])
