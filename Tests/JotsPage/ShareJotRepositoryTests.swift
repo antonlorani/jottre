@@ -26,7 +26,7 @@ final class ShareJotRepositoryTests: XCTestCase {
 
     func test_exportJot_givenPDFFormat_writesPDFFileToTemporaryDirectoryAndReturnsItsURL() async throws {
         // Given
-        let repository = makeRepository()
+        let repository = try makeRepository()
 
         // When
         let resultURL = try await repository.exportJot(jotFileInfo: makeJotFileInfo(), format: .pdf)
@@ -41,7 +41,7 @@ final class ShareJotRepositoryTests: XCTestCase {
 
     func test_exportJot_givenJPGFormat_writesJPGFileToTemporaryDirectoryAndReturnsItsURL() async throws {
         // Given
-        let repository = makeRepository()
+        let repository = try makeRepository()
 
         // When
         let resultURL = try await repository.exportJot(jotFileInfo: makeJotFileInfo(), format: .jpg)
@@ -55,7 +55,7 @@ final class ShareJotRepositoryTests: XCTestCase {
 
     func test_exportJot_givenPNGFormat_writesPNGFileToTemporaryDirectoryAndReturnsItsURL() async throws {
         // Given
-        let repository = makeRepository()
+        let repository = try makeRepository()
 
         // When
         let resultURL = try await repository.exportJot(jotFileInfo: makeJotFileInfo(), format: .png)
@@ -90,17 +90,28 @@ final class ShareJotRepositoryTests: XCTestCase {
         }
     }
 
-    private func makeRepository() -> ShareJotRepository {
-        ShareJotRepository(
+    private func makeRepository() throws -> ShareJotRepository {
+        let fixtureJot = try loadFixtureJot()
+        return ShareJotRepository(
             jotFileService: JotFileServiceMock(
                 readJotFileProvider: { jotFileInfo in
-                    JotFile(info: jotFileInfo, jot: Jot.makeEmpty())
+                    JotFile(info: jotFileInfo, jot: fixtureJot)
                 }
             ),
             fileService: FileServiceMock(
                 temporaryDirectoryProvider: { [temporaryDirectory] in temporaryDirectory! }
             )
         )
+    }
+
+    private func loadFixtureJot() throws -> Jot {
+        let bundle = Bundle(for: ShareJotRepositoryTests.self)
+        let fixtureURL = try XCTUnwrap(
+            bundle.url(forResource: "Calculator Pro", withExtension: "jot"),
+            "Missing 'Calculator Pro.jot' fixture in test bundle resources."
+        )
+        let data = try Data(contentsOf: fixtureURL)
+        return try PropertyListDecoder().decode(Jot.self, from: data)
     }
 
     private func makeJotFileInfo() -> JotFile.Info {

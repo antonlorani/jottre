@@ -27,7 +27,7 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
     let items: AsyncStream<[PageCellItem]>
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
-    private weak var coordinator: EnableCloudCoordinator?
+    private weak var coordinator: EnableCloudCoordinatorProtocol?
 
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
@@ -39,7 +39,7 @@ final class EnableCloudViewModel: PageViewModel, Sendable {
         }
     ]
 
-    init(coordinator: EnableCloudCoordinator) {
+    init(coordinator: EnableCloudCoordinatorProtocol) {
         self.coordinator = coordinator
 
         (items, itemsContinuation) = AsyncStream.makeStream(

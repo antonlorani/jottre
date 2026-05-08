@@ -42,13 +42,13 @@ final class JotsViewModel: PageViewModel {
 
     private var jotsTask: Task<Void, Never>?
 
-    private weak var coordinator: JotsCoordinator?
+    private weak var coordinator: JotsCoordinatorProtocol?
 
     private let repository: JotsRepositoryProtocol
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
-        coordinator: JotsCoordinator,
+        coordinator: JotsCoordinatorProtocol,
         repository: JotsRepositoryProtocol,
         menuConfigurationFactory: JotMenuConfigurationFactory
     ) {

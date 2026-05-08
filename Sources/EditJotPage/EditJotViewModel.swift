@@ -93,13 +93,13 @@ final class EditJotViewModel: Sendable {
 
     private let jotFileInfo: JotFile.Info
     private let repository: EditJotRepositoryProtocol
-    private weak var coordinator: EditJotCoordinator?
+    private weak var coordinator: EditJotCoordinatorProtocol?
     private let menuConfigurationFactory: JotMenuConfigurationFactory
 
     init(
         jotFileInfo: JotFile.Info,
         repository: EditJotRepositoryProtocol,
-        coordinator: EditJotCoordinator,
+        coordinator: EditJotCoordinatorProtocol,
         menuConfigurationFactory: JotMenuConfigurationFactory
     ) {
         self.jotFileInfo = jotFileInfo

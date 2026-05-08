@@ -25,7 +25,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
     private let repository: CloudMigrationRepositoryProtocol
-    private weak var coordinator: CloudMigrationCoordinator?
+    private weak var coordinator: CloudMigrationCoordinatorProtocol?
 
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
@@ -41,7 +41,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
 
     init(
         repository: CloudMigrationRepositoryProtocol,
-        coordinator: CloudMigrationCoordinator
+        coordinator: CloudMigrationCoordinatorProtocol
     ) {
         self.repository = repository
         self.coordinator = coordinator

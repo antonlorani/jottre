@@ -37,13 +37,13 @@ final class SettingsViewModel: PageViewModel {
     private let itemsContinuation: AsyncStream<[PageCellItem]>.Continuation
 
     private let repository: SettingsRepositoryProtocol
-    private weak var coordinator: SettingsCoordinator?
+    private weak var coordinator: SettingsCoordinatorProtocol?
 
     private var loadingTask: Task<Void, Never>?
 
     init(
         repository: SettingsRepositoryProtocol,
-        coordinator: SettingsCoordinator
+        coordinator: SettingsCoordinatorProtocol
     ) {
         self.repository = repository
         self.coordinator = coordinator

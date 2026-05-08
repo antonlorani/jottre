@@ -18,7 +18,13 @@
 
 import UIKit
 
-final class EnableCloudCoordinator: Coordinator {
+protocol EnableCloudCoordinatorProtocol: Coordinator {
+
+    func openLearnHowToEnable()
+    func dismiss()
+}
+
+final class EnableCloudCoordinator: Coordinator, EnableCloudCoordinatorProtocol {
 
     var onEnd: (() -> Void)?
 

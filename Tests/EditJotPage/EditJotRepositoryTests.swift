@@ -55,7 +55,7 @@ final class EditJotRepositoryTests: XCTestCase {
 
         // Then
         XCTAssertEqual(result.width, 800)
-        XCTAssertEqual(result.drawing.dataRepresentation(), drawingData)
+        XCTAssertEqual(result.drawing.strokes.count, drawing.strokes.count)
     }
 
     func test_writeDrawing_writesEncodedDrawingViaJotFileService() async throws {

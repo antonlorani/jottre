@@ -23,7 +23,7 @@ protocol EditJotViewControllerFactoryProtocol: Sendable {
 
     func make(
         jotFileInfo: JotFile.Info,
-        coordinator: EditJotCoordinator
+        coordinator: EditJotCoordinatorProtocol
     ) -> UIViewController
 }
 
@@ -35,7 +35,7 @@ struct EditJotViewControllerFactory: EditJotViewControllerFactoryProtocol {
 
     func make(
         jotFileInfo: JotFile.Info,
-        coordinator: EditJotCoordinator,
+        coordinator: EditJotCoordinatorProtocol,
     ) -> UIViewController {
         EditJotViewController(
             viewModel: EditJotViewModel(

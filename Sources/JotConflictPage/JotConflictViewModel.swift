@@ -85,14 +85,14 @@ final class JotConflictViewModel: PageViewModel, Sendable {
     private let jotFileInfo: JotFile.Info
     private let jotFileVersions: [JotFileVersion]
     private let repository: JotConflictRepositoryProtocol
-    private weak var coordinator: JotConflictCoordinator?
+    private weak var coordinator: JotConflictCoordinatorProtocol?
     private let onResult: @Sendable (_ result: JotConflictResult) -> Void
 
     init(
         jotFileInfo: JotFile.Info,
         jotFileVersions: [JotFileVersion],
         repository: JotConflictRepositoryProtocol,
-        coordinator: JotConflictCoordinator,
+        coordinator: JotConflictCoordinatorProtocol,
         onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
     ) {
         assert(jotFileVersions.count >= 1, "Resolving a version conflict between less than two files is not logical.")

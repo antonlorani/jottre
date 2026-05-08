@@ -127,7 +127,11 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - Tests
+      - path: Tests
+        excludes:
+          - Resources/**
+      - path: Tests/Resources
+        buildPhase: resources
     dependencies:
       - target: Jottre
     settings:

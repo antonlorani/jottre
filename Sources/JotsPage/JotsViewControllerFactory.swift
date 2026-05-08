@@ -21,7 +21,7 @@ import UIKit
 @MainActor
 protocol JotsViewControllerFactoryProtocol: Sendable {
 
-    func make(coordinator: JotsCoordinator) -> UIViewController
+    func make(coordinator: JotsCoordinatorProtocol) -> UIViewController
 }
 
 struct JotsViewControllerFactory: JotsViewControllerFactoryProtocol {
@@ -31,7 +31,7 @@ struct JotsViewControllerFactory: JotsViewControllerFactoryProtocol {
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
-    func make(coordinator: JotsCoordinator) -> UIViewController {
+    func make(coordinator: JotsCoordinatorProtocol) -> UIViewController {
         let viewController = PageViewController(
             viewModel: JotsViewModel(
                 coordinator: coordinator,
