@@ -11,9 +11,6 @@ Simple and minimalistic handwriting app across Apple platforms.
 
 ![Jottre on iPad App Preview](jottre_ipad_app_preview.jpg)
 
-> [!IMPORTANT]
-> Modernization efforts are currently ongoing in `master`. Checkout the `v1.5` tag for viewing the current AppStore version.
-
 ## License
 
 Copyright (C) 2021-2026 Anton Lorani
