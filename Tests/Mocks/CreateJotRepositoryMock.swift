@@ -42,18 +42,3 @@ final class CreateJotRepositoryMock: CreateJotRepositoryProtocol {
         try await createJotProvider(name)
     }
 }
-
-final class DeleteJotRepositoryMock: DeleteJotRepositoryProtocol {
-
-    private let deleteJotProvider: @Sendable (_ jotFileInfo: JotFile.Info) throws -> Void
-
-    init(
-        deleteJotProvider: @Sendable @escaping (_ jotFileInfo: JotFile.Info) throws -> Void = { _ in }
-    ) {
-        self.deleteJotProvider = deleteJotProvider
-    }
-
-    func deleteJot(jotFileInfo: JotFile.Info) throws {
-        try deleteJotProvider(jotFileInfo)
-    }
-}
