@@ -42,6 +42,14 @@ Bump version from merge commit and push tag
 
 Generate the Xcode project using XcodeGen
 
+### ios test
+
+```sh
+[bundle exec] fastlane ios test
+```
+
+Run unit tests
+
 ### ios build_debug
 
 ```sh

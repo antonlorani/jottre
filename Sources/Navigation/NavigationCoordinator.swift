@@ -19,7 +19,7 @@
 import UIKit
 
 @MainActor
-protocol NavigationCoordinator: Sendable {
+protocol NavigationCoordinator: Sendable, AnyObject {
 
     /// Whether this coordinator is capable of navigating to the given ``URL``.
     func shouldHandle(url: URL) -> Bool

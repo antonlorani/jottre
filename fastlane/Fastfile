@@ -141,6 +141,18 @@ platform :ios do
         sh('xcodegen generate --spec ../project.yml')
     end
 
+    desc 'Run unit tests'
+    lane :test do
+        generate_project
+
+        run_tests(
+            scheme: SCHEME,
+            destination: 'platform=iOS Simulator,name=iPhone 17',
+            xcargs: NO_SIGN_XCARGS,
+            output_directory: 'build'
+        )
+    end
+
     desc 'Verify iOS/iPadOS debug build'
     lane :build_debug do
         generate_project

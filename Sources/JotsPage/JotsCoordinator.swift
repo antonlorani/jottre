@@ -18,8 +18,25 @@
 
 import UIKit
 
+protocol JotsCoordinatorProtocol: NavigationCoordinator {
+
+    func openSettings()
+    func openCreateJot()
+    func openJot(jotFileInfo: JotFile.Info, prefersNewWindow: Bool)
+    func openEnableCloudPage()
+    func showShareJot(
+        jotFileInfo: JotFile.Info,
+        format: ShareFormat,
+        configurePopoverAnchor: PopoverAnchor?
+    )
+    func showRenameAlert(jotFileInfo: JotFile.Info)
+    func openDeleteJot(jotFileInfo: JotFile.Info)
+    func showInfoAlert(title: String, message: String)
+    func showInFiles(jotFileInfo: JotFile.Info)
+}
+
 @MainActor
-final class JotsCoordinator: NavigationCoordinator {
+final class JotsCoordinator: NavigationCoordinator, JotsCoordinatorProtocol {
 
     private var cloudMigrationTask: Task<Void, Never>?
 
@@ -40,11 +57,11 @@ final class JotsCoordinator: NavigationCoordinator {
     ]
 
     private let navigation: Navigation
-    private let jotsViewControllerFactory: JotsViewControllerFactory
-    private let settingsCoordinatorFactory: SettingsCoordinatorFactory
-    private let enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory
-    private let editJotCoordinatorFactory: EditJotCoordinatorFactory
-    private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory
+    private let jotsViewControllerFactory: JotsViewControllerFactoryProtocol
+    private let settingsCoordinatorFactory: SettingsCoordinatorFactoryProtocol
+    private let enableCloudCoordinatorFactory: EnableCloudCoordinatorFactoryProtocol
+    private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
+    private let cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol
     private let createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol
     private let deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol
     private let renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol
@@ -53,11 +70,11 @@ final class JotsCoordinator: NavigationCoordinator {
 
     init(
         navigation: Navigation,
-        jotsViewControllerFactory: JotsViewControllerFactory,
-        settingsCoordinatorFactory: SettingsCoordinatorFactory,
-        enableCloudCoordinatorFactory: EnableCloudCoordinatorFactory,
-        editJotCoordinatorFactory: EditJotCoordinatorFactory,
-        cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactory,
+        jotsViewControllerFactory: JotsViewControllerFactoryProtocol,
+        settingsCoordinatorFactory: SettingsCoordinatorFactoryProtocol,
+        enableCloudCoordinatorFactory: EnableCloudCoordinatorFactoryProtocol,
+        editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
+        cloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtocol,
         createJotCoordinatorFactory: CreateJotCoordinatorFactoryProtocol,
         deleteJotCoordinatorFactory: DeleteJotCoordinatorFactoryProtocol,
         renameJotCoordinatorFactory: RenameJotCoordinatorFactoryProtocol,

@@ -18,7 +18,28 @@
 
 import UIKit
 
-final class EditJotCoordinator: NavigationCoordinator {
+protocol EditJotCoordinatorProtocol: NavigationCoordinator {
+
+    func showShareJot(
+        jotFileInfo: JotFile.Info,
+        format: ShareFormat,
+        configurePopoverAnchor: PopoverAnchor?
+    )
+    func showRenameAlert(jotFileInfo: JotFile.Info)
+    func openDeleteJot(jotFileInfo: JotFile.Info)
+    func openJot(jotFileInfo: JotFile.Info)
+    func showInFiles(jotFileInfo: JotFile.Info)
+    func showJotConflictPage(
+        jotFileInfo: JotFile.Info,
+        jotFileVersions: [JotFileVersion],
+        onResult: @Sendable @escaping (_ result: JotConflictResult) -> Void
+    )
+    func canGoBack() -> Bool
+    func goBack()
+    func showInfoAlert(title: String, message: String)
+}
+
+final class EditJotCoordinator: NavigationCoordinator, EditJotCoordinatorProtocol {
 
     private var retainedInfoAlertCoordinator: Coordinator?
 

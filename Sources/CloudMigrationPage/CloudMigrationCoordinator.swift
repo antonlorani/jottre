@@ -18,9 +18,14 @@
 
 import UIKit
 
+@MainActor
 protocol CloudMigrationCoordinatorProtocol: Coordinator {
 
     func shouldStart() -> Bool
+
+    func showInfoAlert(title: String, message: String)
+
+    func dismiss()
 }
 
 final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {

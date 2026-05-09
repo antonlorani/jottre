@@ -18,7 +18,13 @@
 
 import UIKit
 
-final class JotConflictCoordinator: Coordinator {
+protocol JotConflictCoordinatorProtocol: Coordinator {
+
+    func showInfoAlert(title: String, message: String)
+    func dismiss(completion: @Sendable @escaping () -> Void)
+}
+
+final class JotConflictCoordinator: Coordinator, JotConflictCoordinatorProtocol {
 
     private var retainedInfoAlertCoordinator: Coordinator?
 

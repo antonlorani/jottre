@@ -21,7 +21,7 @@ import UIKit
 @MainActor
 protocol SettingsViewControllerFactoryProtocol: Sendable {
 
-    func make(coordinator: SettingsCoordinator) -> UIViewController
+    func make(coordinator: SettingsCoordinatorProtocol) -> UIViewController
 }
 
 struct SettingsViewControllerFactory: SettingsViewControllerFactoryProtocol {
@@ -30,7 +30,7 @@ struct SettingsViewControllerFactory: SettingsViewControllerFactoryProtocol {
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
-    func make(coordinator: SettingsCoordinator) -> UIViewController {
+    func make(coordinator: SettingsCoordinatorProtocol) -> UIViewController {
         let viewController = PageViewController(
             viewModel: SettingsViewModel(
                 repository: repository,

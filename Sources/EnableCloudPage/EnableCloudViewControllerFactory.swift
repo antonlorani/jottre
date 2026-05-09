@@ -21,7 +21,7 @@ import UIKit
 @MainActor
 protocol EnableCloudViewControllerFactoryProtocol: Sendable {
 
-    func make(coordinator: EnableCloudCoordinator) -> UIViewController
+    func make(coordinator: EnableCloudCoordinatorProtocol) -> UIViewController
 }
 
 struct EnableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtocol {
@@ -29,7 +29,7 @@ struct EnableCloudViewControllerFactory: EnableCloudViewControllerFactoryProtoco
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
 
-    func make(coordinator: EnableCloudCoordinator) -> UIViewController {
+    func make(coordinator: EnableCloudCoordinatorProtocol) -> UIViewController {
         PageViewController(
             viewModel: EnableCloudViewModel(
                 coordinator: coordinator

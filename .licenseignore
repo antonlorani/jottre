@@ -9,6 +9,7 @@ README.md
 *.jpg
 Jottre.xcodeproj
 Resources
+Tests/Resources
 hooks
 fastlane
 Gemfile

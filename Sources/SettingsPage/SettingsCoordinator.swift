@@ -18,7 +18,13 @@
 
 import UIKit
 
-final class SettingsCoordinator: Coordinator {
+protocol SettingsCoordinatorProtocol: Coordinator {
+
+    func openExternalLink(url: URL)
+    func dismiss()
+}
+
+final class SettingsCoordinator: Coordinator, SettingsCoordinatorProtocol {
 
     var onEnd: (() -> Void)?
 
