@@ -8,16 +8,42 @@ body:
       value: |
         Thanks for taking the time to file a bug report! Please fill out the sections below so we can reproduce and address the issue quickly.
 
+  - type: input
+    id: app_version
+    attributes:
+      label: App version
+      description: The version of Jottre where you observed the bug.
+      placeholder: e.g. 2.6.8
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: The platform where the bug occurred.
+      options:
+        - iOS
+        - iPadOS
+        - macOS
+    validations:
+      required: true
+
+  - type: input
+    id: platform_version
+    attributes:
+      label: Platform version
+      description: The version of the platform where the bug occurred.
+      placeholder: e.g. 17.4
+    validations:
+      required: true
+
   - type: textarea
     id: given
     attributes:
       label: Given
-      description: What is the precondition for this bug to occur? Include app version, platform (iOS, iPadOS, macOS), and platform version.
-      placeholder: |
-        - App version: 2.6.8
-        - Platform: iPadOS
-        - Platform version: 17.4
-        - Additional context: ...
+      description: What is the precondition for this bug to occur? Include any additional context not covered by the fields above.
+      placeholder: Describe the state of the app and any relevant setup before the bug occurs.
     validations:
       required: true
 
@@ -60,14 +86,23 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: media
+    attributes:
+      label: Logs, screenshots, or video
+      description: Attach any logs, screenshots, or screen recordings that help illustrate the bug.
+      placeholder: Drag and drop files here, or paste logs as text.
+    validations:
+      required: false
+
   - type: checkboxes
     id: acknowledgements
     attributes:
       label: Acknowledgements
       options:
-        - label: I have read and accept the code of conduct
+        - label: I have read and accept the [code of conduct](../../CODE_OF_CONDUCT.md)
           required: true
-        - label: I have read and accept the contribution guidelines
+        - label: I have read and accept the [contribution guidelines](../../CONTRIBUTING.md)
           required: true
         - label: I have already looked at existing issues related to this bug
           required: true

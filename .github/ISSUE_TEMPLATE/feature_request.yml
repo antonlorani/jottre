@@ -27,6 +27,15 @@ body:
       required: true
 
   - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider, and why is the proposed solution preferred?
+      placeholder: Describe any workarounds or alternative designs you have thought about.
+    validations:
+      required: false
+
+  - type: textarea
     id: value
     attributes:
       label: Value
@@ -36,13 +45,25 @@ body:
       required: true
 
   - type: checkboxes
+    id: platforms
+    attributes:
+      label: Platforms
+      description: Which platforms should this feature target?
+      options:
+        - label: iOS
+        - label: iPadOS
+        - label: macOS
+    validations:
+      required: true
+
+  - type: checkboxes
     id: acknowledgements
     attributes:
       label: Acknowledgements
       options:
-        - label: I have read and accept the code of conduct
+        - label: I have read and accept the [code of conduct](../../CODE_OF_CONDUCT.md)
           required: true
-        - label: I have read and accept the contribution guidelines
+        - label: I have read and accept the [contribution guidelines](../../CONTRIBUTING.md)
           required: true
         - label: I have already looked at existing issues related to this feature
           required: true
