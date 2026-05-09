@@ -6,7 +6,7 @@ Pull requests, bug reports, and all other forms of contributions to make Jottre 
 
 Contributions occur on the premise that getting the project working with little effort.  Initially there are a few tools to install that make recurring contributions much simpler.
 
-See [README.md](README.md#development) for installation details.
+See [README.md](README.md#installation) for installation details.
 
 ## Creating an issue
 
@@ -37,7 +37,7 @@ Adds zoom scale to scene restoration (#42)
 
 Other than making sure that the commit messages communicates the intent clearly, no specific guidelines exist onto how to write a commit message.
 
-Before raising a pull request, run the following command for test verification.
+Before raising a pull request, run the [test verification](README.md#validation):
 
 ```
 bundle exec fastlane test
