@@ -41,7 +41,7 @@ final class DefaultsContinuationStorageTests: XCTestCase {
         let stream = AsyncStream<Int?> { continuation in
             storage.add(continuation, defaultsKey: key)
         }
-        var iterator = stream.makeAsyncIterator()
+        let iterator = stream.makeAsyncIterator()
         _ = iterator
 
         // When
@@ -61,8 +61,8 @@ final class DefaultsContinuationStorageTests: XCTestCase {
         let stream2 = AsyncStream<Int?> { continuation in
             storage.add(continuation, defaultsKey: key)
         }
-        var iterator1 = stream1.makeAsyncIterator()
-        var iterator2 = stream2.makeAsyncIterator()
+        let iterator1 = stream1.makeAsyncIterator()
+        let iterator2 = stream2.makeAsyncIterator()
         _ = iterator1
         _ = iterator2
 
@@ -81,7 +81,7 @@ final class DefaultsContinuationStorageTests: XCTestCase {
         let stream = AsyncStream<Int?> { continuation in
             storage.add(continuation, defaultsKey: registeredKey)
         }
-        var iterator = stream.makeAsyncIterator()
+        let iterator = stream.makeAsyncIterator()
         _ = iterator
 
         // When

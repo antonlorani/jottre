@@ -162,7 +162,7 @@ final class LocalFileServiceTests: XCTestCase {
         var iterator = stream.makeAsyncIterator()
 
         // When
-        let first = await iterator.next()
+        let first: Void? = await iterator.next()
 
         // Then
         XCTAssertNotNil(first)

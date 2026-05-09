@@ -21,6 +21,7 @@ import XCTest
 
 @testable import Jottre
 
+@MainActor
 final class NSLayoutConstraintWithPriorityTests: XCTestCase {
 
     func test_withPriority_setsPriorityAndReturnsSameConstraint() {
