@@ -11,6 +11,56 @@ Simple and minimalistic handwriting app across Apple platforms.
 
 ![Jottre on iPad App Preview](jottre_ipad_app_preview.jpg)
 
+## Contributing
+
+Contributions are welcome. Before opening an issue or pull request, please review the following documents:
+
+- [Contributing guidelines](CONTRIBUTING.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Security policy](SECURITY_POLICY.md)
+
+## Development
+
+### Installation
+
+Configure the Ruby toolchain with [rbenv](https://github.com/rbenv/rbenv):
+
+```sh
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+rbenv install $(cat .ruby-version)
+rbenv local $(cat .ruby-version)
+```
+
+Install Bundler and the project's Ruby dependencies:
+
+```sh
+gem install bundler
+bundle install
+```
+
+Install Xcode at the pinned version using [xcodes](https://github.com/XcodesOrg/xcodes):
+
+```sh
+brew install xcodesorg/made/xcodes
+brew install aria2
+xcodes install $(cat .xcode-version) --experimental-unxip
+xcodes select $(cat .xcode-version)
+```
+
+Generate the Xcode project:
+
+```sh
+bundle exec fastlane generate_project
+```
+
+### Validation
+
+Verify the setup by running the test suite:
+
+```sh
+bundle exec fastlane test
+```
+
 ## License
 
 Copyright (C) 2021-2026 Anton Lorani

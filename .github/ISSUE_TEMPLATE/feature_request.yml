@@ -1,0 +1,49 @@
+name: Feature Request
+description: Suggest a new feature or improvement for Jottre.
+title: ""
+labels:
+  - feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please describe the problem it solves, your proposed solution, and the value it brings to users.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is missing in the current app/project creating a problem for the user?
+      placeholder: Describe the gap or pain point you are experiencing today.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution
+      description: What is the proposed change to solve the described problem?
+      placeholder: Describe the feature, behaviour, or change you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: value
+    attributes:
+      label: Value
+      description: What value does this bring to the user?
+      placeholder: Describe how users will benefit from this change.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I have read and accept the code of conduct
+          required: true
+        - label: I have read and accept the contribution guidelines
+          required: true
+        - label: I have already looked at existing issues related to this feature
+          required: true
