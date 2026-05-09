@@ -16,25 +16,21 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
+import Foundation
 
 @testable import Jottre
 
-@MainActor
-final class EditJotViewControllerFactoryMock: EditJotViewControllerFactoryProtocol {
+final class DeleteJotRepositoryMock: DeleteJotRepositoryProtocol {
 
-    private let makeProvider:
-        @MainActor (_ jotFileInfo: JotFile.Info, _ coordinator: EditJotCoordinatorProtocol) -> UIViewController
+    private let deleteJotProvider: @Sendable (_ jotFileInfo: JotFile.Info) throws -> Void
 
     init(
-        makeProvider:
-            @MainActor @escaping (_ jotFileInfo: JotFile.Info, _ coordinator: EditJotCoordinatorProtocol) ->
-            UIViewController = { _, _ in UIViewController() }
+        deleteJotProvider: @Sendable @escaping (_ jotFileInfo: JotFile.Info) throws -> Void = { _ in }
     ) {
-        self.makeProvider = makeProvider
+        self.deleteJotProvider = deleteJotProvider
     }
 
-    func make(jotFileInfo: JotFile.Info, coordinator: EditJotCoordinatorProtocol) -> UIViewController {
-        makeProvider(jotFileInfo, coordinator)
+    func deleteJot(jotFileInfo: JotFile.Info) throws {
+        try deleteJotProvider(jotFileInfo)
     }
 }

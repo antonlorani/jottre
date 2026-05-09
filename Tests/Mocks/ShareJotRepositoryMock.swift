@@ -16,25 +16,24 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import UIKit
+import Foundation
 
 @testable import Jottre
 
-@MainActor
-final class EditJotViewControllerFactoryMock: EditJotViewControllerFactoryProtocol {
+final class ShareJotRepositoryMock: ShareJotRepositoryProtocol {
 
-    private let makeProvider:
-        @MainActor (_ jotFileInfo: JotFile.Info, _ coordinator: EditJotCoordinatorProtocol) -> UIViewController
+    private let exportJotProvider: @Sendable (_ jotFileInfo: JotFile.Info, _ format: ShareFormat) async throws -> URL
 
     init(
-        makeProvider:
-            @MainActor @escaping (_ jotFileInfo: JotFile.Info, _ coordinator: EditJotCoordinatorProtocol) ->
-            UIViewController = { _, _ in UIViewController() }
+        exportJotProvider:
+            @Sendable @escaping (_ jotFileInfo: JotFile.Info, _ format: ShareFormat) async throws -> URL = { _, _ in
+                URL(fileURLWithPath: "/tmp/share")
+            }
     ) {
-        self.makeProvider = makeProvider
+        self.exportJotProvider = exportJotProvider
     }
 
-    func make(jotFileInfo: JotFile.Info, coordinator: EditJotCoordinatorProtocol) -> UIViewController {
-        makeProvider(jotFileInfo, coordinator)
+    func exportJot(jotFileInfo: JotFile.Info, format: ShareFormat) async throws -> URL {
+        try await exportJotProvider(jotFileInfo, format)
     }
 }

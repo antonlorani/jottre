@@ -20,34 +20,25 @@ import Foundation
 
 @testable import Jottre
 
-@MainActor
-final class SettingsCoordinatorMock: SettingsCoordinatorProtocol {
+final class RenameJotRepositoryMock: RenameJotRepositoryProtocol {
 
-    var onEnd: (() -> Void)?
-
-    private let startProvider: () -> Void
-    private let openExternalLinkProvider: (_ url: URL) -> Void
-    private let dismissProvider: () -> Void
+    private let renameProvider: (_ jotFileInfo: JotFile.Info, _ newName: String) throws -> JotFile.Info
 
     init(
-        startProvider: @escaping () -> Void = {},
-        openExternalLinkProvider: @escaping (_ url: URL) -> Void = { _ in },
-        dismissProvider: @escaping () -> Void = {}
+        renameProvider:
+            @escaping (_ jotFileInfo: JotFile.Info, _ newName: String) throws -> JotFile.Info = { jotFileInfo, name in
+                JotFile.Info(
+                    url: jotFileInfo.url.deletingLastPathComponent().appendingPathComponent("\(name).jot"),
+                    name: name,
+                    modificationDate: nil,
+                    ubiquitousInfo: nil
+                )
+            }
     ) {
-        self.startProvider = startProvider
-        self.openExternalLinkProvider = openExternalLinkProvider
-        self.dismissProvider = dismissProvider
+        self.renameProvider = renameProvider
     }
 
-    func start() {
-        startProvider()
-    }
-
-    func openExternalLink(url: URL) {
-        openExternalLinkProvider(url)
-    }
-
-    func dismiss() {
-        dismissProvider()
+    func rename(jotFileInfo: JotFile.Info, newName: String) throws -> JotFile.Info {
+        try renameProvider(jotFileInfo, newName)
     }
 }
