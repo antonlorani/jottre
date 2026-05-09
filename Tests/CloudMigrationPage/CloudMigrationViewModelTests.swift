@@ -31,7 +31,8 @@ final class CloudMigrationViewModelTests: XCTestCase {
         }
         let viewModel = CloudMigrationViewModel(
             repository: CloudMigrationRepositoryMock(getJotFilesProvider: { stream }),
-            coordinator: CloudMigrationCoordinatorMock()
+            coordinator: CloudMigrationCoordinatorMock(),
+            logger: LoggerMock()
         )
 
         // When
@@ -58,7 +59,8 @@ final class CloudMigrationViewModelTests: XCTestCase {
         }
         let viewModel = CloudMigrationViewModel(
             repository: CloudMigrationRepositoryMock(getJotFilesProvider: { stream }),
-            coordinator: CloudMigrationCoordinatorMock()
+            coordinator: CloudMigrationCoordinatorMock(),
+            logger: LoggerMock()
         )
 
         // When
@@ -67,6 +69,31 @@ final class CloudMigrationViewModelTests: XCTestCase {
 
         // Then
         XCTAssertEqual(items.count, 2)
+    }
+
+    func test_didLoad_givenStreamThrows_logsError() async {
+        // Given
+        let errorExpectation = XCTestExpectation(description: "LoggerMock.errorProvider is called.")
+        let stream = AsyncThrowingStream<[CloudMigrationJotBusinessModel], Error> { continuation in
+            continuation.finish(throwing: NSError(domain: "test", code: 0))
+        }
+        let viewModel = CloudMigrationViewModel(
+            repository: CloudMigrationRepositoryMock(getJotFilesProvider: { stream }),
+            coordinator: CloudMigrationCoordinatorMock(),
+            logger: LoggerMock(
+                errorProvider: { message in
+                    if message.contains("Failed to observe migration jot files") {
+                        errorExpectation.fulfill()
+                    }
+                }
+            )
+        )
+
+        // When
+        viewModel.didLoad()
+
+        // Then
+        await fulfillment(of: [errorExpectation], timeout: 1)
     }
 
     func test_actions_givenDoneTap_marksDoneAndDismissesViaCoordinator() async {
@@ -81,7 +108,8 @@ final class CloudMigrationViewModelTests: XCTestCase {
             repository: CloudMigrationRepositoryMock(
                 markCloudMigrationPageDoneProvider: { markDoneExpectation.fulfill() }
             ),
-            coordinator: coordinator
+            coordinator: coordinator,
+            logger: LoggerMock()
         )
 
         // When

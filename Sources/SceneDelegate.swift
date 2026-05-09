@@ -16,7 +16,6 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import OSLog
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -119,7 +118,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             editJotViewControllerFactory: EditJotViewControllerFactory(
                 repository: editJotRepository,
                 menuConfigurationFactory: menuConfigurationFactory,
-                symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                symbolBarButtonItemFactory: symbolBarButtonItemFactory,
+                logger: OSLogLogger(category: "EditJotViewModel")
             ),
             jotConflictCoordinatorFactory: JotConflictCoordinatorFactory(
                 jotConflictViewControllerFactory: JotConflictViewControllerFactory(
@@ -128,7 +128,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 ),
                 repository: JotConflictRepository(
                     jotFileConflictService: jotFileConflictService,
-                    jotFilePreviewImageService: jotFilePreviewImageService
+                    jotFilePreviewImageService: jotFilePreviewImageService,
+                    logger: OSLogLogger(category: "JotConflictRepository")
                 )
             ),
             renameJotCoordinatorFactory: RenameJotCoordinatorFactory(
@@ -152,7 +153,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 ),
                 menuConfigurationFactory: menuConfigurationFactory,
                 textBarButtonItemFactory: textBarButtonItemFactory,
-                symbolBarButtonItemFactory: symbolBarButtonItemFactory
+                symbolBarButtonItemFactory: symbolBarButtonItemFactory,
+                logger: OSLogLogger(category: "JotsViewModel")
             ),
             settingsCoordinatorFactory: SettingsCoordinatorFactory(
                 settingsViewControllerFactory: SettingsViewControllerFactory(
@@ -182,7 +184,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactory(
                     textBarButtonItemFactory: textBarButtonItemFactory,
                     symbolBarButtonItemFactory: symbolBarButtonItemFactory
-                )
+                ),
+                logger: OSLogLogger(category: "CloudMigrationViewModel")
             ),
             createJotCoordinatorFactory: CreateJotCoordinatorFactory(
                 repository: CreateJotRepository(
@@ -260,10 +263,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             applicationService: applicationService,
             localFileService: localFileService,
             ubiquitousFileService: ubiquitousFileService,
-            logger: Logger(
-                subsystem: Bundle.main.bundleIdentifier ?? "",
-                category: "SceneCoordinator"
-            ),
+            logger: OSLogLogger(category: "SceneCoordinator"),
             rootCoordinatorFactory: rootCoordinatorFactory,
             editJotCoordinatorFactory: editJotCoordinatorFactory,
             onUpdateUserInterfaceStyle: { [weak window] userInterfaceStyle in

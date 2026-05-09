@@ -28,7 +28,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: JotsCoordinatorMock(),
             repository: JotsRepositoryMock(shouldShowEnableICloudButtonProvider: { false }),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -48,7 +49,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: JotsCoordinatorMock(),
             repository: JotsRepositoryMock(shouldShowEnableICloudButtonProvider: { true }),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -72,7 +74,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: coordinator,
             repository: JotsRepositoryMock(),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -97,7 +100,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: coordinator,
             repository: JotsRepositoryMock(shouldShowEnableICloudButtonProvider: { true }),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -123,7 +127,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: coordinator,
             repository: JotsRepositoryMock(),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -150,7 +155,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: JotsCoordinatorMock(),
             repository: JotsRepositoryMock(getJotFilesProvider: { stream }),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -159,6 +165,32 @@ final class JotsViewModelTests: XCTestCase {
 
         // Then
         XCTAssertEqual(items.count, 1)
+    }
+
+    func test_didLoad_givenStreamThrows_logsError() async throws {
+        // Given
+        let errorExpectation = XCTestExpectation(description: "LoggerMock.errorProvider is called.")
+        let stream = AsyncThrowingStream<[JotFile.Info], Error> { continuation in
+            continuation.finish(throwing: NSError(domain: "test", code: 0))
+        }
+        let viewModel = JotsViewModel(
+            coordinator: JotsCoordinatorMock(),
+            repository: JotsRepositoryMock(getJotFilesProvider: { stream }),
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock(
+                errorProvider: { message in
+                    if message.contains("Failed to observe jot files") {
+                        errorExpectation.fulfill()
+                    }
+                }
+            )
+        )
+
+        // When
+        viewModel.didLoad()
+
+        // Then
+        await fulfillment(of: [errorExpectation], timeout: 1)
     }
 
     func test_didLoad_givenOneJot_yieldsOneJotItem() async throws {
@@ -176,7 +208,8 @@ final class JotsViewModelTests: XCTestCase {
         let viewModel = JotsViewModel(
             coordinator: JotsCoordinatorMock(),
             repository: JotsRepositoryMock(getJotFilesProvider: { stream }),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When

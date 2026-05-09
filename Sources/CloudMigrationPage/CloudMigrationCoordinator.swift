@@ -37,15 +37,18 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
     private let repository: CloudMigrationRepositoryProtocol
     private let navigation: Navigation
     private let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
+    private let logger: LoggerProtocol
 
     init(
         repository: CloudMigrationRepositoryProtocol,
         navigation: Navigation,
-        cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
+        cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol,
+        logger: LoggerProtocol
     ) {
         self.repository = repository
         self.navigation = navigation
         self.cloudMigrationViewControllerFactory = cloudMigrationViewControllerFactory
+        self.logger = logger
     }
 
     func shouldStart() -> Bool {
@@ -57,7 +60,8 @@ final class CloudMigrationCoordinator: CloudMigrationCoordinatorProtocol {
             rootViewController: cloudMigrationViewControllerFactory.make(
                 viewModel: CloudMigrationViewModel(
                     repository: repository,
-                    coordinator: self
+                    coordinator: self,
+                    logger: logger
                 )
             )
         )

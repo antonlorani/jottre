@@ -16,7 +16,6 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import OSLog
 import UIKit
 
 @MainActor
@@ -41,7 +40,7 @@ final class SceneCoordinator {
     private let applicationService: ApplicationServiceProtocol
     private let localFileService: FileServiceProtocol
     private let ubiquitousFileService: FileServiceProtocol
-    private let logger: Logger
+    private let logger: LoggerProtocol
     private let rootCoordinatorFactory: RootCoordinatorFactoryProtocol
     private let editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol
     private let onUpdateUserInterfaceStyle: @Sendable (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void
@@ -53,7 +52,7 @@ final class SceneCoordinator {
         applicationService: ApplicationServiceProtocol,
         localFileService: FileServiceProtocol,
         ubiquitousFileService: FileServiceProtocol,
-        logger: Logger,
+        logger: LoggerProtocol,
         rootCoordinatorFactory: RootCoordinatorFactoryProtocol,
         editJotCoordinatorFactory: EditJotCoordinatorFactoryProtocol,
         onUpdateUserInterfaceStyle: @Sendable @escaping (_ userInterfaceStyle: UIUserInterfaceStyle) -> Void,

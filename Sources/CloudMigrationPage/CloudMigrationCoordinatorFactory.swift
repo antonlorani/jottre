@@ -26,12 +26,14 @@ struct CloudMigrationCoordinatorFactory: CloudMigrationCoordinatorFactoryProtoco
 
     let repository: CloudMigrationRepositoryProtocol
     let cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryProtocol
+    let logger: LoggerProtocol
 
     func make(navigation: Navigation) -> CloudMigrationCoordinatorProtocol {
         CloudMigrationCoordinator(
             repository: repository,
             navigation: navigation,
-            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory
+            cloudMigrationViewControllerFactory: cloudMigrationViewControllerFactory,
+            logger: logger
         )
     }
 }
