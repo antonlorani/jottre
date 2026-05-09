@@ -1,0 +1,74 @@
+name: Bug Report
+description: Report a reproducible bug in Jottre.
+title: ""
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! Please fill out the sections below so we can reproduce and address the issue quickly.
+
+  - type: textarea
+    id: given
+    attributes:
+      label: Given
+      description: What is the precondition for this bug to occur? Include app version, platform (iOS, iPadOS, macOS), and platform version.
+      placeholder: |
+        - App version: 2.6.8
+        - Platform: iPadOS
+        - Platform version: 17.4
+        - Additional context: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: when
+    attributes:
+      label: When
+      description: What interactions take place for this bug to occur? List the steps as precisely as possible.
+      placeholder: |
+        1. Open ...
+        2. Tap ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: then
+    attributes:
+      label: Then
+      description: What is the outcome of the described precondition and interaction?
+      placeholder: Describe the actual behaviour, including any error messages, crashes, or visual glitches.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      description: What is the wanted behaviour of the precondition and interaction?
+      placeholder: Describe what you expected to happen instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: How does this negatively impact your work with Jottre?
+      placeholder: e.g. blocks note-taking entirely, causes data loss, minor inconvenience, ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I have read and accept the code of conduct
+          required: true
+        - label: I have read and accept the contribution guidelines
+          required: true
+        - label: I have already looked at existing issues related to this bug
+          required: true
