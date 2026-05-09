@@ -32,6 +32,7 @@ struct EditJotViewControllerFactory: EditJotViewControllerFactoryProtocol {
     let repository: EditJotRepositoryProtocol
     let menuConfigurationFactory: JotMenuConfigurationFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+    let logger: LoggerProtocol
 
     func make(
         jotFileInfo: JotFile.Info,
@@ -42,7 +43,8 @@ struct EditJotViewControllerFactory: EditJotViewControllerFactoryProtocol {
                 jotFileInfo: jotFileInfo,
                 repository: repository,
                 coordinator: coordinator,
-                menuConfigurationFactory: menuConfigurationFactory
+                menuConfigurationFactory: menuConfigurationFactory,
+                logger: logger
             ),
             symbolBarButtonItemFactory: symbolBarButtonItemFactory
         )

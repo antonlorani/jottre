@@ -26,6 +26,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
 
     private let repository: CloudMigrationRepositoryProtocol
     private weak var coordinator: CloudMigrationCoordinatorProtocol?
+    private let logger: LoggerProtocol
 
     private(set) lazy var actions = [
         PageCallToActionView.ActionConfiguration(
@@ -41,10 +42,12 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
 
     init(
         repository: CloudMigrationRepositoryProtocol,
-        coordinator: CloudMigrationCoordinatorProtocol
+        coordinator: CloudMigrationCoordinatorProtocol,
+        logger: LoggerProtocol
     ) {
         self.repository = repository
         self.coordinator = coordinator
+        self.logger = logger
 
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
@@ -62,7 +65,7 @@ final class CloudMigrationViewModel: PageViewModel, Sendable {
                     handleJots(cloudMigrationJots: cloudMigrationJots)
                 }
             } catch {
-                print(error)
+                logger.error("Failed to observe migration jot files: \(error)")
             }
         }
     }

@@ -29,7 +29,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
         let coordinator = CloudMigrationCoordinator(
             repository: CloudMigrationRepositoryMock(getShouldShowCloudMigrationProvider: { true }),
             navigation: Navigation.test(),
-            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock()
+            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(),
+            logger: LoggerMock()
         )
 
         // Then
@@ -41,7 +42,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
         let coordinator = CloudMigrationCoordinator(
             repository: CloudMigrationRepositoryMock(getShouldShowCloudMigrationProvider: { false }),
             navigation: Navigation.test(),
-            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock()
+            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(),
+            logger: LoggerMock()
         )
 
         // Then
@@ -66,7 +68,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
             navigation: navigation,
             cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(
                 makeProvider: { _ in madeViewController }
-            )
+            ),
+            logger: LoggerMock()
         )
 
         // When
@@ -85,7 +88,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
         let coordinator = CloudMigrationCoordinator(
             repository: CloudMigrationRepositoryMock(),
             navigation: navigation,
-            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock()
+            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(),
+            logger: LoggerMock()
         )
 
         // When
@@ -106,7 +110,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
         let coordinator = CloudMigrationCoordinator(
             repository: CloudMigrationRepositoryMock(),
             navigation: navigation,
-            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock()
+            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(),
+            logger: LoggerMock()
         )
         coordinator.onEnd = { onEndExpectation.fulfill() }
 
@@ -131,7 +136,8 @@ final class CloudMigrationCoordinatorTests: XCTestCase {
         let coordinator = CloudMigrationCoordinator(
             repository: CloudMigrationRepositoryMock(),
             navigation: navigation,
-            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock()
+            cloudMigrationViewControllerFactory: CloudMigrationViewControllerFactoryMock(),
+            logger: LoggerMock()
         )
 
         // When

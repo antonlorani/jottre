@@ -37,13 +37,16 @@ struct JotConflictRepository: JotConflictRepositoryProtocol {
 
     private let jotFileConflictService: JotFileConflictServiceProtocol
     private let jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
+    private let logger: LoggerProtocol
 
     init(
         jotFileConflictService: JotFileConflictServiceProtocol,
-        jotFilePreviewImageService: JotFilePreviewImageServiceProtocol
+        jotFilePreviewImageService: JotFilePreviewImageServiceProtocol,
+        logger: LoggerProtocol
     ) {
         self.jotFileConflictService = jotFileConflictService
         self.jotFilePreviewImageService = jotFilePreviewImageService
+        self.logger = logger
     }
 
     func resolveVersionConflicts(
@@ -90,7 +93,7 @@ struct JotConflictRepository: JotConflictRepositoryProtocol {
             )
             return UIImage(data: imageData)
         } catch {
-            print(error)
+            logger.error("Failed to load conflict preview image: \(error)")
             return nil
         }
     }

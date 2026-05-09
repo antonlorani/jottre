@@ -30,13 +30,15 @@ struct JotsViewControllerFactory: JotsViewControllerFactoryProtocol {
     let menuConfigurationFactory: JotMenuConfigurationFactory
     let textBarButtonItemFactory: TextBarButtonItemFactory
     let symbolBarButtonItemFactory: SymbolBarButtonItemFactory
+    let logger: LoggerProtocol
 
     func make(coordinator: JotsCoordinatorProtocol) -> UIViewController {
         let viewController = PageViewController(
             viewModel: JotsViewModel(
                 coordinator: coordinator,
                 repository: repository,
-                menuConfigurationFactory: menuConfigurationFactory
+                menuConfigurationFactory: menuConfigurationFactory,
+                logger: logger
             ),
             textBarButtonItemFactory: textBarButtonItemFactory,
             symbolBarButtonItemFactory: symbolBarButtonItemFactory

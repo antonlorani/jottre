@@ -46,15 +46,18 @@ final class JotsViewModel: PageViewModel {
 
     private let repository: JotsRepositoryProtocol
     private let menuConfigurationFactory: JotMenuConfigurationFactory
+    private let logger: LoggerProtocol
 
     init(
         coordinator: JotsCoordinatorProtocol,
         repository: JotsRepositoryProtocol,
-        menuConfigurationFactory: JotMenuConfigurationFactory
+        menuConfigurationFactory: JotMenuConfigurationFactory,
+        logger: LoggerProtocol
     ) {
         self.coordinator = coordinator
         self.repository = repository
         self.menuConfigurationFactory = menuConfigurationFactory
+        self.logger = logger
 
         (items, itemsContinuation) = AsyncStream.makeStream(
             of: [PageCellItem].self,
@@ -116,7 +119,7 @@ final class JotsViewModel: PageViewModel {
                     handleJots(jotFileInfos: jotFileInfos)
                 }
             } catch {
-                print(error)
+                logger.error("Failed to observe jot files: \(error)")
             }
         }
     }

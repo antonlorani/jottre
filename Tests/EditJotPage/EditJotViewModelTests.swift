@@ -39,7 +39,8 @@ final class EditJotViewModelTests: XCTestCase {
                 readDrawingProvider: { _ in (drawing, 1024) }
             ),
             coordinator: EditJotCoordinatorMock(),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -50,6 +51,38 @@ final class EditJotViewModelTests: XCTestCase {
         let nextValue = await iterator.next()
         let received = try XCTUnwrap(nextValue)
         XCTAssertEqual(received.width, 1024)
+    }
+
+    func test_didLoad_givenReadDrawingThrows_logsError() async {
+        // Given
+        let errorExpectation = XCTestExpectation(description: "LoggerMock.errorProvider is called.")
+        let info = JotFile.Info(
+            url: URL(staticString: "file:///tmp/note.jot"),
+            name: "note",
+            modificationDate: nil,
+            ubiquitousInfo: nil
+        )
+        let viewModel = EditJotViewModel(
+            jotFileInfo: info,
+            repository: EditJotRepositoryMock(
+                readDrawingProvider: { _ in throw NSError(domain: "test", code: 0) }
+            ),
+            coordinator: EditJotCoordinatorMock(),
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock(
+                errorProvider: { message in
+                    if message.contains("Failed to read drawing") {
+                        errorExpectation.fulfill()
+                    }
+                }
+            )
+        )
+
+        // When
+        viewModel.didLoad()
+
+        // Then
+        await fulfillment(of: [errorExpectation], timeout: 1)
     }
 
     func test_didLoad_givenConflictingVersions_invokesShowJotConflictPage() async {
@@ -72,7 +105,8 @@ final class EditJotViewModelTests: XCTestCase {
                 }
             ),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -98,7 +132,8 @@ final class EditJotViewModelTests: XCTestCase {
             jotFileInfo: info,
             repository: EditJotRepositoryMock(),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -128,7 +163,8 @@ final class EditJotViewModelTests: XCTestCase {
                 }
             ),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -153,7 +189,8 @@ final class EditJotViewModelTests: XCTestCase {
             jotFileInfo: info,
             repository: EditJotRepositoryMock(),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -178,7 +215,8 @@ final class EditJotViewModelTests: XCTestCase {
             jotFileInfo: info,
             repository: EditJotRepositoryMock(),
             coordinator: EditJotCoordinatorMock(),
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When
@@ -210,7 +248,8 @@ final class EditJotViewModelTests: XCTestCase {
                 duplicateProvider: { _ in throw NSError(domain: "test", code: 0) }
             ),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When (find duplicate action and invoke)
@@ -255,7 +294,8 @@ final class EditJotViewModelTests: XCTestCase {
                 duplicateProvider: { _ in duplicatedInfo }
             ),
             coordinator: coordinator,
-            menuConfigurationFactory: JotMenuConfigurationFactory()
+            menuConfigurationFactory: JotMenuConfigurationFactory(),
+            logger: LoggerMock()
         )
 
         // When

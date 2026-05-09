@@ -48,7 +48,8 @@ final class JotConflictRepositoryTests: XCTestCase {
         )
         let repository = JotConflictRepository(
             jotFileConflictService: jotFileConflictServiceMock,
-            jotFilePreviewImageService: JotFilePreviewImageServiceMock()
+            jotFilePreviewImageService: JotFilePreviewImageServiceMock(),
+            logger: LoggerMock()
         )
 
         // When
@@ -85,7 +86,8 @@ final class JotConflictRepositoryTests: XCTestCase {
         )
         let repository = JotConflictRepository(
             jotFileConflictService: jotFileConflictServiceMock,
-            jotFilePreviewImageService: jotFilePreviewImageServiceMock
+            jotFilePreviewImageService: jotFilePreviewImageServiceMock,
+            logger: LoggerMock()
         )
 
         // When
@@ -136,7 +138,8 @@ final class JotConflictRepositoryTests: XCTestCase {
         )
         let repository = JotConflictRepository(
             jotFileConflictService: jotFileConflictServiceMock,
-            jotFilePreviewImageService: jotFilePreviewImageServiceMock
+            jotFilePreviewImageService: jotFilePreviewImageServiceMock,
+            logger: LoggerMock()
         )
 
         // When
@@ -153,8 +156,9 @@ final class JotConflictRepositoryTests: XCTestCase {
         await fulfillment(of: [getPreviewImageDataExpectation], timeout: 0.2)
     }
 
-    func test_getPreviewImage_givenPreviewImageServiceThrows_returnsNil() async throws {
+    func test_getPreviewImage_givenPreviewImageServiceThrows_returnsNilAndLogsError() async throws {
         // Given
+        let errorExpectation = XCTestExpectation(description: "LoggerMock.errorProvider is called.")
         let originalInfo = JotFile.Info(
             url: URL(staticString: "file:///tmp/note.jot"),
             name: "note",
@@ -166,6 +170,13 @@ final class JotConflictRepositoryTests: XCTestCase {
             jotFilePreviewImageService: JotFilePreviewImageServiceMock(
                 getPreviewImageDataProvider: { _, _, _ in
                     throw NSError(domain: "test", code: 0)
+                }
+            ),
+            logger: LoggerMock(
+                errorProvider: { message in
+                    if message.contains("Failed to load conflict preview image") {
+                        errorExpectation.fulfill()
+                    }
                 }
             )
         )
@@ -180,5 +191,6 @@ final class JotConflictRepositoryTests: XCTestCase {
 
         // Then
         XCTAssertNil(image)
+        await fulfillment(of: [errorExpectation], timeout: 0.2)
     }
 }

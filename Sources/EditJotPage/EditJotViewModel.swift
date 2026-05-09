@@ -95,17 +95,20 @@ final class EditJotViewModel: Sendable {
     private let repository: EditJotRepositoryProtocol
     private weak var coordinator: EditJotCoordinatorProtocol?
     private let menuConfigurationFactory: JotMenuConfigurationFactory
+    private let logger: LoggerProtocol
 
     init(
         jotFileInfo: JotFile.Info,
         repository: EditJotRepositoryProtocol,
         coordinator: EditJotCoordinatorProtocol,
-        menuConfigurationFactory: JotMenuConfigurationFactory
+        menuConfigurationFactory: JotMenuConfigurationFactory,
+        logger: LoggerProtocol
     ) {
         self.jotFileInfo = jotFileInfo
         self.coordinator = coordinator
         self.repository = repository
         self.menuConfigurationFactory = menuConfigurationFactory
+        self.logger = logger
         (isEditing, isEditingContinuation) = AsyncStream.makeStream(
             of: Bool?.self,
             bufferingPolicy: .bufferingNewest(1)
@@ -131,12 +134,12 @@ final class EditJotViewModel: Sendable {
         )
         self.drawingUpdateContinuation = drawingUpdateContinuation
 
-        drawingUpdateTask = Task {
+        drawingUpdateTask = Task { [logger] in
             for await drawing in drawingUpdate.dropFirst().debounce(for: 0.3) {
                 do {
                     try await repository.writeDrawing(jotFileInfo: jotFileInfo, drawing: drawing)
                 } catch {
-                    print(error)
+                    logger.error("Failed to write drawing: \(error)")
                 }
             }
         }
@@ -168,7 +171,7 @@ final class EditJotViewModel: Sendable {
                     let (drawing, width) = try await repository.readDrawing(jotFileInfo: jotFileInfo)
                     drawingContinuation.yield(Drawing(value: drawing, width: width))
                 } catch {
-                    print(error)
+                    logger.error("Failed to read drawing: \(error)")
                 }
             }
         }
