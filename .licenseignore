@@ -17,3 +17,4 @@ Gemfile.lock
 Brewfile
 LICENSE
 .ruby-version
+.xcode-version
